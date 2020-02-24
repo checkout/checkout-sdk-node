@@ -150,8 +150,6 @@ describe('Request a payment or payout', () => {
             amount: 100
         });
 
-        console.log(transaction);
-
         /* eslint-disable no-unused-expressions */
         expect(transaction.approved).to.be.true;
         expect(transaction.risk.flagged).to.be.false;
