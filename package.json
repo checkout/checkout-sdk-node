@@ -1,0 +1,59 @@
+{
+    "name": "checkout-sdk-node",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./dist/index.js",
+    "devDependencies": {
+        "@babel/core": "^7.8.4",
+        "@babel/node": "^7.8.3",
+        "@babel/preset-env": "^7.8.4",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-preset-es2015": "^6.24.1",
+        "chai": "^4.2.0",
+        "eslint": "^6.1.0",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-prettier": "^4.1.0",
+        "eslint-plugin-chai-friendly": "^0.4.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-prettier": "^3.0.1",
+        "mocha": "^5.2.0",
+        "mocha-junit-reporter": "^1.23.1",
+        "nock": "^10.0.6",
+        "nyc": "^14.1.1",
+        "prettier": "^1.16.4"
+    },
+    "runkitExampleFilename": "example.js",
+    "scripts": {
+        "start": "nodemon --exec babel-node ./src/index.js",
+        "lint": "eslint --fix --ext .js src/",
+        "test": "nyc --reporter=html mocha 'test/**/*.js' --compilers js:@babel/register",
+        "posttest": "nyc report --reporter=json",
+        "test:watch": "mocha 'test/**/*.js' --watch --compilers js:@babel/register",
+        "build": "babel src --out-dir ./dist --source-maps",
+        "serve": "node ./dist/index.js",
+        "codecov": "codecov -f coverage/*.json "
+    },
+    "dependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/plugin-transform-runtime": "^7.8.3",
+        "@babel/runtime": "^7.8.3",
+        "codecov": "^3.6.2",
+        "node-fetch": "^2.3.0"
+    },
+    "babel": {
+        "presets": [
+            [
+                "@babel/preset-env",
+                {
+                    "useBuiltIns": false
+                }
+            ]
+        ],
+        "plugins": [
+            "@babel/plugin-transform-runtime"
+        ]
+    },
+    "author": "Ioan Ghisoi",
+    "license": "ISC",
+    "type": "module"
+}

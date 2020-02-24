@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+    - 10
+    - 9
+    - 8
+    - 7
+    - 6
+
+script:
+    - npm run lint
+    - npm test
+    - codecov -f coverage/*.json
+    - npm i -g babel
+    - npm run build
+    - rsync -avh --progress ./types/ ./
+
+jobs:
+    include:
+        - stage: deploy
+          on:
+              branch: master
+          deploy:
+              provider: npm
+              tag: beta
+              edge: true
+              email: '$NPM_EMAIL'
+              api_key: '$NPM_API_TOKEN'
