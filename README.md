@@ -313,6 +313,20 @@ const token = await cko.sources.add({
 });
 ```
 
+# Instruments
+
+The SDK will infer the `type` of the instrument, if not provided
+
+> The request body is dynamic so if you want to see the paramenters check [the docs](https://api-reference.checkout.com/#tag/Instruments)
+
+### Request an instrument
+
+```js
+const instrument = await cko.instruments.create({
+    token: token: 'tok_bzi43qc6jeee5mmnfo4gnsnera'
+});
+```
+
 ### Exception handling
 
 #### Example
