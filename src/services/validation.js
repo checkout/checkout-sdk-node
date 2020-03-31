@@ -82,3 +82,12 @@ export const setSourceType = request => {
     }
     return request;
 };
+
+export const setInstrumentType = request => {
+    if (request.type) {
+        return request;
+    } else {
+        request.type = 'token';
+    }
+    return request;
+};

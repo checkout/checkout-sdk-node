@@ -326,7 +326,7 @@ try {
   currency: "USD",
   amount: 1000 // cents
   });
-} catch (e) {
+} catch (err) {
     switch (err.name) {
         case "ApiTimeout": ...
           break;
