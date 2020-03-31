@@ -10,7 +10,7 @@
 # Import
 
 ```js
-import import { Checkout } from "checkout-sdk-node";
+import { Checkout } from 'checkout-sdk-node';
 ```
 
 > If you don't have your own API keys, you can sign up for a test account [here](https://www.checkout.com/get-test-account).
