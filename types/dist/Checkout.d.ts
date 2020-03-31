@@ -1,21 +1,22 @@
-import { Payments, Sources, Tokens } from "./index";
+import { Payments, Sources, Tokens, Instruments } from './index';
 
 export type config = {
-  host: string;
-  sk: string;
-  pk: string;
-  timeout: number;
+    host: string;
+    sk: string;
+    pk: string;
+    timeout: number;
 };
 
 type options = {
-  timeout: number;
+    timeout: number;
 };
 
 export default class Checkout {
-  payments: Payments;
-  sources: Sources;
-  tokens: Tokens;
-  config: config;
+    payments: Payments;
+    sources: Sources;
+    tokens: Tokens;
+    instruments: Instruments;
+    config: config;
 
-  constructor(key?: string, options?: options);
+    constructor(key?: string, options?: options);
 }

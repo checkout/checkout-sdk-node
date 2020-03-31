@@ -1,5 +1,5 @@
 import { DEFAULT_TIMEOUT, LIVE_BASE_URL, LIVE_SECRET_KEY_REGEX, SANDBOX_BASE_URL } from './config';
-import { Payments, Sources, Tokens } from './index';
+import { Payments, Sources, Tokens, Instruments } from './index';
 
 const determineHost = (key, options) => {
     // Unless specified, determine the hosted based on the secret key
@@ -50,5 +50,6 @@ export default class Checkout {
         this.payments = new Payments(this.config);
         this.sources = new Sources(this.config);
         this.tokens = new Tokens(this.config);
+        this.instruments = new Instruments(this.config);
     }
 }
