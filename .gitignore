@@ -37,6 +37,7 @@ node_modules
 typings/
 lib/*.js
 lib/
+dist/
 test/*.js
 *.map
 
