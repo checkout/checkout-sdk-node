@@ -4,7 +4,7 @@ import http from '../../services/http';
 import { setInstrumentType } from '../../services/validation';
 
 /**
- * Class dealing with the /tokens endpoint
+ * Class dealing with the /instruments endpoint
  *
  * @export
  * @class Instruments
@@ -15,8 +15,8 @@ export default class Instruments {
     }
 
     /**
-     * Exchange card details or a digital wallet payment token for a reference token
-     * that can be used later to request a card payment.
+     * Exchange a single use Checkout.com token for a payment instrument reference,
+     * that can be used at any time to request one or more payments.
      *
      * @memberof Instruments
      * @param {Object} body Instruments request body.

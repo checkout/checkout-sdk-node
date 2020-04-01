@@ -29,7 +29,8 @@ const http = async (fetch, config, request) => {
         throw { status: response.status, json };
     }
 
-    return response.json().then(data => {
+    return response.text().then(text => {
+        let data = text ? JSON.parse(text) : {};
         // Return CKO response headers when available
         if (REQUEST_ID_HEADER in response.headers.raw()) {
             return {
