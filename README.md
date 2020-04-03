@@ -7,6 +7,16 @@
 [![codebeat badge](https://codebeat.co/badges/b41734ff-7fb5-4867-94d3-ab0729bb6b69)](https://codebeat.co/projects/github-com-ioan-ghisoi-cko-checkout-node-sdk-remake)
 [![Try it on RunKit](https://badge.runkitcdn.com/checkout-sdk-node.svg)](https://npm.runkit.com/checkout-sdk-node)
 
+# Install
+
+```bash
+yarn add checkout-sdk-node
+```
+or
+```bash
+npm install checkout-sdk-node
+```
+
 # Import
 
 ```js
