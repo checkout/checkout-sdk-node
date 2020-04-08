@@ -24,7 +24,7 @@ const siteConfig = {
     title: 'checkout-sdk-node', // Title for your website.
     tagline: "Checkout.com's Node.JS SDK",
     url: 'https://checkout.github.io', // Your website URL
-    baseUrl: '/checkout-sdk-node', // Base URL for your project */
+    baseUrl: '/', // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
     //   url: 'https://facebook.github.io',
     //   baseUrl: '/test-site/',

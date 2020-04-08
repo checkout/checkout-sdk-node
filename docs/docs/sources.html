@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Sources · checkout-sdk-node</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="You can find a list of request body parameters and possible outcomes [here](https://api-reference.checkout.com/#tag/Sources)."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Sources · checkout-sdk-node"/><meta property="og:type" content="website"/><meta property="og:url" content="https://checkout.github.io/"/><meta property="og:description" content="You can find a list of request body parameters and possible outcomes [here](https://api-reference.checkout.com/#tag/Sources)."/><meta property="og:image" content="https://checkout.github.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://checkout.github.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon.png" alt="checkout-sdk-node"/><h2 class="headerTitleWithLogo">checkout-sdk-node</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/getting_started" target="_self">SDK Docs</a></li><li class=""><a href="https://github.com/checkout/checkout-sdk-node" target="_self">Github</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>API</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Getting Started<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/install">Install</a></li><li class="navListItem"><a class="navItem" href="/docs/initialise">Initialise</a></li><li class="navListItem"><a class="navItem" href="/docs/environment">Environment</a></li><li class="navListItem"><a class="navItem" href="/docs/errors">Error Handling</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">API<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/payments">Payments</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/sources">Sources</a></li><li class="navListItem"><a class="navItem" href="/docs/tokens">Tokens</a></li><li class="navListItem"><a class="navItem" href="/docs/instruments">Instruments</a></li><li class="navListItem"><a class="navItem" href="/docs/webhooks">Webhooks</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Sources</h1></header><article><div><span><p>You can find a list of request body parameters and possible outcomes <a href="https://api-reference.checkout.com/#tag/Sources">here</a>.</p>
+<p>The SDK will infer the type of the source, if not provided.</p>
+<h2><a class="anchor" aria-hidden="true" id="add-a-sepa-source"></a><a href="#add-a-sepa-source" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add a <strong>SEPA</strong> source</h2>
+<blockquote>
+<p>SEPA is not enabled by default, so please let your account manager know if you want to use it.</p>
+</blockquote>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> source = <span class="hljs-keyword">await</span> cko.sources.add({
+    <span class="hljs-comment">// type:"sepa" is inferred</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'X-080957-N34'</span>,
+    <span class="hljs-attr">source_data</span>: {
+        <span class="hljs-attr">first_name</span>: <span class="hljs-string">'Sophie'</span>,
+        <span class="hljs-attr">last_name</span>: <span class="hljs-string">'Bonneville'</span>,
+        <span class="hljs-attr">account_iban</span>: <span class="hljs-string">'DE25100100101234567893'</span>,
+        <span class="hljs-attr">bic</span>: <span class="hljs-string">'PBNKDEFFXXX'</span>,
+        <span class="hljs-attr">billing_descriptor</span>: <span class="hljs-string">'Thanks for shopping'</span>,
+        <span class="hljs-attr">mandate_type</span>: <span class="hljs-string">'recurring'</span>
+    },
+    <span class="hljs-attr">billing_address</span>: {
+        <span class="hljs-attr">address_line1</span>: <span class="hljs-string">'101 Avenue de Gaulle'</span>,
+        <span class="hljs-attr">city</span>: <span class="hljs-string">'Paris'</span>,
+        <span class="hljs-attr">zip</span>: <span class="hljs-string">'75013'</span>,
+        <span class="hljs-attr">country</span>: <span class="hljs-string">'FR'</span>
+    },
+    <span class="hljs-attr">phone</span>: {
+        <span class="hljs-attr">country_code</span>: <span class="hljs-string">'+33'</span>,
+        <span class="hljs-attr">number</span>: <span class="hljs-string">'6 78 91 01 11'</span>
+    },
+    <span class="hljs-attr">customer</span>: {
+        <span class="hljs-attr">email</span>: <span class="hljs-string">'sophie.bonneville@ckomail.com'</span>
+    }
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="add-a-ach-source"></a><a href="#add-a-ach-source" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add a <strong>ACH</strong> source</h2>
+<blockquote>
+<p>ACH is not enabled by default, so please let your account manager know if you want to use it.</p>
+</blockquote>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> source = <span class="hljs-keyword">await</span> cko.sources.add({
+    <span class="hljs-comment">// type:"ach" is inferred</span>
+    <span class="hljs-attr">billing_address</span>: {
+        <span class="hljs-attr">address_line1</span>: <span class="hljs-string">'Wayne Plaza 1'</span>,
+        <span class="hljs-attr">address_line2</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">city</span>: <span class="hljs-string">'Gotham City'</span>,
+        <span class="hljs-attr">state</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">zip</span>: <span class="hljs-string">'12345'</span>,
+        <span class="hljs-attr">country</span>: <span class="hljs-string">'US'</span>
+    },
+    <span class="hljs-attr">source_data</span>: {
+        <span class="hljs-attr">account_holder_name</span>: <span class="hljs-string">'Bruce Wayne'</span>,
+        <span class="hljs-attr">account_type</span>: <span class="hljs-string">'Checking'</span>,
+        <span class="hljs-attr">account_number</span>: <span class="hljs-string">'0123456789'</span>,
+        <span class="hljs-attr">routing_number</span>: <span class="hljs-string">'211370545'</span>,
+        <span class="hljs-attr">billing_descriptor</span>: <span class="hljs-string">'ACH Demo'</span>,
+        <span class="hljs-attr">company_name</span>: <span class="hljs-literal">null</span>
+    }
+});
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/payments"><span class="arrow-prev">← </span><span>Payments</span></a><a class="docs-next button" href="/docs/tokens"><span>Tokens</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#add-a-sepa-source">Add a <strong>SEPA</strong> source</a></li><li><a href="#add-a-ach-source">Add a <strong>ACH</strong> source</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="copyright">Copyright © 2020 Checkout.com LTD</section></footer></div></body></html>
