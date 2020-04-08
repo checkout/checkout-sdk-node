@@ -1,0 +1,237 @@
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/* your custom css */
+
+body {
+    background: #121212;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: #fff !important;
+}
+
+p {
+    color: #919191;
+}
+
+a {
+    color: #02b48f;
+}
+
+.navItem {
+    color: #fff !important;
+}
+
+.navItem:hover {
+    color: #02b48f !important;
+}
+
+.navListItem {
+    padding-left: 20px !important;
+    border-radius: 9px;
+}
+
+.navListItemActive {
+    background-color: #1e1e1e;
+}
+
+a:hover {
+    color: #02b48f;
+    text-decoration: underline;
+}
+
+.nav-footer {
+    background: #1f1f1f;
+}
+
+.button {
+    border: 1px solid #eaeaea;
+    color: #eaeaea;
+}
+
+.button:hover {
+    background: #1f1f1f;
+}
+
+.onPageNav li a {
+    color: #fff;
+}
+
+.onPageNav .toc-headings > li > a.active {
+    color: #02b48f;
+}
+
+header a {
+    text-decoration: unset !important;
+}
+
+.hash-link-icon {
+    background: white !important;
+    color: white !important;
+}
+
+iframe {
+    margin: unset !important;
+}
+
+.docsSliderActive {
+    background: black;
+}
+
+strong {
+    color: #02b48f;
+}
+
+blockquote p {
+    color: white !important;
+}
+
+.badges {
+    margin-bottom: 15px;
+}
+
+.get-test-account {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    -webkit-font-smoothing: antialiased;
+    width: max-content;
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px 24px;
+    background: #02b48f;
+    color: white;
+    text-decoration: unset;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    border-radius: 2px;
+}
+
+.get-test-account:hover {
+    color: white;
+    background: rgb(4, 153, 123);
+    text-decoration: unset;
+}
+
+tr,
+thead,
+tbody,
+th,
+td {
+    background: #292c34;
+    color: white;
+}
+
+table td {
+    border: 1px solid #5c6370;
+}
+
+thead th {
+    border: 1px solid #5c6370;
+    color: #c678de;
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+}
+
+@media only screen and (min-width: 1024px) {
+}
+
+@media only screen and (max-width: 1023px) {
+}
+
+@media only screen and (min-width: 1400px) {
+}
+
+@media only screen and (min-width: 1500px) {
+}
+
+#payment-form {
+    width: 31.5rem;
+    margin: 0 auto;
+}
+iframe {
+    width: 100%;
+}
+.one-liner {
+    display: flex;
+    flex-direction: column;
+}
+#pay-button {
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: 500;
+    height: 40px;
+    width: 100%;
+    background-color: #13395e;
+    box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.4);
+}
+#pay-button:active {
+    background-color: #0b2a49;
+    box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.4);
+}
+#pay-button:hover {
+    background-color: #15406b;
+    box-shadow: 0 2px 5px 0 rgba(19, 57, 94, 0.4);
+}
+#pay-button:disabled {
+    background-color: #697887;
+    box-shadow: none;
+}
+#pay-button:not(:disabled) {
+    cursor: pointer;
+}
+.card-frame {
+    border: solid 1px #13395e;
+    border-radius: 3px;
+    width: 100%;
+    margin-bottom: 8px;
+    height: 40px;
+    box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.2);
+}
+.card-frame.frame--rendered {
+    opacity: 1;
+}
+.card-frame.frame--rendered.frame--focus {
+    border: solid 1px #13395e;
+    box-shadow: 0 2px 5px 0 rgba(19, 57, 94, 0.15);
+}
+.card-frame.frame--rendered.frame--invalid {
+    border: solid 1px #d96830;
+    box-shadow: 0 2px 5px 0 rgba(217, 104, 48, 0.15);
+}
+.success-payment-message {
+    color: #13395e;
+    line-height: 1.4;
+}
+.token {
+    color: #b35e14;
+    font-size: 0.9rem;
+    font-family: monospace;
+}
+@media screen and (min-width: 31rem) {
+    .one-liner {
+        flex-direction: row;
+    }
+    .card-frame {
+        width: 318px;
+        margin-bottom: 0;
+    }
+    #pay-button {
+        width: 175px;
+        margin-left: 8px;
+    }
+}
