@@ -1,9 +1,0 @@
-{
-    "docs": {
-        "Getting Started": ["getting_started", "install", "initialise", "environment", "errors"],
-        "API": ["payments", "sources", "tokens", "instruments", "webhooks"]
-    },
-    "docs-other": {
-        "First Category": ["doc4", "doc5"]
-    }
-}
