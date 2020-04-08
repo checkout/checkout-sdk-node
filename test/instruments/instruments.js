@@ -67,8 +67,6 @@ describe('Request an instrument', () => {
             token: tokenResponse.token
         });
 
-        console.log(instrument);
-
         expect(instrument.last4).to.equal('4242');
         expect(instrument.type).to.equal('card');
     });
@@ -123,8 +121,6 @@ describe('Request an instrument', () => {
         const instrument = await cko.instruments.create({
             token: tokenResponse.token
         });
-
-        console.log(instrument);
 
         expect(instrument.last4).to.equal('4242');
         expect(instrument.type).to.equal('card');

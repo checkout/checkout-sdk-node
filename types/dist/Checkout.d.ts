@@ -1,4 +1,4 @@
-import { Payments, Sources, Tokens, Instruments } from './index';
+import { Payments, Sources, Tokens, Instruments, Webhooks } from './index';
 
 export type config = {
     host: string;
@@ -16,6 +16,7 @@ export default class Checkout {
     sources: Sources;
     tokens: Tokens;
     instruments: Instruments;
+    webhooks: Webhooks;
     config: config;
 
     constructor(key?: string, options?: options);

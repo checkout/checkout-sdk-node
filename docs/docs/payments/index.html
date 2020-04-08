@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Payments · checkout-sdk-node</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="You can find a list of request body parameters and possible outcomes [here](https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post)."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Payments · checkout-sdk-node"/><meta property="og:type" content="website"/><meta property="og:url" content="https://checkout.github.io/checkout-sdk-node/"/><meta property="og:description" content="You can find a list of request body parameters and possible outcomes [here](https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post)."/><meta property="og:image" content="https://checkout.github.io/checkout-sdk-node/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://checkout.github.io/checkout-sdk-node/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/checkout-sdk-node/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/checkout-sdk-node/js/scrollSpy.js"></script><link rel="stylesheet" href="/checkout-sdk-node/css/main.css"/><script src="/checkout-sdk-node/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/checkout-sdk-node/"><img class="logo" src="/checkout-sdk-node/img/favicon.png" alt="checkout-sdk-node"/><h2 class="headerTitleWithLogo">checkout-sdk-node</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/checkout-sdk-node/docs/getting_started" target="_self">SDK Docs</a></li><li class=""><a href="https://github.com/checkout/checkout-sdk-node" target="_self">Github</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>API</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Getting Started<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/install">Install</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/initialise">Initialise</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/environment">Environment</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/errors">Error Handling</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">API<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem navListItemActive"><a class="navItem" href="/checkout-sdk-node/docs/payments">Payments</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/sources">Sources</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/tokens">Tokens</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/instruments">Instruments</a></li><li class="navListItem"><a class="navItem" href="/checkout-sdk-node/docs/webhooks">Webhooks</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Payments</h1></header><article><div><span><p>You can find a list of request body parameters and possible outcomes <a href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post">here</a>.</p>
+<blockquote>
+<p>When making payment requests keep in mind how the amount is formatted. Some currencies require a specific format. <a href="https://docs.checkout.com/docs/calculating-the-value">See details</a>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="request-a-card-payment-with-a-card-token"></a><a href="#request-a-card-payment-with-a-card-token" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a card payment with a <strong>card token</strong></h2>
+<p>The card token is generated by on of the Front End integration options like <a href="https://docs.checkout.com/docs/frames">Checkout.Frames</a> or one of the <a href="https://docs.checkout.com/docs/sdks#section-mobile-sdk-libraries">Mobile SDKs</a>. Keep in mind that this token expires in 15 minutes, and it's a single time use token.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-comment">// type:"token" is inferred</span>
+        <span class="hljs-attr">token</span>: <span class="hljs-string">'tok_bzi43qc6jeee5mmnfo4gnsnera'</span>
+    },
+    <span class="hljs-attr">customer</span>: {
+        <span class="hljs-attr">email</span>: <span class="hljs-string">'user@email.com'</span>,
+        <span class="hljs-attr">name</span>: <span class="hljs-string">'Walter White'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// cents</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'ORDER123'</span>
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="request-a-card-payment-with-full-card-details"></a><a href="#request-a-card-payment-with-full-card-details" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a card payment with <strong>full card details</strong></h2>
+<blockquote>
+<p>You need to have a high level of PCI Compliance (SAQ-D) to be able to send requests with full card details. Note that unless this payment option is enabled on your account by Checkout.com, the <strong>requests will fail</strong>. Contact you account manager to request access for this payment interaction.</p>
+</blockquote>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-comment">// type:"card" is inferred</span>
+        <span class="hljs-attr">number</span>: <span class="hljs-string">'4242424242424242'</span>,
+        <span class="hljs-attr">expiry_month</span>: <span class="hljs-number">6</span>,
+        <span class="hljs-attr">expiry_year</span>: <span class="hljs-number">2029</span>,
+        <span class="hljs-attr">cvv</span>: <span class="hljs-string">'100'</span>
+    },
+    <span class="hljs-attr">customer</span>: {
+        <span class="hljs-attr">email</span>: <span class="hljs-string">'user@email.com'</span>,
+        <span class="hljs-attr">name</span>: <span class="hljs-string">'Walter White'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// cents</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'ORDER123'</span>
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="request-a-card-payment-for-an-existing-card"></a><a href="#request-a-card-payment-for-an-existing-card" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a card payment for <strong>an existing card</strong></h2>
+<p>After you perform at least one successful payment for a customer, Checkout.com will return a <strong>source.id</strong>. This id does not expire, so it can be used perform payments without needing the customer to enter the card details again.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-comment">// type:"id" is inferred</span>
+        <span class="hljs-attr">id</span>: <span class="hljs-string">'src_vg3tm54ndfbefotjlmgrrvbxli'</span>
+    },
+    <span class="hljs-attr">customer</span>: {
+        <span class="hljs-attr">email</span>: <span class="hljs-string">'user@email.com'</span>,
+        <span class="hljs-attr">name</span>: <span class="hljs-string">'Walter White'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// cents</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'ORDER123'</span>
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="request-a-card-payment-for-an-existing-customer"></a><a href="#request-a-card-payment-for-an-existing-customer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a card payment for <strong>an existing customer</strong></h2>
+<p>After you perform at least one successful payment for a customer, Checkout.com will return a <strong>customer.id</strong>.
+This id can be used perform payments without needing the customer to enter the card details again.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-comment">// type:"customer" is inferred</span>
+        <span class="hljs-attr">id</span>: <span class="hljs-string">'cus_6artgoevd77u7ojah2wled32sa'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// cents</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'ORDER123'</span>
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="request-a-payment-for-a-local-payment-method"></a><a href="#request-a-payment-for-a-local-payment-method" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a payment for a <strong>local payment method</strong></h2>
+<p>The <a href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post">API Reference</a> contains a list of local payment options that you can use, as well as the other information required in the payment source (if required)</p>
+<p>This is an example of a payment request for <a href="https://docs.checkout.com/docs/sofort">Sofort</a>:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">'sofort'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span> <span class="hljs-comment">// cents</span>
+});
+</code></pre>
+<p>As you can see from the <a href="https://api-reference.checkout.com/#tag/Payments/paths/~1payments/post">API Reference</a> this request is meant to return a redirection URL, so you can let the customer complete the transaction on the local payment's website. Normally a successful response would look like this:</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"pay_y3gars76cvrudairph27ekzpvm"</span>,
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Pending"</span>,
+    <span class="hljs-attr">"customer"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-string">"cus_zbsnutwm2hoevnxnyj6o26sibe"</span>
+    },
+    <span class="hljs-attr">"_links"</span>: {
+        <span class="hljs-attr">"self"</span>: {
+            <span class="hljs-attr">"href"</span>: <span class="hljs-string">"https://api.sandbox.checkout.com/payments/pay_y3gars76cvrudairph27ekzpvm"</span>
+        },
+        <span class="hljs-attr">"redirect"</span>: {
+            <span class="hljs-attr">"href"</span>: <span class="hljs-string">"https://sandbox.checkout.com/LP.Core/api/payment/191952"</span>
+        }
+    }
+}
+</code></pre>
+<p>To make it easier to access the redirection URL, instead of accessing it as <strong>response._links.redirect.href</strong> the response body is appended with a parameter called <strong>redirectLink</strong> by the SDK, so the same URL will be accessible as <strong>response.redirectLink</strong></p>
+<h2><a class="anchor" aria-hidden="true" id="request-a-3d-secure-payment"></a><a href="#request-a-3d-secure-payment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request a <strong>3D Secure payment</strong></h2>
+<p>You have the ability to request 3DS in a payment request. The request body is similar to normal card payments, but with some additional parameters. <a href="https://docs.checkout.com/docs/3d-secure-payments">Read more about 3DS</a></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({
+    <span class="hljs-attr">source</span>: {
+        <span class="hljs-comment">// type:"token" is inferred</span>
+        <span class="hljs-attr">token</span>: <span class="hljs-string">'tok_bzi43qc6jeee5mmnfo4gnsnera'</span>
+    },
+    <span class="hljs-string">'3ds'</span>: {
+        <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">customer</span>: {
+        <span class="hljs-attr">email</span>: <span class="hljs-string">'user@email.com'</span>,
+        <span class="hljs-attr">name</span>: <span class="hljs-string">'Walter White'</span>
+    },
+    <span class="hljs-attr">currency</span>: <span class="hljs-string">'EUR'</span>,
+    <span class="hljs-attr">amount</span>: <span class="hljs-number">1000</span>, <span class="hljs-comment">// cents</span>
+    <span class="hljs-attr">reference</span>: <span class="hljs-string">'ORDER123'</span>
+});
+</code></pre>
+<p>Similar to local payment options, 3D Secure payments will return a redirection URL. Here is an example of a 3DS response:</p>
+<pre><code class="hljs css language-js">{
+    <span class="hljs-string">"id"</span>: <span class="hljs-string">"pay_krq2q22lblsevfkay2gfyvatta"</span>,
+    <span class="hljs-string">"status"</span>: <span class="hljs-string">"Pending"</span>,
+    <span class="hljs-string">"customer"</span>: {
+        <span class="hljs-string">"id"</span>: <span class="hljs-string">"cus_c5c7d5f4avnehbhhgmnkdadkdu"</span>
+    },
+    <span class="hljs-string">"3ds"</span>: {
+        <span class="hljs-string">"downgraded"</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">"enrolled"</span>: <span class="hljs-string">"Y"</span>
+    },
+    <span class="hljs-string">"_links"</span>: {
+        <span class="hljs-string">"self"</span>: {
+            <span class="hljs-string">"href"</span>: <span class="hljs-string">"https://api.sandbox.checkout.com/payments/pay_krq2q22lblsevfkay2gfyvatta"</span>
+        },
+        <span class="hljs-string">"redirect"</span>: {
+            <span class="hljs-string">"href"</span>: <span class="hljs-string">"https://3ds2-sandbox.ckotech.co/interceptor/3ds_dr6us33uu57utjwh7yl5szcgqy"</span>
+        }
+    }
+}
+</code></pre>
+<p>To make it easier to access the redirection URL, instead of accessing it as <strong>response._links.redirect.href</strong> the response body is appended with a parameter called <strong>redirectLink</strong> by the SDK, so the same URL will be accessible as <strong>response.redirectLink</strong></p>
+<h2><a class="anchor" aria-hidden="true" id="handle-card-payment-responses"></a><a href="#handle-card-payment-responses" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Handle card payment responses</h2>
+<p>Payment requests are influenced by risk rules so you can have situations where a card payment is requested without 3D Secure, but upgraded by a risk rule, resulting in a 3D Secure response. You are free to handle the response in any way you want, but bellow you have a good example for a starting point:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">try</span>{
+    <span class="hljs-keyword">const</span> payment = <span class="hljs-keyword">await</span> cko.payments.request({...});
+
+    <span class="hljs-keyword">if</span> (payment.status === <span class="hljs-string">'Pending'</span>) {
+      <span class="hljs-comment">// The payment is 3DS. Redirect the customer to payment.redirectLink</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (approved == <span class="hljs-literal">true</span> &amp;&amp; risk.flagged == <span class="hljs-literal">false</span>) {
+      <span class="hljs-comment">// The payment was successful and not flagged by any risk rule</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (approved == <span class="hljs-literal">true</span> &amp;&amp; risk.flagged == <span class="hljs-literal">true</span>) {
+      <span class="hljs-comment">// The payment was successful but it was flagged by a risk rule; this means you have to manually decide if you want to capture it or void it</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (approved == <span class="hljs-literal">false</span>) {
+      <span class="hljs-comment">// the payment was declined</span>
+    }
+
+} <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-built_in">console</span>.log(error.name);
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/checkout-sdk-node/docs/errors"><span class="arrow-prev">← </span><span>Error Handling</span></a><a class="docs-next button" href="/checkout-sdk-node/docs/sources"><span>Sources</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#request-a-card-payment-with-a-card-token">Request a card payment with a <strong>card token</strong></a></li><li><a href="#request-a-card-payment-with-full-card-details">Request a card payment with <strong>full card details</strong></a></li><li><a href="#request-a-card-payment-for-an-existing-card">Request a card payment for <strong>an existing card</strong></a></li><li><a href="#request-a-card-payment-for-an-existing-customer">Request a card payment for <strong>an existing customer</strong></a></li><li><a href="#request-a-payment-for-a-local-payment-method">Request a payment for a <strong>local payment method</strong></a></li><li><a href="#request-a-3d-secure-payment">Request a <strong>3D Secure payment</strong></a></li><li><a href="#handle-card-payment-responses">Handle card payment responses</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="copyright">Copyright © 2020 Checkout.com LTD</section></footer></div></body></html>

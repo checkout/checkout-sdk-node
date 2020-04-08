@@ -54,14 +54,14 @@ export class ActionNotAllowed extends Error {
  * @class UrlAlreadyRegistered
  * @extends {Error}
  */
-// export class UrlAlreadyRegistered extends Error {
-//     constructor(message = 'UrlAlreadyRegistered') {
-//         UrlAlreadyRegistered.http_code = 409;
-//         super(message);
-//         Object.setPrototypeOf(this, new.target.prototype);
-//         this.name = UrlAlreadyRegistered.name;
-//     }
-// }
+export class UrlAlreadyRegistered extends Error {
+    constructor(message = 'UrlAlreadyRegistered') {
+        UrlAlreadyRegistered.http_code = 409;
+        super(message);
+        Object.setPrototypeOf(this, new.target.prototype);
+        this.name = UrlAlreadyRegistered.name;
+    }
+}
 
 /**
  * NotFoundError
@@ -209,6 +209,8 @@ export const determineError = async err => {
             return new NotFoundError();
         case 403:
             return new ActionNotAllowed();
+        case 409:
+            return new UrlAlreadyRegistered();
         case 422:
             return new ValidationError(await errorJSON);
         case 429:
