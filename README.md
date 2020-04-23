@@ -16,7 +16,9 @@
 ```bash
 yarn add checkout-sdk-node
 ```
+
 or
+
 ```bash
 npm install checkout-sdk-node
 ```
@@ -452,4 +454,4 @@ const payment = await cko.payments.request(...);
 console.log(payment.requiresRedirect)
 ```
 
-Boolean value. For the "true" value, this means that the transaction was Flagged by a risk rule and it requires manual review.
+Boolean value. For the "true" value, this means that the transaction requires a redirection.
