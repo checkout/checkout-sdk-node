@@ -1,6 +1,6 @@
 {
     "name": "checkout-sdk-node",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "",
     "main": "./dist/index.js",
     "devDependencies": {
@@ -55,6 +55,5 @@
         ]
     },
     "author": "Ioan Ghisoi",
-    "license": "ISC",
-    "type": "module"
+    "license": "ISC"
 }
