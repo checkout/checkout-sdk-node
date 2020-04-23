@@ -4,5 +4,6 @@ export { default as Sources } from './api/sources/sources';
 export { default as Tokens } from './api/tokens/tokens';
 export { default as Instruments } from './api/instruments/instruments';
 export { default as Webhooks } from './api/webhooks/webhooks';
+export { default as Events } from './api/events/events';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';
