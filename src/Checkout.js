@@ -1,5 +1,5 @@
 import { DEFAULT_TIMEOUT, LIVE_BASE_URL, LIVE_SECRET_KEY_REGEX, SANDBOX_BASE_URL } from './config';
-import { Payments, Sources, Tokens, Instruments, Webhooks } from './index';
+import { Payments, Sources, Tokens, Instruments, Webhooks, Events } from './index';
 
 const determineHost = (key, options) => {
     // Unless specified, determine the hosted based on the secret key
@@ -10,12 +10,12 @@ const determineHost = (key, options) => {
 };
 
 const determineSecretKey = key => {
-    // Unless specified, check environemnt variables for the key
+    // Unless specified, check environment variables for the key
     return !key ? process.env.CKO_SECRET_KEY || '' : key;
 };
 
 const determinePublicKey = options => {
-    // Unless specified, check environemnt variables for the key
+    // Unless specified, check environment variables for the key
     if (options && options.pk) {
         return options.pk;
     }
@@ -32,11 +32,11 @@ export default class Checkout {
     /**
      * Creates an instance of Checkout.com's SDK.
      *
-     * Determines the environemnt based on the key
+     * Determines the environment based on the key
      *
      * @constructor
      * @param {string} [key] Secret Key /^(sk)
-     * @param {Object}  [options] Cofiguration options
+     * @param {Object}  [options] Configuration options
      * @memberof Payments
      */
     constructor(key, options) {
@@ -52,5 +52,6 @@ export default class Checkout {
         this.tokens = new Tokens(this.config);
         this.instruments = new Instruments(this.config);
         this.webhooks = new Webhooks(this.config);
+        this.events = new Events(this.config);
     }
 }

@@ -195,12 +195,15 @@ export const determineError = async err => {
     }
 
     // For 'no body' response, replace with empty object
-    const errorJSON =
+    let errorJSON =
         err.json !== undefined
             ? await err.json.then(data => {
                   return data;
               })
             : {};
+    if (Object.keys(errorJSON).length === 0 && err.message) {
+        errorJSON = err.message;
+    }
 
     switch (err.status) {
         case 401:
@@ -217,7 +220,11 @@ export const determineError = async err => {
             return new TooManyRequestsError(await errorJSON);
         case 502:
             return new BadGateway();
-        default:
+        default: {
+            console.log(errorJSON);
+            console.log('errorJSON !!!!!!');
+
             return new ApiError(await errorJSON);
+        }
     }
 };
