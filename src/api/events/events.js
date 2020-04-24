@@ -17,7 +17,7 @@ export default class Events {
      * configure on your webhooks.
      *
      * @memberof Events
-     * @param {Object} body Events request body.
+     * @param {string} version Events Version.
      * @return {Promise<Object>} A promise to the request events response.
      */
     async retrieveEventTypes(version) {
@@ -69,6 +69,107 @@ export default class Events {
                 {
                     method: 'get',
                     url: url,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Retrieves the event with the specified identifier string. The event data includes the full event
+     * details, the schema of which will vary based on the type.
+     *
+     * @memberof Events
+     * @param {string} eventId Event id.
+     * @return {Promise<Object>} A promise to the request event response.
+     */
+    async retrieveEvent(eventId) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'get',
+                    url: `${this.config.host}/events/${eventId}`,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Retrieves the attempts for a specific event notification
+     *
+     * @memberof Events
+     * @param {Object} body Event request body.
+     * @return {Promise<Object>} A promise to the request event notifications response.
+     */
+    async retrieveEventNotification(body) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'get',
+                    url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Retries a specific webhook notification for the given event
+     *
+     * @memberof Events
+     * @param {Object} body Event request body.
+     * @return {Promise<Object>} A promise to the retry event response.
+     */
+    async retry(body) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'post',
+                    url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Retries all webhook notifications configured for the specified event
+     *
+     * @memberof Events
+     * @param {string} eventId Event id.
+     * @return {Promise<Object>} A promise to the retry events response.
+     */
+    async retryAll(eventId) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'post',
+                    url: `${this.config.host}/events/${eventId}/webhooks/retry`,
                     headers: { Authorization: this.config.sk }
                 }
             );
