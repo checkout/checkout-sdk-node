@@ -131,7 +131,6 @@ describe('Events', () => {
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
-<<<<<<< HEAD
 
     it('should retrieve events', async () => {
         nock('https://api.sandbox.checkout.com')
@@ -440,6 +439,4 @@ describe('Events', () => {
 
         expect(Object.keys(event).length).to.equal(0);
     });
-=======
->>>>>>> 2d323e89a47882ac246207794603387cd320bb5b
 });

@@ -17,11 +17,7 @@ export default class Events {
      * configure on your webhooks.
      *
      * @memberof Events
-<<<<<<< HEAD
      * @param {string} version Events Version.
-=======
-     * @param {Object} body Events request body.
->>>>>>> 2d323e89a47882ac246207794603387cd320bb5b
      * @return {Promise<Object>} A promise to the request events response.
      */
     async retrieveEventTypes(version) {
@@ -82,7 +78,6 @@ export default class Events {
             throw error;
         }
     }
-<<<<<<< HEAD
 
     /**
      * Retrieves the event with the specified identifier string. The event data includes the full event
@@ -184,6 +179,4 @@ export default class Events {
             throw error;
         }
     }
-=======
->>>>>>> 2d323e89a47882ac246207794603387cd320bb5b
 }
