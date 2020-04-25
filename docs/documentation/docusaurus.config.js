@@ -4,7 +4,7 @@ module.exports = {
     url: 'https://checkout.github.io',
     baseUrl: 'https://checkout.github.io/',
     favicon: 'img/favicon.png',
-    organizationName: 'checkout.com', // Usually your GitHub org/user name.
+    organizationName: 'checkout', // Usually your GitHub org/user name.
     projectName: 'checkout-sdk-node', // Usually your repo name.
     themeConfig: {
         navbar: {
