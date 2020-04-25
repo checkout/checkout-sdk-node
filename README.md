@@ -33,4 +33,4 @@ import { Checkout } from 'checkout-sdk-node';
 
 # Documentation
 
-You can see the [SDK documentation here](https://checkout.github.io/checkout-sdk-node).
+You can see the [SDK documentation here](https://bit.ly/3eQEXvv).
