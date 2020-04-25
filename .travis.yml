@@ -22,7 +22,6 @@ jobs:
               branch: master
           deploy:
               provider: npm
-              tag: beta
               edge: true
               email: '$NPM_EMAIL'
               api_key: '$NPM_API_TOKEN'
