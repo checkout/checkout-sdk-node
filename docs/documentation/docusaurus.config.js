@@ -2,7 +2,7 @@ module.exports = {
     title: 'checkout-sdk-node',
     tagline: 'Checkout.com SDK for Node JS',
     url: 'https://checkout.github.io',
-    baseUrl: '/checkout-sdk-node/',
+    baseUrl: '/',
     favicon: 'img/favicon.png',
     organizationName: 'checkout.com', // Usually your GitHub org/user name.
     projectName: 'checkout-sdk-node', // Usually your repo name.
