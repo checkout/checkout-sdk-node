@@ -411,7 +411,7 @@ describe('Events', () => {
         expect(notification.content_type).to.equal('json');
     });
 
-    it('should retry all events', async () => {
+    it('should retry event', async () => {
         nock('https://api.sandbox.checkout.com')
             .post(
                 '/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry'
@@ -428,7 +428,7 @@ describe('Events', () => {
         expect(Object.keys(event).length).to.equal(0);
     });
 
-    it('should retry event', async () => {
+    it('should retry all events', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry')
             .reply(202);
