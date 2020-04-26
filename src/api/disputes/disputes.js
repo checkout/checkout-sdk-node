@@ -131,4 +131,56 @@ export default class Disputes {
             throw error;
         }
     }
+
+    /**
+     * Retrieves a list of the evidence submitted in response to a specific dispute.
+     *
+     * @memberof Disputes
+     * @param {String} disputeId Dispute id.
+     * @return {Promise<Object>} A promise to the dispute response.
+     */
+    async getEvidence(disputeId) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'get',
+                    url: `${this.config.host}/disputes/${disputeId}/evidence`,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * With this final request, you can submit the evidence that you have previously
+     * provided. Make sure you have provided all the relevant information before using
+     * this request. You will not be able to amend your evidence once you have submitted it.
+     *
+     * @memberof Disputes
+     * @param {String} disputeId Dispute id.
+     * @return {Promise<Object>} A promise to the dispute response.
+     */
+    async submit(disputeId) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'post',
+                    url: `${this.config.host}/disputes/${disputeId}/evidence`,
+                    headers: { Authorization: this.config.sk }
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
 }

@@ -361,10 +361,291 @@ describe('Disputes', () => {
                     payment_id: disputedPayment.id
                 });
                 if (dispute.total_count === 1) {
-                    const evidence = cko.disputes.provideEvidence(dispute.data[0].id, {
+                    const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
                         proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
                     });
                     expect(Object.keys(evidence).length).to.equal(0);
+                    clearInterval(timeValue);
+                    resolve();
+                }
+            }, 3000);
+        });
+    }).timeout(120000);
+
+    it('should get dispute evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .reply(201, {
+                id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                action_id: 'act_l5rvkbinxztepjskr7vwlovzsq',
+                amount: 1040,
+                currency: 'USD',
+                approved: true,
+                status: 'Authorized',
+                auth_code: '015107',
+                eci: '05',
+                scheme_id: '457027721465486',
+                response_code: '10000',
+                response_summary: 'Approved',
+                risk: { flagged: false },
+                source: {
+                    id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
+                    type: 'card',
+                    expiry_month: 8,
+                    expiry_year: 2025,
+                    name: 'Sarah Mitchell',
+                    scheme: 'Visa',
+                    last4: '4242',
+                    fingerprint: '5CD3B9CB15338683110959D165562D23084E1FF564F420FE9A990DF0BCD093FC',
+                    bin: '424242',
+                    card_type: 'Credit',
+                    card_category: 'Consumer',
+                    issuer: 'JPMORGAN CHASE BANK NA',
+                    issuer_country: 'US',
+                    product_id: 'A',
+                    product_type: 'Visa Traditional',
+                    avs_check: 'S',
+                    cvv_check: 'Y',
+                    payouts: true,
+                    fast_funds: 'd'
+                },
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                processed_on: '2020-04-26T20:47:30Z',
+                reference: 'CB',
+                processing: {
+                    acquirer_transaction_id: '9576266789',
+                    retrieval_reference_number: '989885937118'
+                },
+                _links: {
+                    self: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                    },
+                    actions: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                    },
+                    capture: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                    },
+                    void: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
+                    }
+                },
+                requiresRedirect: false,
+                redirectLink: undefined
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
+            .reply(200, {
+                limit: 50,
+                skip: 0,
+                payment_id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                total_count: 1,
+                data: [
+                    {
+                        id: 'dsp_3dc29c89ce075g46136d',
+                        category: 'fraudulent',
+                        status: 'evidence_required',
+                        amount: 1040,
+                        currency: 'USD',
+                        payment_id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                        payment_reference: 'CB',
+                        payment_method: 'Visa',
+                        payment_arn: '127502332018',
+                        received_on: '2020-04-26T20:47:44Z',
+                        last_update: '2020-04-26T20:47:44Z',
+                        evidence_required_by: '2020-05-06T18:00:00Z',
+                        _links: [Object]
+                    }
+                ]
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(204);
+
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(200, {
+                proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
+                _links: {
+                    self: {
+                        href:
+                            'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence'
+                    },
+                    parent: {
+                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9'
+                    }
+                }
+            });
+
+        const cko = new Checkout(SK);
+
+        const disputedPayment = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 8,
+                expiry_year: 2025,
+                name: 'Sarah Mitchell',
+                cvv: '100'
+            },
+            amount: 1040,
+            currency: 'USD',
+            reference: 'CB'
+        });
+
+        return new Promise(async (resolve, reject) => {
+            const timeValue = setInterval(async () => {
+                const dispute = await cko.disputes.get({
+                    payment_id: disputedPayment.id
+                });
+                if (dispute.total_count === 1) {
+                    const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
+                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
+                    });
+                    const getEvidence = await cko.disputes.getEvidence(dispute.data[0].id);
+                    expect(getEvidence.proof_of_delivery_or_service_text).to.equal(
+                        'http://checkout.com/document.pdf'
+                    );
+                    clearInterval(timeValue);
+                    resolve();
+                }
+            }, 3000);
+        });
+    }).timeout(120000);
+
+    it.only('should submit dispute evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .reply(201, {
+                id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                action_id: 'act_l5rvkbinxztepjskr7vwlovzsq',
+                amount: 1040,
+                currency: 'USD',
+                approved: true,
+                status: 'Authorized',
+                auth_code: '015107',
+                eci: '05',
+                scheme_id: '457027721465486',
+                response_code: '10000',
+                response_summary: 'Approved',
+                risk: { flagged: false },
+                source: {
+                    id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
+                    type: 'card',
+                    expiry_month: 8,
+                    expiry_year: 2025,
+                    name: 'Sarah Mitchell',
+                    scheme: 'Visa',
+                    last4: '4242',
+                    fingerprint: '5CD3B9CB15338683110959D165562D23084E1FF564F420FE9A990DF0BCD093FC',
+                    bin: '424242',
+                    card_type: 'Credit',
+                    card_category: 'Consumer',
+                    issuer: 'JPMORGAN CHASE BANK NA',
+                    issuer_country: 'US',
+                    product_id: 'A',
+                    product_type: 'Visa Traditional',
+                    avs_check: 'S',
+                    cvv_check: 'Y',
+                    payouts: true,
+                    fast_funds: 'd'
+                },
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                processed_on: '2020-04-26T20:47:30Z',
+                reference: 'CB',
+                processing: {
+                    acquirer_transaction_id: '9576266789',
+                    retrieval_reference_number: '989885937118'
+                },
+                _links: {
+                    self: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                    },
+                    actions: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                    },
+                    capture: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                    },
+                    void: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
+                    }
+                },
+                requiresRedirect: false,
+                redirectLink: undefined
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
+            .reply(200, {
+                limit: 50,
+                skip: 0,
+                payment_id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                total_count: 1,
+                data: [
+                    {
+                        id: 'dsp_3dc29c89ce075g46136d',
+                        category: 'fraudulent',
+                        status: 'evidence_required',
+                        amount: 1040,
+                        currency: 'USD',
+                        payment_id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
+                        payment_reference: 'CB',
+                        payment_method: 'Visa',
+                        payment_arn: '127502332018',
+                        received_on: '2020-04-26T20:47:44Z',
+                        last_update: '2020-04-26T20:47:44Z',
+                        evidence_required_by: '2020-05-06T18:00:00Z',
+                        _links: [Object]
+                    }
+                ]
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(204);
+
+        nock('https://api.sandbox.checkout.com')
+            .post('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(204);
+
+        const cko = new Checkout(SK);
+
+        const disputedPayment = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 8,
+                expiry_year: 2025,
+                name: 'Sarah Mitchell',
+                cvv: '100'
+            },
+            amount: 1040,
+            currency: 'USD',
+            reference: 'CB'
+        });
+
+        return new Promise(async (resolve, reject) => {
+            const timeValue = setInterval(async () => {
+                const dispute = await cko.disputes.get({
+                    payment_id: disputedPayment.id
+                });
+                if (dispute.total_count === 1) {
+                    const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
+                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
+                    });
+                    const submitEvidence = await cko.disputes.submit(dispute.data[0].id);
+                    expect(Object.keys(submitEvidence).length).to.equal(0);
                     clearInterval(timeValue);
                     resolve();
                 }
