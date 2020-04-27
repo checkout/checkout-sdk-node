@@ -6,20 +6,31 @@ const pjson = require('../../package.json');
 const http = async (fetch, config, request) => {
     let headers = {
         ...request.headers,
-        'Content-Type': 'application/json',
+        'Content-Type': config.csv ? 'text/csv' : 'application/json',
         'Cache-Control': 'no-cache',
         pragma: 'no-cache',
         'user-agent': `checkout-sdk-node/${pjson.version}`
     };
+
     if (config.formData) {
         delete headers['Content-Type'];
     }
+
     const response = await fetch(request.url, {
         method: request.method,
         timeout: config.timeout,
         body: config.formData ? request.body : JSON.stringify(request.body),
         headers
     });
+
+    if (response.ok && config.csv) {
+        const txt = await response.text();
+        const csv = Buffer.from(txt);
+        return {
+            status: response.status,
+            csv: csv
+        };
+    }
 
     // For 'no body' response, replace with empty object
     const bodyParser = rsp => {
