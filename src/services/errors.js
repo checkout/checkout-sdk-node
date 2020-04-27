@@ -221,9 +221,6 @@ export const determineError = async err => {
         case 502:
             return new BadGateway();
         default: {
-            console.log(errorJSON);
-            console.log('errorJSON !!!!!!');
-
             return new ApiError(await errorJSON);
         }
     }

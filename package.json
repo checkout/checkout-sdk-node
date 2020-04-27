@@ -1,6 +1,6 @@
 {
     "name": "checkout-sdk-node",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "",
     "main": "./dist/index.js",
     "devDependencies": {
@@ -29,7 +29,7 @@
         "lint": "eslint --fix --ext .js src/",
         "test": "nyc --reporter=html mocha 'test/**/*.js' --compilers js:@babel/register",
         "posttest": "nyc report --reporter=json",
-        "test:watch": "mocha 'test/**/*.js' --watch --compilers js:@babel/register",
+        "test:watch": "mocha --timeout 30000 'test/**/*.js' --watch --compilers js:@babel/register",
         "build": "babel src --out-dir ./dist --source-maps",
         "serve": "node ./dist/index.js",
         "codecov": "codecov -f coverage/*.json "
@@ -39,6 +39,7 @@
         "@babel/plugin-transform-runtime": "^7.8.3",
         "@babel/runtime": "^7.8.3",
         "codecov": "^3.6.2",
+        "form-data": "^3.0.0",
         "node-fetch": "^2.3.0"
     },
     "babel": {

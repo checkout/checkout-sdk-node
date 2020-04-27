@@ -224,8 +224,6 @@ describe('Events', () => {
             to: '2008-03-01T00:00:00Z'
         });
 
-        console.log(events);
-
         expect(Object.keys(events).length).to.equal(0);
     });
 
