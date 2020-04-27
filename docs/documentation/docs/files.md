@@ -27,5 +27,5 @@ const file = await cko.files.upload({
 ## Get file information
 
 ```js
-const getFile = await cko.files.getFile('file_zna32sccqbwevd3ldmejtplbhu);
+const getFile = await cko.files.getFile('file_zna32sccqbwevd3ldmejtplbhu');
 ```
