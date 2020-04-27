@@ -9,7 +9,8 @@ module.exports = {
             'webhooks',
             'events',
             'disputes',
-            'files'
+            'files',
+            'reconciliation'
         ]
     }
 };
