@@ -15,6 +15,7 @@ script:
     - npm run build
     - rsync -avh --progress ./types/ ./
 
+    
 jobs:
     include:
         - stage: deploy docs
