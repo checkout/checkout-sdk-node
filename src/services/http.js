@@ -4,17 +4,21 @@ import { API_VERSION_HEADER, REQUEST_ID_HEADER } from '../config';
 const pjson = require('../../package.json');
 
 const http = async (fetch, config, request) => {
+    let headers = {
+        ...request.headers,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        pragma: 'no-cache',
+        'user-agent': `checkout-sdk-node/${pjson.version}`
+    };
+    if (config.formData) {
+        delete headers['Content-Type'];
+    }
     const response = await fetch(request.url, {
         method: request.method,
         timeout: config.timeout,
-        body: JSON.stringify(request.body),
-        headers: {
-            ...request.headers,
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache',
-            pragma: 'no-cache',
-            'user-agent': `checkout-sdk-node/${pjson.version}`
-        }
+        body: config.formData ? request.body : JSON.stringify(request.body),
+        headers
     });
 
     // For 'no body' response, replace with empty object

@@ -519,7 +519,7 @@ describe('Disputes', () => {
         });
     }).timeout(120000);
 
-    it.only('should submit dispute evidence', async () => {
+    it('should submit dispute evidence', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {

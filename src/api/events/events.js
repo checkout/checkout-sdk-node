@@ -61,8 +61,6 @@ export default class Events {
                 url += '?' + queryString;
             }
 
-            console.log(url);
-
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout },

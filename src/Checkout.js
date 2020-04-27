@@ -1,5 +1,5 @@
 import { DEFAULT_TIMEOUT, LIVE_BASE_URL, LIVE_SECRET_KEY_REGEX, SANDBOX_BASE_URL } from './config';
-import { Payments, Sources, Tokens, Instruments, Webhooks, Events, Disputes } from './index';
+import { Payments, Sources, Tokens, Instruments, Webhooks, Events, Disputes, Files } from './index';
 
 const determineHost = (key, options) => {
     // Unless specified, determine the hosted based on the secret key
@@ -54,5 +54,6 @@ export default class Checkout {
         this.webhooks = new Webhooks(this.config);
         this.events = new Events(this.config);
         this.disputes = new Disputes(this.config);
+        this.files = new Files(this.config);
     }
 }
