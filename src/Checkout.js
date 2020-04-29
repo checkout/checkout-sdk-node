@@ -8,7 +8,8 @@ import {
     Events,
     Disputes,
     Files,
-    Reconciliation
+    Reconciliation,
+    Sessions
 } from './index';
 
 const determineHost = (key, options) => {
@@ -66,5 +67,6 @@ export default class Checkout {
         this.disputes = new Disputes(this.config);
         this.files = new Files(this.config);
         this.reconciliation = new Reconciliation(this.config);
+        this.sessions = new Sessions(this.config);
     }
 }
