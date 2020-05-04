@@ -106,7 +106,7 @@ export class ErrorWithBody extends Error {
     constructor(http_code, error, message) {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
-        ErrorWithBody.http_code = http_code;
+        this.http_code = http_code;
         this.body = error;
     }
 }
