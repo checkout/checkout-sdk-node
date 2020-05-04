@@ -10,7 +10,7 @@
 <img src='https://i.imgur.com/ZeD3pKe.gif' width='100%' alt='npm start'>
 </p>
 
-# Install
+# :rocket: Install
 
 ```bash
 yarn add checkout-sdk-node
@@ -22,7 +22,7 @@ or
 npm install checkout-sdk-node
 ```
 
-# Import
+# :computer: Import
 
 ```js
 import { Checkout } from 'checkout-sdk-node';
@@ -30,10 +30,10 @@ import { Checkout } from 'checkout-sdk-node';
 
 > If you don't have your own API keys, you can sign up for a test account [here](https://www.checkout.com/get-test-account).
 
-# Documentation
+# :book: Documentation
 
 You can see the [SDK documentation here](https://bit.ly/3eQEXvv).
 
-# Try it on RunKit
+# :eyeglasses: Try it on RunKit
 
 You can try the SDK [here](https://npm.runkit.com/checkout-sdk-node).
