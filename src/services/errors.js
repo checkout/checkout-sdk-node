@@ -24,9 +24,9 @@ export class ApiTimeout extends Error {
  */
 export class AuthenticationError extends Error {
     constructor(message) {
-        AuthenticationError.http_code = 401;
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 401;
         this.name = AuthenticationError.name;
     }
 }
@@ -35,14 +35,14 @@ export class AuthenticationError extends Error {
  * ActionNotAllowed
  *
  * @export
- * @class AuthenticationError
+ * @class ActionNotAllowed
  * @extends {Error}
  */
 export class ActionNotAllowed extends Error {
     constructor(message = 'ActionNotAllowed') {
-        ActionNotAllowed.http_code = 403;
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 403;
         this.name = ActionNotAllowed.name;
     }
 }
@@ -56,9 +56,9 @@ export class ActionNotAllowed extends Error {
  */
 export class UrlAlreadyRegistered extends Error {
     constructor(message = 'UrlAlreadyRegistered') {
-        UrlAlreadyRegistered.http_code = 409;
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 409;
         this.name = UrlAlreadyRegistered.name;
     }
 }
@@ -67,14 +67,14 @@ export class UrlAlreadyRegistered extends Error {
  * NotFoundError
  *
  * @export
- * @class AuthenticationError
+ * @class NotFoundError
  * @extends {Error}
  */
 export class NotFoundError extends Error {
     constructor(message = 'NotFoundError') {
-        NotFoundError.http_code = 404;
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 404;
         this.name = NotFoundError.name;
     }
 }
@@ -147,8 +147,8 @@ export class TooManyRequestsError extends ErrorWithBody {
 export class BadGateway extends Error {
     constructor() {
         super('Bad gateway');
-        BadGateway.http_code = 502;
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 502;
     }
 }
 
@@ -169,7 +169,7 @@ export class ApiError extends Error {
 }
 
 /**
- * AuthenticationError
+ * ValueError
  *
  * @export
  * @class ValueError

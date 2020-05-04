@@ -14,7 +14,7 @@ try {
     ...
 } catch (error) {
     switch (error.name) {
-        ...
+        console.log(error.name, error.http_code, error.body)
     }
 }
 ```
@@ -32,6 +32,16 @@ The errors follow the Checkout.com [API Reference](https://api-reference.checkou
 | ValidationError      | Yes               |
 | TooManyRequestsError | No                |
 | BadGateway           | Yes               |
+
+## Error format
+
+The error contains the following keys:
+
+```js
+error.name; // Name of the error
+error.http_code; // The http code of the response
+error.body; // The error json body (this is only for errors that produce a body)
+```
 
 ## How errors are determined
 
