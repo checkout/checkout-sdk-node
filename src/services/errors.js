@@ -11,7 +11,7 @@ export class ApiTimeout extends Error {
     constructor() {
         super('ApiTimeout');
         Object.setPrototypeOf(this, new.target.prototype);
-        this.name = ApiTimeout.name;
+        this.name = 'ApiTimeout';
     }
 }
 
@@ -27,7 +27,7 @@ export class AuthenticationError extends Error {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 401;
-        this.name = AuthenticationError.name;
+        this.name = 'AuthenticationError';
     }
 }
 
@@ -43,7 +43,7 @@ export class ActionNotAllowed extends Error {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 403;
-        this.name = ActionNotAllowed.name;
+        this.name = 'ActionNotAllowed';
     }
 }
 
@@ -59,7 +59,7 @@ export class UrlAlreadyRegistered extends Error {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 409;
-        this.name = UrlAlreadyRegistered.name;
+        this.name = 'UrlAlreadyRegistered';
     }
 }
 
@@ -75,7 +75,7 @@ export class NotFoundError extends Error {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 404;
-        this.name = NotFoundError.name;
+        this.name = 'NotFoundError';
     }
 }
 
@@ -106,6 +106,7 @@ export class ErrorWithBody extends Error {
     constructor(http_code, error, message) {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.name = message;
         this.http_code = http_code;
         this.body = error;
     }
@@ -148,6 +149,7 @@ export class BadGateway extends Error {
     constructor() {
         super('Bad gateway');
         Object.setPrototypeOf(this, new.target.prototype);
+        this.name = 'Bad gateway';
         this.http_code = 502;
     }
 }
@@ -179,7 +181,7 @@ export class ValueError extends Error {
     constructor(message) {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
-        this.name = ValueError.name;
+        this.name = 'ValueError';
         this.body = message;
     }
 }
