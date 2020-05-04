@@ -788,6 +788,7 @@ describe('Request a payment or payout', () => {
                 amount: 100
             });
         } catch (err) {
+            expect(err.http_code).to.equal(429);
             expect(err).to.be.instanceOf(TooManyRequestsError);
         }
     });
@@ -811,7 +812,9 @@ describe('Request a payment or payout', () => {
                 currency: 'USD',
                 amount: 100
             });
+            console.log('WHAT');
         } catch (err) {
+            expect(err.http_code).to.equal(502);
             expect(err).to.be.instanceOf(BadGateway);
         }
     });
