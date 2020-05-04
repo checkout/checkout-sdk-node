@@ -1,6 +1,12 @@
 language: node_js
 node_js:
     - 12
+    - 11
+    - 10
+    - 9
+    - 8
+    - 7
+    - 6
 
 script:
     - npm test
@@ -9,6 +15,31 @@ script:
     - npm run build
     - rsync -avh --progress ./types/ ./
 
+jobs:
+    include:
+        - stage: Deploy docs to Github Pages
+          script:
+              - git config --global user.name "${GH_NAME}"
+              - git config --global user.email "${GH_EMAIL}"
+              - echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
+              - cd docs/documentation && npm i && GIT_USER="${GH_NAME}" npm run deploy
+        - stage: Deploy to NPM
+          on:
+              branch: master
+          deploy:
+              provider: npm
+              edge: true
+              email: '$NPM_EMAIL'
+              api_key: '$NPM_API_TOKEN'
+
 notifications:
+    email: false # default notification method
     slack:
-        secure: 3j7H2KtfxcAwmNs1EAN1Jx8qehvSm6Nu3kSbQ5plZ3oIgJz+ngeCU4u8/HreoZvp2L+DW1XX9arX0bi+o08tz+fmRhh8qn3XA9I/YjOt6x976DAPU0fvJRoC0X+dC5GkRIyLHpZEaL+tR4jM/XUmSfotL5JQZ7bRqceQW+0FC7wS+SDaOSRtBPBneP5wI1HuA2a0vXGX8xRIlCSeTpBh2KCJMCNVafr4sYHPAsXlSt66MRFm8xxxsJDkiR/3fexfC9HrU8rj79+2eoHe1NP7od+W/qVgFvBrR8lByxSbBdNlzMLjGjYOsaRVpKE6s+FISOM/RJ22/TVEV9T49wiITL0117TOBWNMn/kzcPmbVbeuasMTE8NB7jZzRcu7D904Wr81oo6wTq8JOF8W+m2fSFug5QU3TyezkS3HXlU/Ibl5bbylgLSqLspaRbgf0SJgK2/gpi8+YYnoxp/9gTMjxlTBQlxDifVGf5PmAItc9sKIetKQkgmllxQvWugtUWV8TEnbW81IsfPxdbNQgLnhAkSInq44WFHyZlO9EXFGrrKsj/ZXUq7KWRzGn22ly6Ffg9JjNGO7KYKBxXJy11mLYVbz1kquoo0De401EApKTzZyp6ICCJXYpU1fxZawomuuybonotW+adoBzyqvP8iotqMhWRIXKzl6CD2o/NWOc4g=
+        rooms:
+            - secure: 3j7H2KtfxcAwmNs1EAN1Jx8qehvSm6Nu3kSbQ5plZ3oIgJz+ngeCU4u8/HreoZvp2L+DW1XX9arX0bi+o08tz+fmRhh8qn3XA9I/YjOt6x976DAPU0fvJRoC0X+dC5GkRIyLHpZEaL+tR4jM/XUmSfotL5JQZ7bRqceQW+0FC7wS+SDaOSRtBPBneP5wI1HuA2a0vXGX8xRIlCSeTpBh2KCJMCNVafr4sYHPAsXlSt66MRFm8xxxsJDkiR/3fexfC9HrU8rj79+2eoHe1NP7od+W/qVgFvBrR8lByxSbBdNlzMLjGjYOsaRVpKE6s+FISOM/RJ22/TVEV9T49wiITL0117TOBWNMn/kzcPmbVbeuasMTE8NB7jZzRcu7D904Wr81oo6wTq8JOF8W+m2fSFug5QU3TyezkS3HXlU/Ibl5bbylgLSqLspaRbgf0SJgK2/gpi8+YYnoxp/9gTMjxlTBQlxDifVGf5PmAItc9sKIetKQkgmllxQvWugtUWV8TEnbW81IsfPxdbNQgLnhAkSInq44WFHyZlO9EXFGrrKsj/ZXUq7KWRzGn22ly6Ffg9JjNGO7KYKBxXJy11mLYVbz1kquoo0De401EApKTzZyp6ICCJXYpU1fxZawomuuybonotW+adoBzyqvP8iotqMhWRIXKzl6CD2o/NWOc4g=
+        on_success: always
+        on_failure: always
+        template:
+            - 'Repo `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) on branch `%{branch}`.'
+            - 'Execution time: *%{duration}*'
+            - 'Message: %{message}'
