@@ -1,6 +1,6 @@
 ![Status](https://img.shields.io/badge/status-BETA-red.svg)
 
-# checkout-sdk-node
+<p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
 [![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg)](https://codecov.io/gh/checkout/checkout-sdk-node)
 [![Build Status](https://travis-ci.org/checkout/checkout-sdk-node.svg?branch=master)](https://travis-ci.orgcheckout/checkout-sdk-node)
