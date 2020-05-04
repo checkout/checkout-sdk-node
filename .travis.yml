@@ -31,3 +31,6 @@ jobs:
               edge: true
               email: '$NPM_EMAIL'
               api_key: '$NPM_API_TOKEN'
+
+notifications:
+    slack: ${SLK}
