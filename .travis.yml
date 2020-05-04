@@ -33,6 +33,13 @@ jobs:
               api_key: '$NPM_API_TOKEN'
 
 notifications:
-  slack:
-    rooms:
-	  - ${SLK}
+    email: false # default notification method
+    slack:
+        rooms:
+            - secure: ${SLK}
+        on_success: always
+        on_failure: always
+        template:
+            - 'Repo `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) on branch `%{branch}`.'
+            - 'Execution time: *%{duration}*'
+            - 'Message: %{message}'
