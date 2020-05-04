@@ -10,7 +10,4 @@ script:
     - rsync -avh --progress ./types/ ./
 
 notifications:
-    slack:
-        rooms:
-            - secure: '${SLK}'
-        on_success: always
+    slack: checkout:HfeKCEYWi613Ml53Lnu4SGbW
