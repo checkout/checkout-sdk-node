@@ -41,6 +41,7 @@ notifications:
         on_success: always
         on_failure: always
         template:
-            - 'Build <%{build_url}|#%{build_number}> *%{result}*. Commit (<%{compare_url}|%{commit}>) triggered on branch `%{branch}`.'
+            - 'Change added: %{commit_message}'
+            - 'Build <%{build_url}|#%{build_number}> *%{result}*. Commit (<%{compare_url}|%{commit}>) triggered it on branch `%{branch}`.'
             - 'Execution time: *%{duration}*'
             - 'Message: %{message}'
