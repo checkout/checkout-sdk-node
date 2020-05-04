@@ -4,12 +4,12 @@ title: Getting Started
 sidebar_label: Getting Started
 ---
 
+The Checkout.com Node.JS SDK makes it easy to interact with the Unified Payments API. You can easily accept payments from cards, digital wallets and the most popular alternative payment methods, as well as pay out to a variety of destinations, all using the same integration.
+
 [![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg)](https://codecov.io/gh/checkout/checkout-sdk-node)
 [![Build Status](https://travis-ci.org/checkout/checkout-sdk-node.svg?branch=master)](https://travis-ci.orgcheckout/checkout-sdk-node)
 [![codebeat badge](https://codebeat.co/badges/b41734ff-7fb5-4867-94d3-ab0729bb6b69)](https://codebeat.co/projects/github-com-ioan-ghisoi-cko-checkout-node-sdk-remake)
 [![Try it on RunKit](https://badge.runkitcdn.com/checkout-sdk-node.svg)](https://npm.runkit.com/checkout-sdk-node)
-
-The Checkout.com Node.JS SDK makes it easy to interact with the Unified Payments API. You can easily accept payments from cards, digital wallets and the most popular alternative payment methods, as well as pay out to a variety of destinations, all using the same integration.
 
 ## Get a test account
 
