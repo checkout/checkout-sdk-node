@@ -13,35 +13,62 @@ try {
     const action = await cko.payments.request({...});
     ...
 } catch (error) {
+    console.log(error.name, error.http_code, error.body)
     switch (error.name) {
-        console.log(error.name, error.http_code, error.body)
+        ...
     }
 }
 ```
 
 ## SDK specific errors
 
-The errors follow the Checkout.com [API Reference](https://api-reference.checkout.com/).
-
-| error.name           | has response body |
-| -------------------- | ----------------- |
-| AuthenticationError  | No                |
-| ActionNotAllowed     | No                |
-| UrlAlreadyRegistered | No                |
-| NotFoundError        | No                |
-| ValidationError      | Yes               |
-| TooManyRequestsError | No                |
-| BadGateway           | Yes               |
-
-## Error format
-
-The error contains the following keys:
+The errors follows the Checkout.com [API Reference](https://api-reference.checkout.com/).
+The errors will be formatted like this:
 
 ```js
-error.name; // Name of the error
-error.http_code; // The http code of the response
-error.body; // The error json body (this is only for errors that produce a body)
+{
+    name: "{the error name}",
+    http_code: "{the HTTP status code}",
+    body: "{the error response from the API or a error message}"
+}
 ```
+
+Here you have all the possible SDK specific errors:
+
+| error.name           | error.http_code | error.body              |
+| -------------------- | --------------- | ----------------------- |
+| AuthenticationError  | 401             | undefined               |
+| ActionNotAllowed     | 403             | undefined               |
+| UrlAlreadyRegistered | 409             | undefined               |
+| NotFoundError        | 404             | undefined               |
+| BadGateway           | 502             | undefined               |
+| ValidationError      | 422             | object                  |
+| TooManyRequestsError | 429             | object/undefined        |
+| ValueError           | 429             | string describing error |
+
+Here is an example of a ValidationError:
+
+```js
+    try {
+        // some async request made with the SDK
+    } catch (error){
+        console.log(error)
+    }
+    ...
+    // output
+    {
+        name: "ValidationError",
+        http_code: 422,
+        body: {
+            request_id: '6b3300a8-fe99-4ab3-8332-43cd7ecb58a7',
+            error_type: 'processing_error',
+            error_codes: ['token_expired']
+        }
+    }
+
+```
+
+> Keep in mind that for ValueError, the error.body is a string, not an object
 
 ## How errors are determined
 
