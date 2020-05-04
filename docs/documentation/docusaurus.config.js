@@ -29,7 +29,7 @@ module.exports = {
         },
         footer: {
             style: 'dark',
-            copyright: `Copyright © ${new Date().getFullYear()} Checkout LDT    .`
+            copyright: `© ${new Date().getFullYear()} Checkout.com    `
         }
     },
     presets: [

@@ -207,3 +207,28 @@ try {
     console.log(error.name);
 }
 ```
+
+## Capture a payment
+
+```js
+const payment = await cko.payments.capture(paymentId, {
+    reference: 'CAPTURE-REF'
+});
+```
+
+## Refund a payment
+
+```js
+const payment = await cko.payments.refund(paymentId, {
+    amount: 50,
+    reference: 'REFUND-REF'
+});
+```
+
+## Void a payment
+
+```js
+const payment = await cko.payments.void(paymentId, {
+    reference: 'VOID-REF'
+});
+```

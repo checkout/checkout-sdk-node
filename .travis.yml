@@ -31,3 +31,17 @@ jobs:
               edge: true
               email: '$NPM_EMAIL'
               api_key: '$NPM_API_TOKEN'
+
+notifications:
+    email: false
+    slack:
+        if: branch = master
+        rooms:
+            - secure: 3j7H2KtfxcAwmNs1EAN1Jx8qehvSm6Nu3kSbQ5plZ3oIgJz+ngeCU4u8/HreoZvp2L+DW1XX9arX0bi+o08tz+fmRhh8qn3XA9I/YjOt6x976DAPU0fvJRoC0X+dC5GkRIyLHpZEaL+tR4jM/XUmSfotL5JQZ7bRqceQW+0FC7wS+SDaOSRtBPBneP5wI1HuA2a0vXGX8xRIlCSeTpBh2KCJMCNVafr4sYHPAsXlSt66MRFm8xxxsJDkiR/3fexfC9HrU8rj79+2eoHe1NP7od+W/qVgFvBrR8lByxSbBdNlzMLjGjYOsaRVpKE6s+FISOM/RJ22/TVEV9T49wiITL0117TOBWNMn/kzcPmbVbeuasMTE8NB7jZzRcu7D904Wr81oo6wTq8JOF8W+m2fSFug5QU3TyezkS3HXlU/Ibl5bbylgLSqLspaRbgf0SJgK2/gpi8+YYnoxp/9gTMjxlTBQlxDifVGf5PmAItc9sKIetKQkgmllxQvWugtUWV8TEnbW81IsfPxdbNQgLnhAkSInq44WFHyZlO9EXFGrrKsj/ZXUq7KWRzGn22ly6Ffg9JjNGO7KYKBxXJy11mLYVbz1kquoo0De401EApKTzZyp6ICCJXYpU1fxZawomuuybonotW+adoBzyqvP8iotqMhWRIXKzl6CD2o/NWOc4g=
+        on_success: always
+        on_failure: always
+        template:
+            - 'Change added: %{commit_message}'
+            - 'Build <%{build_url}|#%{build_number}> *%{result}*. Commit (<%{compare_url}|%{commit}>) triggered it on branch `%{branch}`.'
+            - 'Execution time: *%{duration}*'
+            - 'Message: %{message}'
