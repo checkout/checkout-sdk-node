@@ -10,4 +10,4 @@ script:
     - rsync -avh --progress ./types/ ./
 
 notifications:
-    slack: '${SLK}'
+    slack: ${SLK}
