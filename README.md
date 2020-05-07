@@ -10,7 +10,7 @@
 <p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
 <p align="center">
-<img src='https://i.imgur.com/ZeD3pKe.gif' width='100%' alt='npm start'>
+<img src='https://i.imgur.com/ubifkCL.gif' width='100%' alt='npm start'>
 </p>
 
 # :rocket: Install
