@@ -42,7 +42,7 @@ const cko = new Checkout('sk_test_3e1ad21b-ac23-4eb3-ad1f-375e9fb56481');
                     <iframe
                         width="80%"
                         height="410"
-                        src="//jsfiddle.net/johnnyshrewd/3r65hLs9/16/embedded/result,html,js,css/dark/"
+                        src="//jsfiddle.net/johnnyshrewd/3r65hLs9/18/embedded/result,html,js,css/dark/"
                         allowFullscreen="allowfullscreen"
                         allowPaymentRequest
                         frameborder="0"
