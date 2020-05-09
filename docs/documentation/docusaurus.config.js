@@ -6,6 +6,7 @@ module.exports = {
     favicon: 'img/favicon.png',
     organizationName: 'checkout', // Usually your GitHub org/user name.
     projectName: 'checkout-sdk-node', // Usually your repo name.
+    scripts: ['https://embed.runkit.com'],
     themeConfig: {
         navbar: {
             title: 'checkout-sdk-node',
@@ -15,9 +16,15 @@ module.exports = {
             },
             links: [
                 {
-                    to: 'docs/getting_started',
+                    to: 'getting_started',
                     activeBasePath: 'docs',
                     label: 'Docs',
+                    position: 'right'
+                },
+                {
+                    to: 'playground',
+                    activeBasePath: 'playground',
+                    label: 'Playground',
                     position: 'right'
                 },
                 {
