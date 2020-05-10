@@ -28,7 +28,10 @@ npm install checkout-sdk-node
 # :computer: Import
 
 ```js
+// ES6:
 import { Checkout } from 'checkout-sdk-node';
+// Common JS:
+const { Checkout } = require('checkout-sdk-node');
 ```
 
 > If you don't have your own API keys, you can sign up for a test account [here](https://www.checkout.com/get-test-account).
