@@ -2,7 +2,6 @@ import fetch from 'node-fetch';
 const FormData = require('form-data');
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
-import fs from 'fs';
 
 /**
  * Class dealing with the /files endpoint
@@ -37,7 +36,7 @@ export default class Files {
                     method: 'post',
                     url: `${this.config.host}/files`,
                     headers: { Authorization: this.config.sk },
-                    body: form
+                    body: form,
                 }
             );
             return await response.json;
@@ -62,7 +61,7 @@ export default class Files {
                 {
                     method: 'get',
                     url: `${this.config.host}/files/${fileId}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
