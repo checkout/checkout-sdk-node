@@ -3,7 +3,6 @@ const FormData = require('form-data');
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
 import fs from 'fs';
-import { setInstrumentType } from '../../services/validation';
 
 /**
  * Class dealing with the /files endpoint
