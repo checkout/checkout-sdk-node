@@ -37,6 +37,9 @@ module.exports = {
         footer: {
             style: 'dark',
             copyright: `© ${new Date().getFullYear()} Checkout.com    `
+        },
+        googleAnalytics: {
+            trackingID: 'UA-165971486-1'
         }
     },
     presets: [
@@ -53,5 +56,9 @@ module.exports = {
                 }
             }
         ]
+    ],
+    plugins: [
+        // Basic usage.
+        '@docusaurus/plugin-google-analytics'
     ]
 };
