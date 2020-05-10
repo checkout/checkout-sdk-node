@@ -29,6 +29,7 @@ jobs:
         - stage: Deploy to NPM
           on:
               branch: master
+              tags: true
           deploy:
               provider: npm
               edge: true
