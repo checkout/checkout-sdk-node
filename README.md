@@ -6,6 +6,7 @@
 [![codebeat badge](https://codebeat.co/badges/b41734ff-7fb5-4867-94d3-ab0729bb6b69)](https://codebeat.co/projects/github-com-ioan-ghisoi-cko-checkout-node-sdk-remake)
 [![npm badge](https://badgen.net/npm/v/checkout-sdk-node)](https://badgen.net/npm/v/checkout-sdk-node)
 [![Try it on RunKit](https://badge.runkitcdn.com/checkout-sdk-node.svg)](https://npm.runkit.com/checkout-sdk-node)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/checkout/checkout-sdk-node.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/checkout/checkout-sdk-node/alerts/)
 
 <p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
