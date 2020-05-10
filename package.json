@@ -27,9 +27,9 @@
     "scripts": {
         "start": "nodemon --exec babel-node ./src/index.js",
         "lint": "eslint --fix --ext .js src/",
-        "test": "nyc --reporter=html mocha 'test/**/*.js' --compilers js:@babel/register",
+        "test": "nyc --reporter=html mocha 'test/**/*.js' --require @babel/register",
         "posttest": "nyc report --reporter=json",
-        "test:watch": "mocha --timeout 30000 'test/**/*.js' --watch --compilers js:@babel/register",
+        "test:watch": "mocha --timeout 30000 'test/**/*.js' --watch --require @babel/register",
         "build": "babel src --out-dir ./dist --source-maps",
         "serve": "node ./dist/index.js",
         "codecov": "codecov -f coverage/*.json "
