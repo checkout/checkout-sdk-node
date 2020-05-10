@@ -21,7 +21,7 @@
         "nock": "^10.0.6",
         "nyc": "^15.0.1",
         "prettier": "^2.0.5",
-        "uuid": "^7.0.3"
+        "uuid": "^8.0.0"
     },
     "runkitExampleFilename": "example.js",
     "scripts": {
