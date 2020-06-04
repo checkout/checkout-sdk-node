@@ -8,7 +8,8 @@ export type config = {
 };
 
 type options = {
-    timeout: number;
+    pk: string,
+    timeout?: number;
 };
 
 export default class Checkout {
