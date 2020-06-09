@@ -12,35 +12,35 @@ module.exports = {
             title: 'checkout-sdk-node',
             logo: {
                 alt: 'checkout-sdk-node',
-                src: 'img/logo.png'
+                src: 'img/logo.png',
             },
             links: [
                 {
                     to: 'getting_started',
                     activeBasePath: 'docs',
                     label: 'Docs',
-                    position: 'right'
+                    position: 'right',
                 },
                 {
                     to: 'playground',
                     activeBasePath: 'playground',
                     label: 'Playground',
-                    position: 'right'
+                    position: 'right',
                 },
                 {
                     href: 'https://github.com/checkout/checkout-sdk-node',
                     label: 'GitHub',
-                    position: 'right'
-                }
-            ]
+                    position: 'right',
+                },
+            ],
         },
         footer: {
             style: 'dark',
-            copyright: `© ${new Date().getFullYear()} Checkout.com    `
+            copyright: `© ${new Date().getFullYear()} Checkout.com    `,
         },
         googleAnalytics: {
-            trackingID: 'UA-165971486-1'
-        }
+            trackingID: 'UA-165971486-1',
+        },
     },
     presets: [
         [
@@ -48,17 +48,17 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    routeBasePath: ''
+                    routeBasePath: '',
                     // editUrl: 'https://github.com/facebook/docusaurus/edit/master/website/'
                 },
                 theme: {
-                    customCss: require.resolve('./src/css/custom.css')
-                }
-            }
-        ]
+                    customCss: require.resolve('./src/css/custom.css'),
+                },
+            },
+        ],
     ],
     plugins: [
         // Basic usage.
-        '@docusaurus/plugin-google-analytics'
-    ]
+        require.resolve('@docusaurus/plugin-google-analytics'),
+    ],
 };
