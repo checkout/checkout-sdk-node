@@ -4,17 +4,15 @@ import { determineError } from '../../services/errors';
 import http from '../../services/http';
 import { validatePayment, setSourceOrDestinationType } from '../../services/validation';
 
-const actionHandler = async (config, action, paymentId, body) => {
+const actionHandler = async (config, action, paymentId, body, idempotencyKey) => {
     const response = await http(
         fetch,
         { timeout: config.timeout },
         {
             method: 'post',
             url: `${config.host}/payments/${paymentId}/${action}`,
-            headers: {
-                Authorization: config.sk
-            },
-            body: body !== undefined ? body : {}
+            headers: determineHeaders(config, idempotencyKey),
+            body: body ? body : {},
         }
     );
     return response.json;
@@ -28,8 +26,8 @@ const getHandler = async (config, url) => {
             method: 'get',
             url,
             headers: {
-                Authorization: config.sk
-            }
+                Authorization: config.sk,
+            },
         }
     );
     return response;
@@ -39,13 +37,13 @@ const determineHeaders = (config, idempotencyKey) => {
     if (idempotencyKey !== undefined) {
         return {
             Authorization: config.sk,
-            'Cko-Idempotency-Key': idempotencyKey
+            'Cko-Idempotency-Key': idempotencyKey,
         };
     }
     return { Authorization: config.sk };
 };
 
-const addUtilityParams = json => {
+const addUtilityParams = (json) => {
     let requiresRedirect = false;
 
     if (json.destination) {
@@ -62,7 +60,7 @@ const addUtilityParams = json => {
     return {
         ...json,
         requiresRedirect,
-        redirectLink
+        redirectLink,
     };
 };
 
@@ -97,7 +95,7 @@ export default class Payments {
                     method: 'post',
                     url: `${this.config.host}/payments`,
                     headers: determineHeaders(this.config, idempotencyKey),
-                    body
+                    body,
                 }
             );
             return addUtilityParams(await response.json);
@@ -149,11 +147,18 @@ export default class Payments {
      * @memberof Payments
      * @param {string} paymentId /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Capture request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the capture response.
      */
-    async capture(paymentId, body) {
+    async capture(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(this.config, 'captures', paymentId, body);
+            const response = await actionHandler(
+                this.config,
+                'captures',
+                paymentId,
+                body,
+                idempotencyKey
+            );
             return response;
         } catch (err) {
             throw await determineError(err);
@@ -166,11 +171,18 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Refund request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the refund response.
      */
-    async refund(paymentId, body) {
+    async refund(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(this.config, 'refunds', paymentId, body);
+            const response = await actionHandler(
+                this.config,
+                'refunds',
+                paymentId,
+                body,
+                idempotencyKey
+            );
             return response;
         } catch (err) {
             throw await determineError(err);
@@ -183,11 +195,18 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Void request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the void response.
      */
-    async void(paymentId, body) {
+    async void(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(this.config, 'voids', paymentId, body);
+            const response = await actionHandler(
+                this.config,
+                'voids',
+                paymentId,
+                body,
+                idempotencyKey
+            );
             return response;
         } catch (err) {
             throw await determineError(err);

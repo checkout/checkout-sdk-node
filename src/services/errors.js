@@ -186,7 +186,7 @@ export class ValueError extends Error {
     }
 }
 
-export const determineError = async err => {
+export const determineError = async (err) => {
     // Fot time outs
     if (err.type === 'request-timeout') {
         return new ApiTimeout();
@@ -199,7 +199,7 @@ export const determineError = async err => {
     // For 'no body' response, replace with empty object
     let errorJSON =
         err.json !== undefined
-            ? await err.json.then(data => {
+            ? await err.json.then((data) => {
                   return data;
               })
             : {};
