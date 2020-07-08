@@ -26,7 +26,7 @@ export default class Reconciliation {
 
             if (body) {
                 var queryString = Object.keys(body)
-                    .map(key => key + '=' + body[key])
+                    .map((key) => key + '=' + body[key])
                     .join('&');
                 url += '?' + queryString;
             }
@@ -36,10 +36,17 @@ export default class Reconciliation {
                 {
                     method: 'get',
                     url: url,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
-            return await response.json;
+            let res = await response.json;
+
+            // In case there is a "next" page, inject it in the response body
+            if (res._links && res._links.next) {
+                let nextLink = res._links.next.href;
+                return await { ...res, page: nextLink.match(/after=([^&]*)/)[1] };
+            }
+            return await res;
         } catch (err) {
             const error = await determineError(err);
             throw error;
@@ -62,7 +69,7 @@ export default class Reconciliation {
                 {
                     method: 'get',
                     url: `${this.config.host}/reporting/payments/${paymentId}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -85,7 +92,7 @@ export default class Reconciliation {
 
             if (body) {
                 var queryString = Object.keys(body)
-                    .map(key => key + '=' + body[key])
+                    .map((key) => key + '=' + body[key])
                     .join('&');
                 url += '?' + queryString;
             }
@@ -95,7 +102,7 @@ export default class Reconciliation {
                 {
                     method: 'get',
                     url: url,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.csv;
@@ -119,7 +126,7 @@ export default class Reconciliation {
 
             if (body) {
                 var queryString = Object.keys(body)
-                    .map(key => key + '=' + body[key])
+                    .map((key) => key + '=' + body[key])
                     .join('&');
                 url += '?' + queryString;
             }
@@ -129,7 +136,7 @@ export default class Reconciliation {
                 {
                     method: 'get',
                     url: url,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -155,7 +162,7 @@ export default class Reconciliation {
                 {
                     method: 'get',
                     url: `${this.config.host}/reporting/statements/${statementId}/payments/download`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.csv;

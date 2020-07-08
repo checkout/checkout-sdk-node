@@ -5,7 +5,7 @@ import {
     ValueError,
     AuthenticationError,
     NotFoundError,
-    ActionNotAllowed
+    ActionNotAllowed,
 } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
@@ -43,32 +43,32 @@ describe('Reconciliation', () => {
                             type: 'Gateway Fee Tax ARE USD/GBP@0.7640412612',
                             date: '2019-03-08T10:29:51.922',
                             processing_currency_amount: '-0.003',
-                            payout_currency_amount: '-0.00229212'
-                        }
+                            payout_currency_amount: '-0.00229212',
+                        },
                     },
                     _links: {
                         payments: {
                             href:
-                                'http://api.checkout.com/reporting/statements/190110B107654/payments'
-                        }
-                    }
+                                'http://api.checkout.com/reporting/statements/190110B107654/payments',
+                        },
+                    },
                 },
                 _links: {
                     next: {
                         href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111'
+                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
                     },
                     self: {
                         href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1'
-                    }
-                }
+                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
 
         const reconciliation = await cko.reconciliation.getPayments({
-            from: '2019-05-17T16:48:52Z'
+            from: '2019-05-17T16:48:52Z',
         });
 
         expect(reconciliation.count).to.equal(1);
@@ -102,26 +102,26 @@ describe('Reconciliation', () => {
                             type: 'Gateway Fee Tax ARE USD/GBP@0.7640412612',
                             date: '2019-03-08T10:29:51.922',
                             processing_currency_amount: '-0.003',
-                            payout_currency_amount: '-0.00229212'
-                        }
+                            payout_currency_amount: '-0.00229212',
+                        },
                     },
                     _links: {
                         payments: {
                             href:
-                                'http://api.checkout.com/reporting/statements/190110B107654/payments'
-                        }
-                    }
+                                'http://api.checkout.com/reporting/statements/190110B107654/payments',
+                        },
+                    },
                 },
                 _links: {
                     next: {
                         href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111'
+                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
                     },
                     self: {
                         href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1'
-                    }
-                }
+                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -138,13 +138,13 @@ describe('Reconciliation', () => {
         nock('https://api.sandbox.checkout.com')
             .get('/reporting/payments/download?from=2019-05-17T16:48:52Z')
             .replyWithFile(200, __dirname + '/report.csv', {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             });
 
         const cko = new Checkout(SK);
 
         const reconciliation = await cko.reconciliation.getPaymentsCsv({
-            from: '2019-05-17T16:48:52Z'
+            from: '2019-05-17T16:48:52Z',
         });
 
         expect(reconciliation).to.be.instanceof(Buffer);
@@ -176,44 +176,44 @@ describe('Reconciliation', () => {
                                 _links: {
                                     payments: {
                                         href:
-                                            'https://api.checkout.com/reporting/statements/155613B100981/payments?payout_id=OYWDV06ZZ'
+                                            'https://api.checkout.com/reporting/statements/155613B100981/payments?payout_id=OYWDV06ZZ',
                                     },
                                     download: {
                                         href:
-                                            'https://api.checkout.com/reporting/statements/155613B100981/payments/download?payout_id=OYWDV06ZZ'
-                                    }
-                                }
-                            }
+                                            'https://api.checkout.com/reporting/statements/155613B100981/payments/download?payout_id=OYWDV06ZZ',
+                                    },
+                                },
+                            },
                         ],
                         _links: {
                             payments: {
                                 href:
-                                    'https://api.checkout.com/reporting/statements/155613B100981/payments'
+                                    'https://api.checkout.com/reporting/statements/155613B100981/payments',
                             },
                             download: {
                                 href:
-                                    'https://api.checkout.com/reporting/statements/155613B100981/payments/download'
-                            }
-                        }
-                    }
+                                    'https://api.checkout.com/reporting/statements/155613B100981/payments/download',
+                            },
+                        },
+                    },
                 ],
                 _links: {
                     next: {
                         href:
-                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1&skip=1'
+                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1&skip=1',
                     },
                     self: {
                         href:
-                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1'
-                    }
-                }
+                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
 
         const statements = await cko.reconciliation.getStatements({
             from: '2019-05-17T16:48:52Z',
-            to: '2019-06-17T16:48:52Z'
+            to: '2019-06-17T16:48:52Z',
         });
 
         expect(statements.data.length).to.equal(1);
@@ -223,7 +223,7 @@ describe('Reconciliation', () => {
         nock('https://api.sandbox.checkout.com')
             .get('/reporting/statements/155613B100981/payments/download')
             .replyWithFile(200, __dirname + '/report.csv', {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             });
 
         const cko = new Checkout(SK);
@@ -231,5 +231,78 @@ describe('Reconciliation', () => {
         const statement = await cko.reconciliation.getStatementCsv('155613B100981');
 
         expect(statement).to.be.instanceof(Buffer);
+    });
+
+    it('should paginate the json payment response', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/payments?from=2020-07-07T17:51:42Z&to=2020-07-07T17:51:59Z&limit=3&after=undefined'
+            )
+            .reply(201, {
+                count: 3,
+                data: [
+                    {
+                        id: 'pay_ppxwulsiifeetapzdtladja1234',
+                    },
+                    {
+                        id: 'pay_ppxwulsiifeetapzdtladja1234',
+                    },
+                    {
+                        id: 'pay_ppxwulsiifeetapzdtladja1234',
+                    },
+                ],
+                _links: {
+                    next: {
+                        href:
+                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060358&limit=3',
+                    },
+                    self: {
+                        href:
+                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
+                    },
+                },
+                page: '269060358',
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/payments?from=2020-07-07T17:51:42Z&to=2020-07-07T17:51:59Z&limit=3&after=269060358'
+            )
+            .reply(201, {
+                count: 2,
+                data: [
+                    {
+                        id: 'pay_ppxwulsiifeetapzdtladja1234',
+                    },
+                    {
+                        id: 'pay_ppxwulsiifeetapzdtladja1234',
+                    },
+                ],
+                _links: {
+                    self: {
+                        href:
+                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, {
+            timeout: 60000,
+        });
+
+        let page;
+
+        // Iterate until there is no longer a page to go to
+        do {
+            const reconciliation = await cko.reconciliation.getPayments({
+                from: '2020-07-07T17:51:42Z',
+                to: '2020-07-07T17:51:59Z',
+                limit: 3,
+                after: page, // In case you saw a page already, skip it
+            });
+            // The next page you can go to
+            page = reconciliation.page;
+            expect(reconciliation.count >= 2).to.be.true;
+        } while (page);
     });
 });
