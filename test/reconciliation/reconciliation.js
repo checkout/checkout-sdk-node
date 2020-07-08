@@ -298,9 +298,9 @@ describe('Reconciliation', () => {
                 from: '2020-07-07T17:51:42Z',
                 to: '2020-07-07T17:51:59Z',
                 limit: 3,
-                after: page, // in case you saw a page already, skip it
+                after: page, // In case you saw a page already, skip it
             });
-            // the next page you can go to
+            // The next page you can go to
             page = reconciliation.page;
             expect(reconciliation.count >= 2).to.be.true;
         } while (page);
