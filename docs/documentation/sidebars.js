@@ -10,7 +10,8 @@ module.exports = {
             'events',
             'disputes',
             'files',
-            'reconciliation'
+            'reconciliation',
+            'sessions'
         ]
     }
 };
