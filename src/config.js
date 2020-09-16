@@ -14,7 +14,7 @@ export const SOURCE_ID_REGEX = /^(src)_(\w{26})$/;
 export const PAYMENT_TYPES = {
     regular: 'Regular',
     recurring: 'Recurring',
-    moto: 'MOTO',
+    moto: 'MOTO'
 };
 export const CURRENCIES = {
     ALL: 'ALL',
@@ -176,5 +176,5 @@ export const CURRENCIES = {
     PLN: 'PLN',
     ZAR: 'ZAR',
     GEL: 'GEL',
-    ZMW: 'ZMW',
+    ZMW: 'ZMW'
 };

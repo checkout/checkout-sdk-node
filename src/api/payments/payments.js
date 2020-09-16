@@ -12,7 +12,7 @@ const actionHandler = async (config, action, paymentId, body, idempotencyKey) =>
             method: 'post',
             url: `${config.host}/payments/${paymentId}/${action}`,
             headers: determineHeaders(config, idempotencyKey),
-            body: body || {},
+            body: body ? body : {},
         }
     );
     return response.json;
