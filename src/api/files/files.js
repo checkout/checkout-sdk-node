@@ -1,8 +1,7 @@
 import fetch from 'node-fetch';
+const FormData = require('form-data');
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
-
-const FormData = require('form-data');
 
 /**
  * Class dealing with the /files endpoint
@@ -25,7 +24,7 @@ export default class Files {
      */
     async upload(body) {
         try {
-            const form = new FormData();
+            let form = new FormData();
 
             form.append('file', body.path);
             form.append('purpose', 'dispute_evidence');

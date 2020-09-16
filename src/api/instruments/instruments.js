@@ -32,7 +32,7 @@ export default class Instruments {
                     method: 'post',
                     url: `${this.config.host}/instruments`,
                     headers: { Authorization: this.config.sk },
-                    body,
+                    body
                 }
             );
             return await response.json;

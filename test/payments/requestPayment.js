@@ -25,7 +25,7 @@ describe('Request a payment or payout', () => {
         const cko = new Checkout(SK, {
             host: 'https:/test.com',
             timeout: 9000,
-            agent: fakeAgent,
+            agent: fakeAgent
         });
         expect(cko.config.sk).to.equal(SK);
         expect(cko.config.host).to.equal('https:/test.com');

@@ -2,7 +2,7 @@
 import { ValueError } from './errors';
 import { CURRENCIES, PAYMENT_TYPES } from '../config';
 
-export const validatePayment = (request) => {
+export const validatePayment = request => {
     if (request.amount && ('' + request.amount).indexOf('.') !== -1) {
         throw new ValueError('The amount can not contain decimals.');
     }
@@ -23,7 +23,7 @@ export const validatePayment = (request) => {
     }
 };
 
-export const setSourceOrDestinationType = (request) => {
+export const setSourceOrDestinationType = request => {
     if (request.source) {
         if (request.source.type) {
             return request;
@@ -57,7 +57,7 @@ export const setSourceOrDestinationType = (request) => {
     return request;
 };
 
-export const setTokenType = (request) => {
+export const setTokenType = request => {
     if (request.type) {
         return request;
     }
@@ -71,7 +71,7 @@ export const setTokenType = (request) => {
     return request;
 };
 
-export const setSourceType = (request) => {
+export const setSourceType = request => {
     if (request.type) {
         return request;
     }
@@ -83,7 +83,7 @@ export const setSourceType = (request) => {
     return request;
 };
 
-export const setInstrumentType = (request) => {
+export const setInstrumentType = request => {
     if (request.type) {
         return request;
     }

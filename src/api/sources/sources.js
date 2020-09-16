@@ -32,7 +32,7 @@ export default class Sources {
                     method: 'post',
                     url: `${this.config.host}/sources`,
                     headers: { Authorization: this.config.sk },
-                    body,
+                    body
                 }
             );
             return await response.json;

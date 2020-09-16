@@ -32,7 +32,7 @@ export default class Tokens {
                     method: 'post',
                     url: `${this.config.host}/tokens`,
                     headers: { Authorization: this.config.pk },
-                    body,
+                    body
                 }
             );
             return await response.json;
