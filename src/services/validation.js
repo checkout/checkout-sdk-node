@@ -89,6 +89,5 @@ export const setInstrumentType = request => {
     } else {
         request.type = 'token';
     }
-
     return request;
 };
