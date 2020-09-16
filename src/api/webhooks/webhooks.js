@@ -24,11 +24,11 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -48,12 +48,12 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/webhooks`,
                     headers: { Authorization: this.config.sk },
-                    body
+                    body,
                 }
             );
             return await response.json;
@@ -73,11 +73,11 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -97,12 +97,12 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'put',
                     url: `${this.config.host}/webhooks/${id}`,
                     headers: { Authorization: this.config.sk },
-                    body
+                    body,
                 }
             );
             return await response.json;
@@ -122,12 +122,12 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'patch',
                     url: `${this.config.host}/webhooks/${id}`,
                     headers: { Authorization: this.config.sk },
-                    body
+                    body,
                 }
             );
             return await response.json;
@@ -147,11 +147,11 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'delete',
                     url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;

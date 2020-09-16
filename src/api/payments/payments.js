@@ -7,12 +7,12 @@ import { validatePayment, setSourceOrDestinationType } from '../../services/vali
 const actionHandler = async (config, action, paymentId, body, idempotencyKey) => {
     const response = await http(
         fetch,
-        { timeout: config.timeout },
+        { timeout: config.timeout, agent: config.agent },
         {
             method: 'post',
             url: `${config.host}/payments/${paymentId}/${action}`,
             headers: determineHeaders(config, idempotencyKey),
-            body: body ? body : {},
+            body: body || {},
         }
     );
     return response.json;
@@ -21,7 +21,7 @@ const actionHandler = async (config, action, paymentId, body, idempotencyKey) =>
 const getHandler = async (config, url) => {
     const response = await http(
         fetch,
-        { timeout: config.timeout },
+        { timeout: config.timeout, agent: config.agent },
         {
             method: 'get',
             url,
@@ -90,7 +90,7 @@ export default class Payments {
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/payments`,

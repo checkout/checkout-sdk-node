@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
-const FormData = require('form-data');
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
+
+const FormData = require('form-data');
 
 /**
  * Class dealing with the /files endpoint
@@ -24,14 +25,14 @@ export default class Files {
      */
     async upload(body) {
         try {
-            let form = new FormData();
+            const form = new FormData();
 
             form.append('file', body.path);
             form.append('purpose', 'dispute_evidence');
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, formData: true },
+                { timeout: this.config.timeout, agent: this.config.agent, formData: true },
                 {
                     method: 'post',
                     url: `${this.config.host}/files`,
@@ -57,7 +58,7 @@ export default class Files {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/files/${fileId}`,

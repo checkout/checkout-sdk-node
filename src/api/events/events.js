@@ -12,6 +12,7 @@ export default class Events {
     constructor(config) {
         this.config = config;
     }
+
     /**
      * Retrieve a list of event types grouped by their respective version that you can
      * configure on your webhooks.
@@ -28,11 +29,11 @@ export default class Events {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
-                    url: url,
-                    headers: { Authorization: this.config.sk }
+                    url,
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -55,19 +56,19 @@ export default class Events {
             let url = `${this.config.host}/events`;
 
             if (body) {
-                var queryString = Object.keys(body)
-                    .map(key => key + '=' + body[key])
+                const queryString = Object.keys(body)
+                    .map((key) => `${key}=${body[key]}`)
                     .join('&');
-                url += '?' + queryString;
+                url += `?${queryString}`;
             }
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
-                    url: url,
-                    headers: { Authorization: this.config.sk }
+                    url,
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -89,11 +90,11 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/events/${eventId}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -114,11 +115,11 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -139,11 +140,11 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -164,11 +165,11 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/events/${eventId}/webhooks/retry`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;

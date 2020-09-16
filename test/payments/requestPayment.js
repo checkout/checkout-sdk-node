@@ -17,16 +17,20 @@ describe('Request a payment or payout', () => {
         expect(cko.config.sk).to.equal(SK);
         expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
         expect(cko.config.timeout).to.equal(5000);
+        expect(cko.config.agent).to.be.undefined;
     });
 
     it('should initialise with key and custom config', () => {
+        const fakeAgent = { }
         const cko = new Checkout(SK, {
             host: 'https:/test.com',
-            timeout: 9000
+            timeout: 9000,
+            agent: fakeAgent,
         });
         expect(cko.config.sk).to.equal(SK);
         expect(cko.config.host).to.equal('https:/test.com');
         expect(cko.config.timeout).to.equal(9000);
+        expect(cko.config.agent).to.equal(fakeAgent);
     });
 
     it('should set the public key', () => {

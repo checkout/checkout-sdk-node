@@ -27,12 +27,12 @@ export default class Instruments {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/instruments`,
                     headers: { Authorization: this.config.sk },
-                    body
+                    body,
                 }
             );
             return await response.json;
