@@ -28,7 +28,7 @@ export default class Webhooks {
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks`,
-                    headers: { Authorization: this.config.sk },
+                    headers: { Authorization: this.config.sk }
                 }
             );
             return await response.json;
@@ -77,7 +77,7 @@ export default class Webhooks {
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
+                    headers: { Authorization: this.config.sk }
                 }
             );
             return await response.json;
@@ -151,7 +151,7 @@ export default class Webhooks {
                 {
                     method: 'delete',
                     url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
+                    headers: { Authorization: this.config.sk }
                 }
             );
             return await response.json;

@@ -86,8 +86,9 @@ export const setSourceType = request => {
 export const setInstrumentType = request => {
     if (request.type) {
         return request;
+    } else {
+        request.type = 'token';
     }
-    request.type = 'token';
 
     return request;
 };
