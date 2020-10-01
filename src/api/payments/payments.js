@@ -12,7 +12,7 @@ const actionHandler = async (config, action, paymentId, body, idempotencyKey) =>
             method: 'post',
             url: `${config.host}/payments/${paymentId}/${action}`,
             headers: determineHeaders(config, idempotencyKey),
-            body: body ? body : {},
+            body: body || {},
         }
     );
     return response.json;
@@ -49,7 +49,9 @@ const addUtilityParams = (json) => {
     if (json.destination) {
         requiresRedirect = false;
     } else {
-        requiresRedirect = json.status === 'Pending';
+        let isPending = json.status === 'Pending';
+        let hasRedirectUrl = json._links['redirect'] !== undefined;
+        requiresRedirect = isPending && hasRedirectUrl;
     }
 
     // If the redirection URL exists add it to the response body as 'redirectLink'
