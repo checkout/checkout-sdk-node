@@ -10,7 +10,9 @@ module.exports = {
             'events',
             'disputes',
             'files',
-            'reconciliation'
-        ]
-    }
+            'reconciliation',
+            'customers',
+            'hosted-payments',
+        ],
+    },
 };
