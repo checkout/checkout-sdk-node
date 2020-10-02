@@ -32,7 +32,59 @@ export default class Instruments {
                     method: 'post',
                     url: `${this.config.host}/instruments`,
                     headers: { Authorization: this.config.sk },
-                    body
+                    body,
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Returns details of an instrument
+     *
+     * @memberof Instruments
+     * @param {string} id Instrument id.
+     * @return {Promise<Object>} A promise to the instrument response.
+     */
+    async get(id) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'get',
+                    url: `${this.config.host}/instruments/${id}`,
+                    headers: { Authorization: this.config.sk },
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Update details of an instrument
+     *
+     * @memberof Instruments
+     * @param {string} id Instrument id.
+     * @param {Object} body Instruments request body.
+     * @return {Promise<Object>} A promise to the instrument response.
+     */
+    async update(id, body) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout },
+                {
+                    method: 'patch',
+                    url: `${this.config.host}/instruments/${id}`,
+                    headers: { Authorization: this.config.sk },
+                    body,
                 }
             );
             return await response.json;

@@ -21,6 +21,20 @@ The SDK will infer the type of the instrument, if not provided.
 
 ```js
 const instrument = await cko.instruments.create({
-    token: 'tok_bzi43qc6jeee5mmnfo4gnsnera' // token obtainer form Checkout.Frames of the mobile SDKs
+    token: 'tok_bzi43qc6jeee5mmnfo4gnsnera', // token obtainer form Checkout.Frames of the mobile SDKs
+});
+```
+
+## Get an instrument
+
+```js
+const instrument = await cko.instruments.get('src_udfsqsgpjykutgs26fiejgizau');
+```
+
+## Update an instrument
+
+```js
+const instrumentResponse = await cko.instruments.update('src_udfsqsgpjykutgs26fiejgizau', {
+    expiry_year: 2030,
 });
 ```

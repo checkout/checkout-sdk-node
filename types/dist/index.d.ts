@@ -7,5 +7,7 @@ export { default as Events } from './api/events/events';
 export { default as Disputes } from './api/disputes/disputes';
 export { default as Files } from './api/files/files';
 export { default as Reconciliation } from './api/reconciliation/reconciliation';
+export { default as Customers } from './api/customers/customers';
+export { default as HostedPayments } from './api/hosted-payments/hosted-payments';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

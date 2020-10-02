@@ -1,36 +1,34 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
-import { setSourceType } from '../../services/validation';
+import { setInstrumentType } from '../../services/validation';
 
 /**
- * Class dealing with the /sources endpoint
+ * Class dealing with the /hosted-payments endpoint
  *
  * @export
- * @class Sources
+ * @class HostedPayments
  */
-export default class Sources {
+export default class HostedPayments {
     constructor(config) {
         this.config = config;
     }
 
     /**
-     * Add a reusable payment source that can be used later to make one or more payments.
-     * Payment sources are linked to a specific customer and cannot be shared between customers.
+     * Update details of a customer
      *
-     * @memberof Sources
-     * @param {Object} body Source request body.
-     * @return {Promise<Object>} A promise to the add source response.
+     * @memberof HostedPayments
+     * @param {Object} body
+     * @return {Promise<Object>} A promise to the Hosted Payment response.
      */
-    async add(body) {
-        setSourceType(body);
+    async create(body) {
         try {
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout },
                 {
                     method: 'post',
-                    url: `${this.config.host}/sources`,
+                    url: `${this.config.host}/hosted-payments`,
                     headers: { Authorization: this.config.sk },
                     body,
                 }

@@ -8,6 +8,8 @@ import {
     Disputes,
     Files,
     Reconciliation,
+    Customers,
+    HostedPayments,
 } from './index';
 
 export type config = {
@@ -32,6 +34,8 @@ export default class Checkout {
     disputes: Disputes;
     files: Files;
     reconciliation: Reconciliation;
+    customers: Customers;
+    hostedPayments: HostedPayments;
     config: config;
 
     constructor(key?: string, options?: options);

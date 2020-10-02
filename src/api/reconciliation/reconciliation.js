@@ -25,25 +25,25 @@ export default class Reconciliation {
             let url = `${this.config.host}/reporting/payments`;
 
             if (body) {
-                var queryString = Object.keys(body)
-                    .map((key) => key + '=' + body[key])
+                const queryString = Object.keys(body)
+                    .map((key) => `${key}=${body[key]}`)
                     .join('&');
-                url += '?' + queryString;
+                url += `?${queryString}`;
             }
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout },
                 {
                     method: 'get',
-                    url: url,
+                    url,
                     headers: { Authorization: this.config.sk },
                 }
             );
-            let res = await response.json;
+            const res = await response.json;
 
             // In case there is a "next" page, inject it in the response body
             if (res._links && res._links.next) {
-                let nextLink = res._links.next.href;
+                const nextLink = res._links.next.href;
                 return await { ...res, page: nextLink.match(/after=([^&]*)/)[1] };
             }
             return await res;
@@ -91,17 +91,17 @@ export default class Reconciliation {
             let url = `${this.config.host}/reporting/payments/download`;
 
             if (body) {
-                var queryString = Object.keys(body)
-                    .map((key) => key + '=' + body[key])
+                const queryString = Object.keys(body)
+                    .map((key) => `${key}=${body[key]}`)
                     .join('&');
-                url += '?' + queryString;
+                url += `?${queryString}`;
             }
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout, csv: true },
                 {
                     method: 'get',
-                    url: url,
+                    url,
                     headers: { Authorization: this.config.sk },
                 }
             );
@@ -125,17 +125,17 @@ export default class Reconciliation {
             let url = `${this.config.host}/reporting/statements`;
 
             if (body) {
-                var queryString = Object.keys(body)
-                    .map((key) => key + '=' + body[key])
+                const queryString = Object.keys(body)
+                    .map((key) => `${key}=${body[key]}`)
                     .join('&');
-                url += '?' + queryString;
+                url += `?${queryString}`;
             }
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout },
                 {
                     method: 'get',
-                    url: url,
+                    url,
                     headers: { Authorization: this.config.sk },
                 }
             );
