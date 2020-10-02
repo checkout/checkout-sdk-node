@@ -58,7 +58,12 @@ module.exports = {
         ],
     ],
     plugins: [
-        // Basic usage.
         require.resolve('@docusaurus/plugin-google-analytics'),
+        [
+            require.resolve('@docusaurus/plugin-sitemap'),
+            {
+                cacheTime: 600 * 1000,
+            },
+        ],
     ],
 };
