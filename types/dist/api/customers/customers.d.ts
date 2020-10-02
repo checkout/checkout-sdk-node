@@ -1,8 +1,6 @@
 import { config } from '../../Checkout';
-export default class Instruments {
+export default class Customers {
     constructor(config: config);
 
-    create: (body: Object) => Promise<Object>;
-    get: (id: string) => Promise<Object>;
     update: (id: string, body: Object) => Promise<Object>;
 }

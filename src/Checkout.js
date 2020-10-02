@@ -8,7 +8,9 @@ import {
     Events,
     Disputes,
     Files,
-    Reconciliation
+    Reconciliation,
+    Customers,
+    HostedPayments,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -19,12 +21,12 @@ const determineHost = (key, options) => {
     return LIVE_SECRET_KEY_REGEX.test(key) ? LIVE_BASE_URL : SANDBOX_BASE_URL;
 };
 
-const determineSecretKey = key => {
+const determineSecretKey = (key) => {
     // Unless specified, check environment variables for the key
     return !key ? process.env.CKO_SECRET_KEY || '' : key;
 };
 
-const determinePublicKey = options => {
+const determinePublicKey = (options) => {
     // Unless specified, check environment variables for the key
     if (options && options.pk) {
         return options.pk;
@@ -54,7 +56,7 @@ export default class Checkout {
             sk: determineSecretKey(key),
             pk: determinePublicKey(options),
             host: determineHost(key, options),
-            timeout: options && options.timeout ? options.timeout : DEFAULT_TIMEOUT
+            timeout: options && options.timeout ? options.timeout : DEFAULT_TIMEOUT,
         };
 
         this.payments = new Payments(this.config);
@@ -66,5 +68,7 @@ export default class Checkout {
         this.disputes = new Disputes(this.config);
         this.files = new Files(this.config);
         this.reconciliation = new Reconciliation(this.config);
+        this.customers = new Customers(this.config);
+        this.hostedPayments = new HostedPayments(this.config);
     }
 }

@@ -28,18 +28,18 @@ export default class Disputes {
             let url = `${this.config.host}/disputes`;
 
             if (body) {
-                var queryString = Object.keys(body)
-                    .map(key => key + '=' + body[key])
+                const queryString = Object.keys(body)
+                    .map((key) => `${key}=${body[key]}`)
                     .join('&');
-                url += '?' + queryString;
+                url += `?${queryString}`;
             }
             const response = await http(
                 fetch,
                 { timeout: this.config.timeout },
                 {
                     method: 'get',
-                    url: url,
-                    headers: { Authorization: this.config.sk }
+                    url,
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -64,7 +64,7 @@ export default class Disputes {
                 {
                     method: 'get',
                     url: `${this.config.host}/disputes/${disputeId}`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -89,7 +89,7 @@ export default class Disputes {
                 {
                     method: 'post',
                     url: `${this.config.host}/disputes/${disputeId}/accept`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -122,7 +122,7 @@ export default class Disputes {
                     method: 'put',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,
                     headers: { Authorization: this.config.sk },
-                    body: body
+                    body,
                 }
             );
             return await response.json;
@@ -147,7 +147,7 @@ export default class Disputes {
                 {
                     method: 'get',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;
@@ -174,7 +174,7 @@ export default class Disputes {
                 {
                     method: 'post',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,
-                    headers: { Authorization: this.config.sk }
+                    headers: { Authorization: this.config.sk },
                 }
             );
             return await response.json;

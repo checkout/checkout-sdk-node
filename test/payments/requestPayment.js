@@ -4,7 +4,7 @@ import {
     BadGateway,
     TooManyRequestsError,
     ValidationError,
-    ValueError
+    ValueError,
 } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 
@@ -22,7 +22,7 @@ describe('Request a payment or payout', () => {
     it('should initialise with key and custom config', () => {
         const cko = new Checkout(SK, {
             host: 'https:/test.com',
-            timeout: 9000
+            timeout: 9000,
         });
         expect(cko.config.sk).to.equal(SK);
         expect(cko.config.host).to.equal('https:/test.com');
@@ -104,7 +104,7 @@ describe('Request a payment or payout', () => {
                         product_id: 'A',
                         product_type: 'Visa Traditional',
                         avs_check: 'S',
-                        cvv_check: 'Y'
+                        cvv_check: 'Y',
                     },
                     customer: { id: 'cus_leu5pp2zshpuvbt6yjxl5xcrdi' },
                     processed_on: '2019-06-09T22:43:54Z',
@@ -114,25 +114,25 @@ describe('Request a payment or payout', () => {
                     _links: {
                         self: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids'
-                        }
-                    }
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                        },
+                    },
                 },
                 {
                     'cko-request-id': ['1695a930-09cf-4db0-a91e-a772e6ee076g'],
-                    'cko-version': ['3.31.4']
+                    'cko-version': ['3.31.4'],
                 }
             );
 
@@ -144,10 +144,10 @@ describe('Request a payment or payout', () => {
                 number: '4242424242424242',
                 expiry_month: 6,
                 expiry_year: 2029,
-                cvv: '100'
+                cvv: '100',
             },
             currency: 'USD',
-            amount: 100
+            amount: 100,
         });
 
         /* eslint-disable no-unused-expressions */
@@ -190,7 +190,7 @@ describe('Request a payment or payout', () => {
                         product_id: 'A',
                         product_type: 'Visa Traditional',
                         avs_check: 'S',
-                        cvv_check: 'Y'
+                        cvv_check: 'Y',
                     },
                     customer: { id: 'cus_leu5pp2zshpuvbt6yjxl5xcrdi' },
                     processed_on: '2019-06-09T22:43:54Z',
@@ -200,25 +200,25 @@ describe('Request a payment or payout', () => {
                     _links: {
                         self: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids'
-                        }
-                    }
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                        },
+                    },
                 },
                 {
                     'cko-request-id': ['1695a930-09cf-4db0-a91e-a772e6ee076g'],
-                    'cko-version': ['3.31.4']
+                    'cko-version': ['3.31.4'],
                 }
             );
 
@@ -231,10 +231,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             },
             '6ndp5facelxurne7gloxkxm57u'
         );
@@ -256,18 +256,18 @@ describe('Request a payment or payout', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu'
+                            'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
                     },
                     redirect: {
                         href:
-                            'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu'
-                    }
+                            'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
+                    },
                 },
                 headers: {
                     'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
-                    'cko-version': '3.34.5'
+                    'cko-version': '3.34.5',
                 },
-                requiresRedirect: true
+                requiresRedirect: true,
             });
 
         const cko = new Checkout(SK);
@@ -278,13 +278,13 @@ describe('Request a payment or payout', () => {
                 number: '4242424242424242',
                 expiry_month: 6,
                 expiry_year: 2029,
-                cvv: '100'
+                cvv: '100',
             },
             currency: 'USD',
             '3ds': {
-                enabled: true
+                enabled: true,
             },
-            amount: 100
+            amount: 100,
         });
 
         /* eslint-disable no-unused-expressions */
@@ -320,22 +320,22 @@ describe('Request a payment or payout', () => {
                     issuer: 'JPMORGAN CHASE BANK NA',
                     issuer_country: 'US',
                     product_id: 'A',
-                    product_type: 'Visa Traditional'
+                    product_type: 'Visa Traditional',
                 },
                 customer: {
-                    id: 'cus_z3ajkz6g5m4efjufbd7i3lxxuu'
+                    id: 'cus_z3ajkz6g5m4efjufbd7i3lxxuu',
                 },
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e'
+                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -346,10 +346,10 @@ describe('Request a payment or payout', () => {
                 expiry_month: 6,
                 expiry_year: 2029,
                 first_name: 'John',
-                last_name: 'Smith'
+                last_name: 'Smith',
             },
             currency: 'USD',
-            amount: 100
+            amount: 100,
         });
 
         /* eslint-disable no-unused-expressions */
@@ -385,22 +385,22 @@ describe('Request a payment or payout', () => {
                     issuer: 'JPMORGAN CHASE BANK NA',
                     issuer_country: 'US',
                     product_id: 'A',
-                    product_type: 'Visa Traditional'
+                    product_type: 'Visa Traditional',
                 },
                 customer: {
-                    id: 'cus_z3ajkz6g5m4efjufbd7i3lxxuu'
+                    id: 'cus_z3ajkz6g5m4efjufbd7i3lxxuu',
                 },
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e'
+                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -412,10 +412,10 @@ describe('Request a payment or payout', () => {
                 expiry_month: 6,
                 expiry_year: 2029,
                 first_name: 'John',
-                last_name: 'Smith'
+                last_name: 'Smith',
             },
             currency: 'USD',
-            amount: 100
+            amount: 100,
         });
 
         /* eslint-disable no-unused-expressions */
@@ -429,7 +429,7 @@ describe('Request a payment or payout', () => {
             .reply(422, {
                 request_id: '8daac099-b8e5-428c-8374-11c9c0f42d2f',
                 error_type: 'processing_error',
-                error_codes: ['token_expired']
+                error_codes: ['token_expired'],
             });
 
         try {
@@ -439,10 +439,10 @@ describe('Request a payment or payout', () => {
                 destination: {
                     token: 'tok_2znmhtc7gybuxanfkqtmrbh26u',
                     first_name: 'John',
-                    last_name: 'Smith'
+                    last_name: 'Smith',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (error) {
             /* eslint-disable no-unused-expressions */
@@ -477,22 +477,22 @@ describe('Request a payment or payout', () => {
                     issuer: 'JPMORGAN CHASE BANK NA',
                     issuer_country: 'US',
                     product_id: 'A',
-                    product_type: 'Visa Traditional'
+                    product_type: 'Visa Traditional',
                 },
                 customer: {
-                    id: 'cus_4tq74vh6u7zuvnnvkzimznkauu'
+                    id: 'cus_4tq74vh6u7zuvnnvkzimznkauu',
                 },
                 processed_on: '2020-01-29T11:45:27Z',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a'
+                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -501,10 +501,10 @@ describe('Request a payment or payout', () => {
             destination: {
                 id: 'src_yiorsxzfwy4uzkl5excqum4r6m',
                 first_name: 'John',
-                last_name: 'Smith'
+                last_name: 'Smith',
             },
             currency: 'USD',
-            amount: 100
+            amount: 100,
         });
         /* eslint-disable no-unused-expressions */
         expect(transaction.approved).to.be.true;
@@ -521,27 +521,27 @@ describe('Request a payment or payout', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam'
+                            'https://api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam',
                     },
                     redirect: {
-                        href: 'https://sandbox.checkout.com/LP.Core/api/payment/165412'
-                    }
+                        href: 'https://sandbox.checkout.com/LP.Core/api/payment/165412',
+                    },
                 },
                 headers: {
                     'cko-request-id': '3e62dcc5-0581-4fdb-a8ca-a62e87466314',
-                    'cko-version': '3.34.5'
+                    'cko-version': '3.34.5',
                 },
-                requiresRedirect: true
+                requiresRedirect: true,
             });
 
         const cko = new Checkout(SK);
 
         const transaction = await cko.payments.request({
             source: {
-                type: 'sofort'
+                type: 'sofort',
             },
             currency: 'EUR',
-            amount: 100
+            amount: 100,
         });
         /* eslint-disable no-unused-expressions */
         expect(transaction.requiresRedirect).to.be.true;
@@ -557,16 +557,16 @@ describe('Request a payment or payout', () => {
                 customer: {
                     id: 'cus_y3oqhf46pyzuxjbcn2giaqnb44',
                     email: 'jokershere@gmail.com',
-                    name: 'Jack Napier'
+                    name: 'Jack Napier',
                 },
                 '3ds': {
                     downgraded: false,
-                    enrolled: 'Y'
+                    enrolled: 'Y',
                 },
                 _links: {
                     self: {},
-                    redirect: {}
-                }
+                    redirect: {},
+                },
             });
 
         const cko = new Checkout(SK);
@@ -577,13 +577,13 @@ describe('Request a payment or payout', () => {
                 number: '4242424242424242',
                 expiry_month: 6,
                 expiry_year: 2029,
-                cvv: '100'
+                cvv: '100',
             },
             currency: 'USD',
             amount: 100,
             '3ds': {
-                enabled: true
-            }
+                enabled: true,
+            },
         });
 
         expect(transaction.requiresRedirect).to.be.true;
@@ -621,7 +621,7 @@ describe('Request a payment or payout', () => {
                     product_id: 'A',
                     product_type: 'Visa Traditional',
                     avs_check: 'S',
-                    cvv_check: 'Y'
+                    cvv_check: 'Y',
                 },
                 customer: { id: 'cus_xthycmncbhmujauqjebmhwkwle' },
                 processed_on: '2019-06-09T22:54:00Z',
@@ -631,13 +631,13 @@ describe('Request a payment or payout', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we'
+                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -648,10 +648,10 @@ describe('Request a payment or payout', () => {
                 number: '4242424242424242',
                 expiry_month: 6,
                 expiry_year: 2029,
-                cvv: '100'
+                cvv: '100',
             },
             currency: 'USD',
-            amount: 1005
+            amount: 1005,
         });
 
         expect(transaction.approved).to.be.false;
@@ -663,14 +663,11 @@ describe('Request a payment or payout', () => {
     });
 
     it('should timeout payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .post('/payments')
-            .delay(20)
-            .reply(201, {});
+        nock('https://api.sandbox.checkout.com').post('/payments').delay(20).reply(201, {});
 
         try {
             const cko = new Checkout(SK, {
-                timeout: 10
+                timeout: 10,
             });
 
             const transaction = await cko.payments.request({
@@ -679,10 +676,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err.name).to.equal('ApiTimeout');
@@ -690,11 +687,9 @@ describe('Request a payment or payout', () => {
     });
 
     it('should error out with API Error for payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .post('/payments')
-            .reply(500, {
-                error: 'error'
-            });
+        nock('https://api.sandbox.checkout.com').post('/payments').reply(500, {
+            error: 'error',
+        });
         try {
             const cko = new Checkout(SK);
 
@@ -704,10 +699,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err.name).to.equal('API Error');
@@ -715,9 +710,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .post('/payments')
-            .reply(401);
+        nock('https://api.sandbox.checkout.com').post('/payments').reply(401);
         try {
             const cko = new Checkout('sk_test_43ed9a7f-4799-461d-b201-a70507878000');
 
@@ -727,10 +720,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err.name).to.equal('AuthenticationError');
@@ -743,7 +736,7 @@ describe('Request a payment or payout', () => {
             .reply(422, {
                 request_id: '0HL80RJLS76I7',
                 error_type: 'request_invalid',
-                error_codes: ['payment_source_required']
+                error_codes: ['payment_source_required'],
             });
 
         try {
@@ -755,10 +748,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2000,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValidationError);
@@ -771,7 +764,7 @@ describe('Request a payment or payout', () => {
             .reply(429, {
                 request_id: '0HL80RJLS76I7',
                 error_type: 'request_invalid',
-                error_codes: ['payment_source_required']
+                error_codes: ['payment_source_required'],
             });
         try {
             const cko = new Checkout(SK);
@@ -782,10 +775,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err.http_code).to.equal(429);
@@ -794,9 +787,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw BadGateway', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .post('/payments')
-            .reply(502);
+        nock('https://api.sandbox.checkout.com').post('/payments').reply(502);
 
         try {
             const cko = new Checkout(SK);
@@ -807,10 +798,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 100
+                amount: 100,
             });
         } catch (err) {
             expect(err.http_code).to.equal(502);
@@ -828,10 +819,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 12.3
+                amount: 12.3,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValueError);
@@ -848,10 +839,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'ABC',
-                amount: 123
+                amount: 123,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValueError);
@@ -868,11 +859,11 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
                 payment_type: 'Nice',
-                amount: 123
+                amount: 123,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValueError);
@@ -889,10 +880,10 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
-                amount: 123
+                amount: 123,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValueError);
@@ -908,11 +899,11 @@ describe('Request a payment or payout', () => {
                     number: '4242424242424242',
                     expiry_month: 6,
                     expiry_year: 2029,
-                    cvv: '100'
+                    cvv: '100',
                 },
                 currency: 'USD',
                 reference: 123456,
-                amount: 123
+                amount: 123,
             });
             throw new Error();
         } catch (err) {
@@ -954,7 +945,7 @@ describe('Request a payment or payout', () => {
                         product_id: 'A',
                         product_type: 'Visa Traditional',
                         avs_check: 'S',
-                        cvv_check: 'Y'
+                        cvv_check: 'Y',
                     },
                     customer: { id: 'cus_leu5pp2zshpuvbt6yjxl5xcrdi' },
                     processed_on: '2019-06-09T22:43:54Z',
@@ -964,25 +955,25 @@ describe('Request a payment or payout', () => {
                     _links: {
                         self: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures'
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
                             href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids'
-                        }
-                    }
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                        },
+                    },
                 },
                 {
                     'cko-request-id': ['1695a930-09cf-4db0-a91e-a772e6ee076g'],
-                    'cko-version': ['3.31.4']
+                    'cko-version': ['3.31.4'],
                 }
             );
 
@@ -993,11 +984,11 @@ describe('Request a payment or payout', () => {
                 number: '4242424242424242',
                 expiry_month: 6,
                 expiry_year: 2029,
-                cvv: '100'
+                cvv: '100',
             },
             currency: 'USD',
             reference: 'test',
-            amount: 123
+            amount: 123,
         });
         expect(transaction.approved).to.be.true;
     });
@@ -1008,7 +999,7 @@ describe('Request a payment or payout', () => {
             .reply(422, {
                 request_id: '6b3300a8-fe99-4ab3-8332-43cd7ecb58a7',
                 error_type: 'processing_error',
-                error_codes: ['token_expired']
+                error_codes: ['token_expired'],
             });
 
         try {
@@ -1016,11 +1007,11 @@ describe('Request a payment or payout', () => {
 
             const transaction = await cko.payments.request({
                 source: {
-                    token: 'tok_3tcawwfztjfurk53f5cfgrms7i'
+                    token: 'tok_3tcawwfztjfurk53f5cfgrms7i',
                 },
                 currency: 'USD',
                 reference: 'test',
-                amount: 123
+                amount: 123,
             });
         } catch (error) {
             expect(error.body.error_codes[0]).to.equal('token_expired');
@@ -1043,14 +1034,14 @@ describe('Request a payment or payout', () => {
                 response_code: '10000',
                 response_summary: 'Approved',
                 risk: {
-                    flagged: false
+                    flagged: false,
                 },
                 source: {
                     id: 'src_ebcpiv3zdnmejkcgf5mpavla6e',
                     type: 'card',
                     billing_address: {
                         address_line1: 'asdas asd',
-                        address_line2: 'fff fff'
+                        address_line2: 'fff fff',
                     },
                     expiry_month: 6,
                     expiry_year: 2028,
@@ -1067,46 +1058,46 @@ describe('Request a payment or payout', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: {
                     id: 'cus_acrd33wxljeunmock26hfglfxq',
-                    email: 'aaaaaaa@gmail.com'
+                    email: 'aaaaaaa@gmail.com',
                 },
                 processed_on: '2020-01-29T00:45:49Z',
                 processing: {
                     acquirer_transaction_id: '1621525145',
-                    retrieval_reference_number: '205732928440'
+                    retrieval_reference_number: '205732928440',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu'
+                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
 
         const transaction = await cko.payments.request({
             source: {
-                id: 'cus_acrd33wxljeunmock26hfglfxq'
+                id: 'cus_acrd33wxljeunmock26hfglfxq',
             },
             currency: 'USD',
             reference: 'test',
-            amount: 123
+            amount: 123,
         });
         expect(transaction.approved).to.be.true;
     });
@@ -1127,14 +1118,14 @@ describe('Request a payment or payout', () => {
                 response_code: '10000',
                 response_summary: 'Approved',
                 risk: {
-                    flagged: false
+                    flagged: false,
                 },
                 source: {
                     id: 'src_ebcpiv3zdnmejkcgf5mpavla6e',
                     type: 'card',
                     billing_address: {
                         address_line1: 'asdas asd',
-                        address_line2: 'fff fff'
+                        address_line2: 'fff fff',
                     },
                     expiry_month: 6,
                     expiry_year: 2028,
@@ -1151,46 +1142,46 @@ describe('Request a payment or payout', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: {
                     id: 'cus_acrd33wxljeunmock26hfglfxq',
-                    email: 'aaaaaaa@gmail.com'
+                    email: 'aaaaaaa@gmail.com',
                 },
                 processed_on: '2020-01-29T00:48:53Z',
                 processing: {
                     acquirer_transaction_id: '9939059520',
-                    retrieval_reference_number: '625467819714'
+                    retrieval_reference_number: '625467819714',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi'
+                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
 
         const transaction = await cko.payments.request({
             source: {
-                id: 'src_ebcpiv3zdnmejkcgf5mpavla6e'
+                id: 'src_ebcpiv3zdnmejkcgf5mpavla6e',
             },
             currency: 'USD',
             reference: 'test',
-            amount: 123
+            amount: 123,
         });
         expect(transaction.approved).to.be.true;
     });
@@ -1211,7 +1202,7 @@ describe('Request a payment or payout', () => {
                 response_code: '10000',
                 response_summary: 'Approved',
                 risk: {
-                    flagged: false
+                    flagged: false,
                 },
                 source: {
                     id: 'src_2lgxhvoueacutmbb6eflqiw27u',
@@ -1232,34 +1223,34 @@ describe('Request a payment or payout', () => {
                     cvv_check: 'Y',
                     payment_account_reference: '2FCFE326D92D4C27EDD699560F484',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: {
-                    id: 'cus_ctyooiftpdwupchco7myr66xo4'
+                    id: 'cus_ctyooiftpdwupchco7myr66xo4',
                 },
                 processed_on: '2020-01-29T00:53:33Z',
                 processing: {
                     acquirer_transaction_id: '5944337681',
-                    retrieval_reference_number: '715132317647'
+                    retrieval_reference_number: '715132317647',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii'
+                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids',
+                    },
+                },
             });
         const cko = new Checkout(SK);
 
@@ -1270,12 +1261,95 @@ describe('Request a payment or payout', () => {
                 expiry_month: '10',
                 expiry_year: '2025',
                 eci: '06',
-                cryptogram: 'AgAAAAAAAIR8CQrXcIhbQAAAAAA'
+                cryptogram: 'AgAAAAAAAIR8CQrXcIhbQAAAAAA',
             },
             currency: 'USD',
             reference: 'test',
-            amount: 123
+            amount: 123,
         });
         expect(transaction.approved).to.be.true;
+    });
+
+    it('should process a SEPA payment', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/sources')
+            .reply(201, {
+                id: 'src_ld2ft6czuayejcaxw2kmfk3cvu',
+                type: 'Sepa',
+                response_code: '10000',
+                response_data: {
+                    mandate_reference: '7af16f1d04f1486eb2f06269b9735496',
+                },
+                customer: {
+                    id: 'cus_u4cqd7nthbke3emlcybky4aw7a',
+                    email: 'sophie.bonneville@ckomail.com',
+                },
+                _links: {
+                    'sepa:mandate-cancel': {
+                        href:
+                            'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu/cancel',
+                    },
+                    'sepa:mandate-get': {
+                        href:
+                            'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu',
+                    },
+                },
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .reply(201, {
+                id: 'pay_6thh5vhggyjudgzfznx2fkuede',
+                status: 'Pending',
+                reference: 'X-080957-N34',
+                customer: {
+                    id: 'cus_uhpsey6culvuln3zfzfme7w5ea',
+                    email: 'sophie.bonneville@ckomail.com',
+                },
+                _links: {
+                    self: {
+                        href: 'https://api.checkout.com/payments/pay_6thh5vhggyjudgzfznx2fkuede',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const source = await cko.sources.add({
+            type: 'sepa',
+            reference: 'X-080957-N34',
+            source_data: {
+                first_name: 'Sophie',
+                last_name: 'Bonneville',
+                account_iban: 'DE25100100101234567893',
+                bic: 'PBNKDEFFXXX',
+                billing_descriptor: 'Thanks for shopping',
+                mandate_type: 'single',
+            },
+            billing_address: {
+                address_line1: '101 Avenue de Gaulle',
+                city: 'Paris',
+                zip: '75013',
+                country: 'FR',
+            },
+            phone: {
+                country_code: '+33',
+                number: '6 78 91 01 11',
+            },
+            customer: {
+                email: 'sophie.bonneville@ckomail.com',
+            },
+        });
+
+        const transaction = await cko.payments.request({
+            source: {
+                id: source.id,
+            },
+            amount: 5600,
+            currency: 'EUR',
+            reference: 'X-080957-N34',
+        });
+
+        expect(transaction.reference).to.equal('X-080957-N34');
     });
 });
