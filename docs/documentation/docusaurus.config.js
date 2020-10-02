@@ -48,7 +48,7 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    routeBasePath: '',
+                    routeBasePath: '/',
                     // editUrl: 'https://github.com/facebook/docusaurus/edit/master/website/'
                 },
                 theme: {
