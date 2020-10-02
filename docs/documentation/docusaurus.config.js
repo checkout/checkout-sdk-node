@@ -58,7 +58,11 @@ module.exports = {
         ],
     ],
     plugins: [
-        // Basic usage.
-        require.resolve('@docusaurus/plugin-google-analytics'),
+        [
+            require.resolve('@docusaurus/plugin-google-analytics'),
+            {
+                id: 'plugin-xxx-1',
+            },
+        ],
     ],
 };
