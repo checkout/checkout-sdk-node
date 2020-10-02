@@ -14,7 +14,7 @@ module.exports = {
                 alt: 'checkout-sdk-node',
                 src: 'img/logo.png',
             },
-            links: [
+            items: [
                 {
                     to: 'getting_started',
                     activeBasePath: 'docs',
