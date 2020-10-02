@@ -14,7 +14,7 @@ module.exports = {
                 alt: 'checkout-sdk-node',
                 src: 'img/logo.png',
             },
-            links: [
+            items: [
                 {
                     to: 'getting_started',
                     activeBasePath: 'docs',
@@ -48,7 +48,7 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    routeBasePath: '',
+                    routeBasePath: '/',
                     // editUrl: 'https://github.com/facebook/docusaurus/edit/master/website/'
                 },
                 theme: {
@@ -58,7 +58,11 @@ module.exports = {
         ],
     ],
     plugins: [
-        // Basic usage.
-        require.resolve('@docusaurus/plugin-google-analytics'),
+        [
+            require.resolve('@docusaurus/plugin-google-analytics'),
+            {
+                id: 'plugin-xxx-1',
+            },
+        ],
     ],
 };
