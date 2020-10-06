@@ -32,7 +32,7 @@ export default class Files {
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, formData: true },
+                { timeout: this.config.timeout, agent: this.config.agent, formData: true },
                 {
                     method: 'post',
                     url: `${this.config.host}/files`,
@@ -58,7 +58,7 @@ export default class Files {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/files/${fileId}`,

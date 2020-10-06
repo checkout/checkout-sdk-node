@@ -32,7 +32,7 @@ export default class Reconciliation {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url,
@@ -65,7 +65,7 @@ export default class Reconciliation {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/reporting/payments/${paymentId}`,
@@ -98,7 +98,7 @@ export default class Reconciliation {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, csv: true },
+                { timeout: this.config.timeout, agent: this.config.agent, csv: true },
                 {
                     method: 'get',
                     url,
@@ -132,7 +132,7 @@ export default class Reconciliation {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url,
@@ -158,7 +158,7 @@ export default class Reconciliation {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, csv: true },
+                { timeout: this.config.timeout, agent: this.config.agent, csv: true },
                 {
                     method: 'get',
                     url: `${this.config.host}/reporting/statements/${statementId}/payments/download`,

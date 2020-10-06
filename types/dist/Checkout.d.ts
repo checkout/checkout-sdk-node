@@ -1,3 +1,5 @@
+import * as http from "http";
+
 import {
     Payments,
     Sources,
@@ -17,11 +19,13 @@ export type config = {
     sk: string;
     pk: string;
     timeout: number;
+    agent?: http.Agent;
 };
 
 type options = {
     pk: string;
     timeout?: number;
+    agent?: http.Agent;
 };
 
 export default class Checkout {

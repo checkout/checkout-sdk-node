@@ -35,7 +35,7 @@ export default class Disputes {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url,
@@ -60,7 +60,7 @@ export default class Disputes {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/disputes/${disputeId}`,
@@ -85,7 +85,7 @@ export default class Disputes {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/disputes/${disputeId}/accept`,
@@ -117,7 +117,7 @@ export default class Disputes {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'put',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,
@@ -143,7 +143,7 @@ export default class Disputes {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,
@@ -170,7 +170,7 @@ export default class Disputes {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/disputes/${disputeId}/evidence`,

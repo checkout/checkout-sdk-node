@@ -24,7 +24,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks`,
@@ -48,7 +48,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/webhooks`,
@@ -73,7 +73,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/webhooks/${id}`,
@@ -97,7 +97,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'put',
                     url: `${this.config.host}/webhooks/${id}`,
@@ -122,7 +122,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'patch',
                     url: `${this.config.host}/webhooks/${id}`,
@@ -147,7 +147,7 @@ export default class Webhooks {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'delete',
                     url: `${this.config.host}/webhooks/${id}`,

@@ -19,6 +19,7 @@ const http = async (fetch, config, request) => {
     const response = await fetch(request.url, {
         method: request.method,
         timeout: config.timeout,
+        agent: config.agent,
         body: config.formData ? request.body : JSON.stringify(request.body),
         headers,
     });

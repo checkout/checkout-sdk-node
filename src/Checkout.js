@@ -57,6 +57,7 @@ export default class Checkout {
             pk: determinePublicKey(options),
             host: determineHost(key, options),
             timeout: options && options.timeout ? options.timeout : DEFAULT_TIMEOUT,
+            agent: options && options.agent ? options.agent : undefined,
         };
 
         this.payments = new Payments(this.config);

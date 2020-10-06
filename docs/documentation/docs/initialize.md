@@ -39,7 +39,16 @@ const cko = new Checkout('sk_XXXX');
 const cko = new Checkout('sk_XXXX', { pk: 'pk_XXX', timeout: 7000 });
 ```
 
-For now only the request timeout can be configured. Future configuration options will be added and will very likly be passed in a similar way.
+## With a custom HTTP agent
+
+```js
+const http = require('http');
+const keepAliveAgent = new http.Agent({ keepAlive: true })
+
+const cko = new Checkout('sk_XXXX', { agent: keepAliveAgent });
+```
+
+For now only the request timeout and agent can be configured. Future configuration options will be added and will very likly be passed in a similar way.
 
 ## Update config
 

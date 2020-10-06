@@ -29,7 +29,7 @@ export default class Events {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url,
@@ -64,7 +64,7 @@ export default class Events {
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url,
@@ -90,7 +90,7 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/events/${eventId}`,
@@ -115,7 +115,7 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
@@ -140,7 +140,7 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
@@ -165,7 +165,7 @@ export default class Events {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'post',
                     url: `${this.config.host}/events/${eventId}/webhooks/retry`,
