@@ -53,7 +53,7 @@ export default class Instruments {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'get',
                     url: `${this.config.host}/instruments/${id}`,
@@ -79,7 +79,7 @@ export default class Instruments {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout },
+                { timeout: this.config.timeout, agent: this.config.agent },
                 {
                     method: 'patch',
                     url: `${this.config.host}/instruments/${id}`,
