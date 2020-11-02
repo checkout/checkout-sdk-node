@@ -3,11 +3,11 @@ language: node_js
 cache: npm
 
 node_js:
+    - 14
+    - 13
     - 12
     - 11
     - 10
-    - 9
-    - 8
 
 script:
     - npm test
