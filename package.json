@@ -4,13 +4,12 @@
     "description": "",
     "main": "./dist/index.js",
     "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.0.0",
         "@babel/eslint-parser": "^7.12.1",
         "@babel/eslint-plugin": "^7.12.1",
-        "@babel/register": "^7.12.1",
-        "babel-cli": "^6.26.0",
-        "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-        "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "babel-preset-env": "^1.7.0",
+        "@babel/node": "^7.0.0",
+        "@babel/preset-env": "^7.0.0",
         "chai": "^4.2.0",
         "codecov": "^3.8.0",
         "eslint": "^7.12.1",
@@ -36,11 +35,24 @@
         "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch --require esm",
         "build": "babel src --out-dir ./dist --source-maps",
         "serve": "node ./dist/index.js",
-        "codecov": "codecov -f coverage/*.json "
+        "codecov": "codecov -f coverage/*.json",
+        "tsc": "tsc"
     },
     "dependencies": {
         "form-data": "^3.0.0",
         "node-fetch": "^2.6.1"
+    },
+    "babel": {
+        "presets": [
+            [
+                "@babel/preset-env",
+                {
+                    "targets": {
+                        "node": 6
+                    }
+                }
+            ]
+        ]
     },
     "author": "Ioan Ghisoi",
     "license": "MIT"
