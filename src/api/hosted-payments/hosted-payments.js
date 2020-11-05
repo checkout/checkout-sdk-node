@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import http from '../../services/http';
-import { setInstrumentType } from '../../services/validation';
 
 /**
  * Class dealing with the /hosted-payments endpoint

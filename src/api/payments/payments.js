@@ -49,8 +49,8 @@ const addUtilityParams = (json) => {
     if (json.destination) {
         requiresRedirect = false;
     } else {
-        let isPending = json.status === 'Pending';
-        let hasRedirectUrl = json._links['redirect'] !== undefined;
+        const isPending = json.status === 'Pending';
+        const hasRedirectUrl = json._links.redirect !== undefined;
         requiresRedirect = isPending && hasRedirectUrl;
     }
 

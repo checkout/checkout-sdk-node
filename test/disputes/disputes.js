@@ -1,12 +1,4 @@
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-    AuthenticationError,
-    NotFoundError,
-    ActionNotAllowed
-} from '../../src/services/errors';
+import { ValidationError, AuthenticationError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -34,24 +26,22 @@ describe('Disputes', () => {
                         payment_arn: '465760598106',
                         received_on: '2020-04-14T14:33:44Z',
                         last_update: '2020-04-24T18:01:20Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
         const cko = new Checkout(SK);
 
         const disputes = await cko.disputes.get({
             limit: 5,
-            id: 'dsp_bc94ebda8d275i461229'
+            id: 'dsp_bc94ebda8d275i461229',
         });
 
         expect(disputes.limit).to.equal(5);
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .get('/disputes')
-            .reply(401);
+        nock('https://api.sandbox.checkout.com').get('/disputes').reply(401);
         const cko = new Checkout(SK);
 
         try {
@@ -67,13 +57,13 @@ describe('Disputes', () => {
             .reply(422, {
                 request_id: '0HLUQS5FNKDTF:00000001',
                 error_type: 'request_invalid',
-                error_codes: ['paging_limit_invalid']
+                error_codes: ['paging_limit_invalid'],
             });
         const cko = new Checkout(SK);
 
         try {
             const disputes = await cko.disputes.get({
-                limit: -1
+                limit: -1,
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValidationError);
@@ -97,23 +87,36 @@ describe('Disputes', () => {
                     currency: 'GBP',
                     method: 'Visa',
                     arn: '465760598106',
-                    processed_on: '2020-04-14T14:32:57Z'
+                    processed_on: '2020-04-14T14:32:57Z',
                 },
                 last_update: '2020-04-24T18:01:20Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229'
+                        href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229',
                     },
                     evidence: {
                         href:
-                            'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence',
+                    },
+                },
             });
         const cko = new Checkout(SK);
 
         const disputeDetails = await cko.disputes.getDetails('dsp_bc94ebda8d275i461229');
         expect(disputeDetails.id).to.equal('dsp_bc94ebda8d275i461229');
+    });
+
+    it('should throw AuthenticationError error when getting dispute details', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_bc94ebda8d275i461229')
+            .reply(401);
+        const cko = new Checkout(SK);
+
+        try {
+            const disputeDetails = await cko.disputes.getDetails('dsp_bc94ebda8d275i461229');
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
     });
 
     it('should accept dispute', async () => {
@@ -151,35 +154,35 @@ describe('Disputes', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
                     acquirer_transaction_id: '9576266789',
-                    retrieval_reference_number: '989885937118'
+                    retrieval_reference_number: '989885937118',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
-                    }
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                    },
                 },
                 requiresRedirect: false,
-                redirectLink: undefined
+                redirectLink: undefined,
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -203,9 +206,9 @@ describe('Disputes', () => {
                         received_on: '2020-04-26T20:47:44Z',
                         last_update: '2020-04-26T20:47:44Z',
                         evidence_required_by: '2020-05-06T18:00:00Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -221,17 +224,17 @@ describe('Disputes', () => {
                 expiry_month: 8,
                 expiry_year: 2025,
                 name: 'Sarah Mitchell',
-                cvv: '100'
+                cvv: '100',
             },
             amount: 1040,
             currency: 'USD',
-            reference: 'CB'
+            reference: 'CB',
         });
 
         return new Promise(async (resolve, reject) => {
             const timeValue = setInterval(async () => {
                 const dispute = await cko.disputes.get({
-                    payment_id: disputedPayment.id
+                    payment_id: disputedPayment.id,
                 });
                 if (dispute.total_count === 1) {
                     const accept = await cko.disputes.accept(dispute.data[0].id);
@@ -242,6 +245,23 @@ describe('Disputes', () => {
             }, 3000);
         });
     }).timeout(120000);
+
+    it('should throw ValidationError when trying to accept dispute', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/disputes/dsp_3dc29c89ce075g46136d/accept')
+            .reply(422, {
+                request_id: '0HM412MFDPPV8:00000004',
+                error_type: 'request_invalid',
+                error_codes: ['dispute_already_expired'],
+            });
+        const cko = new Checkout(SK);
+
+        try {
+            const accept = await cko.disputes.accept('dsp_3dc29c89ce075g46136d');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+        }
+    });
 
     it('should provide dispute evidence', async () => {
         nock('https://api.sandbox.checkout.com')
@@ -278,35 +298,35 @@ describe('Disputes', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
                     acquirer_transaction_id: '9576266789',
-                    retrieval_reference_number: '989885937118'
+                    retrieval_reference_number: '989885937118',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
-                    }
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                    },
                 },
                 requiresRedirect: false,
-                redirectLink: undefined
+                redirectLink: undefined,
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -330,9 +350,9 @@ describe('Disputes', () => {
                         received_on: '2020-04-26T20:47:44Z',
                         last_update: '2020-04-26T20:47:44Z',
                         evidence_required_by: '2020-05-06T18:00:00Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -348,21 +368,21 @@ describe('Disputes', () => {
                 expiry_month: 8,
                 expiry_year: 2025,
                 name: 'Sarah Mitchell',
-                cvv: '100'
+                cvv: '100',
             },
             amount: 1040,
             currency: 'USD',
-            reference: 'CB'
+            reference: 'CB',
         });
 
         return new Promise(async (resolve, reject) => {
             const timeValue = setInterval(async () => {
                 const dispute = await cko.disputes.get({
-                    payment_id: disputedPayment.id
+                    payment_id: disputedPayment.id,
                 });
                 if (dispute.total_count === 1) {
                     const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
-                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
+                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
                     });
                     expect(Object.keys(evidence).length).to.equal(0);
                     clearInterval(timeValue);
@@ -371,6 +391,25 @@ describe('Disputes', () => {
             }, 3000);
         });
     }).timeout(120000);
+
+    it('should throw ValidationError when trying to provide dispute evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(422, {
+                request_id: '0HM412MFDPQ1U:00000001',
+                error_type: 'request_invalid',
+                error_codes: ['dispute_already_accepted'],
+            });
+        const cko = new Checkout(SK);
+
+        try {
+            const evidence = await cko.disputes.provideEvidence('dsp_3dc29c89ce075g46136d', {
+                proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+        }
+    });
 
     it('should get dispute evidence', async () => {
         nock('https://api.sandbox.checkout.com')
@@ -407,35 +446,35 @@ describe('Disputes', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
                     acquirer_transaction_id: '9576266789',
-                    retrieval_reference_number: '989885937118'
+                    retrieval_reference_number: '989885937118',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
-                    }
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                    },
                 },
                 requiresRedirect: false,
-                redirectLink: undefined
+                redirectLink: undefined,
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -459,9 +498,9 @@ describe('Disputes', () => {
                         received_on: '2020-04-26T20:47:44Z',
                         last_update: '2020-04-26T20:47:44Z',
                         evidence_required_by: '2020-05-06T18:00:00Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -475,12 +514,12 @@ describe('Disputes', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence'
+                            'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence',
                     },
                     parent: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9'
-                    }
-                }
+                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -492,21 +531,21 @@ describe('Disputes', () => {
                 expiry_month: 8,
                 expiry_year: 2025,
                 name: 'Sarah Mitchell',
-                cvv: '100'
+                cvv: '100',
             },
             amount: 1040,
             currency: 'USD',
-            reference: 'CB'
+            reference: 'CB',
         });
 
         return new Promise(async (resolve, reject) => {
             const timeValue = setInterval(async () => {
                 const dispute = await cko.disputes.get({
-                    payment_id: disputedPayment.id
+                    payment_id: disputedPayment.id,
                 });
                 if (dispute.total_count === 1) {
                     const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
-                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
+                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
                     });
                     const getEvidence = await cko.disputes.getEvidence(dispute.data[0].id);
                     expect(getEvidence.proof_of_delivery_or_service_text).to.equal(
@@ -518,6 +557,23 @@ describe('Disputes', () => {
             }, 3000);
         });
     }).timeout(120000);
+
+    it('should throw ValidationError when trying to get dispute evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(422, {
+                request_id: '0HM412MFDPQ1U:00000001',
+                error_type: 'request_invalid',
+                error_codes: ['dispute_already_accepted'],
+            });
+        const cko = new Checkout(SK);
+
+        try {
+            const getEvidence = await cko.disputes.getEvidence('dsp_3dc29c89ce075g46136d');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+        }
+    });
 
     it('should submit dispute evidence', async () => {
         nock('https://api.sandbox.checkout.com')
@@ -554,35 +610,35 @@ describe('Disputes', () => {
                     avs_check: 'S',
                     cvv_check: 'Y',
                     payouts: true,
-                    fast_funds: 'd'
+                    fast_funds: 'd',
                 },
                 customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
                     acquirer_transaction_id: '9576266789',
-                    retrieval_reference_number: '989885937118'
+                    retrieval_reference_number: '989885937118',
                 },
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures'
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids'
-                    }
+                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                    },
                 },
                 requiresRedirect: false,
-                redirectLink: undefined
+                redirectLink: undefined,
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -606,9 +662,9 @@ describe('Disputes', () => {
                         received_on: '2020-04-26T20:47:44Z',
                         last_update: '2020-04-26T20:47:44Z',
                         evidence_required_by: '2020-05-06T18:00:00Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -628,21 +684,21 @@ describe('Disputes', () => {
                 expiry_month: 8,
                 expiry_year: 2025,
                 name: 'Sarah Mitchell',
-                cvv: '100'
+                cvv: '100',
             },
             amount: 1040,
             currency: 'USD',
-            reference: 'CB'
+            reference: 'CB',
         });
 
         return new Promise(async (resolve, reject) => {
             const timeValue = setInterval(async () => {
                 const dispute = await cko.disputes.get({
-                    payment_id: disputedPayment.id
+                    payment_id: disputedPayment.id,
                 });
                 if (dispute.total_count === 1) {
                     const evidence = await cko.disputes.provideEvidence(dispute.data[0].id, {
-                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf'
+                        proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
                     });
                     const submitEvidence = await cko.disputes.submit(dispute.data[0].id);
                     expect(Object.keys(submitEvidence).length).to.equal(0);
@@ -652,4 +708,21 @@ describe('Disputes', () => {
             }, 3000);
         });
     }).timeout(120000);
+
+    it('should throw ValidationError when trying to submit dispute evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/disputes/dsp_3dc29c89ce075g46136d/evidence')
+            .reply(422, {
+                request_id: '0HM412MFDPQ1U:00000001',
+                error_type: 'request_invalid',
+                error_codes: ['dispute_already_accepted'],
+            });
+        const cko = new Checkout(SK);
+
+        try {
+            const submitEvidence = await cko.disputes.submit('dsp_3dc29c89ce075g46136d');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+        }
+    });
 });

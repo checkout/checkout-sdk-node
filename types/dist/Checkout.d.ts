@@ -1,3 +1,5 @@
+
+//@ts-ignore
 import * as http from "http";
 
 import {
