@@ -34,7 +34,6 @@
         "posttest": "nyc report --reporter=json",
         "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch --require esm",
         "build": "babel src --out-dir ./dist --source-maps",
-        "serve": "node ./dist/index.js",
         "codecov": "codecov -f coverage/*.json",
         "tsc": "tsc"
     },

@@ -3,6 +3,8 @@
     "extends": ["airbnb/base", "prettier"],
     "plugins": ["prettier","@babel"],
     "rules": {
-        "prettier/prettier": ["error"]
+        "prettier/prettier": ["error"],
+        "no-use-before-define": "off",
+        "no-underscore-dangle": "off"
     }
 }
