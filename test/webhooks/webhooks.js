@@ -6,7 +6,7 @@ import {
     AuthenticationError,
     NotFoundError,
     ActionNotAllowed,
-    UrlAlreadyRegistered
+    UrlAlreadyRegistered,
 } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
@@ -46,9 +46,9 @@ describe('Webhooks', () => {
                         'payment_retrieval',
                         'payment_void_declined',
                         'payment_voided',
-                        'source_updated'
+                        'source_updated',
                     ],
-                    _links: { self: [Object] }
+                    _links: { self: [Object] },
                 },
                 {
                     id: 'wh_qxadexh6qyyulb4ve6v5r3fjcy',
@@ -69,10 +69,10 @@ describe('Webhooks', () => {
                         'payment_refunded',
                         'payment_retrieval',
                         'payment_void_declined',
-                        'source_updated'
+                        'source_updated',
                     ],
-                    _links: { self: [Object] }
-                }
+                    _links: { self: [Object] },
+                },
             ]);
 
         const cko = new Checkout(SK);
@@ -81,10 +81,19 @@ describe('Webhooks', () => {
         expect(webhooks[0].active).to.equal(true);
     });
 
+    it('should throw AuthenticationError when trying to retrieve webhooks', async () => {
+        nock('https://api.sandbox.checkout.com').get('/webhooks').reply(401);
+        const cko = new Checkout(SK);
+
+        try {
+            const webhooks = await cko.webhooks.retrieveWebhooks();
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
     it('should retrieve all webhooks', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .get('/webhooks')
-            .reply(204, {});
+        nock('https://api.sandbox.checkout.com').get('/webhooks').reply(204, {});
 
         const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2');
 
@@ -105,9 +114,9 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_twptvjwln4zuzbxbd7v5xyh2kq'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/webhooks/wh_twptvjwln4zuzbxbd7v5xyh2kq',
+                    },
+                },
             });
 
         const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2');
@@ -118,18 +127,16 @@ describe('Webhooks', () => {
             url,
             active: true,
             headers: {
-                authorization: '1234'
+                authorization: '1234',
             },
             content_type: 'json',
-            event_types: ['payment_approved', 'payment_captured']
+            event_types: ['payment_approved', 'payment_captured'],
         });
         expect(webhook.url).to.contain('https://example.com/webhooks/');
     });
 
     it('should throw UrlAlreadyRegistered', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .post('/webhooks')
-            .reply(409);
+        nock('https://api.sandbox.checkout.com').post('/webhooks').reply(409);
 
         const cko = new Checkout(SK);
 
@@ -138,10 +145,10 @@ describe('Webhooks', () => {
                 url: 'https://example.com/webhooks/test',
                 active: true,
                 headers: {
-                    authorization: '1234'
+                    authorization: '1234',
                 },
                 content_type: 'json',
-                event_types: ['payment_approved', 'payment_captured']
+                event_types: ['payment_approved', 'payment_captured'],
             });
             expect(webhook.url).to.contain('https://example.com/webhooks/');
         } catch (err) {
@@ -178,14 +185,14 @@ describe('Webhooks', () => {
                     'payment_retrieval',
                     'payment_void_declined',
                     'payment_voided',
-                    'source_updated'
+                    'source_updated',
                 ],
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -200,7 +207,7 @@ describe('Webhooks', () => {
             .reply(422, {
                 request_id: '0HLULE6FQN9M3:00000F03',
                 error_type: 'request_invalid',
-                error_codes: ['url_required']
+                error_codes: ['url_required'],
             });
 
         const cko = new Checkout(SK);
@@ -210,10 +217,10 @@ describe('Webhooks', () => {
                 url: '',
                 active: true,
                 headers: {
-                    authorization: '1234'
+                    authorization: '1234',
                 },
                 content_type: 'json',
-                event_types: ['payment_approved', 'payment_captured']
+                event_types: ['payment_approved', 'payment_captured'],
             });
         } catch (err) {
             expect(err).to.be.instanceOf(ValidationError);
@@ -247,9 +254,9 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -258,12 +265,33 @@ describe('Webhooks', () => {
             url: 'https://example.com/webhooks/updated',
             active: true,
             headers: {
-                authorization: '1234'
+                authorization: '1234',
             },
             content_type: 'json',
-            event_types: ['payment_approved', 'payment_captured']
+            event_types: ['payment_approved', 'payment_captured'],
         });
         expect(webhook.url).to.equal('https://example.com/webhooks/updated');
+    });
+
+    it('should throw AuthenticationError when trying to update webhook', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .put('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
+            .reply(401);
+        const cko = new Checkout(SK);
+
+        try {
+            const webhook = await cko.webhooks.updateWebhook('wh_ahun3lg7bf4e3lohbhni65335u', {
+                url: 'https://example.com/webhooks/updated',
+                active: true,
+                headers: {
+                    authorization: '1234',
+                },
+                content_type: 'json',
+                event_types: ['payment_approved', 'payment_captured'],
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
     });
 
     it('should partially update webhook', async () => {
@@ -279,17 +307,35 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
 
         const webhook = await cko.webhooks.partiallyUpdateWebhook('wh_ahun3lg7bf4e3lohbhni65335u', {
-            url: 'https://example.com/webhooks/updated'
+            url: 'https://example.com/webhooks/updated',
         });
         expect(webhook.url).to.equal('https://example.com/webhooks/updated');
+    });
+
+    it('should throw AuthenticationError when trying to partially update webhook', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .patch('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
+            .reply(401);
+        const cko = new Checkout(SK);
+
+        try {
+            const webhook = await cko.webhooks.partiallyUpdateWebhook(
+                'wh_ahun3lg7bf4e3lohbhni65335u',
+                {
+                    url: 'https://example.com/webhooks/updated',
+                }
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
     });
 
     it('should delete webhook', async () => {
@@ -305,13 +351,13 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                    },
+                },
             });
 
         nock('https://api.sandbox.checkout.com')
-            .delete(uri => uri.includes('/webhooks/wh_'))
+            .delete((uri) => uri.includes('/webhooks/wh_'))
             .reply(200, {});
 
         const cko = new Checkout(SK);
@@ -320,13 +366,53 @@ describe('Webhooks', () => {
             url: 'https://todelete.com/webhook',
             active: true,
             headers: {
-                authorization: '1234'
+                authorization: '1234',
             },
             content_type: 'json',
-            event_types: ['payment_approved', 'payment_captured']
+            event_types: ['payment_approved', 'payment_captured'],
         });
 
         const webhook = await cko.webhooks.removeWebhook(webhookToDelete.id);
         expect(webhook).to.eqls({});
+    });
+
+    it('should throw AuthenticationError when trying to remove webhook', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/webhooks')
+            .reply(200, {
+                id: 'wh_ahun3lg7bf4e3lohbhni65335u',
+                url: 'https://todelete.com/webhook',
+                active: true,
+                headers: { authorization: '1234' },
+                content_type: 'json',
+                event_types: ['payment_approved', 'payment_captured'],
+                _links: {
+                    self: {
+                        href:
+                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                    },
+                },
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .delete((uri) => uri.includes('/webhooks/wh_'))
+            .reply(401);
+        const cko = new Checkout(SK);
+
+        const webhookToDelete = await cko.webhooks.registerWebhook({
+            url: 'https://todelete.com/webhook',
+            active: true,
+            headers: {
+                authorization: '1234',
+            },
+            content_type: 'json',
+            event_types: ['payment_approved', 'payment_captured'],
+        });
+
+        try {
+            const webhook = await cko.webhooks.removeWebhook(webhookToDelete.id);
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
     });
 });

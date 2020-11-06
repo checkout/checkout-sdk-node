@@ -1,12 +1,4 @@
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-    AuthenticationError,
-    NotFoundError,
-    ActionNotAllowed
-} from '../../src/services/errors';
+import { AuthenticationError, NotFoundError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -34,8 +26,8 @@ describe('Events', () => {
                         'charge.succeeded',
                         'charge.voided',
                         'charge.voided.failed',
-                        'invoice.cancelled'
-                    ]
+                        'invoice.cancelled',
+                    ],
                 },
                 {
                     version: '2.0',
@@ -64,9 +56,9 @@ describe('Events', () => {
                         'payment_retrieval',
                         'payment_void_declined',
                         'payment_voided',
-                        'source_updated'
-                    ]
-                }
+                        'source_updated',
+                    ],
+                },
             ]);
 
         const cko = new Checkout(SK);
@@ -108,9 +100,9 @@ describe('Events', () => {
                         'payment_retrieval',
                         'payment_void_declined',
                         'payment_voided',
-                        'source_updated'
-                    ]
-                }
+                        'source_updated',
+                    ],
+                },
             ]);
 
         const cko = new Checkout(SK);
@@ -120,9 +112,7 @@ describe('Events', () => {
     });
 
     it('should throw authentication error', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .get('/event-types')
-            .reply(401);
+        nock('https://api.sandbox.checkout.com').get('/event-types').reply(401);
 
         const cko = new Checkout();
         try {
@@ -146,68 +136,68 @@ describe('Events', () => {
                         id: 'evt_c2qelfixai2u3es3ksovngkx3e',
                         type: 'payment_captured',
                         created_on: '2020-04-24T11:50:11Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_6a36se3gvo5eviql6da3opgnfa',
                         type: 'payment_approved',
                         created_on: '2020-04-24T11:50:03Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_u22pbjkvocuelnrm3kph25smra',
                         type: 'payment_captured',
                         created_on: '2020-04-23T12:59:04Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_wng4s4krim3upfyedhdafvxkv4',
                         type: 'payment_captured',
                         created_on: '2020-04-23T12:48:48Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_ugpp7oo52yae3gk227okok3g44',
                         type: 'payment_capture_pending',
                         created_on: '2020-04-23T12:48:40Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_q2feyay4j6julbjczmckekuus4',
                         type: 'payment_pending',
                         created_on: '2020-04-23T12:48:39Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_rltwqu6duvcurcpgmo5wz6bv5e',
                         type: 'payment_capture_pending',
                         created_on: '2020-04-23T12:48:04Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_aps5bcsag5je7psjbf5brecjtq',
                         type: 'payment_pending',
                         created_on: '2020-04-23T12:48:04Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_ngrpwrt3z5netem5dcszldzqzi',
                         type: 'payment_captured',
                         created_on: '2020-04-23T12:19:14Z',
-                        _links: [Object]
+                        _links: [Object],
                     },
                     {
                         id: 'evt_if5b6ymor3ju3n52afvwqfwfxa',
                         type: 'payment_approved',
                         created_on: '2020-04-23T12:19:08Z',
-                        _links: [Object]
-                    }
-                ]
+                        _links: [Object],
+                    },
+                ],
             });
 
         const cko = new Checkout(SK);
         const events = await cko.events.retrieveEvents({
-            from: '2019-03-01T00:00:00Z'
+            from: '2019-03-01T00:00:00Z',
         });
 
         expect(events.from).to.equal('2019-03-01T00:00:00Z');
@@ -221,22 +211,20 @@ describe('Events', () => {
         const cko = new Checkout(SK);
         const events = await cko.events.retrieveEvents({
             from: '2007-03-01T00:00:00Z',
-            to: '2008-03-01T00:00:00Z'
+            to: '2008-03-01T00:00:00Z',
         });
 
         expect(Object.keys(events).length).to.equal(0);
     });
 
     it('should throw ValidationError error', async () => {
-        nock('https://api.sandbox.checkout.com')
-            .get('/events?from=XXXX')
-            .reply(400, {}); // pending GW response for potential 422 code
+        nock('https://api.sandbox.checkout.com').get('/events?from=XXXX').reply(400, {}); // pending GW response for potential 422 code
 
         const cko = new Checkout(SK);
 
         try {
             const events = await cko.events.retrieveEvents({
-                from: 'XXXX'
+                from: 'XXXX',
             });
             throw new Error();
         } catch (err) {
@@ -260,23 +248,23 @@ describe('Events', () => {
                     metadata: {},
                     processing: {
                         acquirer_transaction_id: '1159094323',
-                        acquirer_reference_number: '874479685178'
+                        acquirer_reference_number: '874479685178',
                     },
                     id: 'pay_xskg4u47uabenhpxfvpmqduume',
                     currency: 'USD',
-                    processed_on: '2020-04-24T11:50:11Z'
+                    processed_on: '2020-04-24T11:50:11Z',
                 },
                 notifications: [],
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e'
+                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e',
                     },
                     'webhooks-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -331,12 +319,12 @@ describe('Events', () => {
                         product_id: 'MCS',
                         product_type: 'Standard MasterCard® Card',
                         avs_check: 'S',
-                        cvv_check: 'Y'
+                        cvv_check: 'Y',
                     },
                     customer: { id: 'cus_hvh6gjhhbvoejbrki7n53qhsf4' },
                     processing: {
                         acquirer_transaction_id: '2315645429',
-                        retrieval_reference_number: '333364447050'
+                        retrieval_reference_number: '333364447050',
                     },
                     amount: 100,
                     metadata: {},
@@ -344,7 +332,7 @@ describe('Events', () => {
                     id: 'pay_uqw2tkfecmnebhtt23fv6nbxka',
                     currency: 'USD',
                     processed_on: '2020-04-24T12:30:19Z',
-                    reference: 'NEW API'
+                    reference: 'NEW API',
                 },
                 notifications: [
                     {
@@ -352,19 +340,19 @@ describe('Events', () => {
                         id: 'ntf_wqjkqpgjy33uxoywcej4fnw6qm',
                         notification_type: 'Webhook',
                         success: true,
-                        _links: [Object]
-                    }
+                        _links: [Object],
+                    },
                 ],
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u'
+                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u',
                     },
                     'webhooks-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/retry'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/retry',
+                    },
+                },
             });
 
         nock('https://api.sandbox.checkout.com')
@@ -378,21 +366,21 @@ describe('Events', () => {
                     {
                         status_code: 200,
                         send_mode: 'automatic',
-                        timestamp: '2020-04-24T12:30:19Z'
-                    }
+                        timestamp: '2020-04-24T12:30:19Z',
+                    },
                 ],
                 id: 'ntf_wqjkqpgjy33uxoywcej4fnw6qm',
                 success: true,
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm'
+                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm',
                     },
                     'webhook-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry'
-                    }
-                }
+                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry',
+                    },
+                },
             });
 
         const cko = new Checkout(SK);
@@ -403,10 +391,28 @@ describe('Events', () => {
 
         const notification = await cko.events.retrieveEventNotification({
             eventId,
-            notificationId
+            notificationId,
         });
 
         expect(notification.content_type).to.equal('json');
+    });
+
+    it('should throw Not Found when trying to retrive event notification', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/events/evt_pwhgncrvd3julmuutcoz4deu2q/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm'
+            )
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const notification = await cko.events.retrieveEventNotification({
+                eventId: 'evt_pwhgncrvd3julmuutcoz4deu2q',
+                notificationId: 'ntf_wqjkqpgjy33uxoywcej4fnw6qm',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 
     it('should retry event', async () => {
@@ -420,10 +426,28 @@ describe('Events', () => {
 
         const event = await cko.events.retry({
             eventId: 'evt_c2qelfixai2u3es3ksovngkx3e',
-            webhookId: 'wh_mpkyioafmajulnhjvwmrklenb4'
+            webhookId: 'wh_mpkyioafmajulnhjvwmrklenb4',
         });
 
         expect(Object.keys(event).length).to.equal(0);
+    });
+
+    it('should throw Not Found when trying to retry a notification', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post(
+                '/events/evt_c2qelfixai2u3es3ksovngkx3q/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry'
+            )
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const event = await cko.events.retry({
+                eventId: 'evt_c2qelfixai2u3es3ksovngkx3q',
+                webhookId: 'wh_mpkyioafmajulnhjvwmrklenb4',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 
     it('should retry all events', async () => {
@@ -436,5 +460,18 @@ describe('Events', () => {
         const event = await cko.events.retryAll('evt_c2qelfixai2u3es3ksovngkx3e');
 
         expect(Object.keys(event).length).to.equal(0);
+    });
+
+    it('should throw Not Found when trying to retry all events', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/events/evt_c2qelfixai2u3es3ksovngkx3q/webhooks/retry')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const event = await cko.events.retryAll('evt_c2qelfixai2u3es3ksovngkx3q');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 });

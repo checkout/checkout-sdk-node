@@ -74,6 +74,19 @@ describe('Reconciliation', () => {
         expect(reconciliation.count).to.equal(1);
     });
 
+    it('should throw Not Found error when trying to get payments', async () => {
+        nock('https://api.sandbox.checkout.com').get('/reporting/payments?from=test').reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const reconciliation = await cko.reconciliation.getPayments({
+                from: 'test',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
     it('should get JSON for a single payment report', async () => {
         nock('https://api.sandbox.checkout.com')
             .get('/reporting/payments/pay_nezg6bx2k22utmk4xm5s2ughxi')
@@ -134,6 +147,21 @@ describe('Reconciliation', () => {
         expect(reconciliation.data.id).to.equal('pay_nezg6bx2k22utmk4xm5s2ughxi');
     });
 
+    it('should throw Not Found error when trying to get payment', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/payments/pay_nezg6bx2k22utmk4xm5s2ughxz')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const reconciliation = await cko.reconciliation.getPayment(
+                'pay_nezg6bx2k22utmk4xm5s2ughxz'
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
     it('should get CSV payments report', async () => {
         nock('https://api.sandbox.checkout.com')
             .get('/reporting/payments/download?from=2019-05-17T16:48:52Z')
@@ -148,6 +176,21 @@ describe('Reconciliation', () => {
         });
 
         expect(reconciliation).to.be.instanceof(Buffer);
+    });
+
+    it('should throw Not Found error when trying to get payments csv', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/payments/download?from=2019-05-17T16:48:52Z')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const reconciliation = await cko.reconciliation.getPaymentsCsv({
+                from: '2019-05-17T16:48:52Z',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 
     it('should get JSON statements report', async () => {
@@ -219,6 +262,22 @@ describe('Reconciliation', () => {
         expect(statements.data.length).to.equal(1);
     });
 
+    it('should throw Not Found error when trying to get statements report', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/statements?from=2019-05-17T16:48:52Z&to=2019-06-17T16:48:52Z')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const statements = await cko.reconciliation.getStatements({
+                from: '2019-05-17T16:48:52Z',
+                to: '2019-06-17T16:48:52Z',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
     it('should get CSV single statement report', async () => {
         nock('https://api.sandbox.checkout.com')
             .get('/reporting/statements/155613B100981/payments/download')
@@ -231,6 +290,19 @@ describe('Reconciliation', () => {
         const statement = await cko.reconciliation.getStatementCsv('155613B100981');
 
         expect(statement).to.be.instanceof(Buffer);
+    });
+
+    it('should throw Not Found error when trying to get statements report csv', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/statements/155613B100981/payments/download')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const statement = await cko.reconciliation.getStatementCsv('155613B100981');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 
     it('should paginate the json payment response', async () => {

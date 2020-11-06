@@ -225,6 +225,19 @@ describe('Request an instrument', () => {
         expect(instrumentResponse.id).to.equal('src_wmlfc3zyhqzehihu7giusaaawu');
     });
 
+    it('should throw Not Found when trying to get an instrument', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/instruments/src_udfsqsgpjykutgs26fiejgizaz')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const instrumentResponse = await cko.instruments.get('src_udfsqsgpjykutgs26fiejgizaz');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
     it('should update instrument', async () => {
         nock('https://api.sandbox.checkout.com')
             .patch('/instruments/src_udfsqsgpjykutgs26fiejgizau')
@@ -240,6 +253,24 @@ describe('Request an instrument', () => {
         });
 
         expect(instrumentResponse.type).to.equal('card');
+    });
+
+    it('should throw Not Found when trying to update an instrument', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .patch('/instruments/src_udfsqsgpjykutgs26fiejgizau')
+            .reply(404);
+        const cko = new Checkout(SK);
+
+        try {
+            const instrumentResponse = await cko.instruments.update(
+                'src_udfsqsgpjykutgs26fiejgizau',
+                {
+                    expiry_year: 2030,
+                }
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
     });
 
     it('should throw authorization error when updating instrument', async () => {
