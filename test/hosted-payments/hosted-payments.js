@@ -79,4 +79,36 @@ describe('Hosted Payments', () => {
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
+
+    it('should throw network error', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/hosted-payments')
+            .replyWithError('something happened');
+
+        try {
+            const cko = new Checkout('sk_');
+
+            const hostedResponse = await cko.hostedPayments.create({
+                amount: 10,
+                currency: 'USD',
+                billing: {
+                    address: {
+                        address_line1: 'Checkout.com',
+                        address_line2: '90 Tottenham Court Road',
+                        city: 'London',
+                        state: 'London',
+                        zip: 'W1T 4TJ',
+                        country: 'GB',
+                    },
+                },
+                success_url: 'https://example.com/success',
+                cancel_url: 'https://example.com/cancel',
+                failure_url: 'https://example.com/failure',
+            });
+        } catch (err) {
+            expect(err.body).to.be.equal(
+                'request to https://api.sandbox.checkout.com/hosted-payments failed, reason: something happened'
+            );
+        }
+    });
 });
