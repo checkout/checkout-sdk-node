@@ -95,6 +95,42 @@ This API call returns a Buffer.
 
 :::
 
+## Get Payments Actions
+
+```js
+const reconciliation = await cko.reconciliation.getPaymentsActions({
+    requested_from: '2020-08-17T16:48:52Z',
+    requested_to: '2020-09-17T16:48:52Z',
+});
+```
+
+## Get Payments Action
+
+```js
+const reconciliation = await cko.reconciliation.getPaymentsAction('act_guvhr46cw2kurd6lknczrsh7ma');
+```
+
+## Get Payments Actions CSV
+
+```js
+const reconciliation = await cko.reconciliation.getPaymentsActionsCsv({
+    requested_from: '2020-08-17T16:48:52Z',
+    requested_to: '2020-09-17T16:48:52Z',
+});
+```
+
+:::note
+
+This API call returns a Buffer.
+
+:::
+
+## Get Action
+
+```js
+const reconciliation = await cko.reconciliation.getAction('act_h45qukswryqejptltkcylnwgwe');
+```
+
 ## Example Buffer usage
 
 Here you have an example of an Express route that will trigger the CSV download when accessed:

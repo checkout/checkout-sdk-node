@@ -377,4 +377,224 @@ describe('Reconciliation', () => {
             expect(reconciliation.count >= 2).to.be.true;
         } while (page);
     });
+
+    it('should get payments actions', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/actions?requested_from=2020-08-17T16:48:52Z&requested_to=2020-09-17T16:48:52Z'
+            )
+            .reply(200, {
+                count: 1,
+                data: [
+                    {
+                        action_id: 'act_prg5cmy2q6yejfhr6a3napkpqq',
+                        action_type: 'Settlement',
+                        payment_id: 'pay_ry6g3dm46zeupjtg7nvi3wyr4y',
+                        requested_on: '2020-09-10T18:31:28.700',
+                        processed_on: '2020-09-10T20:35:12.558',
+                        processing_currency: 'GBP',
+                        payout_currency: 'GBP',
+                        payout_id: 'ADL1FA2C2',
+                        channel_name: 'Example Clothing',
+                        payment_method: 'VISA',
+                        card_type: 'CREDIT',
+                        card_category: 'Consumer',
+                        issuer_country: 'GB',
+                        merchant_country: 'GB',
+                        response_code: '10000',
+                        response_description: 'Approved',
+                        region: 'Domestic',
+                        breakdown: [Array],
+                        _links: [Object],
+                    },
+                ],
+                _links: {
+                    self: {
+                        href:
+                            'https://api.checkout.com/reporting/actions?requested_from=08%2F17%2F2020%2016%3A48%3A52&requested_to=09%2F17%2F2020%2016%3A48%3A52&limit=200',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const reconciliation = await cko.reconciliation.getPaymentsActions({
+            requested_from: '2020-08-17T16:48:52Z',
+            requested_to: '2020-09-17T16:48:52Z',
+        });
+
+        expect(reconciliation.count).to.equal(1);
+    });
+
+    it('should throw Authentication error when trying to get payments actions', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/actions?requested_from=2020-08-17T16:48:52Z&requested_to=2020-09-17T16:48:52Z'
+            )
+            .reply(401);
+        const cko = new Checkout();
+
+        try {
+            const reconciliation = await cko.reconciliation.getPaymentsActions({
+                requested_from: '2020-08-17T16:48:52Z',
+                requested_to: '2020-09-17T16:48:52Z',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
+    it('should get CSV payments actions', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/actions/download?requested_from=2020-08-17T16:48:52Z&requested_to=2020-09-17T16:48:52Z'
+            )
+            .replyWithFile(200, __dirname + '/report.csv', {
+                'Content-Type': 'application/json',
+            });
+
+        const cko = new Checkout(SK);
+
+        const reconciliation = await cko.reconciliation.getPaymentsActionsCsv({
+            requested_from: '2020-08-17T16:48:52Z',
+            requested_to: '2020-09-17T16:48:52Z',
+        });
+
+        expect(reconciliation).to.be.instanceof(Buffer);
+    });
+
+    it('should throw Authentication error when trying to get CSV payments actions', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get(
+                '/reporting/actions/download?requested_from=2020-08-17T16:48:52Z&requested_to=2020-09-17T16:48:52Z'
+            )
+            .reply(401);
+        const cko = new Checkout();
+
+        try {
+            const reconciliation = await cko.reconciliation.getPaymentsActionsCsv({
+                requested_from: '2020-08-17T16:48:52Z',
+                requested_to: '2020-09-17T16:48:52Z',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
+    it('should get the reconciliation data of a payment action', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/actions/act_h45qukswryqejptltkcylnwgwe')
+            .reply(200, {
+                count: 1,
+                data: [
+                    {
+                        action_id: 'act_h45qukswryqejptltkcylnwgwe',
+                        action_type: 'Authorization',
+                        payment_id: 'pay_h45qukswryqejptltkcylnwgwe',
+                        requested_on: '2020-09-09T16:18:37.614',
+                        processed_on: '2020-09-09T16:18:39.422',
+                        processing_currency: 'GBP',
+                        payout_currency: 'AED',
+                        payout_id: 'N8IBDLU5I',
+                        channel_name: 'Example Clothing',
+                        payment_method: 'VISA',
+                        card_type: 'CREDIT',
+                        card_category: 'Consumer',
+                        issuer_country: 'GB',
+                        merchant_country: 'GB',
+                        response_code: '10100',
+                        response_description: '40141 - Threshold Risk',
+                        region: 'Domestic',
+                        breakdown: [Array],
+                        _links: [Object],
+                    },
+                ],
+                _links: {
+                    self: {
+                        href:
+                            'https://api.checkout.com/reporting/actions/act_h45qukswryqejptltkcylnwgwe',
+                    },
+                },
+            });
+        const cko = new Checkout(SK);
+
+        const reconciliation = await cko.reconciliation.getAction('act_h45qukswryqejptltkcylnwgwe');
+
+        expect(reconciliation.data[0].action_id).to.equal('act_h45qukswryqejptltkcylnwgwe');
+    });
+
+    it('should throw Authentication error when trying to get the reconciliation data of a payment action', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/actions/act_h45qukswryqejptltkcylnwgwe')
+            .reply(401);
+        const cko = new Checkout();
+
+        try {
+            const reconciliation = await cko.reconciliation.getAction(
+                'act_h45qukswryqejptltkcylnwgwe'
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
+    it('should get payments action', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/payments/actions/act_guvhr46cw2kurd6lknczrsh7ma')
+            .reply(200, {
+                count: 1,
+                data: [
+                    {
+                        id: 'pay_guvhr46cw2kurd6lknczrsh7ma',
+                        processing_currency: 'USD',
+                        payout_currency: 'AED',
+                        requested_on: '2020-10-27T17:56:20.420',
+                        channel_name: 'Test Clothing',
+                        reference: 'johnny',
+                        payment_method: 'VISA',
+                        card_type: 'DEBIT',
+                        card_category: 'Consumer',
+                        issuer_country: 'GB',
+                        merchant_country: 'GB',
+                        region: 'Domestic',
+                        actions: [],
+                        _links: {
+                            self: {
+                                href:
+                                    'https://api.checkout.com/reporting/payments/pay_guvhr46cw2kurd6lknczrsh7ma',
+                            },
+                        },
+                    },
+                ],
+                _links: {
+                    self: {
+                        href:
+                            'https://api.checkout.com/reporting/payments/actions/act_guvhr46cw2kurd6lknczrsh7ma',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const reconciliation = await cko.reconciliation.getPaymentsAction(
+            'act_guvhr46cw2kurd6lknczrsh7ma'
+        );
+
+        expect(reconciliation.data[0].id).to.equal('pay_guvhr46cw2kurd6lknczrsh7ma');
+    });
+
+    it('should throw Authentication error when trying to get payments action', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/reporting/payments/actions/act_guvhr46cw2kurd6lknczrsh7ma')
+            .reply(401);
+        const cko = new Checkout();
+
+        try {
+            const reconciliation = await cko.reconciliation.getPaymentsAction(
+                'act_guvhr46cw2kurd6lknczrsh7ma'
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
 });

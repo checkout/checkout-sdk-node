@@ -7,4 +7,8 @@ export default class Reconciliation {
     getPaymentsCsv: (body: Object) => Promise<Object>;
     getStatements: (body: Object) => Promise<Object>;
     getStatementCsv: (statementId: String) => Promise<Object>;
+    getPaymentsActions: (body: Object) => Promise<Object>;
+    getPaymentsAction: (actionId: String) => Promise<Object>;
+    getPaymentsActionsCsv: (body: Object) => Promise<Object>;
+    getAction: (actionId: String) => Promise<Object>;
 }
