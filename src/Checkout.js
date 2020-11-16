@@ -11,6 +11,7 @@ import {
     Reconciliation,
     Customers,
     HostedPayments,
+    Giropay,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -71,5 +72,6 @@ export default class Checkout {
         this.reconciliation = new Reconciliation(this.config);
         this.customers = new Customers(this.config);
         this.hostedPayments = new HostedPayments(this.config);
+        this.giropay = new Giropay(this.config);
     }
 }
