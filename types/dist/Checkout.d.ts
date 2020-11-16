@@ -15,6 +15,7 @@ import {
     Customers,
     HostedPayments,
     Giropay,
+    Ideal
 } from './index';
 
 export type config = {
@@ -44,6 +45,7 @@ export default class Checkout {
     customers: Customers;
     hostedPayments: HostedPayments;
     giropay: Giropay;
+    ideal: Ideal;
     config: config;
 
     constructor(key?: string, options?: options);
