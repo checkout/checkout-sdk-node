@@ -15,6 +15,7 @@ import {
     Ideal,
     Fawry,
     PagoFacil,
+    Rapipago,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -79,5 +80,6 @@ export default class Checkout {
         this.ideal = new Ideal(this.config);
         this.fawry = new Fawry(this.config);
         this.pagoFacil = new PagoFacil(this.config);
+        this.rapipago = new Rapipago(this.config);
     }
 }

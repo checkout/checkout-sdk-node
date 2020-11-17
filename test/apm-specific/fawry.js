@@ -125,7 +125,6 @@ describe('Fawry', () => {
         let ref = payment._links.cancel.href.match(/payments\/([^&]*)/)[1];
         ref = ref.substring(0, ref.length - 13);
 
-        console.log(ref);
         const fawry = await cko.fawry.cancel(ref);
     });
 
