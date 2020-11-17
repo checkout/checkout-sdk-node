@@ -16,6 +16,7 @@ import {
     Fawry,
     PagoFacil,
     Rapipago,
+    Boleto,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -81,5 +82,6 @@ export default class Checkout {
         this.fawry = new Fawry(this.config);
         this.pagoFacil = new PagoFacil(this.config);
         this.rapipago = new Rapipago(this.config);
+        this.boleto = new Boleto(this.config);
     }
 }

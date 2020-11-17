@@ -14,5 +14,6 @@ export { default as Ideal } from './api/apm-specific/ideal';
 export { default as Fawry } from './api/apm-specific/fawry';
 export { default as PagoFacil } from './api/apm-specific/pagofacil';
 export { default as Rapipago } from './api/apm-specific/rapipago';
+export { default as Boleto } from './api/apm-specific/boleto';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

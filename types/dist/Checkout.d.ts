@@ -18,7 +18,8 @@ import {
     Ideal,
     Fawry,
     PagoFacil,
-    Rapipago
+    Rapipago,
+    Boleto
 } from './index';
 
 export type config = {
@@ -52,6 +53,7 @@ export default class Checkout {
     fawry: Fawry;
     pagoFacil: PagoFacil;
     rapipago: Rapipago;
+    Boleto: Boleto;
     config: config;
 
     constructor(key?: string, options?: options);

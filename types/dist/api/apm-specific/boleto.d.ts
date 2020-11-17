@@ -1,5 +1,5 @@
 import { config } from '../../Checkout';
-export default class Rapipago {
+export default class Boleto {
     constructor(config: config);
 
     succeed: (id: string) => Promise<Object>;
