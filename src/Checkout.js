@@ -13,6 +13,7 @@ import {
     HostedPayments,
     Giropay,
     Ideal,
+    Fawry,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -75,5 +76,6 @@ export default class Checkout {
         this.hostedPayments = new HostedPayments(this.config);
         this.giropay = new Giropay(this.config);
         this.ideal = new Ideal(this.config);
+        this.fawry = new Fawry(this.config);
     }
 }
