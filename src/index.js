@@ -13,5 +13,6 @@ export { default as HostedPayments } from './api/hosted-payments/hosted-payments
 export { default as Giropay } from './api/apm-specific/giropay';
 export { default as Ideal } from './api/apm-specific/ideal';
 export { default as Fawry } from './api/apm-specific/fawry';
+export { default as PagoFacil } from './api/apm-specific/pagofacil';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

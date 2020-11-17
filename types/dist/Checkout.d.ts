@@ -16,7 +16,8 @@ import {
     HostedPayments,
     Giropay,
     Ideal,
-    Fawry
+    Fawry,
+    PagoFacil
 } from './index';
 
 export type config = {
@@ -48,6 +49,7 @@ export default class Checkout {
     giropay: Giropay;
     ideal: Ideal;
     fawry: Fawry;
+    pagoFacil: PagoFacil;
     config: config;
 
     constructor(key?: string, options?: options);
