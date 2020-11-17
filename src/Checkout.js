@@ -17,6 +17,8 @@ import {
     PagoFacil,
     Rapipago,
     Boleto,
+    Baloto,
+    Oxxo,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -83,5 +85,7 @@ export default class Checkout {
         this.pagoFacil = new PagoFacil(this.config);
         this.rapipago = new Rapipago(this.config);
         this.boleto = new Boleto(this.config);
+        this.baloto = new Baloto(this.config);
+        this.oxxo = new Oxxo(this.config);
     }
 }
