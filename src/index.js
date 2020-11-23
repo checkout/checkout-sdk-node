@@ -18,5 +18,6 @@ export { default as Rapipago } from './api/apm-specific/rapipago';
 export { default as Boleto } from './api/apm-specific/boleto';
 export { default as Baloto } from './api/apm-specific/baloto';
 export { default as Oxxo } from './api/apm-specific/oxxo';
+export { default as Klarna } from './api/apm-specific/klarna';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

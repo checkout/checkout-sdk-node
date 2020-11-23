@@ -19,6 +19,7 @@ import {
     Boleto,
     Baloto,
     Oxxo,
+    Klarna,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -87,5 +88,6 @@ export default class Checkout {
         this.boleto = new Boleto(this.config);
         this.baloto = new Baloto(this.config);
         this.oxxo = new Oxxo(this.config);
+        this.klarna = new Klarna(this.config);
     }
 }
