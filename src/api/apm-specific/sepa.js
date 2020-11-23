@@ -3,54 +3,26 @@ import { determineError } from '../../services/errors';
 import http from '../../services/http';
 
 /**
- * Class dealing with the /klarna and /klarna-external endpoint
+ * Class dealing with the /sepa and /ppro/sepa endpoint
  *
  * @export
- * @class Klarna
+ * @class Sepa
  */
-export default class Klarna {
+export default class Sepa {
     constructor(config) {
         this.config = config;
     }
 
     /**
-     * Create a session
+     * Get mandate
      *
-     * @param {Object} body Sessions details.
-     * @return {Promise<Object>} A promise to the Klarna response.
+     * @param {string} id Source id
+     * @return {Promise<Object>} A promise to the Sepa response.
      */
-    async createSession(body) {
+    async getMandate(id) {
         let url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/credit-sessions`
-            : `${this.config.host}/klarna/credit-sessions`;
-        try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
-    }
-
-    /**
-     * Get a session
-     *
-     * @param {string} id Session id.
-     * @return {Promise<Object>} A promise to the Klarna response.
-     */
-    async getSession(id) {
-        let url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/credit-sessions/${id}`
-            : `${this.config.host}/klarna/credit-sessions/${id}`;
+            ? `${this.config.host}/sepa-external/mandates/${id}`
+            : `${this.config.host}/sepa/mandates/${id}`;
         try {
             const response = await http(
                 fetch,
@@ -69,16 +41,16 @@ export default class Klarna {
     }
 
     /**
-     * Capture a klarna payment
+     * Cancel mandate
      *
-     * @param {string} id Payment id.
-     * @param {Object} body Capture details.
-     * @return {Promise<Object>} A promise to the Klarna response.
+     * @param {string} id Source id
+     * @return {Promise<Object>} A promise to the Sepa response.
      */
-    async capture(id, body) {
+    async cancelMandate(id) {
         let url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/orders/${id}/captures`
-            : `${this.config.host}/klarna/orders/${id}/captures`;
+            ? `${this.config.host}/sepa-external/mandates/${id}/cancel`
+            : `${this.config.host}/sepa/mandates/${id}/cancel`;
+
         try {
             const response = await http(
                 fetch,
@@ -87,7 +59,6 @@ export default class Klarna {
                     method: 'post',
                     url,
                     headers: { Authorization: this.config.sk },
-                    body,
                 }
             );
             return await response.json;
@@ -98,16 +69,43 @@ export default class Klarna {
     }
 
     /**
-     * Void a klarna payment
+     * Get mandate via PPRO
      *
-     * @param {string} id Payment id.
-     * @param {Object} [body] Void details.
-     * @return {Promise<Object>} A promise to the Klarna response.
+     * @param {string} id Source id
+     * @return {Promise<Object>} A promise to the Sepa response.
      */
-    async void(id, body) {
+    async getPPROMandate(id) {
         let url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/orders/${id}/voids`
-            : `${this.config.host}/klarna/orders/${id}/voids`;
+            ? `${this.config.host}/ppro/sepa-external/mandates/${id}`
+            : `${this.config.host}/ppro/sepa/mandates/${id}`;
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout, agent: this.config.agent },
+                {
+                    method: 'get',
+                    url,
+                    headers: { Authorization: this.config.sk },
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Cancel mandate via PPRO
+     *
+     * @param {string} id Source id
+     * @return {Promise<Object>} A promise to the Sepa response.
+     */
+    async cancelPPROMandate(id) {
+        let url = this.config.host.includes('sandbox')
+            ? `${this.config.host}/ppro/sepa-external/mandates/${id}/cancel`
+            : `${this.config.host}/ppro/sepa/mandates/${id}/cancel`;
+
         try {
             const response = await http(
                 fetch,
@@ -116,7 +114,6 @@ export default class Klarna {
                     method: 'post',
                     url,
                     headers: { Authorization: this.config.sk },
-                    body,
                 }
             );
             return await response.json;

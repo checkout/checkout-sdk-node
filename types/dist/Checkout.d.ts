@@ -22,7 +22,8 @@ import {
     Boleto,
     Baloto,
     Oxxo,
-    Klarna
+    Klarna,
+    Sepa
 } from './index';
 
 export type config = {
@@ -60,6 +61,7 @@ export default class Checkout {
     baloto: Baloto;
     oxxo: Oxxo;
     klarna: Klarna;
+    sepa: Sepa;
     config: config;
 
     constructor(key?: string, options?: options);
