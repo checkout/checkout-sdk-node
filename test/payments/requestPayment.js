@@ -687,6 +687,7 @@ describe('Request a payment or payout', () => {
             });
         } catch (err) {
             expect(err.name).to.equal('ApiTimeout');
+            expect(err.http_code).to.equal(408);
         }
     });
 
