@@ -11,6 +11,16 @@ import {
     Reconciliation,
     Customers,
     HostedPayments,
+    Giropay,
+    Ideal,
+    Fawry,
+    PagoFacil,
+    Rapipago,
+    Boleto,
+    Baloto,
+    Oxxo,
+    Klarna,
+    Sepa,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -71,5 +81,15 @@ export default class Checkout {
         this.reconciliation = new Reconciliation(this.config);
         this.customers = new Customers(this.config);
         this.hostedPayments = new HostedPayments(this.config);
+        this.giropay = new Giropay(this.config);
+        this.ideal = new Ideal(this.config);
+        this.fawry = new Fawry(this.config);
+        this.pagoFacil = new PagoFacil(this.config);
+        this.rapipago = new Rapipago(this.config);
+        this.boleto = new Boleto(this.config);
+        this.baloto = new Baloto(this.config);
+        this.oxxo = new Oxxo(this.config);
+        this.klarna = new Klarna(this.config);
+        this.sepa = new Sepa(this.config);
     }
 }

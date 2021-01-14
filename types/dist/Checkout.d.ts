@@ -14,6 +14,16 @@ import {
     Reconciliation,
     Customers,
     HostedPayments,
+    Giropay,
+    Ideal,
+    Fawry,
+    PagoFacil,
+    Rapipago,
+    Boleto,
+    Baloto,
+    Oxxo,
+    Klarna,
+    Sepa
 } from './index';
 
 export type config = {
@@ -42,6 +52,16 @@ export default class Checkout {
     reconciliation: Reconciliation;
     customers: Customers;
     hostedPayments: HostedPayments;
+    giropay: Giropay;
+    ideal: Ideal;
+    fawry: Fawry;
+    pagoFacil: PagoFacil;
+    rapipago: Rapipago;
+    boleto: Boleto;
+    baloto: Baloto;
+    oxxo: Oxxo;
+    klarna: Klarna;
+    sepa: Sepa;
     config: config;
 
     constructor(key?: string, options?: options);
