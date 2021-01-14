@@ -245,7 +245,7 @@ describe('Klarna', () => {
         }
     });
 
-    it('should capture', async () => {
+    it('should capture prod', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/klarna-external/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/captures')
             .reply(202, {
@@ -253,6 +253,50 @@ describe('Klarna', () => {
             });
 
         const cko = new Checkout(SK);
+
+        const session = await cko.klarna.capture('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
+            amount: 1000,
+            reference: 'ORD-5023-4E89',
+            metadata: {},
+            type: 'klarna',
+            klarna: {
+                description: 'Your order with Checkout.com',
+                products: [
+                    {
+                        name: 'Battery Power Pack',
+                        quantity: 1,
+                        unit_price: 1000,
+                        tax_rate: 0,
+                        total_amount: 1000,
+                        total_tax_amount: 0,
+                    },
+                ],
+                shipping_info: [
+                    {
+                        shipping_company: 'DHL US',
+                        shipping_method: 'PickUpStore',
+                        tracking_number: '63456415674545679874',
+                        tracking_uri: 'http://shipping.example/findmypackage?63456415674545679874',
+                        return_shipping_company: 'DHL US',
+                        return_tracking_number: '93456415674545679888',
+                        return_tracking_uri:
+                            'http://shipping.example/findmypackage?93456415674545679888',
+                    },
+                ],
+                shipping_delay: 0,
+            },
+        });
+        expect(session.action_id).to.be.equal('act_4sz4seltcrzuvcgaetumnlamq4');
+    });
+
+    it('should capture', async () => {
+        nock('https://api.checkout.com')
+            .post('/klarna/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/captures')
+            .reply(202, {
+                action_id: 'act_4sz4seltcrzuvcgaetumnlamq4',
+            });
+
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
 
         const session = await cko.klarna.capture('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             amount: 1000,
@@ -343,6 +387,22 @@ describe('Klarna', () => {
             });
 
         const cko = new Checkout(SK);
+
+        const klarna = await cko.klarna.void('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
+            reference: 'ORD-5023-4E89',
+            metadata: {},
+        });
+        expect(klarna.action_id).to.be.equal('act_v6572a7elpuupbaljmoi4tk3ma');
+    });
+
+    it('should void prod', async () => {
+        nock('https://api.checkout.com')
+            .post('/klarna/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/voids')
+            .reply(202, {
+                action_id: 'act_v6572a7elpuupbaljmoi4tk3ma',
+            });
+
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
 
         const klarna = await cko.klarna.void('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             reference: 'ORD-5023-4E89',
