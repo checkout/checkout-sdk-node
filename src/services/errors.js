@@ -11,6 +11,7 @@ export class ApiTimeout extends Error {
     constructor() {
         super('ApiTimeout');
         Object.setPrototypeOf(this, new.target.prototype);
+        this.http_code = 408;
         this.name = 'ApiTimeout';
     }
 }
