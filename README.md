@@ -1,6 +1,7 @@
 [![zip badge](https://badgen.net/bundlephobia/minzip/checkout-sdk-node)](https://badgen.net/bundlephobia/minzip/action-test)
 [![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg?token=POL9EXI2IS)](https://codecov.io/gh/checkout/checkout-sdk-node)
 ![CI Tests](https://github.com/checkout/checkout-sdk-node/workflows/CI%20Tests/badge.svg)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/checkout/checkout-sdk-node.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/checkout/checkout-sdk-node/context:javascript)
 
 <p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
