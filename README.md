@@ -1,6 +1,6 @@
 [![zip badge](https://badgen.net/bundlephobia/minzip/checkout-sdk-node)](https://badgen.net/bundlephobia/minzip/action-test)
 [![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg?token=POL9EXI2IS)](https://codecov.io/gh/checkout/checkout-sdk-node)
-![example branch parameter](https://github.com/checkout/checkout-sdk-node/workflows/CI%20Test/badge.svg?branch=master)
+![CI Tests](https://github.com/checkout/checkout-sdk-node/workflows/CI%20Tests/badge.svg)
 
 <p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
