@@ -40,7 +40,6 @@ lib/
 test/*.js
 *.map
 
-package-lock.json
 .DS_Store
 .vscode/*
 

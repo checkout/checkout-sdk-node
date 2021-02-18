@@ -1,0 +1,58 @@
+name: Tests and Deployment
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    test-and-coverage:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@master
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - run: npm ci
+            - run: npm test
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v1
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  verbose: true
+
+    publish-npm:
+        needs: test-and-coverage
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+                  registry-url: https://registry.npmjs.org/
+            - run: npm ci
+            - run: npm run build
+            - run: rsync -avh --progress ./types/ ./
+            - run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+
+    publish-docs:
+        needs: publish-npm
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: "12.x"
+            - name: Build
+              run: |
+                  cd documentation
+                  npm i
+                  npm run build
+            - name: Release to GitHub Pages
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./documentation/build
