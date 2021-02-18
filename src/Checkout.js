@@ -21,6 +21,7 @@ import {
     Oxxo,
     Klarna,
     Sepa,
+    PaymentLinks,
 } from './index';
 
 const determineHost = (key, options) => {
@@ -91,5 +92,6 @@ export default class Checkout {
         this.oxxo = new Oxxo(this.config);
         this.klarna = new Klarna(this.config);
         this.sepa = new Sepa(this.config);
+        this.paymentLinks = new PaymentLinks(this.config);
     }
 }

@@ -13,6 +13,7 @@ module.exports = {
             'reconciliation',
             'customers',
             'hosted-payments',
+            'payment-links',
         ],
     },
 };

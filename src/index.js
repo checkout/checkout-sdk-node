@@ -10,6 +10,7 @@ export { default as Files } from './api/files/files';
 export { default as Reconciliation } from './api/reconciliation/reconciliation';
 export { default as Customers } from './api/customers/customers';
 export { default as HostedPayments } from './api/hosted-payments/hosted-payments';
+export { default as PaymentLinks } from './api/payments-links/payments-links';
 export { default as Giropay } from './api/apm-specific/giropay';
 export { default as Ideal } from './api/apm-specific/ideal';
 export { default as Fawry } from './api/apm-specific/fawry';
