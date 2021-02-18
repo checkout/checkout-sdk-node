@@ -1,17 +1,17 @@
 module.exports = {
-    title: 'checkout-sdk-node',
+    title: 'action-test',
     tagline: 'Checkout.com SDK for Node JS',
-    url: 'https://checkout.github.io',
-    baseUrl: '/checkout-sdk-node/',
+    url: 'https://ioan-ghisoi-cko.github.io',
+    baseUrl: '/action-test/',
     favicon: 'img/favicon.png',
     organizationName: 'checkout', // Usually your GitHub org/user name.
-    projectName: 'checkout-sdk-node', // Usually your repo name.
+    projectName: 'action-test', // Usually your repo name.
     scripts: ['https://embed.runkit.com'],
     themeConfig: {
         navbar: {
-            title: 'checkout-sdk-node',
+            title: 'action-test',
             logo: {
-                alt: 'checkout-sdk-node',
+                alt: 'action-test',
                 src: 'img/logo.png',
             },
             items: [
@@ -28,7 +28,7 @@ module.exports = {
                     position: 'right',
                 },
                 {
-                    href: 'https://github.com/checkout/checkout-sdk-node',
+                    href: 'https://github.com/checkout/action-test',
                     label: 'GitHub',
                     position: 'right',
                 },
