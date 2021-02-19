@@ -163,11 +163,12 @@ export class BadGateway extends Error {
  * @extends {Error}
  */
 export class ApiError extends Error {
-    constructor(error) {
+    constructor(http_code, message) {
         super('API Error');
         Object.setPrototypeOf(this, new.target.prototype);
         this.name = 'API Error';
-        this.body = error;
+        this.http_code = http_code;
+        this.body = message;
     }
 }
 
@@ -224,7 +225,7 @@ export const determineError = async (err) => {
         case 502:
             return new BadGateway();
         default: {
-            return new ApiError(await errorJSON);
+            return new ApiError(err.status, await errorJSON);
         }
     }
 };
