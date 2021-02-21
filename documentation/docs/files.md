@@ -19,8 +19,17 @@ You can find a list of request body parameters and possible outcomes [here](http
 
 ```js
 const file = await cko.files.upload({
-    path: fs.createReadStream('./test/files/evidence.jpg'),
-    purpose: 'dispute_evidence'
+    file: fs.createReadStream('./test/files/evidence.jpg'),
+    purpose: 'dispute_evidence',
+});
+```
+
+## Upload file from remote
+
+```js
+const file = await cko.files.upload({
+    file: 'https://example.com/file.pdf',
+    purpose: 'dispute_evidence',
 });
 ```
 

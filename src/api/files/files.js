@@ -27,12 +27,25 @@ export default class Files {
         try {
             const form = new FormData();
 
-            form.append('file', body.path);
+            // Handle local files and remote files
+            if (isUrl(body.file)) {
+                // use file and file name from remote
+                form.append('file', body.file, {
+                    filename: body.file.split('/').pop().split('#')[0].split('?')[0],
+                });
+            } else {
+                // use the local file
+                form.append('file', body.file || body.path);
+            }
             form.append('purpose', 'dispute_evidence');
 
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, agent: this.config.agent, formData: true },
+                {
+                    timeout: this.config.timeout,
+                    agent: this.config.agent,
+                    formData: true,
+                },
                 {
                     method: 'post',
                     url: `${this.config.host}/files`,
@@ -72,3 +85,15 @@ export default class Files {
         }
     }
 }
+
+const isUrl = (string) => {
+    let url;
+
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+
+    return url.protocol === 'http:' || url.protocol === 'https:';
+};

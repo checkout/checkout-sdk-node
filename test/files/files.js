@@ -33,6 +33,31 @@ describe('Files', () => {
             .and.satisfy((msg) => msg.startsWith('file_'));
     }).timeout(120000);
 
+    it('should upload file from the external source', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/files')
+            .reply(200, {
+                id: 'file_qzhaicujhxme3fe5g75sscmqme',
+                _links: {
+                    self: {
+                        href:
+                            'https://api.sandbox.checkout.com/files/file_qzhaicujhxme3fe5g75sscmqme',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const file = await cko.files.upload({
+            file: 'https://media.ethicalads.io/media/images/2020/12/ethicalads_2.jpg',
+            purpose: 'dispute_evidence',
+        });
+
+        expect(file.id)
+            .to.be.a('string')
+            .and.satisfy((msg) => msg.startsWith('file_'));
+    }).timeout(120000);
+
     it('should throw ValidationError when trying to upload file', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/files')
