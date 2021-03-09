@@ -1,4 +1,10 @@
-import { DEFAULT_TIMEOUT, LIVE_BASE_URL, LIVE_SECRET_KEY_REGEX, SANDBOX_BASE_URL } from './config';
+import {
+    DEFAULT_TIMEOUT,
+    LIVE_BASE_URL,
+    MBC_LIVE_SECRET_KEY_REGEX,
+    NAS_LIVE_SECRET_KEY_REGEX,
+    SANDBOX_BASE_URL,
+} from './config';
 import {
     Payments,
     Sources,
@@ -29,7 +35,10 @@ const determineHost = (key, options) => {
     if (options && options.host) {
         return options.host;
     }
-    return LIVE_SECRET_KEY_REGEX.test(key) ? LIVE_BASE_URL : SANDBOX_BASE_URL;
+
+    return MBC_LIVE_SECRET_KEY_REGEX.test(key) || NAS_LIVE_SECRET_KEY_REGEX.test(key)
+        ? LIVE_BASE_URL
+        : SANDBOX_BASE_URL;
 };
 
 const determineSecretKey = (key) => {

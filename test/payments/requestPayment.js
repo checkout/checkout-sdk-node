@@ -40,6 +40,16 @@ describe('Request a payment or payout', () => {
         expect(cko.config.pk).to.equal(pk);
     });
 
+    it('it accepts NAS live sk and it sets the environment accordingly', () => {
+        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7xz');
+        expect(cko.config.host).to.equal('https://api.checkout.com');
+    });
+
+    it('it accepts NAS sandbox sk and it sets the environment accordingly', () => {
+        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz');
+        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+    });
+
     it('should set the public key in constructor', () => {
         const cko = new Checkout(SK, { pk: 'pk_123' });
         expect(cko.config.pk).to.equal('pk_123');

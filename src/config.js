@@ -5,10 +5,8 @@ export const API_VERSION_HEADER = 'cko-version';
 
 export const DEFAULT_TIMEOUT = 5000;
 
-export const LIVE_SECRET_KEY_REGEX = /^sk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
-export const LIVE_PUBLIC_KEY_REGEX = /^pk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
-export const SANDBOX_SECRET_KEY_REGEX = /^sk_test_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
-export const SANDBOX_PUBLIC_KEY_REGEX = /^pk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
+export const MBC_LIVE_SECRET_KEY_REGEX = /^sk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
+export const NAS_LIVE_SECRET_KEY_REGEX = /^sk_?(\w{27})$/;
 export const CARD_TOKEN_REGEX = /^(tok)_(\w{26})$/;
 export const SOURCE_ID_REGEX = /^(src)_(\w{26})$/;
 export const PAYMENT_TYPES = {
