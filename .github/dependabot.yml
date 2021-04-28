@@ -1,0 +1,71 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: eslint
+    versions:
+    - 7.21.0
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.12.17
+    - 7.13.10
+    - 7.13.13
+    - 7.13.14
+    - 7.13.15
+    - 7.13.8
+  - dependency-name: "@babel/eslint-plugin"
+    versions:
+    - 7.13.10
+    - 7.13.15
+  - dependency-name: "@babel/cli"
+    versions:
+    - 7.12.17
+    - 7.13.10
+    - 7.13.14
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.12.17
+    - 7.13.0
+    - 7.13.10
+    - 7.13.12
+    - 7.13.8
+    - 7.13.9
+  - dependency-name: "@babel/node"
+    versions:
+    - 7.12.17
+    - 7.13.10
+    - 7.13.12
+  - dependency-name: "@babel/eslint-parser"
+    versions:
+    - 7.12.17
+    - 7.13.0
+    - 7.13.10
+    - 7.13.8
+  - dependency-name: mocha
+    versions:
+    - 8.3.0
+    - 8.3.1
+  - dependency-name: chai
+    versions:
+    - 4.3.1
+    - 4.3.3
+  - dependency-name: nock
+    versions:
+    - 13.0.10
+    - 13.0.6
+    - 13.0.7
+    - 13.0.9
+  - dependency-name: eslint-config-prettier
+    versions:
+    - 7.2.0
+    - 8.1.0
+  - dependency-name: form-data
+    versions:
+    - 4.0.0
