@@ -66,6 +66,20 @@ describe('Request a payment or payout', () => {
         delete process.env.CKO_PUBLIC_KEY;
     });
 
+    it('should set the live environment based on env key', () => {
+        process.env.CKO_SECRET_KEY = 'sk_fghjovernsi764jybiuogokg7xz';
+        const cko = new Checkout();
+        expect(cko.config.host).to.equal('https://api.checkout.com');
+        delete process.env.CKO_SECRET_KEY;
+    });
+
+    it('should set the sandbox environment based on env key', () => {
+        process.env.CKO_SECRET_KEY = SK;
+        const cko = new Checkout();
+        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+        delete process.env.CKO_SECRET_KEY;
+    });
+
     it('should determine sandbox environemnt based on key', () => {
         const cko = new Checkout(SK);
         expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');

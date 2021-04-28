@@ -75,7 +75,7 @@ export default class Checkout {
         this.config = {
             sk: determineSecretKey(key),
             pk: determinePublicKey(options),
-            host: determineHost(key, options),
+            host: determineHost(determineSecretKey(key), options),
             timeout: options && options.timeout ? options.timeout : DEFAULT_TIMEOUT,
             agent: options && options.agent ? options.agent : undefined,
         };
