@@ -5,6 +5,7 @@ const pjson = require('../../package.json');
 
 const http = async (fetch, config, request) => {
     const headers = {
+        ...config.headers,
         ...request.headers,
         'Content-Type': config.csv ? 'text/csv' : 'application/json',
         'Cache-Control': 'no-cache',

@@ -41,11 +41,7 @@ export default class Files {
 
             const response = await http(
                 fetch,
-                {
-                    timeout: this.config.timeout,
-                    agent: this.config.agent,
-                    formData: true,
-                },
+                { ...this.config, formData: true },
                 {
                     method: 'post',
                     url: `${this.config.host}/files`,

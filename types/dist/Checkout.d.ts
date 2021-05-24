@@ -33,12 +33,14 @@ export type config = {
     pk: string;
     timeout: number;
     agent?: http.Agent;
+    headers?: Record<string, string>;
 };
 
 type options = {
     pk: string;
     timeout?: number;
     agent?: http.Agent;
+    headers?: Record<string, string>;
 };
 
 export default class Checkout {
