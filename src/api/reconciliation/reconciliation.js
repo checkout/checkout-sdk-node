@@ -30,15 +30,11 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             const res = await response.json;
 
             // In case there is a "next" page, inject it in the response body

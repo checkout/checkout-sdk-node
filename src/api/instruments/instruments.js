@@ -25,16 +25,12 @@ export default class Instruments {
     async create(body) {
         setInstrumentType(body);
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/instruments`,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/instruments`,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

@@ -17,7 +17,9 @@ describe('Handling Errors', () => {
             .post('/tokens')
             .reply(mockErrorCode, mockErrorResponse);
 
-        const cko = new Checkout({ pk: PK });
+        const cko = new Checkout();
+        cko.config.pk = PK;
+
         let errorWasThrown = false;
 
         try {

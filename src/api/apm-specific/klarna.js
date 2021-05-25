@@ -24,16 +24,12 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/credit-sessions`
             : `${this.config.host}/klarna/credit-sessions`;
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

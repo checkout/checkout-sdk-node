@@ -24,15 +24,11 @@ export default class Sepa {
             ? `${this.config.host}/sepa-external/mandates/${id}`
             : `${this.config.host}/sepa/mandates/${id}`;
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

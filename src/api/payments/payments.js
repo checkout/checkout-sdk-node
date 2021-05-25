@@ -90,16 +90,13 @@ export default class Payments {
             setSourceOrDestinationType(body);
             validatePayment(body);
 
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/payments`,
-                    headers: determineHeaders(this.config, idempotencyKey),
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/payments`,
+                headers: determineHeaders(this.config, idempotencyKey),
+                body,
+            });
+
             return addUtilityParams(await response.json);
         } catch (err) {
             const error = await determineError(err);
