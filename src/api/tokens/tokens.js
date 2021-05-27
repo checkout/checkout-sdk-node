@@ -25,16 +25,12 @@ export default class Tokens {
     async request(body) {
         setTokenType(body);
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/tokens`,
-                    headers: { Authorization: this.config.pk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/tokens`,
+                headers: { Authorization: this.config.pk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

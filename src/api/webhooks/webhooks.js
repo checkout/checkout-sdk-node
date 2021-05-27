@@ -22,15 +22,11 @@ export default class Webhooks {
      */
     async retrieveWebhooks() {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/webhooks`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/webhooks`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

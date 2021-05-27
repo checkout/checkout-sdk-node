@@ -1,6 +1,6 @@
 {
     "name": "checkout-sdk-node",
-    "version": "1.0.29",
+    "version": "1.0.30",
     "description": "",
     "main": "./dist/index.js",
     "devDependencies": {
@@ -15,7 +15,7 @@
         "eslint": "^7.26.0",
         "eslint-config-airbnb": "^18.2.0",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-chai-friendly": "^0.6.0",
+        "eslint-plugin-chai-friendly": "^0.7.1",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.4.0",
         "esm": "^3.2.25",
