@@ -3,6 +3,7 @@ import {
     LIVE_BASE_URL,
     MBC_LIVE_SECRET_KEY_REGEX,
     NAS_LIVE_SECRET_KEY_REGEX,
+    NAS_SANDBOX_SECRET_KEY_REGEX,
     SANDBOX_BASE_URL,
 } from './config';
 import {
@@ -36,6 +37,10 @@ const determineHost = (key, options) => {
         return options.host;
     }
 
+    if (key.startsWith('Bearer')) {
+        key = key.replace('Bearer', '').trim();
+    }
+
     return MBC_LIVE_SECRET_KEY_REGEX.test(key) || NAS_LIVE_SECRET_KEY_REGEX.test(key)
         ? LIVE_BASE_URL
         : SANDBOX_BASE_URL;
@@ -43,7 +48,17 @@ const determineHost = (key, options) => {
 
 const determineSecretKey = (key) => {
     // Unless specified, check environment variables for the key
-    return !key ? process.env.CKO_SECRET_KEY || '' : key;
+    let authKey = !key ? process.env.CKO_SECRET_KEY || '' : key;
+
+    // In case of NAS static keys, append the Bearer prefix
+    if (NAS_LIVE_SECRET_KEY_REGEX.test(authKey) || NAS_SANDBOX_SECRET_KEY_REGEX.test(authKey)) {
+        authKey =
+            authKey.startsWith('Bearer') || authKey.startsWith('bearer')
+                ? authKey
+                : `Bearer ${authKey}`;
+    }
+
+    return authKey;
 };
 
 const determinePublicKey = (options) => {

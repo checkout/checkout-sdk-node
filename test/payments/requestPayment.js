@@ -20,6 +20,22 @@ describe('Request a payment or payout', () => {
         expect(cko.config.agent).to.be.undefined;
     });
 
+    it('should should append the Bearer prefix for sandbox NAS secret keys', () => {
+        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz');
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.sk).to.equal('Bearer sk_sbox_fghjovernsi764jybiuogokg7xz');
+        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
+    it('should should append the Bearer prefix for live NAS secret keys', () => {
+        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7xz');
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.sk).to.equal('Bearer sk_fghjovernsi764jybiuogokg7xz');
+        expect(cko.config.host).to.equal('https://api.checkout.com');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
     it('should initialise with key and custom config', () => {
         const fakeAgent = {};
         const cko = new Checkout(SK, {
