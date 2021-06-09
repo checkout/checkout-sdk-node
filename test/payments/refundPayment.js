@@ -726,4 +726,117 @@ describe('Refund a payment', () => {
             console.log(error);
         }
     });
+
+    it('should refund payment with correct header response', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .reply(
+                201,
+                {
+                    id: 'pay_6ndp5facelxurne7gloxkxm57u',
+                    action_id: 'act_6ndp5facelxurne7gloxkxm57u',
+                    amount: 100,
+                    currency: 'USD',
+                    approved: true,
+                    status: 'Authorized',
+                    auth_code: '277368',
+                    response_code: '10000',
+                    response_summary: 'Approved',
+                    '3ds': undefined,
+                    risk: { flagged: false },
+                    source: {
+                        id: 'src_mtagg5kktcoerkwloibzfuilpy',
+                        type: 'card',
+                        expiry_month: 6,
+                        expiry_year: 2029,
+                        scheme: 'Visa',
+                        last4: '4242',
+                        fingerprint:
+                            '107A352DFAE35E3EEBA5D0856FCDFB88ECF91E8CFDE4275ABBC791FD9579AB2C',
+                        bin: '424242',
+                        card_type: 'Credit',
+                        card_category: 'Consumer',
+                        issuer: 'JPMORGAN CHASE BANK NA',
+                        issuer_country: 'US',
+                        product_id: 'A',
+                        product_type: 'Visa Traditional',
+                        avs_check: 'S',
+                        cvv_check: 'Y',
+                    },
+                    customer: { id: 'cus_leu5pp2zshpuvbt6yjxl5xcrdi' },
+                    processed_on: '2019-06-09T22:43:54Z',
+                    reference: undefined,
+                    eci: '05',
+                    scheme_id: '638284745624527',
+                    _links: {
+                        self: {
+                            href:
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                        },
+                        actions: {
+                            href:
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                        },
+                        capture: {
+                            href:
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                        },
+                        void: {
+                            href:
+                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                        },
+                    },
+                },
+                {
+                    'request-id': ['1695a930-09cf-4db0-a91e-a772e6ee076g'],
+                    'version': ['3.31.4'],
+                }
+            );
+
+        nock('https://api.sandbox.checkout.com')
+            .post(/captures$/)
+            .reply(202, {
+                action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
+                reference: 'ORD-5023-4E89',
+                _links: {
+                    payment: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                    },
+                },
+            });
+
+        nock('https://api.sandbox.checkout.com')
+            .post(/refunds$/)
+            .reply(202, {
+                action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
+                reference: 'ORD-5023-4E89',
+                _links: {
+                    payment: {
+                        href:
+                            'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const transaction = await cko.payments.request({
+            source: {
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            capture: false,
+            reference: 'ORD-5023-4E89',
+            amount: 100,
+        });
+        const paymentId = transaction.id;
+        const capture = await cko.payments.capture(paymentId);
+        const refund = await cko.payments.refund(paymentId);
+
+        expect(refund.reference).to.equal('ORD-5023-4E89');
+    });
 });
