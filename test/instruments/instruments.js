@@ -294,4 +294,71 @@ describe('Request an instrument', () => {
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
+
+    it('should delete instrument', async () => {
+        nock('https://api.sandbox.checkout.com').post('/tokens').reply(201, {
+            type: 'card',
+            token: 'tok_pmjyslgaam4uzmvaiwqyhovvsy',
+            expires_on: '2020-01-30T15:08:33Z',
+            expiry_month: 6,
+            expiry_year: 2029,
+            scheme: 'Visa',
+            last4: '4242',
+            bin: '424242',
+            card_type: 'Credit',
+            card_category: 'Consumer',
+            issuer: 'JPMORGAN CHASE BANK NA',
+            issuer_country: 'US',
+            product_id: 'A',
+            product_type: 'Visa Traditional',
+        });
+
+        nock('https://api.sandbox.checkout.com').post('/instruments').reply(201, {
+            id: 'src_pyey2xt6jq4enkcqvoqwjmc3xe',
+            type: 'card',
+            expiry_month: 6,
+            expiry_year: 2029,
+            scheme: 'Visa',
+            last4: '4242',
+            bin: '424242',
+            card_type: 'Credit',
+            card_category: 'Consumer',
+            issuer: 'JPMORGAN CHASE BANK NA',
+            issuer_country: 'US',
+            product_id: 'A',
+            product_type: 'Visa Traditional',
+        });
+
+        nock('https://api.sandbox.checkout.com')
+            .delete('/instruments/src_pyey2xt6jq4enkcqvoqwjmc3xe')
+            .reply(200, {});
+
+        const cko = new Checkout(SK, { pk: PK });
+
+        const tokenResponse = await cko.tokens.request({
+            number: '4242424242424242',
+            expiry_month: 6,
+            expiry_year: 2029,
+            cvv: '100',
+        });
+
+        const instrument = await cko.instruments.create({
+            type: 'token',
+            token: tokenResponse.token,
+        });
+
+        const deleteOutcome = await cko.instruments.delete(instrument.id);
+    });
+
+    it('should throw when deleting instrument', async () => {
+        nock('https://api.sandbox.checkout.com').delete('/instruments/src_123').reply(404, {});
+
+        const cko = new Checkout(SK, { pk: PK });
+
+        try {
+            const deleteOutcome = await cko.instruments.delete('src_123');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
 });

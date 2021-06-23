@@ -89,4 +89,29 @@ export default class Instruments {
             throw error;
         }
     }
+
+    /**
+     * Delete a payment instrument.
+     *
+     * @memberof Instruments
+     * @param {string} id Instrument id.
+     * @return {Promise<Object>} A promise to the instrument response.
+     */
+    async delete(id) {
+        try {
+            const response = await http(
+                fetch,
+                { timeout: this.config.timeout, agent: this.config.agent },
+                {
+                    method: 'delete',
+                    url: `${this.config.host}/instruments/${id}`,
+                    headers: { Authorization: this.config.sk },
+                }
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
 }

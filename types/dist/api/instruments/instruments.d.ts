@@ -5,4 +5,5 @@ export default class Instruments {
     create: (body: Object) => Promise<Object>;
     get: (id: string) => Promise<Object>;
     update: (id: string, body: Object) => Promise<Object>;
+    delete: (id: string) => Promise<Object>;
 }

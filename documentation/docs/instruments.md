@@ -38,3 +38,9 @@ const instrumentResponse = await cko.instruments.update('src_udfsqsgpjykutgs26fi
     expiry_year: 2030,
 });
 ```
+
+## Delete an instrument
+
+```js
+const instrumentResponse = await cko.instruments.delete('src_udfsqsgpjykutgs26fiejgizau');
+```
