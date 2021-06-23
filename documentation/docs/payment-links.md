@@ -41,3 +41,9 @@ const linksResponse = await cko.paymentLinks.create({
     return_url: 'https://pay.sandbox.checkout.com/link/examples/docs',
 });
 ```
+
+## Get Payment link status
+
+```js
+const linksResponse = await cko.paymentLinks.get('pl_irx_SMlY5RCA');
+```
