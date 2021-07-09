@@ -28,6 +28,12 @@ describe('Request a payment or payout', () => {
         expect(cko.config.agent).to.be.undefined;
     });
 
+    it('should cater for the checksum character', () => {
+        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7x*');
+        expect(cko.config.host).to.equal('https://api.checkout.com');
+        console.log(cko.config);
+    });
+
     it('should should append the Bearer prefix for live NAS secret keys', () => {
         const cko = new Checkout('sk_fghjovernsi764jybiuogokg7xz');
         expect(cko).to.be.instanceOf(Checkout);
@@ -157,20 +163,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -243,20 +245,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -299,12 +297,10 @@ describe('Request a payment or payout', () => {
                 '3ds': { downgraded: false, enrolled: 'Y' },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
                     },
                     redirect: {
-                        href:
-                            'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
+                        href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
                     },
                 },
                 headers: {
@@ -372,12 +368,10 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
                     },
                 },
             });
@@ -437,12 +431,10 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
                     },
                 },
             });
@@ -529,12 +521,10 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T11:45:27Z',
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions',
                     },
                 },
             });
@@ -564,8 +554,7 @@ describe('Request a payment or payout', () => {
                 customer: { id: 'cus_un2lucrpzhbutpq6mhmkwshlrm' },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam',
                     },
                     redirect: {
                         href: 'https://sandbox.checkout.com/LP.Core/api/payment/165412',
@@ -674,12 +663,10 @@ describe('Request a payment or payout', () => {
                 scheme_id: '638284745624527',
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions',
                     },
                 },
             });
@@ -999,20 +986,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -1116,20 +1099,16 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids',
                     },
                 },
             });
@@ -1200,20 +1179,16 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids',
                     },
                 },
             });
@@ -1280,20 +1255,16 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids',
                     },
                 },
             });
@@ -1331,12 +1302,10 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     'sepa:mandate-cancel': {
-                        href:
-                            'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu/cancel',
+                        href: 'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu/cancel',
                     },
                     'sepa:mandate-get': {
-                        href:
-                            'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu',
+                        href: 'https://sbapi.ckotech.co/ppro-external/sepa/mandates/src_ld2ft6czuayejcaxw2kmfk3cvu',
                     },
                 },
             });
