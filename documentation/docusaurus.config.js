@@ -1,11 +1,17 @@
+const lightCodeTheme = require('prism-react-renderer/themes/github');
+const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
     title: 'checkout-sdk-node',
     tagline: 'Checkout.com SDK for Node JS',
     url: 'https://ioan-ghisoi-cko.github.io',
     baseUrl: '/checkout-sdk-node/',
+    onBrokenLinks: 'throw',
+    onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.png',
-    organizationName: 'checkout', // Usually your GitHub org/user name.
-    projectName: 'checkout-sdk-node', // Usually your repo name.
+    organizationName: 'checkout',
+    projectName: 'checkout-sdk-node',
     scripts: ['https://embed.runkit.com'],
     themeConfig: {
         navbar: {
@@ -16,10 +22,10 @@ module.exports = {
             },
             items: [
                 {
-                    to: 'getting_started',
-                    activeBasePath: 'docs',
-                    label: 'Docs',
+                    type: 'doc',
+                    docId: 'intro',
                     position: 'right',
+                    label: 'Docs',
                 },
                 {
                     to: 'playground',
@@ -41,6 +47,10 @@ module.exports = {
         googleAnalytics: {
             trackingID: 'UA-165971486-1',
         },
+        prism: {
+            theme: lightCodeTheme,
+            darkTheme: darkCodeTheme,
+        },
     },
     presets: [
         [
@@ -49,7 +59,6 @@ module.exports = {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     routeBasePath: '/',
-                    // editUrl: 'https://github.com/facebook/docusaurus/edit/master/website/'
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),

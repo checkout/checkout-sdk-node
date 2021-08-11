@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+
 const Embed = require('react-runkit');
 
 function Playground() {
@@ -11,7 +12,7 @@ function Playground() {
         Discover: useBaseUrl('img/discover.png'),
         JCB: useBaseUrl('img/jcb.png'),
         'Diners Club': useBaseUrl('img/dinersclub.png'),
-        Maestro: useBaseUrl('img/maestro.png')
+        Maestro: useBaseUrl('img/maestro.png'),
     };
 
     const [icon, setIcon] = useState(undefined);
@@ -43,9 +44,8 @@ const cko = new Checkout('sk_test_3e1ad21b-ac23-4eb3-ad1f-375e9fb56481');
                         width="80%"
                         height="410"
                         src="//jsfiddle.net/johnnyshrewd/3r65hLs9/18/embedded/result,html,js,css/dark/"
-                        allowFullscreen="allowfullscreen"
-                        allowPaymentRequest
-                        frameborder="0"
+                        allowFullScreen
+                        frameBorder="0"
                     ></iframe>
                 </div>
                 <div className="back-end-section">
