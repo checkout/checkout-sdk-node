@@ -11,7 +11,7 @@ jobs:
         steps:
             - uses: actions/checkout@master
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2.1.5
+            - uses: actions/setup-node@v2.4.1
               with:
                   node-version: 12
             - run: npm ci
@@ -27,7 +27,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2.1.5
+            - uses: actions/setup-node@v2.4.1
               with:
                   node-version: 12
                   registry-url: https://registry.npmjs.org/
@@ -43,7 +43,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
-            - uses: actions/setup-node@v2.1.5
+            - uses: actions/setup-node@v2.4.1
               with:
                   node-version: "12.x"
             - name: Build
