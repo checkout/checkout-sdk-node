@@ -1,49 +1,46 @@
-import {
-    DEFAULT_TIMEOUT,
-    LIVE_BASE_URL,
-    MBC_LIVE_SECRET_KEY_REGEX,
-    NAS_LIVE_SECRET_KEY_REGEX,
-    NAS_SANDBOX_SECRET_KEY_REGEX,
-    SANDBOX_BASE_URL,
-} from './config';
-import {
-    Payments,
-    Sources,
-    Tokens,
-    Instruments,
-    Webhooks,
-    Events,
-    Disputes,
-    Files,
-    Reconciliation,
-    Customers,
-    HostedPayments,
-    Giropay,
-    Ideal,
-    Fawry,
-    PagoFacil,
-    Rapipago,
-    Boleto,
-    Baloto,
-    Oxxo,
-    Klarna,
-    Sepa,
-    PaymentLinks,
-} from './index';
+import * as CONFIG from './config';
+import * as ENDPOINTS from './index';
 
 const determineHost = (key, options) => {
-    // Unless specified, determine the hosted based on the secret key
+    // If specified, use the custom host
     if (options && options.host) {
         return options.host;
     }
 
-    if (key.startsWith('Bearer')) {
-        key = key.replace('Bearer', '').trim();
+    // Priority 1: oAuth environment vars
+    if (process.env.CKO_SECRET) {
+        if (
+            (process.env.CKO_ENVIRONMENT &&
+                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'prod') ||
+            (process.env.CKO_ENVIRONMENT &&
+                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'production') ||
+            (process.env.CKO_ENVIRONMENT &&
+                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'live')
+        ) {
+            return CONFIG.LIVE_BASE_URL;
+        }
+        return CONFIG.SANDBOX_BASE_URL;
+    }
+    // Priority 2: oAuth declared vars
+    if (options && options.client) {
+        if (
+            (options.environment && options.environment.toLowerCase().trim() === 'prod') ||
+            (options.environment && options.environment.toLowerCase().trim() === 'production') ||
+            (options.environment && options.environment.toLowerCase().trim() === 'live')
+        ) {
+            return CONFIG.LIVE_BASE_URL;
+        }
+        return CONFIG.SANDBOX_BASE_URL;
     }
 
-    return MBC_LIVE_SECRET_KEY_REGEX.test(key) || NAS_LIVE_SECRET_KEY_REGEX.test(key)
-        ? LIVE_BASE_URL
-        : SANDBOX_BASE_URL;
+    // Priority 3: MBC or NAS static keys
+    if (key.startsWith('Bearer')) {
+        // eslint-disable-next-line no-param-reassign
+        key = key.replace('Bearer', '').trim();
+    }
+    return CONFIG.MBC_LIVE_SECRET_KEY_REGEX.test(key) || CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(key)
+        ? CONFIG.LIVE_BASE_URL
+        : CONFIG.SANDBOX_BASE_URL;
 };
 
 const determineSecretKey = (key) => {
@@ -51,7 +48,10 @@ const determineSecretKey = (key) => {
     let authKey = !key ? process.env.CKO_SECRET_KEY || '' : key;
 
     // In case of NAS static keys, append the Bearer prefix
-    if (NAS_LIVE_SECRET_KEY_REGEX.test(authKey) || NAS_SANDBOX_SECRET_KEY_REGEX.test(authKey)) {
+    if (
+        CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(authKey) ||
+        CONFIG.NAS_SANDBOX_SECRET_KEY_REGEX.test(authKey)
+    ) {
         authKey =
             authKey.startsWith('Bearer') || authKey.startsWith('bearer')
                 ? authKey
@@ -87,36 +87,72 @@ export default class Checkout {
      * @memberof Payments
      */
     constructor(key, options) {
+        let auth;
+        if (process.env.CKO_SECRET) {
+            // For NAS with environment vars
+            auth = {
+                secret: process.env.CKO_SECRET,
+                client: process.env.CKO_CLIENT,
+                scope: process.env.CKO_SCOPE || 'gateway',
+                host: determineHost(null, options),
+                access: null,
+            };
+        } else if (process.env.CKO_SECRET_KEY) {
+            // For MBC or NAS with static keys from environment vars
+            auth = {
+                sk: determineSecretKey(process.env.CKO_SECRET_KEY),
+                pk: determinePublicKey(process.env.CKO_PUBLIC_KEY),
+                host: determineHost(determineSecretKey(key), options),
+            };
+        } else if (options && options.client) {
+            // For NAS with declared vars
+            auth = {
+                secret: key,
+                client: options.client,
+                scope: options.scope || 'gateway',
+                host: determineHost(null, options),
+                access: null,
+            };
+        } else {
+            // For MBC or NAS with static keys with declared vars
+            auth = {
+                sk: determineSecretKey(key, options),
+                pk: determinePublicKey(options),
+                host: determineHost(determineSecretKey(key), options),
+            };
+        }
+
         this.config = {
-            sk: determineSecretKey(key),
-            pk: determinePublicKey(options),
-            host: determineHost(determineSecretKey(key), options),
-            timeout: options && options.timeout ? options.timeout : DEFAULT_TIMEOUT,
+            ...auth,
+            timeout: options && options.timeout ? options.timeout : CONFIG.DEFAULT_TIMEOUT,
             agent: options && options.agent ? options.agent : undefined,
             headers: options && options.headers ? options.headers : {},
+            access: undefined,
         };
 
-        this.payments = new Payments(this.config);
-        this.sources = new Sources(this.config);
-        this.tokens = new Tokens(this.config);
-        this.instruments = new Instruments(this.config);
-        this.webhooks = new Webhooks(this.config);
-        this.events = new Events(this.config);
-        this.disputes = new Disputes(this.config);
-        this.files = new Files(this.config);
-        this.reconciliation = new Reconciliation(this.config);
-        this.customers = new Customers(this.config);
-        this.hostedPayments = new HostedPayments(this.config);
-        this.giropay = new Giropay(this.config);
-        this.ideal = new Ideal(this.config);
-        this.fawry = new Fawry(this.config);
-        this.pagoFacil = new PagoFacil(this.config);
-        this.rapipago = new Rapipago(this.config);
-        this.boleto = new Boleto(this.config);
-        this.baloto = new Baloto(this.config);
-        this.oxxo = new Oxxo(this.config);
-        this.klarna = new Klarna(this.config);
-        this.sepa = new Sepa(this.config);
-        this.paymentLinks = new PaymentLinks(this.config);
+        this.payments = new ENDPOINTS.Payments(this.config);
+        this.sources = new ENDPOINTS.Sources(this.config);
+        this.tokens = new ENDPOINTS.Tokens(this.config);
+        this.instruments = new ENDPOINTS.Instruments(this.config);
+        this.webhooks = new ENDPOINTS.Webhooks(this.config);
+        this.events = new ENDPOINTS.Events(this.config);
+        this.disputes = new ENDPOINTS.Disputes(this.config);
+        this.files = new ENDPOINTS.Files(this.config);
+        this.reconciliation = new ENDPOINTS.Reconciliation(this.config);
+        this.customers = new ENDPOINTS.Customers(this.config);
+        this.hostedPayments = new ENDPOINTS.HostedPayments(this.config);
+        this.giropay = new ENDPOINTS.Giropay(this.config);
+        this.ideal = new ENDPOINTS.Ideal(this.config);
+        this.fawry = new ENDPOINTS.Fawry(this.config);
+        this.pagoFacil = new ENDPOINTS.PagoFacil(this.config);
+        this.rapipago = new ENDPOINTS.Rapipago(this.config);
+        this.boleto = new ENDPOINTS.Boleto(this.config);
+        this.baloto = new ENDPOINTS.Baloto(this.config);
+        this.oxxo = new ENDPOINTS.Oxxo(this.config);
+        this.klarna = new ENDPOINTS.Klarna(this.config);
+        this.sepa = new ENDPOINTS.Sepa(this.config);
+        this.paymentLinks = new ENDPOINTS.PaymentLinks(this.config);
+        this.risk = new ENDPOINTS.Risk(this.config);
+        this.access = new ENDPOINTS.Access(this.config);
     }
 }

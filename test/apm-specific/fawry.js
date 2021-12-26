@@ -17,15 +17,13 @@ describe('Fawry', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
                     },
                     approve: {
                         href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/approval',
                     },
                     cancel: {
-                        href:
-                            'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
+                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
                     },
                 },
             });
@@ -84,15 +82,13 @@ describe('Fawry', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
                     },
                     approve: {
                         href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/approval',
                     },
                     cancel: {
-                        href:
-                            'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
+                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
                     },
                 },
             });

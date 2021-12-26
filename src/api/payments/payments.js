@@ -5,31 +5,23 @@ import http from '../../services/http';
 import { validatePayment, setSourceOrDestinationType } from '../../services/validation';
 
 const actionHandler = async (config, action, paymentId, body, idempotencyKey) => {
-    const response = await http(
-        fetch,
-        { timeout: config.timeout, agent: config.agent },
-        {
-            method: 'post',
-            url: `${config.host}/payments/${paymentId}/${action}`,
-            headers: determineHeaders(config, idempotencyKey),
-            body: body || {},
-        }
-    );
+    const response = await http(fetch, config, {
+        method: 'post',
+        url: `${config.host}/payments/${paymentId}/${action}`,
+        headers: determineHeaders(config, idempotencyKey),
+        body: body || {},
+    });
     return response.json;
 };
 
 const getHandler = async (config, url) => {
-    const response = await http(
-        fetch,
-        { timeout: config.timeout, agent: config.agent },
-        {
-            method: 'get',
-            url,
-            headers: {
-                Authorization: config.sk,
-            },
-        }
-    );
+    const response = await http(fetch, config, {
+        method: 'get',
+        url,
+        headers: {
+            Authorization: config.sk,
+        },
+    });
     return response;
 };
 

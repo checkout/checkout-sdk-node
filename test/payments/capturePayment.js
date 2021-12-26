@@ -57,20 +57,16 @@ describe('Capture a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -87,8 +83,7 @@ describe('Capture a payment', () => {
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -156,20 +151,16 @@ describe('Capture a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p/voids',
                         },
                     },
                 },
@@ -186,8 +177,7 @@ describe('Capture a payment', () => {
                 reference: 'CAPTURE-REF',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme50p',
                     },
                 },
             });
@@ -257,20 +247,16 @@ describe('Capture a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -287,8 +273,7 @@ describe('Capture a payment', () => {
                 reference: 'PARTIAL-CAPTURE-REFERENCE',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -411,20 +396,16 @@ describe('Capture a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -509,20 +490,16 @@ describe('Capture a payment', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gxjsx4kxgpeeffbknndgqtfutm/voids',
                     },
                 },
                 requiresRedirect: false,
@@ -536,8 +513,7 @@ describe('Capture a payment', () => {
                 reference: 'my-idempotent-capture',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -548,44 +524,40 @@ describe('Capture a payment', () => {
                 reference: 'my-idempotent-capture',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
         const cko = new Checkout(SK);
-        try {
-            const transaction = await cko.payments.request({
-                source: {
-                    number: '4242424242424242',
-                    expiry_month: 6,
-                    expiry_year: 2029,
-                    cvv: '100',
-                },
-                currency: 'USD',
-                capture: false,
-                reference: 'ORD-IDM-1',
-                amount: 100,
-            });
-            const paymentId = transaction.id;
-            const capture1 = await cko.payments.capture(
-                paymentId,
-                {
-                    reference: 'my-idempotent-capture',
-                },
-                'hgavkbsdhnwljnjkn'
-            );
-            const capture2 = await cko.payments.capture(
-                paymentId,
-                {
-                    reference: 'other',
-                },
-                'hgavkbsdhnwljnjkn'
-            );
 
-            expect(capture2.reference).to.equal('my-idempotent-capture');
-        } catch (error) {
-            console.log(error);
-        }
+        const transaction = await cko.payments.request({
+            source: {
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            capture: false,
+            reference: 'ORD-IDM-1',
+            amount: 100,
+        });
+        const paymentId = transaction.id;
+        const capture1 = await cko.payments.capture(
+            paymentId,
+            {
+                reference: 'my-idempotent-capture',
+            },
+            'hgavkbsdhnwljnjkn'
+        );
+        const capture2 = await cko.payments.capture(
+            paymentId,
+            {
+                reference: 'other',
+            },
+            'hgavkbsdhnwljnjkn'
+        );
+
+        expect(capture2.reference).to.equal('my-idempotent-capture');
     });
 });

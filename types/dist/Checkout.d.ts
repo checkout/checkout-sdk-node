@@ -24,8 +24,16 @@ import {
     Oxxo,
     Klarna,
     Sepa,
-    PaymentLinks
+    PaymentLinks,
+    Access
 } from './index';
+
+export type access = {
+    token:string,
+    type: string,
+    scope: string,
+    expires: Date
+}
 
 export type config = {
     host: string;
@@ -34,6 +42,9 @@ export type config = {
     timeout: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
+    access?:access,
+    scope?: Array<string>,
+    client?: string,
 };
 
 type options = {
@@ -66,6 +77,7 @@ export default class Checkout {
     klarna: Klarna;
     sepa: Sepa;
     paymentLinks:PaymentLinks;
+    access:Access;
     config: config;
 
     constructor(key?: string, options?: options);

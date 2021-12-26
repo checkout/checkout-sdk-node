@@ -95,8 +95,7 @@ describe('Disputes', () => {
                         href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229',
                     },
                     evidence: {
-                        href:
-                            'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence',
+                        href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence',
                     },
                 },
             });
@@ -165,20 +164,16 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
@@ -309,20 +304,16 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
@@ -457,20 +448,16 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
@@ -513,8 +500,7 @@ describe('Disputes', () => {
                 proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence',
+                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence',
                     },
                     parent: {
                         href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9',
@@ -621,20 +607,16 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,

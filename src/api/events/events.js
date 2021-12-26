@@ -58,15 +58,11 @@ export default class Events {
                 url += `?${queryString}`;
             }
 
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -84,15 +80,11 @@ export default class Events {
      */
     async retrieveEvent(eventId) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/events/${eventId}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/events/${eventId}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -109,15 +101,11 @@ export default class Events {
      */
     async retrieveEventNotification(body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -134,15 +122,11 @@ export default class Events {
      */
     async retry(body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -159,15 +143,11 @@ export default class Events {
      */
     async retryAll(eventId) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/events/${eventId}/webhooks/retry`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/events/${eventId}/webhooks/retry`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

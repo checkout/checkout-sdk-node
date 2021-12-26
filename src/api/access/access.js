@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { createAccessToken } from '../../services/http';
 
 /**
  * Class dealing with the access api
@@ -14,19 +14,14 @@ export default class Access {
     }
 
     /**
-     * Succeed a Baloto payment
+     * Request an access token
      *
-     * @param {string} id Payment id.
-     * @memberof Baloto
-     * @return {Promise<Object>} A promise to the Baloto response.
+     * @param {Object} body Access object body.
+     * @return {Promise<Object>} A promise to the Access response.
      */
-    async succeed(id) {
+    async request(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/apms/baloto/payments/${id}/succeed`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await createAccessToken(this.config, fetch, body);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -35,27 +30,17 @@ export default class Access {
     }
 
     /**
-     * Cancel Baloto payment
+     * Update the access details in the config.
      *
-     * @param {string} id Payment id.
-     * @memberof Baloto
-     * @return {Promise<Object>} A promise to the Baloto response.
+     * @param {Object} body Access response body.
+     * @return {Promise<Object>} A promise to the Access response.
      */
-    async expire(id) {
-        try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/apms/baloto/payments/${id}/expire`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+    updateAccessToken(body) {
+        this.config.access = {
+            token: body.access_token,
+            type: body.token_type,
+            scope: body.scope,
+            expires: new Date(new Date().getTime() + body.expires_in),
+        };
     }
 }

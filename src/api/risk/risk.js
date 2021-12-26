@@ -3,30 +3,32 @@ import { determineError } from '../../services/errors';
 import http from '../../services/http';
 
 /**
- * Class dealing with the /fawry endpoint
+ * Class dealing with the /risk endpoint
  *
  * @export
- * @class Fawry
+ * @class Risk
  */
-export default class Fawry {
+export default class Risk {
     constructor(config) {
         this.config = config;
     }
 
     /**
-     * Approve Fawry payment
+     * Perform a pre-authentication fraud assessment using your defined risk settings.
      *
-     * @param {string} reference Reference.
-     * @memberof Fawry
-     * @return {Promise<Object>} A promise to the Fawry response.
+     * @memberof Risk
+     * @param {Object} body Risk request body.
+     * @return {Promise<Object>} A promise to the risk response.
      */
-    async approve(reference) {
+    async requestPreAuthentication(body) {
         try {
             const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/fawry/payments/${reference}/approval`,
+                method: 'post',
+                url: `${this.config.host}/risk/assessments/pre-authentication`,
                 headers: { Authorization: this.config.sk },
+                body,
             });
+
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -35,19 +37,21 @@ export default class Fawry {
     }
 
     /**
-     * Cancel Fawry payment
+     * Perform a pre-capture fraud assessment using your defined risk settings.
      *
-     * @param {string} reference Reference.
-     * @memberof Fawry
-     * @return {Promise<Object>} A promise to the Fawry response.
+     * @memberof Risk
+     * @param {Object} body Risk request body.
+     * @return {Promise<Object>} A promise to the risk response.
      */
-    async cancel(reference) {
+    async requestPreCapture(body) {
         try {
             const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/fawry/payments/${reference}/cancellation`,
+                method: 'post',
+                url: `${this.config.host}/risk/assessments/pre-capture`,
                 headers: { Authorization: this.config.sk },
+                body,
             });
+
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

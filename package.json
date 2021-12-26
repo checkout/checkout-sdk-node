@@ -30,7 +30,7 @@
     "scripts": {
         "start": "nodemon --exec babel-node ./src/index.js",
         "lint": "eslint --fix --ext .js src/",
-        "test": "nyc --reporter=html mocha 'test/**/*.js' --require esm",
+        "test": "nyc --reporter=html mocha --timeout 300000 'test/**/*.js' --require esm",
         "posttest": "nyc report --reporter=json",
         "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch --require esm",
         "build": "babel src --out-dir ./dist --source-maps",
