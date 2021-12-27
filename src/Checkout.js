@@ -154,5 +154,6 @@ export default class Checkout {
         this.paymentLinks = new ENDPOINTS.PaymentLinks(this.config);
         this.risk = new ENDPOINTS.Risk(this.config);
         this.access = new ENDPOINTS.Access(this.config);
+        this.forex = new ENDPOINTS.Forex(this.config);
     }
 }

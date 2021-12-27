@@ -19,7 +19,7 @@ const http = async (fetch, config, request) => {
             authHeader = `${config.access.type} ${config.access.token}`;
         } else {
             const access = await createAccessToken(config, fetch);
-            authHeader = `${access.token_type} ${access.access_token}`;
+            authHeader = `${access.json.token_type} ${access.json.access_token}`;
 
             // eslint-disable-next-line no-param-reassign
             config.access = {

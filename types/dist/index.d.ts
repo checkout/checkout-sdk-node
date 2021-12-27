@@ -22,5 +22,6 @@ export { default as Oxxo } from './api/apm-specific/oxxo';
 export { default as Klarna } from './api/apm-specific/klarna';
 export { default as Sepa } from './api/apm-specific/sepa';
 export { default as Access } from './api/access/access';
+export { default as Forex } from './api/forex/forex';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

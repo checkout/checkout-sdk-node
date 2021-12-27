@@ -25,7 +25,8 @@ import {
     Klarna,
     Sepa,
     PaymentLinks,
-    Access
+    Access,
+    Forex
 } from './index';
 
 export type access = {
@@ -78,6 +79,7 @@ export default class Checkout {
     sepa: Sepa;
     paymentLinks:PaymentLinks;
     access:Access;
+    forex:Forex;
     config: config;
 
     constructor(key?: string, options?: options);
