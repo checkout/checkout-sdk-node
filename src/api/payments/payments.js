@@ -133,6 +133,29 @@ export default class Payments {
     }
 
     /**
+     * Request an incremental authorization to increase the authorization amount or extend
+     * the authorization's validity period.
+     *
+     * @memberof Payments
+     * @param {string} id /^(pay)_(\w{26})$/ The payment identifier.
+     * @param {Object} body Payment Request body.
+     * @return {Promise<Object>} A promise to the getActions response.
+     */
+    async increment(id, body) {
+        try {
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/payments/${id}/authorizations`,
+                body,
+            });
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
      * Captures a payment if supported by the payment method.
      *
      * @memberof Payments

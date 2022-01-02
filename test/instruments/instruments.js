@@ -361,4 +361,88 @@ describe('Request an instrument', () => {
             expect(err).to.be.instanceOf(NotFoundError);
         }
     });
+
+    it('should get bank account field formatting', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'payouts:bank-details',
+        });
+
+        nock('https://api.sandbox.checkout.com')
+            .get('/validation/bank-accounts/GB/GBP')
+            .reply(201, {
+                sections: [
+                    {
+                        fields: [
+                            {
+                                id: 'account_number',
+                                display: 'Account Number',
+                                type: 'string',
+                                validation_regex: '^[0-9]{8,8}$',
+                                required: true,
+                                allowed_options: [],
+                                dependencies: [],
+                                restrictions: [],
+                            },
+                            {
+                                id: 'bank_code',
+                                display: 'Sort Code',
+                                type: 'string',
+                                validation_regex: '^[0-9]{6,6}$',
+                                required: true,
+                                allowed_options: [],
+                                dependencies: [],
+                                restrictions: [],
+                            },
+                        ],
+                        name: 'Account details',
+                    },
+                ],
+            });
+
+        let cko = new Checkout(
+            '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+            {
+                client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                scope: ['payouts:bank-details'],
+                environment: 'sandbox',
+            }
+        );
+
+        const bank = await cko.instruments.getBankAccountFieldFormatting('GB', 'GBP');
+        expect(bank.sections).to.exist;
+    });
+
+    it('should throw when getting bank account field formatting', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'payouts:bank-details',
+        });
+
+        nock('https://api.sandbox.checkout.com')
+            .get('/validation/bank-accounts/GB/GBP')
+            .reply(401, {});
+
+        const cko = new Checkout(SK, { pk: PK });
+
+        try {
+            let cko = new Checkout(
+                '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+                {
+                    client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                    scope: ['payouts:bank-details'],
+                    environment: 'sandbox',
+                }
+            );
+
+            const bank = await cko.instruments.getBankAccountFieldFormatting('GB', 'GBP');
+            expect(bank.sections).to.exist;
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
 });

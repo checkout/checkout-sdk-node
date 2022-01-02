@@ -102,4 +102,25 @@ export default class Instruments {
             throw error;
         }
     }
+
+    /**
+     * Delete a payment instrument.
+     *
+     * @memberof Instruments
+     * @param {string} country Country 2 character ISO.
+     * @param {string} currency Currency 3 character ISO.
+     * @return {Promise<Object>} A promise to the instrument response.
+     */
+    async getBankAccountFieldFormatting(country, currency) {
+        try {
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/validation/bank-accounts/${country}/${currency}`,
+            });
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
 }
