@@ -26,7 +26,8 @@ import {
     Sepa,
     PaymentLinks,
     Access,
-    Forex
+    Forex,
+    ApplePay
 } from './index';
 
 export type access = {
@@ -80,6 +81,7 @@ export default class Checkout {
     paymentLinks:PaymentLinks;
     access:Access;
     forex:Forex;
+    applePay:ApplePay;
     config: config;
 
     constructor(key?: string, options?: options);

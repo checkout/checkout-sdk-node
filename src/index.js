@@ -24,5 +24,6 @@ export { default as Klarna } from './api/apm-specific/klarna';
 export { default as Sepa } from './api/apm-specific/sepa';
 export { default as Access } from './api/access/access';
 export { default as Forex } from './api/forex/forex';
+export { default as ApplePay } from './api/apple-pay/apple-pay';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

@@ -31,7 +31,7 @@ const http = async (fetch, config, request) => {
         }
     } else {
         // For MBC
-        authHeader = config.headers.Authorization;
+        authHeader = request.headers.Authorization;
     }
 
     const headers = {

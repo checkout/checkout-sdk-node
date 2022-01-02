@@ -63,10 +63,19 @@ const determineSecretKey = (key) => {
 
 const determinePublicKey = (options) => {
     // Unless specified, check environment variables for the key
+    let pk;
     if (options && options.pk) {
-        return options.pk;
+        pk = options.pk;
+    } else {
+        pk = process.env.CKO_PUBLIC_KEY || '';
     }
-    return process.env.CKO_PUBLIC_KEY || '';
+
+    // In case of NAS static keys, append the Bearer prefix
+    if (CONFIG.NAS_LIVE_PUBLIC_KEY_REGEX.test(pk) || CONFIG.NAS_SANDBOX_PUBLIC_KEY_REGEX.test(pk)) {
+        pk = pk.startsWith('Bearer') || pk.startsWith('bearer') ? pk : `Bearer ${pk}`;
+    }
+
+    return pk;
 };
 
 /**
@@ -155,5 +164,6 @@ export default class Checkout {
         this.risk = new ENDPOINTS.Risk(this.config);
         this.access = new ENDPOINTS.Access(this.config);
         this.forex = new ENDPOINTS.Forex(this.config);
+        this.applePay = new ENDPOINTS.ApplePay(this.config);
     }
 }

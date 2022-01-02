@@ -108,6 +108,20 @@ describe('NAS static keys', () => {
         const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz');
         expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
     });
+
+    it('it accepts NAS sandbox pk and appends the Bearer prefix', async () => {
+        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz', {
+            pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+        });
+        expect(cko.config.pk).to.equal('Bearer pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=');
+    });
+
+    it('it accepts NAS sandbox pk and appends keeps the Bearer prefix', async () => {
+        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz', {
+            pk: 'Bearer pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+        });
+        expect(cko.config.pk).to.equal('Bearer pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=');
+    });
 });
 
 describe('NAS oAuth', () => {
