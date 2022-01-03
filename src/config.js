@@ -2,6 +2,9 @@ export const SANDBOX_BASE_URL = 'https://api.sandbox.checkout.com';
 export const LIVE_BASE_URL = 'https://api.checkout.com';
 export const SANDBOX_ACCESS_URL = 'https://access.sandbox.checkout.com/connect/token';
 export const LIVE_ACCESS_URL = 'https://access.checkout.com/connect/token';
+export const MARKETPLACE_FILES_LIVE_URL = 'https://files.checkout.com';
+export const MARKETPLACE_FILES_SANDBOX_URL = 'https://files.sandbox.checkout.com';
+
 export const REQUEST_ID_HEADER = 'cko-request-id';
 export const API_VERSION_HEADER = 'cko-version';
 

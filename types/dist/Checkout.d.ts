@@ -28,7 +28,9 @@ import {
     Access,
     Forex,
     ApplePay,
-    Sessions
+    Sessions,
+    Workflows,
+    Marketplace
 } from './index';
 
 export type access = {
@@ -84,6 +86,8 @@ export default class Checkout {
     forex:Forex;
     applePay:ApplePay;
     sessions:Sessions;
+    workflows:Workflows;
+    marketplace:Marketplace;
     config: config;
 
     constructor(key?: string, options?: options);

@@ -166,5 +166,7 @@ export default class Checkout {
         this.forex = new ENDPOINTS.Forex(this.config);
         this.applePay = new ENDPOINTS.ApplePay(this.config);
         this.sessions = new ENDPOINTS.Sessions(this.config);
+        this.workflows = new ENDPOINTS.Workflows(this.config);
+        this.marketplace = new ENDPOINTS.Marketplace(this.config);
     }
 }
