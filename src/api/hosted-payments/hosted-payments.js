@@ -34,4 +34,25 @@ export default class HostedPayments {
             throw error;
         }
     }
+
+    /**
+     * Returns details of an instrument
+     *
+     * @memberof HostedPayments
+     * @param {string} id Hosted payment id.
+     * @return {Promise<Object>} A promise to the Hosted Payment response.
+     */
+    async get(id) {
+        try {
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/hosted-payments/${id}`,
+                headers: { Authorization: this.config.sk },
+            });
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
 }
