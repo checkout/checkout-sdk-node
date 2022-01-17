@@ -57,20 +57,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -87,8 +83,7 @@ describe('Void a payment', () => {
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_o5z2bssaelbehmhcyh42jvxfo4',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_o5z2bssaelbehmhcyh42jvxfo4',
                     },
                 },
             });
@@ -156,20 +151,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -186,8 +177,7 @@ describe('Void a payment', () => {
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -199,8 +189,7 @@ describe('Void a payment', () => {
                 reference: 'VOID',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
@@ -283,20 +272,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/voids',
                         },
                     },
                 },
@@ -313,8 +298,7 @@ describe('Void a payment', () => {
                 reference: 'ORD-5023-4E10',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
                     },
                 },
             });
@@ -403,20 +387,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href:
-                                'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -433,8 +413,7 @@ describe('Void a payment', () => {
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -514,20 +493,16 @@ describe('Void a payment', () => {
                 },
                 _links: {
                     self: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4',
                     },
                     actions: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/actions',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/actions',
                     },
                     capture: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/captures',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/captures',
                     },
                     void: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/voids',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/voids',
                     },
                 },
                 requiresRedirect: false,
@@ -541,8 +516,7 @@ describe('Void a payment', () => {
                 reference: 'my-idempotent-void',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
@@ -553,44 +527,40 @@ describe('Void a payment', () => {
                 reference: 'my-idempotent-void',
                 _links: {
                     payment: {
-                        href:
-                            'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
         const cko = new Checkout(SK);
-        try {
-            const transaction = await cko.payments.request({
-                source: {
-                    number: '4242424242424242',
-                    expiry_month: 6,
-                    expiry_year: 2029,
-                    cvv: '100',
-                },
-                currency: 'USD',
-                capture: false,
-                reference: 'ORD-IDM-1',
-                amount: 100,
-            });
-            const paymentId = transaction.id;
-            const void1 = await cko.payments.void(
-                paymentId,
-                {
-                    reference: 'my-idempotent-void',
-                },
-                'loinlpnlujn;j'
-            );
-            const void2 = await cko.payments.void(
-                paymentId,
-                {
-                    reference: 'other',
-                },
-                'loinlpnlujn'
-            );
 
-            expect(void2.reference).to.equal('my-idempotent-void');
-        } catch (error) {
-            console.log(error);
-        }
+        const transaction = await cko.payments.request({
+            source: {
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            capture: false,
+            reference: 'ORD-IDM-1',
+            amount: 100,
+        });
+        const paymentId = transaction.id;
+        const void1 = await cko.payments.void(
+            paymentId,
+            {
+                reference: 'my-idempotent-void',
+            },
+            'loinlpnlujn;j'
+        );
+        const void2 = await cko.payments.void(
+            paymentId,
+            {
+                reference: 'other',
+            },
+            'loinlpnlujn'
+        );
+
+        expect(void2.reference).to.equal('my-idempotent-void');
     });
 });

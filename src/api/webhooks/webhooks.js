@@ -42,16 +42,12 @@ export default class Webhooks {
      */
     async registerWebhook(body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/webhooks`,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/webhooks`,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -67,15 +63,11 @@ export default class Webhooks {
      */
     async retrieveWebhook(id) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/webhooks/${id}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -91,16 +83,12 @@ export default class Webhooks {
      */
     async updateWebhook(id, body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'put',
-                    url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'put',
+                url: `${this.config.host}/webhooks/${id}`,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -116,16 +104,12 @@ export default class Webhooks {
      */
     async partiallyUpdateWebhook(id, body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'patch',
-                    url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'patch',
+                url: `${this.config.host}/webhooks/${id}`,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -141,15 +125,11 @@ export default class Webhooks {
      */
     async removeWebhook(id) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'delete',
-                    url: `${this.config.host}/webhooks/${id}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'delete',
+                url: `${this.config.host}/webhooks/${id}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

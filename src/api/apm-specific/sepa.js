@@ -20,7 +20,7 @@ export default class Sepa {
      * @return {Promise<Object>} A promise to the Sepa response.
      */
     async getMandate(id) {
-        let url = this.config.host.includes('sandbox')
+        const url = this.config.host.includes('sandbox')
             ? `${this.config.host}/sepa-external/mandates/${id}`
             : `${this.config.host}/sepa/mandates/${id}`;
         try {
@@ -43,20 +43,16 @@ export default class Sepa {
      * @return {Promise<Object>} A promise to the Sepa response.
      */
     async cancelMandate(id) {
-        let url = this.config.host.includes('sandbox')
+        const url = this.config.host.includes('sandbox')
             ? `${this.config.host}/sepa-external/mandates/${id}/cancel`
             : `${this.config.host}/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -71,19 +67,15 @@ export default class Sepa {
      * @return {Promise<Object>} A promise to the Sepa response.
      */
     async getPPROMandate(id) {
-        let url = this.config.host.includes('sandbox')
+        const url = this.config.host.includes('sandbox')
             ? `${this.config.host}/ppro/sepa-external/mandates/${id}`
             : `${this.config.host}/ppro/sepa/mandates/${id}`;
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -98,20 +90,16 @@ export default class Sepa {
      * @return {Promise<Object>} A promise to the Sepa response.
      */
     async cancelPPROMandate(id) {
-        let url = this.config.host.includes('sandbox')
+        const url = this.config.host.includes('sandbox')
             ? `${this.config.host}/ppro/sepa-external/mandates/${id}/cancel`
             : `${this.config.host}/ppro/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'post',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

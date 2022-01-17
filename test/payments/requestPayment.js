@@ -11,115 +11,6 @@ import { Checkout } from '../../src/index';
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Request a payment or payout', () => {
-    it('should initialise with key and default config', () => {
-        const cko = new Checkout(SK);
-        expect(cko).to.be.instanceOf(Checkout);
-        expect(cko.config.sk).to.equal(SK);
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-        expect(cko.config.timeout).to.equal(5000);
-        expect(cko.config.agent).to.be.undefined;
-    });
-
-    it('should should append the Bearer prefix for sandbox NAS secret keys', () => {
-        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz');
-        expect(cko).to.be.instanceOf(Checkout);
-        expect(cko.config.sk).to.equal('Bearer sk_sbox_fghjovernsi764jybiuogokg7xz');
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-        expect(cko.config.agent).to.be.undefined;
-    });
-
-    it('should cater for the checksum character', () => {
-        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7x*');
-        expect(cko.config.host).to.equal('https://api.checkout.com');
-        console.log(cko.config);
-    });
-
-    it('should should append the Bearer prefix for live NAS secret keys', () => {
-        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7xz');
-        expect(cko).to.be.instanceOf(Checkout);
-        expect(cko.config.sk).to.equal('Bearer sk_fghjovernsi764jybiuogokg7xz');
-        expect(cko.config.host).to.equal('https://api.checkout.com');
-        expect(cko.config.agent).to.be.undefined;
-    });
-
-    it('should initialise with key and custom config', () => {
-        const fakeAgent = {};
-        const cko = new Checkout(SK, {
-            host: 'https:/test.com',
-            timeout: 9000,
-            agent: fakeAgent,
-        });
-        expect(cko.config.sk).to.equal(SK);
-        expect(cko.config.host).to.equal('https:/test.com');
-        expect(cko.config.timeout).to.equal(9000);
-        expect(cko.config.agent).to.equal(fakeAgent);
-    });
-
-    it('should set the public key', () => {
-        const cko = new Checkout(SK);
-        const pk = 'pk_123';
-        cko.config.pk = pk;
-        expect(cko.config.pk).to.equal(pk);
-    });
-
-    it('it accepts NAS live sk and it sets the environment accordingly', () => {
-        const cko = new Checkout('sk_fghjovernsi764jybiuogokg7xz');
-        expect(cko.config.host).to.equal('https://api.checkout.com');
-    });
-
-    it('it accepts NAS sandbox sk and it sets the environment accordingly', () => {
-        const cko = new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz');
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-    });
-
-    it('should set the public key in constructor', () => {
-        const cko = new Checkout(SK, { pk: 'pk_123' });
-        expect(cko.config.pk).to.equal('pk_123');
-    });
-
-    it('should set read env variables', () => {
-        process.env.CKO_SECRET_KEY = SK;
-        process.env.CKO_PUBLIC_KEY = 'pk_test_6e40a700-d563-43cd-89d0-f9bb17d35e73';
-
-        const cko = new Checkout();
-        expect(cko.config.sk).to.equal(SK);
-        expect(cko.config.pk).to.equal('pk_test_6e40a700-d563-43cd-89d0-f9bb17d35e73');
-        delete process.env.CKO_SECRET_KEY;
-        delete process.env.CKO_PUBLIC_KEY;
-    });
-
-    it('should set the live environment based on env key', () => {
-        process.env.CKO_SECRET_KEY = 'sk_fghjovernsi764jybiuogokg7xz';
-        const cko = new Checkout();
-        expect(cko.config.host).to.equal('https://api.checkout.com');
-        delete process.env.CKO_SECRET_KEY;
-    });
-
-    it('should set the sandbox environment based on env key', () => {
-        process.env.CKO_SECRET_KEY = SK;
-        const cko = new Checkout();
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-        delete process.env.CKO_SECRET_KEY;
-    });
-
-    it('should determine sandbox environemnt based on key', () => {
-        const cko = new Checkout(SK);
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-    });
-
-    it('should determine live environemnt based on key', () => {
-        const cko = new Checkout('sk_43ed9a7f-4799-461d-b201-a70507878b51');
-        expect(cko.config.host).to.equal('https://api.checkout.com');
-    });
-
-    it('should reject invalid key', () => {
-        try {
-            const cko = new Checkout('sk_43ed9a7f');
-        } catch (e) {
-            expect(e.message).to.equal('Invalid Secret Key');
-        }
-    });
-
     it('should perform normal payment request with a Card Source', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/payments')
@@ -200,6 +91,261 @@ describe('Request a payment or payout', () => {
         expect(transaction.approved).to.be.true;
         expect(transaction.risk.flagged).to.be.false;
         expect(transaction.requiresRedirect).to.be.false;
+    });
+
+    it('should perform normal payment request with a Card Source with NAS oAuth and re-use the access token if not expired', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token:
+                'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFybjphd3M6a21zOmV1LXdlc3QtMTo2ODY0OTY3NDc3MTU6a2V5LzAyYThmYWM5LWE5MjItNGNkNy05MDk1LTg0ZjA5YjllNTliZCIsInR5cCI6ImF0K2p3dCJ9.eyJuYmYiOjE2NDA1NTMzNDksImV4cCI6MTY0MDU1Njk0OSwiaXNzIjoiaHR0cHM6Ly9hY2Nlc3Muc2FuZGJveC5jaGVja291dC5jb20iLCJhdWQiOiJnYXRld2F5IiwiY2xpZW50X2lkIjoiYWNrX3Z2emhvYWk0NjZzdTNqM3ZieGI0N3RzNW9lIiwiY2tvX2NsaWVudF9pZCI6ImNsaV9nNnJvZ2IzaGhmZXUzZ2h0eGN2M2J3NHFweSIsImNrb19lbnRpdHlfaWQiOiJlbnRfZGppZ2NxeDRjbG11Zm8yc2FzZ29tZ3Bxc3EiLCJqdGkiOiI3RDRCQTRBNEJBQUYzQ0E5MjYwMzlDRTNGQTc1ODVEMCIsImlhdCI6MTY0MDU1MzM0OSwic2NvcGUiOlsiZ2F0ZXdheSJdfQ.U4S2YQDZtRb5WsKA6P8eiHyoqH_KN_1MabiNG5LAOeyYwRiIdyuzWJlYJg-wJlly84Eo68P1rcEB0Pac90PRiDBfSPNh0rIFJvFrA1fHE95EWjwER8UBvYT6yr-yI4JlrTnjeU6f5mJpxWbuN2ywE36x5eWPBdBs3w_j_x8FU62-UYwPOy5LIyZLR_JRxHMU81r7chOD9113CTGzJG9CGzKDMN53iciLdLPXUCFH2AlLHm9-YFh46WMIz85i4nVG0aKI_fIW9gjsLIvG0j-8shf-k4D1LLP0R3juX6twULVbrDuZqacC0TqGI6bAahVJ37Old74He7Ft6j3cx9Hi8A',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'gateway',
+        });
+
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .times(2)
+            .reply(201, {
+                id: 'pay_gjulv7byhhwerb3jyx2547xlme',
+                action_id: 'act_t4u4g5ovx5huhk4ljrtyoo7eji',
+                amount: 6540,
+                currency: 'USD',
+                approved: true,
+                status: 'Authorized',
+                auth_code: '655071',
+                response_code: '10000',
+                response_summary: 'Approved',
+                balances: {
+                    total_authorized: 6540,
+                    total_voided: 0,
+                    available_to_void: 6540,
+                    total_captured: 0,
+                    available_to_capture: 6540,
+                    total_refunded: 0,
+                    available_to_refund: 0,
+                },
+                risk: {
+                    flagged: false,
+                },
+                source: {
+                    id: 'src_d5vdj6uzrktufj7tfzqewapd6u',
+                    type: 'card',
+                    expiry_month: 7,
+                    expiry_year: 2028,
+                    scheme: 'Visa',
+                    last4: '4242',
+                    fingerprint: 'A8E3A7296143D9EFA0DBF46139A0BF3138C5A824072E88C4E0C2033AB40C9A1D',
+                    bin: '424242',
+                    card_type: 'CREDIT',
+                    card_category: 'CONSUMER',
+                    issuer: 'JPMORGAN CHASE BANK NA',
+                    issuer_country: 'US',
+                    product_id: 'A',
+                    product_type: 'Visa Traditional',
+                    avs_check: 'G',
+                    payment_account_reference: 'V001130220276449472',
+                },
+                customer: {
+                    id: 'cus_3dapnnm2l6ue3eagk5lufxt3am',
+                    email: 'johnny.shrewd@gmail.com',
+                    name: 'Johnny Shrewd',
+                },
+                processed_on: '2021-12-26T21:16:40.079866Z',
+                reference: 'ORD-5023-4E89',
+                scheme_id: '204565197912882',
+                processing: {
+                    acquirer_transaction_id: '191020606571494805360',
+                    retrieval_reference_number: '938688307590',
+                },
+                expires_on: '2022-01-25T21:16:40.079866Z',
+                _links: {
+                    self: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
+                    },
+                    actions: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
+                    },
+                    capture: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
+                    },
+                    void: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
+                    },
+                },
+            });
+
+        try {
+            let cko = new Checkout(
+                '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+                {
+                    client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                    scope: ['gateway'],
+                    environment: 'sandbox',
+                }
+            );
+
+            const transaction = await cko.payments.request({
+                source: {
+                    type: 'card',
+                    number: '4242424242424242',
+                    expiry_month: 6,
+                    expiry_year: 2029,
+                    cvv: '100',
+                },
+                currency: 'USD',
+                amount: 100,
+                processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+            });
+
+            expect(transaction.approved).to.be.true;
+            expect(transaction.risk.flagged).to.be.false;
+            expect(transaction.requiresRedirect).to.be.false;
+
+            let accessToken = cko.config.accessToken;
+
+            const transaction2 = await cko.payments.request({
+                source: {
+                    type: 'card',
+                    number: '4242424242424242',
+                    expiry_month: 6,
+                    expiry_year: 2029,
+                    cvv: '101',
+                },
+                currency: 'USD',
+                amount: 100,
+                processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+            });
+
+            expect(cko.config.accessToken).to.equal(accessToken);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    it('should request a new access token when doing a payment with Card Source, if the previous access token is expired', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token:
+                'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFybjphd3M6a21zOmV1LXdlc3QtMTo2ODY0OTY3NDc3MTU6a2V5LzAyYThmYWM5LWE5MjItNGNkNy05MDk1LTg0ZjA5YjllNTliZCIsInR5cCI6ImF0K2p3dCJ9.eyJuYmYiOjE2NDA1NTMzNDksImV4cCI6MTY0MDU1Njk0OSwiaXNzIjoiaHR0cHM6Ly9hY2Nlc3Muc2FuZGJveC5jaGVja291dC5jb20iLCJhdWQiOiJnYXRld2F5IiwiY2xpZW50X2lkIjoiYWNrX3Z2emhvYWk0NjZzdTNqM3ZieGI0N3RzNW9lIiwiY2tvX2NsaWVudF9pZCI6ImNsaV9nNnJvZ2IzaGhmZXUzZ2h0eGN2M2J3NHFweSIsImNrb19lbnRpdHlfaWQiOiJlbnRfZGppZ2NxeDRjbG11Zm8yc2FzZ29tZ3Bxc3EiLCJqdGkiOiI3RDRCQTRBNEJBQUYzQ0E5MjYwMzlDRTNGQTc1ODVEMCIsImlhdCI6MTY0MDU1MzM0OSwic2NvcGUiOlsiZ2F0ZXdheSJdfQ.U4S2YQDZtRb5WsKA6P8eiHyoqH_KN_1MabiNG5LAOeyYwRiIdyuzWJlYJg-wJlly84Eo68P1rcEB0Pac90PRiDBfSPNh0rIFJvFrA1fHE95EWjwER8UBvYT6yr-yI4JlrTnjeU6f5mJpxWbuN2ywE36x5eWPBdBs3w_j_x8FU62-UYwPOy5LIyZLR_JRxHMU81r7chOD9113CTGzJG9CGzKDMN53iciLdLPXUCFH2AlLHm9-YFh46WMIz85i4nVG0aKI_fIW9gjsLIvG0j-8shf-k4D1LLP0R3juX6twULVbrDuZqacC0TqGI6bAahVJ37Old74He7Ft6j3cx9Hi8A',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'gateway',
+        });
+
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .times(2)
+            .reply(201, {
+                id: 'pay_gjulv7byhhwerb3jyx2547xlme',
+                action_id: 'act_t4u4g5ovx5huhk4ljrtyoo7eji',
+                amount: 6540,
+                currency: 'USD',
+                approved: true,
+                status: 'Authorized',
+                auth_code: '655071',
+                response_code: '10000',
+                response_summary: 'Approved',
+                balances: {
+                    total_authorized: 6540,
+                    total_voided: 0,
+                    available_to_void: 6540,
+                    total_captured: 0,
+                    available_to_capture: 6540,
+                    total_refunded: 0,
+                    available_to_refund: 0,
+                },
+                risk: {
+                    flagged: false,
+                },
+                source: {
+                    id: 'src_d5vdj6uzrktufj7tfzqewapd6u',
+                    type: 'card',
+                    expiry_month: 7,
+                    expiry_year: 2028,
+                    scheme: 'Visa',
+                    last4: '4242',
+                    fingerprint: 'A8E3A7296143D9EFA0DBF46139A0BF3138C5A824072E88C4E0C2033AB40C9A1D',
+                    bin: '424242',
+                    card_type: 'CREDIT',
+                    card_category: 'CONSUMER',
+                    issuer: 'JPMORGAN CHASE BANK NA',
+                    issuer_country: 'US',
+                    product_id: 'A',
+                    product_type: 'Visa Traditional',
+                    avs_check: 'G',
+                    payment_account_reference: 'V001130220276449472',
+                },
+                customer: {
+                    id: 'cus_3dapnnm2l6ue3eagk5lufxt3am',
+                    email: 'johnny.shrewd@gmail.com',
+                    name: 'Johnny Shrewd',
+                },
+                processed_on: '2021-12-26T21:16:40.079866Z',
+                reference: 'ORD-5023-4E89',
+                scheme_id: '204565197912882',
+                processing: {
+                    acquirer_transaction_id: '191020606571494805360',
+                    retrieval_reference_number: '938688307590',
+                },
+                expires_on: '2022-01-25T21:16:40.079866Z',
+                _links: {
+                    self: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
+                    },
+                    actions: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
+                    },
+                    capture: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
+                    },
+                    void: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
+                    },
+                },
+            });
+
+        let cko = new Checkout(
+            '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+            {
+                client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                scope: ['gateway'],
+                environment: 'sandbox',
+            }
+        );
+
+        const transaction = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            amount: 100,
+            processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+        });
+
+        expect(transaction.approved).to.be.true;
+        expect(transaction.requiresRedirect).to.be.false;
+
+        let token1 = cko.config.access.token;
+
+        //   hardcode the accessToken expiry to be in the past
+        cko.config.access.expires = new Date(new Date().getTime() - 3800);
+        const transaction2 = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '101',
+            },
+            currency: 'USD',
+            amount: 100,
+            processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+        });
+        let token2 = cko.config.access.token;
+        expect(cko.config.token1).to.not.equals(token2);
     });
 
     it('should perform normal payment request with a Card Source and idempotencyKey', async () => {

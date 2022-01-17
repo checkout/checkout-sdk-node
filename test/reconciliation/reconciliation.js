@@ -48,19 +48,16 @@ describe('Reconciliation', () => {
                     },
                     _links: {
                         payments: {
-                            href:
-                                'http://api.checkout.com/reporting/statements/190110B107654/payments',
+                            href: 'http://api.checkout.com/reporting/statements/190110B107654/payments',
                         },
                     },
                 },
                 _links: {
                     next: {
-                        href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
+                        href: 'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
                     },
                     self: {
-                        href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
+                        href: 'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
                     },
                 },
             });
@@ -120,19 +117,16 @@ describe('Reconciliation', () => {
                     },
                     _links: {
                         payments: {
-                            href:
-                                'http://api.checkout.com/reporting/statements/190110B107654/payments',
+                            href: 'http://api.checkout.com/reporting/statements/190110B107654/payments',
                         },
                     },
                 },
                 _links: {
                     next: {
-                        href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
+                        href: 'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1&after=11111111',
                     },
                     self: {
-                        href:
-                            'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
+                        href: 'http://api.checkout.com/reporting/payments?from=01%2F03%2F2019%2000%3A00%3A00&to=01%2F03%2F2019%2000%3A00%3A00&limit=1',
                     },
                 },
             });
@@ -218,36 +212,30 @@ describe('Reconciliation', () => {
                                 payout_fee: 0.0,
                                 _links: {
                                     payments: {
-                                        href:
-                                            'https://api.checkout.com/reporting/statements/155613B100981/payments?payout_id=OYWDV06ZZ',
+                                        href: 'https://api.checkout.com/reporting/statements/155613B100981/payments?payout_id=OYWDV06ZZ',
                                     },
                                     download: {
-                                        href:
-                                            'https://api.checkout.com/reporting/statements/155613B100981/payments/download?payout_id=OYWDV06ZZ',
+                                        href: 'https://api.checkout.com/reporting/statements/155613B100981/payments/download?payout_id=OYWDV06ZZ',
                                     },
                                 },
                             },
                         ],
                         _links: {
                             payments: {
-                                href:
-                                    'https://api.checkout.com/reporting/statements/155613B100981/payments',
+                                href: 'https://api.checkout.com/reporting/statements/155613B100981/payments',
                             },
                             download: {
-                                href:
-                                    'https://api.checkout.com/reporting/statements/155613B100981/payments/download',
+                                href: 'https://api.checkout.com/reporting/statements/155613B100981/payments/download',
                             },
                         },
                     },
                 ],
                 _links: {
                     next: {
-                        href:
-                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1&skip=1',
+                        href: 'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1&skip=1',
                     },
                     self: {
-                        href:
-                            'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1',
+                        href: 'http://api.checkout.com/reporting/statements?from=01%2F01%2F2019%2000%3A00%3A00&to=01%2F11%2F2019%2000%3A00%3A00&limit=1',
                     },
                 },
             });
@@ -325,12 +313,10 @@ describe('Reconciliation', () => {
                 ],
                 _links: {
                     next: {
-                        href:
-                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060358&limit=3',
+                        href: 'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060358&limit=3',
                     },
                     self: {
-                        href:
-                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
+                        href: 'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
                     },
                 },
                 page: '269060358',
@@ -352,8 +338,7 @@ describe('Reconciliation', () => {
                 ],
                 _links: {
                     self: {
-                        href:
-                            'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
+                        href: 'https://api.checkout.com/reporting/payments?from=07%2F07%2F2020%2017%3A51%3A42&to=07%2F07%2F2020%2017%3A51%3A59&after=269060368&limit=3',
                     },
                 },
             });
@@ -410,8 +395,7 @@ describe('Reconciliation', () => {
                 ],
                 _links: {
                     self: {
-                        href:
-                            'https://api.checkout.com/reporting/actions?requested_from=08%2F17%2F2020%2016%3A48%3A52&requested_to=09%2F17%2F2020%2016%3A48%3A52&limit=200',
+                        href: 'https://api.checkout.com/reporting/actions?requested_from=08%2F17%2F2020%2016%3A48%3A52&requested_to=09%2F17%2F2020%2016%3A48%3A52&limit=200',
                     },
                 },
             });
@@ -511,8 +495,7 @@ describe('Reconciliation', () => {
                 ],
                 _links: {
                     self: {
-                        href:
-                            'https://api.checkout.com/reporting/actions/act_h45qukswryqejptltkcylnwgwe',
+                        href: 'https://api.checkout.com/reporting/actions/act_h45qukswryqejptltkcylnwgwe',
                     },
                 },
             });
@@ -560,16 +543,14 @@ describe('Reconciliation', () => {
                         actions: [],
                         _links: {
                             self: {
-                                href:
-                                    'https://api.checkout.com/reporting/payments/pay_guvhr46cw2kurd6lknczrsh7ma',
+                                href: 'https://api.checkout.com/reporting/payments/pay_guvhr46cw2kurd6lknczrsh7ma',
                             },
                         },
                     },
                 ],
                 _links: {
                     self: {
-                        href:
-                            'https://api.checkout.com/reporting/payments/actions/act_guvhr46cw2kurd6lknczrsh7ma',
+                        href: 'https://api.checkout.com/reporting/payments/actions/act_guvhr46cw2kurd6lknczrsh7ma',
                     },
                 },
             });

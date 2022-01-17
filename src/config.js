@@ -1,13 +1,20 @@
 export const SANDBOX_BASE_URL = 'https://api.sandbox.checkout.com';
 export const LIVE_BASE_URL = 'https://api.checkout.com';
+export const SANDBOX_ACCESS_URL = 'https://access.sandbox.checkout.com/connect/token';
+export const LIVE_ACCESS_URL = 'https://access.checkout.com/connect/token';
+export const MARKETPLACE_FILES_LIVE_URL = 'https://files.checkout.com';
+export const MARKETPLACE_FILES_SANDBOX_URL = 'https://files.sandbox.checkout.com';
+
 export const REQUEST_ID_HEADER = 'cko-request-id';
 export const API_VERSION_HEADER = 'cko-version';
 
-export const DEFAULT_TIMEOUT = 5000;
+export const DEFAULT_TIMEOUT = 15000;
 
 export const MBC_LIVE_SECRET_KEY_REGEX = /^sk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
 export const NAS_LIVE_SECRET_KEY_REGEX = /^sk_?[a-z2-7]{26}[a-z2-7*#$=]$/;
 export const NAS_SANDBOX_SECRET_KEY_REGEX = /^sk_sbox_?[a-z2-7]{26}[a-z2-7*#$=]$/;
+export const NAS_LIVE_PUBLIC_KEY_REGEX = /^pk_?[a-z2-7]{26}[a-z2-7*#$=]$/;
+export const NAS_SANDBOX_PUBLIC_KEY_REGEX = /^pk_sbox_?[a-z2-7]{26}[a-z2-7*#$=]$/;
 export const PAYMENT_TYPES = {
     regular: 'Regular',
     recurring: 'Recurring',

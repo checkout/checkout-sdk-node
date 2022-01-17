@@ -199,12 +199,7 @@ export const determineError = async (err) => {
     }
 
     // For 'no body' response, replace with empty object
-    let errorJSON =
-        err.json !== undefined
-            ? await err.json.then((data) => {
-                  return data;
-              })
-            : {};
+    let errorJSON = err.json !== undefined ? await err.json.then((data) => data) : {};
     if (Object.keys(errorJSON).length === 0 && err.message) {
         errorJSON = err.message;
     }

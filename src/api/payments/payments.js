@@ -5,31 +5,23 @@ import http from '../../services/http';
 import { validatePayment, setSourceOrDestinationType } from '../../services/validation';
 
 const actionHandler = async (config, action, paymentId, body, idempotencyKey) => {
-    const response = await http(
-        fetch,
-        { timeout: config.timeout, agent: config.agent },
-        {
-            method: 'post',
-            url: `${config.host}/payments/${paymentId}/${action}`,
-            headers: determineHeaders(config, idempotencyKey),
-            body: body || {},
-        }
-    );
+    const response = await http(fetch, config, {
+        method: 'post',
+        url: `${config.host}/payments/${paymentId}/${action}`,
+        headers: determineHeaders(config, idempotencyKey),
+        body: body || {},
+    });
     return response.json;
 };
 
 const getHandler = async (config, url) => {
-    const response = await http(
-        fetch,
-        { timeout: config.timeout, agent: config.agent },
-        {
-            method: 'get',
-            url,
-            headers: {
-                Authorization: config.sk,
-            },
-        }
-    );
+    const response = await http(fetch, config, {
+        method: 'get',
+        url,
+        headers: {
+            Authorization: config.sk,
+        },
+    });
     return response;
 };
 
@@ -137,6 +129,29 @@ export default class Payments {
             return response.json;
         } catch (err) {
             throw await determineError(err);
+        }
+    }
+
+    /**
+     * Request an incremental authorization to increase the authorization amount or extend
+     * the authorization's validity period.
+     *
+     * @memberof Payments
+     * @param {string} id /^(pay)_(\w{26})$/ The payment identifier.
+     * @param {Object} body Payment Request body.
+     * @return {Promise<Object>} A promise to the getActions response.
+     */
+    async increment(id, body) {
+        try {
+            const response = await http(fetch, this.config, {
+                method: 'post',
+                url: `${this.config.host}/payments/${id}/authorizations`,
+                body,
+            });
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
         }
     }
 

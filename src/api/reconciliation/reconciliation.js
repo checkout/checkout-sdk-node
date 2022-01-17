@@ -59,15 +59,11 @@ export default class Reconciliation {
      */
     async getPayment(paymentId) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/reporting/payments/${paymentId}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/reporting/payments/${paymentId}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -94,7 +90,7 @@ export default class Reconciliation {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, agent: this.config.agent, csv: true },
+                { ...this.config, csv: true },
                 {
                     method: 'get',
                     url,
@@ -126,15 +122,11 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -154,7 +146,7 @@ export default class Reconciliation {
         try {
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, agent: this.config.agent, csv: true },
+                { ...this.config, csv: true },
                 {
                     method: 'get',
                     url: `${this.config.host}/reporting/statements/${statementId}/payments/download`,
@@ -186,15 +178,11 @@ export default class Reconciliation {
                 url += `?${queryString}`;
             }
 
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url,
+                headers: { Authorization: this.config.sk },
+            });
 
             return await response.json;
         } catch (err) {
@@ -212,15 +200,11 @@ export default class Reconciliation {
      */
     async getPaymentsAction(actionsId) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/reporting/payments/actions/${actionsId}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/reporting/payments/actions/${actionsId}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -247,7 +231,7 @@ export default class Reconciliation {
             }
             const response = await http(
                 fetch,
-                { timeout: this.config.timeout, agent: this.config.agent, csv: true },
+                { ...this.config, csv: true },
                 {
                     method: 'get',
                     url,
@@ -270,15 +254,11 @@ export default class Reconciliation {
      */
     async getAction(actionId) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/reporting/actions/${actionId}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/reporting/actions/${actionId}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

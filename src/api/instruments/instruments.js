@@ -47,15 +47,11 @@ export default class Instruments {
      */
     async get(id) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/instruments/${id}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/instruments/${id}`,
+                headers: { Authorization: this.config.sk },
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -73,16 +69,12 @@ export default class Instruments {
      */
     async update(id, body) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'patch',
-                    url: `${this.config.host}/instruments/${id}`,
-                    headers: { Authorization: this.config.sk },
-                    body,
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'patch',
+                url: `${this.config.host}/instruments/${id}`,
+                headers: { Authorization: this.config.sk },
+                body,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -99,15 +91,32 @@ export default class Instruments {
      */
     async delete(id) {
         try {
-            const response = await http(
-                fetch,
-                { timeout: this.config.timeout, agent: this.config.agent },
-                {
-                    method: 'delete',
-                    url: `${this.config.host}/instruments/${id}`,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await http(fetch, this.config, {
+                method: 'delete',
+                url: `${this.config.host}/instruments/${id}`,
+                headers: { Authorization: this.config.sk },
+            });
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Delete a payment instrument.
+     *
+     * @memberof Instruments
+     * @param {string} country Country 2 character ISO.
+     * @param {string} currency Currency 3 character ISO.
+     * @return {Promise<Object>} A promise to the instrument response.
+     */
+    async getBankAccountFieldFormatting(country, currency) {
+        try {
+            const response = await http(fetch, this.config, {
+                method: 'get',
+                url: `${this.config.host}/validation/bank-accounts/${country}/${currency}`,
+            });
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
