@@ -34,7 +34,7 @@ const { Checkout } = require('checkout-sdk-node');
 
 # :book: Documentation
 
-You can see the [SDK documentation here](https://bit.ly/3eQEXvv).
+You can see the [SDK documentation here](https://checkout.github.io/checkout-sdk-node/intro).
 
 # :eyeglasses: Try it on RunKit
 
