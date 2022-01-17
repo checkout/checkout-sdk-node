@@ -1,6 +1,6 @@
 {
     "name": "checkout-sdk-node",
-    "version": "1.0.37",
+    "version": "2.0.0",
     "description": "",
     "main": "./dist/index.js",
     "devDependencies": {
