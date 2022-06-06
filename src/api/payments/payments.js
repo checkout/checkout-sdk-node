@@ -146,6 +146,7 @@ export default class Payments {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/payments/${id}/authorizations`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
             return await response.json;
