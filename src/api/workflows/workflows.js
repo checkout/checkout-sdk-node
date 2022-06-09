@@ -45,6 +45,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/workflows`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
 
