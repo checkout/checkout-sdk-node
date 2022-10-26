@@ -141,12 +141,12 @@ export default class Payments {
      * @param {Object} body Payment Request body.
      * @return {Promise<Object>} A promise to the getActions response.
      */
-    async increment(id, body) {
+    async increment(id, body, idempotencyKey) {
         try {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/payments/${id}/authorizations`,
-                headers: { Authorization: this.config.sk },
+                headers: determineHeaders(this.config, idempotencyKey),
                 body,
             });
             return await response.json;

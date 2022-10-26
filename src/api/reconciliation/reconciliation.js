@@ -54,7 +54,7 @@ export default class Reconciliation {
      * based on the payment's identifier.
      *
      * @memberof Reconciliation
-     * @param {String} paymentId Payment id.
+     * @param {string} paymentId Payment id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
      */
     async getPayment(paymentId) {
@@ -139,7 +139,7 @@ export default class Reconciliation {
      * statement, based on the statement's identifier.
      *
      * @memberof Reconciliation
-     * @param {String} statementId Statement id.
+     * @param {string} statementId Statement id.
      * @return {Promise<Buffer>} A promise to the request reconciliation response.
      */
     async getStatementCsv(statementId) {
@@ -195,7 +195,7 @@ export default class Reconciliation {
      * Returns the reconciliation data of the payment action
      *
      * @memberof Reconciliation
-     * @param {String} actionsId Action id.
+     * @param {string} actionsId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
      */
     async getPaymentsAction(actionsId) {
@@ -249,7 +249,7 @@ export default class Reconciliation {
      * Returns the reconciliation data of a payment action
      *
      * @memberof Reconciliation
-     * @param {String} actionId Action id.
+     * @param {string} actionId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
      */
     async getAction(actionId) {

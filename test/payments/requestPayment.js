@@ -9,6 +9,7 @@ import {
 import { Checkout } from '../../src/index';
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
+const SK_NEW = 'sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m';
 
 describe('Request a payment or payout', () => {
     it('should perform normal payment request with a Card Source', async () => {
@@ -223,7 +224,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should request a new access token when doing a payment with Card Source, if the previous access token is expired', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').times(2).reply(201, {
             access_token:
                 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFybjphd3M6a21zOmV1LXdlc3QtMTo2ODY0OTY3NDc3MTU6a2V5LzAyYThmYWM5LWE5MjItNGNkNy05MDk1LTg0ZjA5YjllNTliZCIsInR5cCI6ImF0K2p3dCJ9.eyJuYmYiOjE2NDA1NTMzNDksImV4cCI6MTY0MDU1Njk0OSwiaXNzIjoiaHR0cHM6Ly9hY2Nlc3Muc2FuZGJveC5jaGVja291dC5jb20iLCJhdWQiOiJnYXRld2F5IiwiY2xpZW50X2lkIjoiYWNrX3Z2emhvYWk0NjZzdTNqM3ZieGI0N3RzNW9lIiwiY2tvX2NsaWVudF9pZCI6ImNsaV9nNnJvZ2IzaGhmZXUzZ2h0eGN2M2J3NHFweSIsImNrb19lbnRpdHlfaWQiOiJlbnRfZGppZ2NxeDRjbG11Zm8yc2FzZ29tZ3Bxc3EiLCJqdGkiOiI3RDRCQTRBNEJBQUYzQ0E5MjYwMzlDRTNGQTc1ODVEMCIsImlhdCI6MTY0MDU1MzM0OSwic2NvcGUiOlsiZ2F0ZXdheSJdfQ.U4S2YQDZtRb5WsKA6P8eiHyoqH_KN_1MabiNG5LAOeyYwRiIdyuzWJlYJg-wJlly84Eo68P1rcEB0Pac90PRiDBfSPNh0rIFJvFrA1fHE95EWjwER8UBvYT6yr-yI4JlrTnjeU6f5mJpxWbuN2ywE36x5eWPBdBs3w_j_x8FU62-UYwPOy5LIyZLR_JRxHMU81r7chOD9113CTGzJG9CGzKDMN53iciLdLPXUCFH2AlLHm9-YFh46WMIz85i4nVG0aKI_fIW9gjsLIvG0j-8shf-k4D1LLP0R3juX6twULVbrDuZqacC0TqGI6bAahVJ37Old74He7Ft6j3cx9Hi8A',
             expires_in: 3600,
@@ -433,49 +434,194 @@ describe('Request a payment or payout', () => {
         expect(transaction.requiresRedirect).to.be.false;
     });
 
-    it('should perform 3DS payment request with a Card Source', async () => {
+    it('should perform an incremental auth with the idempotencyKey', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/payments')
-            .reply(202, {
-                id: 'pay_k72n4u433mierlthuim5oc5syu',
-                status: 'Pending',
-                customer: { id: 'cus_6artgoevd77u7ojah2wled32sa' },
-                '3ds': { downgraded: false, enrolled: 'Y' },
+            .reply(201, {
+                id: 'pay_6ndp5facelxurne7gloxkxm57u',
+                action_id: 'act_6ndp5facelxurne7gloxkxm57u',
+                amount: 100,
+                currency: 'USD',
+                approved: true,
+                status: 'Authorized',
+                auth_code: '277368',
+                response_code: '10000',
+                response_summary: 'Approved',
+                '3ds': undefined,
+                risk: { flagged: false },
+                source: {
+                    id: 'src_mtagg5kktcoerkwloibzfuilpy',
+                    type: 'card',
+                    expiry_month: 6,
+                    expiry_year: 2029,
+                    scheme: 'Visa',
+                    last4: '4242',
+                    fingerprint: '107A352DFAE35E3EEBA5D0856FCDFB88ECF91E8CFDE4275ABBC791FD9579AB2C',
+                    bin: '424242',
+                    card_type: 'Credit',
+                    card_category: 'Consumer',
+                    issuer: 'JPMORGAN CHASE BANK NA',
+                    issuer_country: 'US',
+                    product_id: 'A',
+                    product_type: 'Visa Traditional',
+                    avs_check: 'S',
+                    cvv_check: 'Y',
+                },
+                customer: { id: 'cus_leu5pp2zshpuvbt6yjxl5xcrdi' },
+                processed_on: '2019-06-09T22:43:54Z',
+                reference: undefined,
+                eci: '05',
+                scheme_id: '638284745624527',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
+                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                     },
-                    redirect: {
-                        href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
+                    actions: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                    },
+                    capture: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                    },
+                    void: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                     },
                 },
-                headers: {
-                    'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
-                    'cko-version': '3.34.5',
-                },
-                requiresRedirect: true,
             });
 
-        const cko = new Checkout(SK);
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments/pay_6ndp5facelxurne7gloxkxm57u/authorizations')
+            .times(2)
+            .reply(201, {
+                action_id: 'act_ps6ijecais2ehdlmwppbvforga',
+                amount: 50,
+                currency: 'GBP',
+                approved: true,
+                auth_code: '765197',
+                scheme_id: '719152626983275',
+                response_code: '10000',
+                response_summary: 'Approved',
+                risk: {
+                    flagged: false,
+                },
+                processed_on: '2022-10-26T21:22:34.7788032Z',
+                processing: {
+                    acquirer_transaction_id: '803585515470323833476',
+                    retrieval_reference_number: '513716644287',
+                },
+                balances: {
+                    total_authorized: 160,
+                    total_voided: 0,
+                    available_to_void: 160,
+                    total_captured: 0,
+                    available_to_capture: 160,
+                    total_refunded: 0,
+                    available_to_refund: 0,
+                },
+                expires_on: '2022-11-02T21:16:44.036567Z',
+                _links: {
+                    self: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou',
+                    },
+                    actions: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/actions',
+                    },
+                    capture: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/captures',
+                    },
+                    void: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/voids',
+                    },
+                    authorizations: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/authorizations',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK_NEW);
 
         const transaction = await cko.payments.request({
             source: {
                 type: 'card',
-                number: '4242424242424242',
-                expiry_month: 6,
-                expiry_year: 2029,
+                number: '42424242424242',
+                expiry_month: 11,
+                expiry_year: 2024,
                 cvv: '100',
             },
-            currency: 'USD',
-            '3ds': {
-                enabled: true,
-            },
-            amount: 100,
+            amount: 10,
+            currency: 'GBP',
+            capture: false,
+            payment_type: 'Regular',
+            authorization_type: 'Estimated',
+            processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
         });
+        const increment1 = await cko.payments.increment(
+            transaction.id,
+            {
+                amount: 50,
+            },
+            'fuvjukygbkyubhhjb'
+        );
 
-        /* eslint-disable no-unused-expressions */
-        expect(transaction.requiresRedirect).to.be.true;
-        expect(transaction.redirectLink).to.be.a('string');
+        const act = increment1.action_id;
+
+        const increment2 = await cko.payments.increment(
+            transaction.id,
+            {
+                amount: 50,
+            },
+            'fuvjukygbkyubhhjb'
+        );
+        expect(act).to.equal(increment2.action_id);
+    });
+
+    it('should perform 3DS payment request with a Card Source', async () => {
+        try {
+            nock('https://api.sandbox.checkout.com')
+                .post('/payments')
+                .reply(202, {
+                    id: 'pay_k72n4u433mierlthuim5oc5syu',
+                    status: 'Pending',
+                    customer: { id: 'cus_6artgoevd77u7ojah2wled32sa' },
+                    '3ds': { downgraded: false, enrolled: 'Y' },
+                    _links: {
+                        self: {
+                            href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
+                        },
+                        redirect: {
+                            href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
+                        },
+                    },
+                    headers: {
+                        'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
+                        'cko-version': '3.34.5',
+                    },
+                    requiresRedirect: true,
+                });
+
+            const cko = new Checkout(SK);
+
+            const transaction = await cko.payments.request({
+                source: {
+                    type: 'card',
+                    number: '4242424242424242',
+                    expiry_month: 6,
+                    expiry_year: 2029,
+                    cvv: '100',
+                },
+                currency: 'USD',
+                '3ds': {
+                    enabled: true,
+                },
+                amount: 100,
+            });
+
+            console.log('CHECKKKKKK________', transaction);
+            /* eslint-disable no-unused-expressions */
+            expect(transaction.requiresRedirect).to.be.true;
+            expect(transaction.redirectLink).to.be.a('string');
+        } catch (error) {
+            console.log('CHECKKKKKK________', error);
+        }
     });
 
     it('should perform payout with type', async () => {
@@ -982,6 +1128,7 @@ describe('Request a payment or payout', () => {
                 amount: 100,
             });
         } catch (err) {
+            console.log('--------', err);
             expect(err.http_code).to.equal(502);
             expect(err).to.be.instanceOf(BadGateway);
         }
