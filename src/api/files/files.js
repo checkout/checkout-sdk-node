@@ -60,7 +60,7 @@ export default class Files {
      * Retrieve information about a file that was previously uploaded.
      *
      * @memberof Files
-     * @param {String} fileId Files id.
+     * @param {string} fileId Files id.
      * @return {Promise<Object>} A promise to the files response.
      */
     async getFile(fileId) {

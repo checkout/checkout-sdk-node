@@ -103,8 +103,7 @@ const http = async (fetch, config, request) => {
 // For 'no body' response, replace with empty object
 const bodyParser = (rsp) => rsp.text().then((text) => (text ? JSON.parse(text) : {}));
 
-const isTokenExpired = (tokenExpiry, currentTimestamp) =>
-    new Date(tokenExpiry.toDateString()) > new Date(currentTimestamp.toDateString());
+const isTokenExpired = (tokenExpiry, currentTimestamp) => tokenExpiry < currentTimestamp;
 
 export const createAccessToken = async (config, fetch, body) => {
     const requestBody = body || {

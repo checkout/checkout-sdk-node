@@ -49,7 +49,7 @@ export default class Disputes {
      * Returns all the details of a dispute using the dispute identifier.
      *
      * @memberof Disputes
-     * @param {String} disputeId Dispute id.
+     * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
      */
     async getDetails(disputeId) {
@@ -70,7 +70,7 @@ export default class Disputes {
      * Returns all the details of a dispute using the dispute identifier.
      *
      * @memberof Disputes
-     * @param {String} disputeId Dispute id.
+     * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
      */
     async accept(disputeId) {
@@ -97,7 +97,7 @@ export default class Disputes {
      * You must provide at least one evidence type in the body of your request.
      *
      * @memberof Disputes
-     * @param {String} disputeId Dispute id.
+     * @param {string} disputeId Dispute id.
      * @param {Object} body Evidence
      * @return {Promise<Object>} A promise to the dispute response.
      */
@@ -120,7 +120,7 @@ export default class Disputes {
      * Retrieves a list of the evidence submitted in response to a specific dispute.
      *
      * @memberof Disputes
-     * @param {String} disputeId Dispute id.
+     * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
      */
     async getEvidence(disputeId) {
@@ -143,7 +143,7 @@ export default class Disputes {
      * this request. You will not be able to amend your evidence once you have submitted it.
      *
      * @memberof Disputes
-     * @param {String} disputeId Dispute id.
+     * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
      */
     async submit(disputeId) {

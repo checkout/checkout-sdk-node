@@ -97,7 +97,6 @@ describe('Sessions', () => {
             },
         });
 
-        console.log(session);
         expect(session.status).to.equal('pending');
     });
 
@@ -148,7 +147,6 @@ describe('Sessions', () => {
                 },
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });

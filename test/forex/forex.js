@@ -76,7 +76,6 @@ describe('Forex', () => {
                 processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });

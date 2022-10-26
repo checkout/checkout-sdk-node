@@ -97,7 +97,6 @@ describe('Risk', () => {
                 },
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
@@ -119,7 +118,6 @@ describe('Risk', () => {
                 },
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
