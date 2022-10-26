@@ -88,7 +88,6 @@ describe('NAS static keys', () => {
     it('should cater for the checksum character', () => {
         const cko = new Checkout('sk_fghjovernsi764jybiuogokg7x*');
         expect(cko.config.host).to.equal('https://api.checkout.com');
-        console.log(cko.config);
     });
 
     it('should should append the Bearer prefix for live NAS secret keys', () => {

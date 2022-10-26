@@ -91,7 +91,6 @@ describe('Access', () => {
                 scope: 'gateway',
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });

@@ -341,7 +341,6 @@ describe('Increment a payment', () => {
                 amount: 200,
             });
         } catch (err) {
-            console.log(err);
             expect(err.name).to.equal('AuthenticationError');
         }
     });

@@ -321,7 +321,7 @@ describe('Marketplace', () => {
         let marketplace = await cko.marketplace.getSubEntityDetails(
             'ent_aneh5mtyobxzazriwuevngrz6y'
         );
-        console.log(marketplace);
+
         expect(marketplace.reference).to.equal('superhero1234');
     });
 
@@ -381,66 +381,63 @@ describe('Marketplace', () => {
                 environment: 'sandbox',
             }
         );
-        try {
-            let marketplace = await cko.marketplace.updateSubEntityDetails(
-                'ent_aneh5mtyobxzazriwuevngrz6y',
-                {
-                    reference: 'superhero12346',
-                    contact_details: {
-                        phone: {
-                            number: '2345678910',
-                        },
+
+        let marketplace = await cko.marketplace.updateSubEntityDetails(
+            'ent_aneh5mtyobxzazriwuevngrz6y',
+            {
+                reference: 'superhero12346',
+                contact_details: {
+                    phone: {
+                        number: '2345678910',
                     },
-                    profile: {
-                        urls: ['https://www.superheroexample.com'],
-                        mccs: ['0742'],
+                },
+                profile: {
+                    urls: ['https://www.superheroexample.com'],
+                    mccs: ['0742'],
+                },
+                company: {
+                    business_registration_number: '452349600005',
+                    legal_name: 'Super Hero Masks Inc.',
+                    trading_name: 'Super Hero Masks',
+                    principal_address: {
+                        address_line1: '90 Tottenham Court Road',
+                        city: 'London',
+                        zip: 'W1T4TJ',
+                        country: 'GB',
                     },
-                    company: {
-                        business_registration_number: '452349600005',
-                        legal_name: 'Super Hero Masks Inc.',
-                        trading_name: 'Super Hero Masks',
-                        principal_address: {
-                            address_line1: '90 Tottenham Court Road',
-                            city: 'London',
-                            zip: 'W1T4TJ',
-                            country: 'GB',
-                        },
-                        registered_address: {
-                            address_line1: '90 Tottenham Court Road',
-                            city: 'London',
-                            zip: 'W1T4TJ',
-                            country: 'GB',
-                        },
-                        representatives: [
-                            {
-                                first_name: 'John',
-                                last_name: 'Doe',
-                                address: {
-                                    address_line1: '90 Tottenham Court Road',
-                                    city: 'London',
-                                    zip: 'W1T4TJ',
-                                    country: 'GB',
-                                },
-                                identification: {
-                                    national_id_number: 'AB123456C',
-                                },
-                                phone: {
-                                    number: '2345678910',
-                                },
-                                date_of_birth: {
-                                    day: 5,
-                                    month: 6,
-                                    year: 1995,
-                                },
+                    registered_address: {
+                        address_line1: '90 Tottenham Court Road',
+                        city: 'London',
+                        zip: 'W1T4TJ',
+                        country: 'GB',
+                    },
+                    representatives: [
+                        {
+                            first_name: 'John',
+                            last_name: 'Doe',
+                            address: {
+                                address_line1: '90 Tottenham Court Road',
+                                city: 'London',
+                                zip: 'W1T4TJ',
+                                country: 'GB',
                             },
-                        ],
-                    },
-                }
-            );
-            expect(marketplace.id).to.equal('ent_aneh5mtyobxzazriwuevngrz6y');
-        } catch (error) {
-            console.log(error);
-        }
+                            identification: {
+                                national_id_number: 'AB123456C',
+                            },
+                            phone: {
+                                number: '2345678910',
+                            },
+                            date_of_birth: {
+                                day: 5,
+                                month: 6,
+                                year: 1995,
+                            },
+                        },
+                    ],
+                },
+            }
+        );
+        expect(marketplace.id).to.equal('ent_aneh5mtyobxzazriwuevngrz6y');
     });
 
     it('should throw AuthenticationError when updating sub-entity details', async () => {

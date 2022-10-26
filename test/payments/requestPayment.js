@@ -175,52 +175,48 @@ describe('Request a payment or payout', () => {
                 },
             });
 
-        try {
-            let cko = new Checkout(
-                '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
-                {
-                    client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
-                    scope: ['gateway'],
-                    environment: 'sandbox',
-                }
-            );
+        let cko = new Checkout(
+            '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+            {
+                client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                scope: ['gateway'],
+                environment: 'sandbox',
+            }
+        );
 
-            const transaction = await cko.payments.request({
-                source: {
-                    type: 'card',
-                    number: '4242424242424242',
-                    expiry_month: 6,
-                    expiry_year: 2029,
-                    cvv: '100',
-                },
-                currency: 'USD',
-                amount: 100,
-                processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
-            });
+        const transaction = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            amount: 100,
+            processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+        });
 
-            expect(transaction.approved).to.be.true;
-            expect(transaction.risk.flagged).to.be.false;
-            expect(transaction.requiresRedirect).to.be.false;
+        expect(transaction.approved).to.be.true;
+        expect(transaction.risk.flagged).to.be.false;
+        expect(transaction.requiresRedirect).to.be.false;
 
-            let accessToken = cko.config.accessToken;
+        let accessToken = cko.config.accessToken;
 
-            const transaction2 = await cko.payments.request({
-                source: {
-                    type: 'card',
-                    number: '4242424242424242',
-                    expiry_month: 6,
-                    expiry_year: 2029,
-                    cvv: '101',
-                },
-                currency: 'USD',
-                amount: 100,
-                processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
-            });
+        const transaction2 = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '101',
+            },
+            currency: 'USD',
+            amount: 100,
+            processing_channel_id: 'pc_zs5fqhybzc2e3jmq3efvybybpq',
+        });
 
-            expect(cko.config.accessToken).to.equal(accessToken);
-        } catch (error) {
-            console.log(error);
-        }
+        expect(cko.config.accessToken).to.equal(accessToken);
     });
 
     it('should request a new access token when doing a payment with Card Source, if the previous access token is expired', async () => {
@@ -575,53 +571,48 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform 3DS payment request with a Card Source', async () => {
-        try {
-            nock('https://api.sandbox.checkout.com')
-                .post('/payments')
-                .reply(202, {
-                    id: 'pay_k72n4u433mierlthuim5oc5syu',
-                    status: 'Pending',
-                    customer: { id: 'cus_6artgoevd77u7ojah2wled32sa' },
-                    '3ds': { downgraded: false, enrolled: 'Y' },
-                    _links: {
-                        self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
-                        },
-                        redirect: {
-                            href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
-                        },
+        nock('https://api.sandbox.checkout.com')
+            .post('/payments')
+            .reply(202, {
+                id: 'pay_k72n4u433mierlthuim5oc5syu',
+                status: 'Pending',
+                customer: { id: 'cus_6artgoevd77u7ojah2wled32sa' },
+                '3ds': { downgraded: false, enrolled: 'Y' },
+                _links: {
+                    self: {
+                        href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
                     },
-                    headers: {
-                        'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
-                        'cko-version': '3.34.5',
+                    redirect: {
+                        href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
                     },
-                    requiresRedirect: true,
-                });
-
-            const cko = new Checkout(SK);
-
-            const transaction = await cko.payments.request({
-                source: {
-                    type: 'card',
-                    number: '4242424242424242',
-                    expiry_month: 6,
-                    expiry_year: 2029,
-                    cvv: '100',
                 },
-                currency: 'USD',
-                '3ds': {
-                    enabled: true,
+                headers: {
+                    'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
+                    'cko-version': '3.34.5',
                 },
-                amount: 100,
+                requiresRedirect: true,
             });
 
-            console.log('CHECKKKKKK________', transaction);
-            /* eslint-disable no-unused-expressions */
-            expect(transaction.requiresRedirect).to.be.true;
-            expect(transaction.redirectLink).to.be.a('string');
-        } catch (error) {
-            console.log('CHECKKKKKK________', error);
-        }
+        const cko = new Checkout(SK);
+
+        const transaction = await cko.payments.request({
+            source: {
+                type: 'card',
+                number: '4242424242424242',
+                expiry_month: 6,
+                expiry_year: 2029,
+                cvv: '100',
+            },
+            currency: 'USD',
+            '3ds': {
+                enabled: true,
+            },
+            amount: 100,
+        });
+
+        /* eslint-disable no-unused-expressions */
+        expect(transaction.requiresRedirect).to.be.true;
+        expect(transaction.redirectLink).to.be.a('string');
     });
 
     it('should perform payout with type', async () => {
@@ -1128,7 +1119,6 @@ describe('Request a payment or payout', () => {
                 amount: 100,
             });
         } catch (err) {
-            console.log('--------', err);
             expect(err.http_code).to.equal(502);
             expect(err).to.be.instanceOf(BadGateway);
         }

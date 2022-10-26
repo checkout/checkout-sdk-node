@@ -58,7 +58,6 @@ describe('Apple Pay', () => {
 
             const apple = await cko.applePay.generate();
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
@@ -76,7 +75,6 @@ describe('Apple Pay', () => {
                     'MIIEbDCCBBGgAwIBAgIIWIhVDKOv0OgwCgYIKoZIzj0EAwIwgYAxNDAyBgNVBAMM\r\nK0FwcGxlIFdvcmxkd2lkZSBEZXZlbG9wZXIgUmVsYXRpb25zIENBIC0gRzIxJjAk\r\nBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApB\r\ncHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMjAxMDIxMjI3MjhaFw0yNDAyMDEx\r\nMjI3MjdaMIGcMSUwIwYKCZImiZPyLGQBAQwVbWVyY2hhbnQubm9kZS50ZXN0aW5n\r\nMTswOQYDVQQDDDJBcHBsZSBQYXkgUGF5bWVudCBQcm9jZXNzaW5nOm1lcmNoYW50\r\nLm5vZGUudGVzdGluZzETMBEGA1UECwwKODI2RjZNVko5ODEUMBIGA1UECgwLSW9h\r\nbiBHaGlzb2kxCzAJBgNVBAYTAlVTMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\r\nX7NLQlhOnep5cXxaX62yrkaWAiMaY1TdDYg6CD0CNv9fuFa6zK3yZYuaAIIRwiFF\r\nwKJ9EKUNXD0/pixMu1WPs6OCAlUwggJRMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgw\r\nFoAUhLaEzDqGYnIWWZToGqO9SN863wswRwYIKwYBBQUHAQEEOzA5MDcGCCsGAQUF\r\nBzABhitodHRwOi8vb2NzcC5hcHBsZS5jb20vb2NzcDA0LWFwcGxld3dkcmNhMjAx\r\nMIIBHQYDVR0gBIIBFDCCARAwggEMBgkqhkiG92NkBQEwgf4wgcMGCCsGAQUFBwIC\r\nMIG2DIGzUmVsaWFuY2Ugb24gdGhpcyBjZXJ0aWZpY2F0ZSBieSBhbnkgcGFydHkg\r\nYXNzdW1lcyBhY2NlcHRhbmNlIG9mIHRoZSB0aGVuIGFwcGxpY2FibGUgc3RhbmRh\r\ncmQgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdXNlLCBjZXJ0aWZpY2F0ZSBwb2xp\r\nY3kgYW5kIGNlcnRpZmljYXRpb24gcHJhY3RpY2Ugc3RhdGVtZW50cy4wNgYIKwYB\r\nBQUHAgEWKmh0dHA6Ly93d3cuYXBwbGUuY29tL2NlcnRpZmljYXRlYXV0aG9yaXR5\r\nLzA2BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmFwcGxlLmNvbS9hcHBsZXd3\r\nZHJjYTIuY3JsMB0GA1UdDgQWBBS7PqGnrAu+MN4hbIXf2j+gOT6sEjAOBgNVHQ8B\r\nAf8EBAMCAygwTwYJKoZIhvdjZAYgBEIMQDc3NTY0Q0QyN0QyNjYyNUQyMTEzOUI2\r\nMDc5NTIyNERFNzIxNjEzMjEzMzUxRUFBRTYwRjUzOTJEM0I5NTEwODYwCgYIKoZI\r\nzj0EAwIDSQAwRgIhAIrybJP4daLvUc41KFe+vUbAwRdUar66Qd3B1cnb3FwyAiEA\r\n+nsP+eKmXJcccoQzMe+hFvXN9uhOpPrVJ663+s3lzSM=',
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
