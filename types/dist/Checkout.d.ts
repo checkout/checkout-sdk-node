@@ -53,11 +53,21 @@ export type config = {
 };
 
 type options = {
-    pk: string;
+    host?: string;
     timeout?: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
-};
+} & (staticKeyOptions | oauthOptions);
+
+type staticKeyOptions = {
+    pk: string;
+}
+
+type oauthOptions = {
+    client: string;
+    scope?: Array<string>,
+    environment ?: string;
+}
 
 export default class Checkout {
     payments: Payments;
