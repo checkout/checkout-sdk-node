@@ -25,6 +25,7 @@ export default class Forex {
                 method: 'post',
                 url: `${this.config.host}/forex/quotes`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
             return await response.json;
         } catch (err) {
