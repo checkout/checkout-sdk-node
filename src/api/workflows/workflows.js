@@ -46,6 +46,7 @@ export default class Workflows {
                 method: 'post',
                 url: `${this.config.host}/workflows`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -201,6 +202,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/workflows/events/${id}`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -223,6 +225,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/workflows/events/${id}/reflow`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -247,6 +250,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/workflows/events/${eventId}/workflow/${workflowId}/reflow`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -274,6 +278,7 @@ export default class Workflows {
                     events,
                     workflows,
                 },
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -301,6 +306,7 @@ export default class Workflows {
                     subjects,
                     workflows,
                 },
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -322,6 +328,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/workflows/events/subject/${id}`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -344,6 +351,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/workflows/events/subject/${id}/reflow`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -367,6 +375,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/workflows/events/subject/${subjectId}/workflow/${workflowId}/reflow`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;

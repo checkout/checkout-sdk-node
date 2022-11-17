@@ -76,6 +76,7 @@ export default class Marketplace {
                 method: 'post',
                 url: `${this.config.host}/marketplace/entities`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -144,6 +145,7 @@ export default class Marketplace {
                 method: 'post',
                 url: `${this.config.host}/marketplace/entities/${id}/instruments`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;

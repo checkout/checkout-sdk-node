@@ -26,6 +26,7 @@ export default class Sessions {
                 method: 'post',
                 url: `${this.config.host}/sessions`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -94,6 +95,7 @@ export default class Sessions {
             const response = await http(fetch, this.config, {
                 method: 'post',
                 url: `${this.config.host}/sessions/${id}/complete`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
