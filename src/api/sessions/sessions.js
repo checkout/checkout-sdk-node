@@ -49,7 +49,7 @@ export default class Sessions {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/sessions/${id}`,
-                headers: { channel },
+                headers: { channel, Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -73,6 +73,7 @@ export default class Sessions {
                 method: 'put',
                 url: `${this.config.host}/sessions/${id}/collect-data`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -122,6 +123,7 @@ export default class Sessions {
                 body: {
                     three_ds_method_completion: threeDsMethodCompletion,
                 },
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;

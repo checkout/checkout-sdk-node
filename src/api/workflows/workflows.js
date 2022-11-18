@@ -24,6 +24,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/workflows`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -68,6 +69,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/workflows/${id}`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;

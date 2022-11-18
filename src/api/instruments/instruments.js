@@ -116,6 +116,7 @@ export default class Instruments {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/validation/bank-accounts/${country}/${currency}`,
+                headers: { Authorization: this.config.sk },
             });
             return await response.json;
         } catch (err) {
