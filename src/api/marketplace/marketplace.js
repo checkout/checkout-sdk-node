@@ -98,6 +98,7 @@ export default class Marketplace {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/marketplace/entities/${id}`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -122,6 +123,7 @@ export default class Marketplace {
                 method: 'put',
                 url: `${this.config.host}/marketplace/entities/${id}`,
                 body,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
