@@ -165,6 +165,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'put',
                 url: `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
 

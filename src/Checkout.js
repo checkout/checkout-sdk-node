@@ -69,12 +69,6 @@ const determinePublicKey = (options) => {
     } else {
         pk = process.env.CKO_PUBLIC_KEY || '';
     }
-
-    // In case of NAS static keys, append the Bearer prefix
-    if (CONFIG.NAS_LIVE_PUBLIC_KEY_REGEX.test(pk) || CONFIG.NAS_SANDBOX_PUBLIC_KEY_REGEX.test(pk)) {
-        pk = pk.startsWith('Bearer') || pk.startsWith('bearer') ? pk : `Bearer ${pk}`;
-    }
-
     return pk;
 };
 
@@ -117,6 +111,7 @@ export default class Checkout {
             // For NAS with declared vars
             auth = {
                 secret: key,
+                pk: determinePublicKey(options),
                 client: options.client,
                 scope: options.scope || 'gateway',
                 host: determineHost(null, options),
