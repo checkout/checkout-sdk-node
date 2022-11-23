@@ -92,6 +92,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'delete',
                 url: `${this.config.host}/workflows/${id}`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;
@@ -114,6 +115,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'patch',
                 url: `${this.config.host}/workflows/${id}`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
 
@@ -138,6 +140,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'put',
                 url: `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
 
@@ -162,6 +165,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'put',
                 url: `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                headers: { Authorization: this.config.sk },
                 body,
             });
 
@@ -183,6 +187,7 @@ export default class Workflows {
             const response = await http(fetch, this.config, {
                 method: 'get',
                 url: `${this.config.host}/workflows/event-types`,
+                headers: { Authorization: this.config.sk },
             });
 
             return await response.json;

@@ -12,8 +12,15 @@ const pjson = require('../../package.json');
 const http = async (fetch, config, request) => {
     let authHeader = null;
 
-    // For NAS
-    if (config.client) {
+    // If the endpoint is called with the PK, use it in the auth header
+    if (
+        request.headers &&
+        request.headers.Authorization &&
+        request.headers.Authorization.startsWith('pk')
+    ) {
+        authHeader = request.headers.Authorization;
+    } else if (config.client) {
+        // For NAS
         // If an access tokens exists and it's not expired re-use it
         if (config.access && !isTokenExpired(config.access.expires, new Date())) {
             authHeader = `${config.access.type} ${config.access.token}`;
