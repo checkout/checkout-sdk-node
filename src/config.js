@@ -8,6 +8,9 @@ export const MARKETPLACE_FILES_SANDBOX_URL = 'https://files.sandbox.checkout.com
 export const TRANSFERS_SANDBOX_URL = 'https://transfers.sandbox.checkout.com/transfers';
 export const TRANSFERS_LIVE_URL = 'https://transfers.checkout.com/transfers';
 
+export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
+export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
+
 export const REQUEST_ID_HEADER = 'cko-request-id';
 export const API_VERSION_HEADER = 'cko-version';
 

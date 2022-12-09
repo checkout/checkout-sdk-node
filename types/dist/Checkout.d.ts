@@ -31,6 +31,7 @@ import {
     Workflows,
     Marketplace,
     Transfers,
+    Balances,
 } from './index';
 
 export type access = {
@@ -99,6 +100,7 @@ export default class Checkout {
     workflows: Workflows;
     marketplace: Marketplace;
     transfers: Transfers;
+    balances: Balances;
     config: config;
 
     constructor(key?: string, options?: options);
