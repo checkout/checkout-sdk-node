@@ -1,6 +1,5 @@
-
 //@ts-ignore
-import * as http from "http";
+import * as http from 'http';
 
 import {
     Payments,
@@ -30,15 +29,16 @@ import {
     ApplePay,
     Sessions,
     Workflows,
-    Marketplace
+    Marketplace,
+    Transfers,
 } from './index';
 
 export type access = {
-    token:string,
-    type: string,
-    scope: string,
-    expires: Date
-}
+    token: string;
+    type: string;
+    scope: string;
+    expires: Date;
+};
 
 export type config = {
     host: string;
@@ -47,9 +47,9 @@ export type config = {
     timeout: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
-    access?:access,
-    scope?: Array<string>,
-    client?: string,
+    access?: access;
+    scope?: Array<string>;
+    client?: string;
 };
 
 type options = {
@@ -61,13 +61,13 @@ type options = {
 
 type staticKeyOptions = {
     pk: string;
-}
+};
 
 type oauthOptions = {
     client: string;
-    scope?: Array<string>,
-    environment ?: string;
-}
+    scope?: Array<string>;
+    environment?: string;
+};
 
 export default class Checkout {
     payments: Payments;
@@ -91,13 +91,14 @@ export default class Checkout {
     oxxo: Oxxo;
     klarna: Klarna;
     sepa: Sepa;
-    paymentLinks:PaymentLinks;
-    access:Access;
-    forex:Forex;
-    applePay:ApplePay;
-    sessions:Sessions;
-    workflows:Workflows;
-    marketplace:Marketplace;
+    paymentLinks: PaymentLinks;
+    access: Access;
+    forex: Forex;
+    applePay: ApplePay;
+    sessions: Sessions;
+    workflows: Workflows;
+    marketplace: Marketplace;
+    transfers: Transfers;
     config: config;
 
     constructor(key?: string, options?: options);

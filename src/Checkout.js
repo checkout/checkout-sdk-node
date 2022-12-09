@@ -163,5 +163,6 @@ export default class Checkout {
         this.sessions = new ENDPOINTS.Sessions(this.config);
         this.workflows = new ENDPOINTS.Workflows(this.config);
         this.marketplace = new ENDPOINTS.Marketplace(this.config);
+        this.transfers = new ENDPOINTS.Transfers(this.config);
     }
 }

@@ -28,5 +28,6 @@ export { default as ApplePay } from './api/apple-pay/apple-pay';
 export { default as Sessions } from './api/sessions/sessions';
 export { default as Workflows } from './api/workflows/workflows';
 export { default as Marketplace } from './api/marketplace/marketplace';
+export { default as Transfers } from './api/transfers/transfers';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';
