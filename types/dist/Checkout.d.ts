@@ -29,9 +29,11 @@ import {
     ApplePay,
     Sessions,
     Workflows,
-    Marketplace,
+    Platforms,
     Transfers,
     Balances,
+    CardMetadata,
+    Reports,
 } from './index';
 
 export type access = {
@@ -98,9 +100,11 @@ export default class Checkout {
     applePay: ApplePay;
     sessions: Sessions;
     workflows: Workflows;
-    marketplace: Marketplace;
+    platforms: Platforms;
     transfers: Transfers;
     balances: Balances;
+    cardMetadata: CardMetadata;
+    reports: Reports;
     config: config;
 
     constructor(key?: string, options?: options);

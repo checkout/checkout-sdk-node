@@ -108,23 +108,19 @@ describe('Transfers', () => {
             }
         );
 
-        try {
-            const transfer = await cko.transfers.initiate({
-                reference: 'superhero1234',
-                transfer_type: 'commission',
-                source: {
-                    id: 'ent_djigcqx4clmufo2sasgomgpqsq',
-                    amount: 100,
-                },
-                destination: {
-                    id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4',
-                },
-            });
+        const transfer = await cko.transfers.initiate({
+            reference: 'superhero1234',
+            transfer_type: 'commission',
+            source: {
+                id: 'ent_djigcqx4clmufo2sasgomgpqsq',
+                amount: 100,
+            },
+            destination: {
+                id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4',
+            },
+        });
 
-            expect(transfer.status).to.equal('pending');
-        } catch (error) {
-            console.log(error);
-        }
+        expect(transfer.status).to.equal('pending');
     });
 
     it('should throw authentication error', async () => {
@@ -159,7 +155,6 @@ describe('Transfers', () => {
                 transfer_type: 'test',
             });
         } catch (err) {
-            console.log(err);
             expect(err).to.be.instanceOf(ValidationError);
         }
     });
