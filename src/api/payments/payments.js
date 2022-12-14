@@ -97,6 +97,31 @@ export default class Payments {
     }
 
     /**
+     * Returns a list of your business' payments that match the specified reference.
+     *
+     * @memberof Payments
+     * @param {Object} body /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
+     * @return {Promise<Object>} A promise to the get payment response.
+     */
+    async getPaymentList(body) {
+        let url = `${this.config.host}/payments`;
+
+        if (body) {
+            const queryString = Object.keys(body)
+                .map((key) => `${key}=${body[key]}`)
+                .join('&');
+            url += `?${queryString}`;
+        }
+
+        try {
+            const response = await getHandler(this.config, url);
+            return response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
      * Returns the details of the payment with the specified identifier string.
      *
      * @memberof Payments

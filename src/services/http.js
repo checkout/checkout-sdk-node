@@ -94,8 +94,8 @@ const http = async (fetch, config, request) => {
                 status: response.status,
                 json: data,
                 headers: {
-                    'cko-request-id': requestId[0],
-                    'cko-version': version[0],
+                    'cko-request-id': requestId ? requestId[0] : '',
+                    'cko-version': version ? version[0] : '',
                 },
             };
         }

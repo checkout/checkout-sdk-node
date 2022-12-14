@@ -162,6 +162,10 @@ export default class Checkout {
         this.applePay = new ENDPOINTS.ApplePay(this.config);
         this.sessions = new ENDPOINTS.Sessions(this.config);
         this.workflows = new ENDPOINTS.Workflows(this.config);
-        this.marketplace = new ENDPOINTS.Marketplace(this.config);
+        this.platforms = new ENDPOINTS.Platforms(this.config);
+        this.transfers = new ENDPOINTS.Transfers(this.config);
+        this.balances = new ENDPOINTS.Balances(this.config);
+        this.cardMetadata = new ENDPOINTS.CardMetadata(this.config);
+        this.reports = new ENDPOINTS.Reports(this.config);
     }
 }
