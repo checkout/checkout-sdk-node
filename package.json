@@ -19,7 +19,7 @@
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.4.0",
         "esm": "^3.2.25",
-        "mocha": "^8.4.0",
+        "mocha": "^10.2.0",
         "mocha-junit-reporter": "^2.0.0",
         "nock": "^13.0.11",
         "nyc": "^15.1.0",
