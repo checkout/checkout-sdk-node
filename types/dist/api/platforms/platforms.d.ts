@@ -8,7 +8,6 @@ export default class Platforms {
     getSubEntityDetails: (id: string) => Promise<Object>;
     updateSubEntityDetails: (id: string, body: Object) => Promise<Object>;
     addPaymentInstrument: (id: string, body: Object) => Promise<Object>;
-    addPaymentInstrument: (id: string, body: Object) => Promise<Object>;
     queryPaymentInstruments: (id: string, status?: string) => Promise<Object>;
     retrieveSubEntityPayoutSchedule: (id: string) => Promise<Object>;
     updateSubEntityPayoutSchedule: (body: Object) => Promise<Object>;
