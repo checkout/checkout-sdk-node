@@ -45,3 +45,4 @@ test/*.js
 
 doc
 out
+.idea/*
