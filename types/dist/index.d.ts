@@ -31,5 +31,6 @@ export { default as Transfers } from './api/transfers/transfers';
 export { default as Balances } from './api/balances/balances';
 export { default as CardMetadata } from './api/card-metadata/card-metadata';
 export { default as Reports } from './api/reports/reports';
+export { default as Financial } from './api/financial/financial';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';

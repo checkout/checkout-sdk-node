@@ -34,6 +34,7 @@ import {
     Balances,
     CardMetadata,
     Reports,
+    Financial,
 } from './index';
 
 export type access = {
@@ -105,6 +106,7 @@ export default class Checkout {
     balances: Balances;
     cardMetadata: CardMetadata;
     reports: Reports;
+    financial: Financial;
     config: config;
 
     constructor(key?: string, options?: options);
