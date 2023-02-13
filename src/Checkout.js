@@ -167,5 +167,6 @@ export default class Checkout {
         this.balances = new ENDPOINTS.Balances(this.config);
         this.cardMetadata = new ENDPOINTS.CardMetadata(this.config);
         this.reports = new ENDPOINTS.Reports(this.config);
+        this.financial = new ENDPOINTS.Financial(this.config);
     }
 }
