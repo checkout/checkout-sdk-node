@@ -46,3 +46,5 @@ test/*.js
 doc
 out
 .idea/*
+
+dist
