@@ -1,0 +1,44 @@
+name: build-release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - package.json
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: setup-node
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - id: build-and-analyse
+        run: |
+          npm ci
+          npm test
+          npm run build
+      - id: rsync
+        run: rsync -avh --progress ./types/ ./
+      - id: read-version
+        run: echo "CURRENT_VERSION=$( awk -F'"' '/version/ {print $4}' package.json )" >> $GITHUB_ENV
+      - id: print-version
+        run: echo "Releasing $CURRENT_VERSION"
+      - id: publish-to-npm
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+        run: npm publish
+      - id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.CURRENT_VERSION }}
+          release_name: ${{ env.CURRENT_VERSION }}
+          body: ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
