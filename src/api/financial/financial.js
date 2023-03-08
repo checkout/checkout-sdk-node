@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get } from '../../services/http';
 
 /**
  * Class dealing with the /financial-actions api endpoint
@@ -31,12 +31,12 @@ export default class Financial {
                 url += `?${queryString}`;
             }
 
-            const response = await http(fetch, this.config, {
-                method: 'get',
+            const response = await get(
+                fetch,
                 url,
-                headers: { Authorization: this.config.sk },
-            });
-
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

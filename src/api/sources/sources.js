@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 import { setSourceType } from '../../services/validation';
 
 /**
@@ -25,12 +25,13 @@ export default class Sources {
     async add(body) {
         setSourceType(body);
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/sources`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/sources`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

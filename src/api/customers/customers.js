@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { _delete, get, patch, post } from '../../services/http';
 
 /**
  * Class dealing with the /customers endpoint
@@ -22,12 +22,13 @@ export default class Customers {
      */
     async create(customer) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/customers`,
-                headers: { Authorization: this.config.sk },
-                body: customer,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/customers`,
+                this.config,
+                this.config.sk,
+                customer
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -44,11 +45,12 @@ export default class Customers {
      */
     async get(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/customers/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/customers/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -66,12 +68,13 @@ export default class Customers {
      */
     async update(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'patch',
-                url: `${this.config.host}/customers/${id}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await patch(
+                fetch,
+                `${this.config.host}/customers/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -88,11 +91,13 @@ export default class Customers {
      */
     async delete(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'delete',
-                url: `${this.config.host}/customers/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await _delete(
+                fetch,
+                `${this.config.host}/customers/${id}`,
+                this.config,
+                this.config.sk
+            );
+
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

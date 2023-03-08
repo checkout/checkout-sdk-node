@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get } from '../../services/http';
 
 /**
  * Class dealing with the /reports api endpoint
@@ -31,12 +31,7 @@ export default class Reports {
                 url += `?${queryString}`;
             }
 
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -53,12 +48,12 @@ export default class Reports {
      */
     async getReportDetails(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/reports/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/reports/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -76,16 +71,12 @@ export default class Reports {
      */
     async getReportFile(id, fileId) {
         try {
-            const response = await http(
+            const response = await get(
                 fetch,
+                `${this.config.host}/reports/${id}/files/${fileId}`,
                 { ...this.config, csv: true },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/reports/${id}/files/${fileId}`,
-                    headers: { Authorization: this.config.sk },
-                }
+                this.config.sk
             );
-
             return await response.csv;
         } catch (err) {
             const error = await determineError(err);

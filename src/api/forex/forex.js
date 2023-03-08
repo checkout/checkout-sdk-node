@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 
 /**
  * Class dealing with the forex api
@@ -21,12 +21,13 @@ export default class Forex {
      */
     async request(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/forex/quotes`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/forex/quotes`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

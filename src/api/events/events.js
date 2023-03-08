@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 
 /**
  * Class dealing with the /events endpoint
@@ -27,11 +27,7 @@ export default class Events {
             if (version) {
                 url += `?version=${version}`;
             }
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -58,11 +54,7 @@ export default class Events {
                 url += `?${queryString}`;
             }
 
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -80,11 +72,12 @@ export default class Events {
      */
     async retrieveEvent(eventId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/events/${eventId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/events/${eventId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -101,11 +94,12 @@ export default class Events {
      */
     async retrieveEventNotification(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -122,11 +116,12 @@ export default class Events {
      */
     async retry(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -143,11 +138,12 @@ export default class Events {
      */
     async retryAll(eventId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/events/${eventId}/webhooks/retry`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/events/${eventId}/webhooks/retry`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

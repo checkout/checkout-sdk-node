@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post, put } from '../../services/http';
 import { PLATFORMS_FILES_LIVE_URL, PLATFORMS_FILES_SANDBOX_URL } from '../../config';
 
 const FormData = require('form-data');
@@ -30,19 +30,18 @@ export default class Platforms {
             form.append('path', path);
             form.append('purpose', purpose);
 
-            const response = await http(
+            const url = `${
+                this.config.host.includes('sandbox')
+                    ? PLATFORMS_FILES_SANDBOX_URL
+                    : PLATFORMS_FILES_LIVE_URL
+            }`;
+
+            const response = await post(
                 fetch,
+                url,
                 { ...this.config, formData: true },
-                {
-                    method: 'post',
-                    url: `${
-                        this.config.host.includes('sandbox')
-                            ? PLATFORMS_FILES_SANDBOX_URL
-                            : PLATFORMS_FILES_LIVE_URL
-                    }`,
-                    headers: { Authorization: this.config.sk },
-                    body: form,
-                }
+                this.config.sk,
+                form
             );
             return await response.json;
         } catch (err) {
@@ -63,13 +62,13 @@ export default class Platforms {
      */
     async onboardSubEntity(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/accounts/entities`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/accounts/entities`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -87,12 +86,12 @@ export default class Platforms {
      */
     async getPaymentInstrumentDetails(entityId, id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -109,12 +108,12 @@ export default class Platforms {
      */
     async getSubEntityDetails(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/accounts/entities/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/accounts/entities/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -133,13 +132,13 @@ export default class Platforms {
      */
     async updateSubEntityDetails(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/accounts/entities/${id}`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await put(
+                fetch,
+                `${this.config.host}/accounts/entities/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -157,13 +156,13 @@ export default class Platforms {
      */
     async addPaymentInstrument(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/accounts/entities/${id}/payment-instruments`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/accounts/entities/${id}/payment-instruments`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -182,14 +181,11 @@ export default class Platforms {
      */
     async queryPaymentInstruments(id, status) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/accounts/entities/${id}/payment-instruments${
-                    status ? `?status=${status}` : ''
-                }`,
-                headers: { Authorization: this.config.sk },
-            });
+            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${
+                status ? `?status=${status}` : ''
+            }`;
 
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -207,12 +203,12 @@ export default class Platforms {
      */
     async retrieveSubEntityPayoutSchedule(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/accounts/entities/${id}/payout-schedules`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -231,13 +227,13 @@ export default class Platforms {
      */
     async updateSubEntityPayoutSchedule(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/accounts/entities/${id}/payout-schedules`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await put(
+                fetch,
+                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

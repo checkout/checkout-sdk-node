@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post, put } from '../../services/http';
 
 /**
  * Class dealing with the /sessions endpoint
@@ -22,13 +22,13 @@ export default class Sessions {
      */
     async request(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/sessions`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/sessions`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -46,12 +46,14 @@ export default class Sessions {
      */
     async get(id, channel) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/sessions/${id}`,
-                headers: { channel, Authorization: this.config.sk },
-            });
+            this.config.headers = { ...this.config.headers, channel };
 
+            const response = await get(
+                fetch,
+                `${this.config.host}/sessions/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -69,13 +71,13 @@ export default class Sessions {
      */
     async update(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/sessions/${id}/collect-data`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await put(
+                fetch,
+                `${this.config.host}/sessions/${id}/collect-data`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -93,12 +95,12 @@ export default class Sessions {
      */
     async complete(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/sessions/${id}/complete`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/sessions/${id}/complete`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -117,14 +119,17 @@ export default class Sessions {
      */
     async update3DSMethodCompletionIndicator(id, threeDsMethodCompletion) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/sessions/${id}/issuer-fingerprint`,
-                body: {
-                    three_ds_method_completion: threeDsMethodCompletion,
-                },
-                headers: { Authorization: this.config.sk },
-            });
+            const body = {
+                three_ds_method_completion: threeDsMethodCompletion,
+            };
+
+            const response = await put(
+                fetch,
+                `${this.config.host}/sessions/${id}/issuer-fingerprint`,
+                this.config,
+                this.config.sk,
+                body
+            );
 
             return await response.json;
         } catch (err) {

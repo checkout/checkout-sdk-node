@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 
 /**
  * Class dealing with the /klarna and /klarna-external endpoint
@@ -24,12 +24,7 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/credit-sessions`
             : `${this.config.host}/klarna/credit-sessions`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(fetch, url, this.config, this.config.sk, body);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -48,11 +43,7 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/credit-sessions/${id}`
             : `${this.config.host}/klarna/credit-sessions/${id}`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -72,12 +63,7 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/orders/${id}/captures`
             : `${this.config.host}/klarna/orders/${id}/captures`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(fetch, url, this.config, this.config.sk, body);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -97,12 +83,7 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/orders/${id}/voids`
             : `${this.config.host}/klarna/orders/${id}/voids`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(fetch, url, this.config, this.config.sk, body);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

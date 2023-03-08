@@ -1,39 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 import { validatePayment, setSourceOrDestinationType } from '../../services/validation';
-
-const actionHandler = async (config, action, paymentId, body, idempotencyKey) => {
-    const response = await http(fetch, config, {
-        method: 'post',
-        url: `${config.host}/payments/${paymentId}/${action}`,
-        headers: determineHeaders(config, idempotencyKey),
-        body: body || {},
-    });
-    return response.json;
-};
-
-const getHandler = async (config, url) => {
-    const response = await http(fetch, config, {
-        method: 'get',
-        url,
-        headers: {
-            Authorization: config.sk,
-        },
-    });
-    return response;
-};
-
-const determineHeaders = (config, idempotencyKey) => {
-    if (idempotencyKey !== undefined) {
-        return {
-            Authorization: config.sk,
-            'Cko-Idempotency-Key': idempotencyKey,
-        };
-    }
-    return { Authorization: config.sk };
-};
 
 const addUtilityParams = (json) => {
     let requiresRedirect = false;
@@ -82,13 +51,14 @@ export default class Payments {
             setSourceOrDestinationType(body);
             validatePayment(body);
 
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/payments`,
-                headers: determineHeaders(this.config, idempotencyKey),
+            const response = await post(
+                fetch,
+                `${this.config.host}/payments`,
+                this.config,
+                this.config.sk,
                 body,
-            });
-
+                idempotencyKey
+            );
             return addUtilityParams(await response.json);
         } catch (err) {
             const error = await determineError(err);
@@ -114,7 +84,7 @@ export default class Payments {
         }
 
         try {
-            const response = await getHandler(this.config, url);
+            const response = await get(fetch, url, this.config, this.config.sk);
             return response.json;
         } catch (err) {
             throw await determineError(err);
@@ -130,7 +100,12 @@ export default class Payments {
      */
     async get(id) {
         try {
-            const response = await getHandler(this.config, `${this.config.host}/payments/${id}`);
+            const response = await get(
+                fetch,
+                `${this.config.host}/payments/${id}`,
+                this.config,
+                this.config.sk
+            );
             return response.json;
         } catch (err) {
             throw await determineError(err);
@@ -147,9 +122,11 @@ export default class Payments {
      */
     async getActions(id) {
         try {
-            const response = await getHandler(
+            const response = await get(
+                fetch,
+                `${this.config.host}/payments/${id}/actions`,
                 this.config,
-                `${this.config.host}/payments/${id}/actions`
+                this.config.sk
             );
             return response.json;
         } catch (err) {
@@ -168,12 +145,14 @@ export default class Payments {
      */
     async increment(id, body, idempotencyKey) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/payments/${id}/authorizations`,
-                headers: determineHeaders(this.config, idempotencyKey),
+            const response = await post(
+                fetch,
+                `${this.config.host}/payments/${id}/authorizations`,
+                this.config,
+                this.config.sk,
                 body,
-            });
+                idempotencyKey
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -192,14 +171,15 @@ export default class Payments {
      */
     async capture(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(
+            const response = await post(
+                fetch,
+                `${this.config.host}/payments/${paymentId}/captures`,
                 this.config,
-                'captures',
-                paymentId,
+                this.config.sk,
                 body,
                 idempotencyKey
             );
-            return response;
+            return response.json;
         } catch (err) {
             throw await determineError(err);
         }
@@ -216,14 +196,15 @@ export default class Payments {
      */
     async refund(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(
+            const response = await post(
+                fetch,
+                `${this.config.host}/payments/${paymentId}/refunds`,
                 this.config,
-                'refunds',
-                paymentId,
+                this.config.sk,
                 body,
                 idempotencyKey
             );
-            return response;
+            return response.json;
         } catch (err) {
             throw await determineError(err);
         }
@@ -240,14 +221,15 @@ export default class Payments {
      */
     async void(paymentId, body, idempotencyKey) {
         try {
-            const response = await actionHandler(
+            const response = await post(
+                fetch,
+                `${this.config.host}/payments/${paymentId}/voids`,
                 this.config,
-                'voids',
-                paymentId,
+                this.config.sk,
                 body,
                 idempotencyKey
             );
-            return response;
+            return response.json;
         } catch (err) {
             throw await determineError(err);
         }

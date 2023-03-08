@@ -9,108 +9,19 @@ import {
 
 const pjson = require('../../package.json');
 
-const http = async (fetch, config, request) => {
-    let authHeader = null;
+export const get = async (fetch, path, config, auth) => http(fetch, 'get', path, config, auth);
 
-    // If the endpoint is called with the PK, use it in the auth header
-    if (
-        request.headers &&
-        request.headers.Authorization &&
-        request.headers.Authorization.startsWith('pk')
-    ) {
-        authHeader = request.headers.Authorization;
-    } else if (config.client) {
-        // For NAS
-        // If an access tokens exists and it's not expired re-use it
-        if (config.access && !isTokenExpired(config.access.expires, new Date())) {
-            authHeader = `${config.access.type} ${config.access.token}`;
-        } else {
-            const access = await createAccessToken(config, fetch);
-            authHeader = `${access.json.token_type} ${access.json.access_token}`;
+export const post = async (fetch, path, config, auth, request, idempotencyKey) =>
+    http(fetch, 'post', path, config, auth, request, idempotencyKey);
 
-            // eslint-disable-next-line no-param-reassign
-            config.access = {
-                token: access.json.access_token,
-                type: access.json.token_type,
-                scope: access.json.scope,
-                expires: new Date(new Date().getTime() + access.json.expires_in),
-            };
-        }
-    } else {
-        // For MBC
-        authHeader = request.headers.Authorization;
-    }
+export const patch = async (fetch, path, config, auth, request) =>
+    http(fetch, 'patch', path, config, auth, request);
 
-    const headers = {
-        ...config.headers,
-        ...request.headers,
-        Authorization: authHeader,
-        'Content-Type': config.csv ? 'text/csv' : 'application/json',
-        'Cache-Control': 'no-cache',
-        pragma: 'no-cache',
-        'user-agent': `checkout-sdk-node/${pjson.version}`,
-    };
+export const put = async (fetch, path, config, auth, request) =>
+    http(fetch, 'put', path, config, auth, request);
 
-    if (config.formData) {
-        delete headers['Content-Type'];
-    }
-
-    const response = await fetch(request.url, {
-        method: request.method,
-        timeout: config.timeout,
-        agent: config.agent,
-        body: config.formData ? request.body : JSON.stringify(request.body),
-        headers,
-    });
-
-    if (response.ok && config.csv) {
-        const txt = await response.text();
-
-        const csv = Buffer.from(txt);
-
-        return {
-            status: response.status,
-            csv,
-        };
-    }
-
-    if (!response.ok) {
-        const json = bodyParser(response);
-        throw { status: response.status, json };
-    }
-
-    return response.text().then((text) => {
-        const data = text ? JSON.parse(text) : {};
-
-        // Return CKO response headers when available
-
-        if (REQUEST_ID_HEADER in response.headers.raw()) {
-            const requestId =
-                response.headers.raw()[REQUEST_ID_HEADER] || response.headers.raw()['request-id'];
-            const version =
-                response.headers.raw()[API_VERSION_HEADER] || response.headers.raw().version;
-
-            return {
-                status: response.status,
-                json: data,
-                headers: {
-                    'cko-request-id': requestId ? requestId[0] : '',
-                    'cko-version': version ? version[0] : '',
-                },
-            };
-        }
-
-        return {
-            status: response.status,
-            json: data,
-        };
-    });
-};
-
-// For 'no body' response, replace with empty object
-const bodyParser = (rsp) => rsp.text().then((text) => (text ? JSON.parse(text) : {}));
-
-const isTokenExpired = (tokenExpiry, currentTimestamp) => tokenExpiry < currentTimestamp;
+export const _delete = async (fetch, path, config, auth) =>
+    http(fetch, 'delete', path, config, auth);
 
 export const createAccessToken = async (config, fetch, body) => {
     const requestBody = body || {
@@ -148,4 +59,130 @@ export const createAccessToken = async (config, fetch, body) => {
     });
 };
 
-export default http;
+// eslint-disable-next-line consistent-return,default-param-last
+const http = async (fetch, method, path, config, auth, request, idempotencyKey) => {
+    let authHeader = null;
+
+    if (auth) {
+        authHeader = auth;
+    } else if (config.client) {
+        // TODO Refactor OAuth credentials request
+
+        // For NAS
+        // If an access tokens exists and it's not expired re-use it
+        if (config.access && !isTokenExpired(config.access.expires, new Date())) {
+            authHeader = `${config.access.type} ${config.access.token}`;
+        } else {
+            const access = await createAccessToken(config, fetch);
+            authHeader = `${access.json.token_type} ${access.json.access_token}`;
+
+            // eslint-disable-next-line no-param-reassign
+            config.access = {
+                token: access.json.access_token,
+                type: access.json.token_type,
+                scope: access.json.scope,
+                expires: new Date(new Date().getTime() + access.json.expires_in),
+            };
+        }
+    }
+
+    const headers = getRequestHeaders(config, request, authHeader, idempotencyKey);
+
+    const response = await fetch(path, {
+        method,
+        timeout: config.timeout,
+        agent: config.agent,
+        body: config.formData ? request : JSON.stringify(request),
+        headers,
+    });
+
+    if (!response.ok) {
+        const json = bodyParser(response);
+        throw { status: response.status, json };
+    }
+
+    return buildResponse(config, response);
+};
+
+function buildResponse(config, response) {
+    if (config.csv) {
+        return buildCsvResponse(response);
+    }
+
+    return buildJsonResponse(response);
+}
+
+async function buildCsvResponse(response) {
+    const txt = await response.text();
+
+    const csv = Buffer.from(txt);
+
+    return {
+        status: response.status,
+        csv,
+    };
+}
+
+function buildJsonResponse(response) {
+    return response.text().then((text) => {
+        const data = text ? JSON.parse(text) : {};
+        const headers = getResponseHeaders(response);
+
+        return {
+            status: response.status,
+            json: data,
+            headers,
+        };
+    });
+}
+
+function getRequestHeaders(config, request, authHeader, idempotencyKey) {
+    let headers;
+
+    // eslint-disable-next-line prefer-const
+    headers = {
+        ...config.headers,
+        Authorization: authHeader,
+        'Cache-Control': 'no-cache',
+        pragma: 'no-cache',
+        'user-agent': `checkout-sdk-node/${pjson.version}`,
+    };
+
+    if (request && request.headers) {
+        headers = { ...headers, ...request.headers };
+    }
+
+    if (!config.formData) {
+        headers['Content-Type'] = config.csv ? 'text/csv' : 'application/json';
+    }
+
+    if (idempotencyKey !== undefined) {
+        headers['Cko-Idempotency-Key'] = idempotencyKey;
+    }
+
+    return headers;
+}
+
+function getResponseHeaders(response) {
+    // Return CKO response headers when available
+
+    if (REQUEST_ID_HEADER in response.headers.raw()) {
+        const requestId =
+            response.headers.raw()[REQUEST_ID_HEADER] || response.headers.raw()['request-id'];
+        const version =
+            response.headers.raw()[API_VERSION_HEADER] || response.headers.raw().version;
+        return {
+            'cko-request-id': requestId ? requestId[0] : '',
+            'cko-version': version ? version[0] : '',
+        };
+    }
+
+    return {};
+}
+
+// For 'no body' response, replace with empty object
+const bodyParser = (rsp) => rsp.text().then((text) => (text ? JSON.parse(text) : {}));
+
+const isTokenExpired = (tokenExpiry, currentTimestamp) => tokenExpiry < currentTimestamp;
+
+export default createAccessToken;

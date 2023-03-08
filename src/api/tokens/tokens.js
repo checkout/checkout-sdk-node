@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 import { setTokenType } from '../../services/validation';
 
 /**
@@ -25,12 +25,13 @@ export default class Tokens {
     async request(body) {
         setTokenType(body);
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/tokens`,
-                headers: { Authorization: this.config.pk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/tokens`,
+                this.config,
+                this.config.pk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

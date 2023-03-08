@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post, put } from '../../services/http';
 
 /**
  * Class dealing with the /disputes endpoint
@@ -33,11 +33,7 @@ export default class Disputes {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -54,11 +50,12 @@ export default class Disputes {
      */
     async getDetails(disputeId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/disputes/${disputeId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -75,11 +72,12 @@ export default class Disputes {
      */
     async accept(disputeId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/disputes/${disputeId}/accept`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}/accept`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -103,12 +101,13 @@ export default class Disputes {
      */
     async provideEvidence(disputeId, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/disputes/${disputeId}/evidence`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await put(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}/evidence`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -125,11 +124,12 @@ export default class Disputes {
      */
     async getEvidence(disputeId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/disputes/${disputeId}/evidence`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}/evidence`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -148,11 +148,12 @@ export default class Disputes {
      */
     async submit(disputeId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/disputes/${disputeId}/evidence`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}/evidence`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

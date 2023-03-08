@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 
 /**
  * Class dealing with the /apms/rapipago endpoint
@@ -22,11 +22,12 @@ export default class Rapipago {
      */
     async succeed(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/apms/rapipago/payments/${id}/succeed`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/apms/rapipago/payments/${id}/succeed`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -43,11 +44,12 @@ export default class Rapipago {
      */
     async expire(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/apms/rapipago/payments/${id}/expire`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/apms/rapipago/payments/${id}/expire`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

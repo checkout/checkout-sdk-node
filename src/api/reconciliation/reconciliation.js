@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get } from '../../services/http';
 
 /**
  * Class dealing with the /reporting endpoint
@@ -30,11 +30,8 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+
+            const response = await get(fetch, url, this.config, this.config.sk);
             const res = await response.json;
 
             // In case there is a "next" page, inject it in the response body
@@ -59,11 +56,12 @@ export default class Reconciliation {
      */
     async getPayment(paymentId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/reporting/payments/${paymentId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/reporting/payments/${paymentId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -88,15 +86,7 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(
-                fetch,
-                { ...this.config, csv: true },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await get(fetch, url, { ...this.config, csv: true }, this.config.sk);
             return await response.csv;
         } catch (err) {
             const error = await determineError(err);
@@ -122,11 +112,7 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -144,14 +130,11 @@ export default class Reconciliation {
      */
     async getStatementCsv(statementId) {
         try {
-            const response = await http(
+            const response = await get(
                 fetch,
+                `${this.config.host}/reporting/statements/${statementId}/payments/download`,
                 { ...this.config, csv: true },
-                {
-                    method: 'get',
-                    url: `${this.config.host}/reporting/statements/${statementId}/payments/download`,
-                    headers: { Authorization: this.config.sk },
-                }
+                this.config.sk
             );
             return await response.csv;
         } catch (err) {
@@ -178,12 +161,7 @@ export default class Reconciliation {
                 url += `?${queryString}`;
             }
 
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -200,11 +178,12 @@ export default class Reconciliation {
      */
     async getPaymentsAction(actionsId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/reporting/payments/actions/${actionsId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/reporting/payments/actions/${actionsId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -229,15 +208,7 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await http(
-                fetch,
-                { ...this.config, csv: true },
-                {
-                    method: 'get',
-                    url,
-                    headers: { Authorization: this.config.sk },
-                }
-            );
+            const response = await get(fetch, url, { ...this.config, csv: true }, this.config.sk);
             return await response.csv;
         } catch (err) {
             const error = await determineError(err);
@@ -254,11 +225,12 @@ export default class Reconciliation {
      */
     async getAction(actionId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/reporting/actions/${actionId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/reporting/actions/${actionId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

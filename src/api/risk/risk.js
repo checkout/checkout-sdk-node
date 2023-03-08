@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 
 /**
  * Class dealing with the /risk endpoint
@@ -22,13 +22,13 @@ export default class Risk {
      */
     async requestPreAuthentication(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/risk/assessments/pre-authentication`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/risk/assessments/pre-authentication`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -45,13 +45,13 @@ export default class Risk {
      */
     async requestPreCapture(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/risk/assessments/pre-capture`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/risk/assessments/pre-capture`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
