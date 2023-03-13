@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 import { TRANSFERS_SANDBOX_URL, TRANSFERS_LIVE_URL } from '../../config';
 import { setTokenType } from '../../services/validation';
 
@@ -25,16 +25,18 @@ export default class Transfers {
      */
     async initiate(body, idempotencyKey) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${
-                    this.config.host.includes('sandbox')
-                        ? TRANSFERS_SANDBOX_URL
-                        : TRANSFERS_LIVE_URL
-                }`,
-                headers: determineHeaders(this.config, idempotencyKey),
+            const url = `${
+                this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
+            }`;
+
+            const response = await post(
+                fetch,
+                url,
+                this.config,
+                this.config.sk,
                 body,
-            });
+                idempotencyKey
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -51,15 +53,11 @@ export default class Transfers {
      */
     async retrieve(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${
-                    this.config.host.includes('sandbox')
-                        ? TRANSFERS_SANDBOX_URL
-                        : TRANSFERS_LIVE_URL
-                }/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const url = `${
+                this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
+            }/${id}`;
+
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -67,13 +65,3 @@ export default class Transfers {
         }
     }
 }
-
-const determineHeaders = (config, idempotencyKey) => {
-    if (idempotencyKey !== undefined) {
-        return {
-            Authorization: config.sk,
-            'Cko-Idempotency-Key': idempotencyKey,
-        };
-    }
-    return { Authorization: config.sk };
-};

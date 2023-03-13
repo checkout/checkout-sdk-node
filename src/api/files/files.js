@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 
 const FormData = require('form-data');
 
@@ -39,15 +39,12 @@ export default class Files {
             }
             form.append('purpose', 'dispute_evidence');
 
-            const response = await http(
+            const response = await post(
                 fetch,
+                `${this.config.host}/files`,
                 { ...this.config, formData: true },
-                {
-                    method: 'post',
-                    url: `${this.config.host}/files`,
-                    headers: { Authorization: this.config.sk },
-                    body: form,
-                }
+                this.config.sk,
+                form
             );
             return await response.json;
         } catch (err) {
@@ -65,11 +62,12 @@ export default class Files {
      */
     async getFile(fileId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/files/${fileId}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/files/${fileId}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

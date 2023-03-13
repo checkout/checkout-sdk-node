@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { _delete, get, patch, post, put } from '../../services/http';
 
 /**
  * Class dealing with the /workflows endpoint
@@ -21,12 +21,12 @@ export default class Workflows {
      */
     async getAll() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/workflows`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -43,13 +43,13 @@ export default class Workflows {
      */
     async add(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows`,
-                body,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -66,12 +66,12 @@ export default class Workflows {
      */
     async get(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/workflows/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -89,12 +89,12 @@ export default class Workflows {
      */
     async remove(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'delete',
-                url: `${this.config.host}/workflows/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await _delete(
+                fetch,
+                `${this.config.host}/workflows/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -112,13 +112,13 @@ export default class Workflows {
      */
     async patch(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'patch',
-                url: `${this.config.host}/workflows/${id}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
-
+            const response = await patch(
+                fetch,
+                `${this.config.host}/workflows/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -137,13 +137,13 @@ export default class Workflows {
      */
     async updateAction(workflowId, workflowActionId, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
-
+            const response = await put(
+                fetch,
+                `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -162,13 +162,13 @@ export default class Workflows {
      */
     async updateCondition(workflowId, workflowConditionId, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
-
+            const response = await put(
+                fetch,
+                `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -184,12 +184,12 @@ export default class Workflows {
      */
     async getEventTypes() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/workflows/event-types`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows/event-types`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -206,12 +206,12 @@ export default class Workflows {
      */
     async getEvent(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/workflows/events/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows/events/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -229,12 +229,12 @@ export default class Workflows {
      */
     async reflowByEvent(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/${id}/reflow`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/${id}/reflow`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -254,12 +254,12 @@ export default class Workflows {
      */
     async reflowByEventAndWorkflow(eventId, workflowId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/${eventId}/workflow/${workflowId}/reflow`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/${eventId}/workflow/${workflowId}/reflow`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -278,16 +278,16 @@ export default class Workflows {
      */
     async reflowEventsByEventAndWorkflowIds(events, workflows) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/reflow`,
-                body: {
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/reflow`,
+                this.config,
+                this.config.sk,
+                {
                     events,
                     workflows,
-                },
-                headers: { Authorization: this.config.sk },
-            });
-
+                }
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -306,16 +306,16 @@ export default class Workflows {
      */
     async reflowEventsBySubjectAndWorkflowIds(subjects, workflows) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/reflow`,
-                body: {
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/reflow`,
+                this.config,
+                this.config.sk,
+                {
                     subjects,
                     workflows,
-                },
-                headers: { Authorization: this.config.sk },
-            });
-
+                }
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -332,12 +332,12 @@ export default class Workflows {
      */
     async getSubjectEvents(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/workflows/events/subject/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows/events/subject/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -355,12 +355,12 @@ export default class Workflows {
      */
     async reflowBySubject(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/subject/${id}/reflow`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/subject/${id}/reflow`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -379,12 +379,12 @@ export default class Workflows {
      */
     async reflowBySubjectAndWorkflow(subjectId, workflowId) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/workflows/events/subject/${subjectId}/workflow/${workflowId}/reflow`,
-                headers: { Authorization: this.config.sk },
-            });
-
+            const response = await post(
+                fetch,
+                `${this.config.host}/workflows/events/subject/${subjectId}/workflow/${workflowId}/reflow`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

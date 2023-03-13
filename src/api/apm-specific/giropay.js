@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get } from '../../services/http';
 
 /**
  * Class dealing with the /giropay endpoint
@@ -21,11 +21,12 @@ export default class Giropay {
      */
     async getEpsBanks() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/giropay/eps/banks`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/giropay/eps/banks`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -41,11 +42,12 @@ export default class Giropay {
      */
     async getBanks() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/giropay/banks`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/giropay/banks`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

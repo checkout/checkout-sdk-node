@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 
 /**
  * Class dealing with the /metadata/card endpoint
@@ -22,12 +22,13 @@ export default class CardMetadata {
      */
     async get(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/metadata/card`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/metadata/card`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

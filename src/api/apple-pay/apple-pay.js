@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { post } from '../../services/http';
 
 /**
  * Class dealing with the Apple Pay api
@@ -21,12 +21,13 @@ export default class ApplePay {
      */
     async upload(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/applepay/certificates`,
-                headers: { Authorization: this.config.pk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/applepay/certificates`,
+                this.config,
+                this.config.pk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -41,11 +42,12 @@ export default class ApplePay {
      */
     async generate() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/applepay/signing-requests`,
-                headers: { Authorization: this.config.pk },
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/applepay/signing-requests`,
+                this.config,
+                this.config.pk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

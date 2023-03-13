@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { _delete, get, patch, post, put } from '../../services/http';
 
 /**
  * Create and manage the webhook notifications you receive to keep up to date with
@@ -22,11 +22,12 @@ export default class Webhooks {
      */
     async retrieveWebhooks() {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/webhooks`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/webhooks`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -42,12 +43,13 @@ export default class Webhooks {
      */
     async registerWebhook(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/webhooks`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/webhooks`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -63,11 +65,12 @@ export default class Webhooks {
      */
     async retrieveWebhook(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/webhooks/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/webhooks/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -83,12 +86,13 @@ export default class Webhooks {
      */
     async updateWebhook(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/webhooks/${id}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await put(
+                fetch,
+                `${this.config.host}/webhooks/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -104,12 +108,13 @@ export default class Webhooks {
      */
     async partiallyUpdateWebhook(id, body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'patch',
-                url: `${this.config.host}/webhooks/${id}`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await patch(
+                fetch,
+                `${this.config.host}/webhooks/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -125,11 +130,12 @@ export default class Webhooks {
      */
     async removeWebhook(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'delete',
-                url: `${this.config.host}/webhooks/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await _delete(
+                fetch,
+                `${this.config.host}/webhooks/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

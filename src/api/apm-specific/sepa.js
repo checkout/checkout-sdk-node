@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 
 /**
  * Class dealing with the /sepa and /ppro/sepa endpoint
@@ -24,11 +24,7 @@ export default class Sepa {
             ? `${this.config.host}/sepa-external/mandates/${id}`
             : `${this.config.host}/sepa/mandates/${id}`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -48,11 +44,7 @@ export default class Sepa {
             : `${this.config.host}/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -71,11 +63,7 @@ export default class Sepa {
             ? `${this.config.host}/ppro/sepa-external/mandates/${id}`
             : `${this.config.host}/ppro/sepa/mandates/${id}`;
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -95,11 +83,7 @@ export default class Sepa {
             : `${this.config.host}/ppro/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await post(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

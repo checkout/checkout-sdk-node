@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get, post } from '../../services/http';
 
 /**
  * Class dealing with the /hosted-payments endpoint
@@ -22,12 +22,13 @@ export default class HostedPayments {
      */
     async create(body) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'post',
-                url: `${this.config.host}/hosted-payments`,
-                headers: { Authorization: this.config.sk },
-                body,
-            });
+            const response = await post(
+                fetch,
+                `${this.config.host}/hosted-payments`,
+                this.config,
+                this.config.sk,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -44,11 +45,12 @@ export default class HostedPayments {
      */
     async get(id) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${this.config.host}/hosted-payments/${id}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await get(
+                fetch,
+                `${this.config.host}/hosted-payments/${id}`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

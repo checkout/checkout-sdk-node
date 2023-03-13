@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { get } from '../../services/http';
 import { BALANCES_LIVE_URL, BALANCES_SANDBOX_URL } from '../../config';
 import { setTokenType } from '../../services/validation';
 
@@ -25,13 +25,10 @@ export default class Balances {
      */
     async retrieve(id, currency) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'get',
-                url: `${
-                    this.config.host.includes('sandbox') ? BALANCES_SANDBOX_URL : BALANCES_LIVE_URL
-                }/${id}${currency ? `?query=currency:${currency}` : ''}`,
-                headers: { Authorization: this.config.sk },
-            });
+            const url = `${
+                this.config.host.includes('sandbox') ? BALANCES_SANDBOX_URL : BALANCES_LIVE_URL
+            }/${id}${currency ? `?query=currency:${currency}` : ''}`;
+            const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

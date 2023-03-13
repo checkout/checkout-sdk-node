@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import http from '../../services/http';
+import { put } from '../../services/http';
 
 /**
  * Class dealing with the /fawry endpoint
@@ -22,11 +22,12 @@ export default class Fawry {
      */
     async approve(reference) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/fawry/payments/${reference}/approval`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await put(
+                fetch,
+                `${this.config.host}/fawry/payments/${reference}/approval`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -43,11 +44,12 @@ export default class Fawry {
      */
     async cancel(reference) {
         try {
-            const response = await http(fetch, this.config, {
-                method: 'put',
-                url: `${this.config.host}/fawry/payments/${reference}/cancellation`,
-                headers: { Authorization: this.config.sk },
-            });
+            const response = await put(
+                fetch,
+                `${this.config.host}/fawry/payments/${reference}/cancellation`,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
