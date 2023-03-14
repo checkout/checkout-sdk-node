@@ -8,4 +8,5 @@ export default class Disputes {
     provideEvidence: (disputeId: string, body: Object) => Promise<Object>;
     getEvidence: (disputeId: string) => Promise<Object>;
     submit: (disputeId: string) => Promise<Object>;
+    getDisputeSchemeFiles: (disputeId: string) => Promise<Object>;
 }

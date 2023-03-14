@@ -160,4 +160,27 @@ export default class Disputes {
             throw error;
         }
     }
+
+    /**
+     * Returns all of the scheme files of a dispute using the dispute identifier.
+     * Currently available only for VISA disputes.
+     *
+     * @memberof Disputes
+     * @param {string} disputeId Dispute id.
+     * @return {Promise<Object>} A promise to the dispute scheme files response.
+     */
+    async getDisputeSchemeFiles(disputeId) {
+        try {
+            const response = await get(
+                fetch,
+                `${this.config.host}/disputes/${disputeId}/schemefiles`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
 }

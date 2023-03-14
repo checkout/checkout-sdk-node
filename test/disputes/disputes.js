@@ -133,7 +133,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: { flagged: false },
+                risk: {flagged: false},
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -155,7 +155,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -273,7 +273,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: { flagged: false },
+                risk: {flagged: false},
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -295,7 +295,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -417,7 +417,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: { flagged: false },
+                risk: {flagged: false},
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -439,7 +439,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -576,7 +576,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: { flagged: false },
+                risk: {flagged: false},
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -598,7 +598,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
+                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -707,4 +707,44 @@ describe('Disputes', () => {
             expect(err).to.be.instanceOf(ValidationError);
         }
     });
+
+    it('should get dispute scheme files', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/schemefiles')
+            .reply(200, {
+                id: 'dsp_3dc29c89ce075g46136d',
+                files: [
+                    {
+                        dispute_status: 'dispute_lost',
+                        file: 'file_6lbss42ezvoufcb2beo76rvwly',
+                    },
+                ],
+                _links: {
+                    self: {
+                        href: 'https://api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/schemefiles',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const disputeSchemeFiles = await cko.disputes.getDisputeSchemeFiles('dsp_3dc29c89ce075g46136d');
+        expect(disputeSchemeFiles.id).to.equal('dsp_3dc29c89ce075g46136d');
+        expect(disputeSchemeFiles.files).not.to.be.empty;
+        expect(disputeSchemeFiles.files[0].file).to.equal('file_6lbss42ezvoufcb2beo76rvwly')
+    });
+
+    it('should throw AuthenticationError error when getting dispute scheme files', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_bc94ebda8d275i461229/schemefiles')
+            .reply(401);
+        const cko = new Checkout(SK);
+
+        try {
+            const disputeDetails = await cko.disputes.getDisputeSchemeFiles('dsp_bc94ebda8d275i461229');
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
 });
