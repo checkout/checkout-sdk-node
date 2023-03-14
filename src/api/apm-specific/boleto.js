@@ -5,6 +5,7 @@ import { post } from '../../services/http';
 /**
  * Class dealing with the /apms/boleto endpoint
  *
+ * @deprecated - Since version 2.1.2 - Should use Payments client instead
  * @export
  * @class Boleto
  */
@@ -16,6 +17,7 @@ export default class Boleto {
     /**
      * Succeed a Boleto payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof Boleto
      * @return {Promise<Object>} A promise to the Boleto response.
@@ -38,6 +40,7 @@ export default class Boleto {
     /**
      * Cancel Boleto payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof Boleto
      * @return {Promise<Object>} A promise to the Boleto response.
