@@ -15,6 +15,7 @@ export default class Workflows {
     ) => Promise<Object>;
     getEventTypes: () => Promise<Object>;
     getEvent: (id: string) => Promise<Object>;
+    getActionInvocations: (eventId: string, workflowActionId: string) => Promise<Object>;
     reflowByEvent: (id: string) => Promise<Object>;
     reflowByEventAndWorkflow: (eventId: string, workflowId: string) => Promise<Object>;
     reflowEventsByEventAndWorkflowIds: (
