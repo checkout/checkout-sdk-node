@@ -599,6 +599,90 @@ describe('Workflows', () => {
         }
     });
 
+    it('should get action invocations', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .get('/workflows/events/evt_az5sblvku4ge3dwpztvyizgcau/actions/wfa_uzkxpffkvpiu5fe3h5ira7sqpa')
+            .reply(201, {
+                workflow_id: 'wf_c7svxlvo2bbuva4f6s3xu4f7wm',
+                event_id: 'evt_az5sblvku4ge3dwpztvyizgcau',
+                workflow_action_id: 'wfa_uzkxpffkvpiu5fe3h5ira7sqpa',
+                action_type: 'webhook',
+                status: 'successful',
+                action_invocations: [
+                    {
+                        invocation_id: 'ivc_az5sblvku4ge3dwpztvyizgcau',
+                        timestamp: '2019-05-23T08:26:59Z',
+                        retry: false,
+                        succeeded: true,
+                        final: true,
+                        result_details: {
+                            status_code: 200,
+                            url: 'https://example.com/webhooks',
+                            headers: {},
+                            response_received_timestamp: '2019-05-23T08:27:01Z',
+                        }
+                    },
+                    {
+                        invocation_id: 'ivc_az5sblvku4ge3dwpztvyizgcau',
+                        timestamp: '2019-05-23T08:27:01Z',
+                        retry: true,
+                        succeeded: false,
+                        final: false,
+                        result_details: {
+                            status_code: 500,
+                            url: 'https://example.com/webhooks',
+                            headers: {},
+                            response_received_timestamp: '2019-05-23T08:27:01Z',
+                        }
+                    },
+                ],
+            });
+        let cko = new Checkout(
+            '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+            {
+                client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                scope: ['flow'],
+                environment: 'sandbox',
+            }
+        );
+        let workflows = await cko.workflows.getActionInvocations('evt_az5sblvku4ge3dwpztvyizgcau', 'wfa_uzkxpffkvpiu5fe3h5ira7sqpa');
+
+        expect(workflows.workflow_id).to.equal('wf_c7svxlvo2bbuva4f6s3xu4f7wm');
+        expect(workflows.event_id).to.equal('evt_az5sblvku4ge3dwpztvyizgcau');
+        expect(workflows.workflow_action_id).to.equal('wfa_uzkxpffkvpiu5fe3h5ira7sqpa');
+    });
+
+    it('should throw AuthenticationError when XXXXXX', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .get('/workflows/events/evt_az5sblvku4ge3dwpztvyizgcau/actions/wfa_uzkxpffkvpiu5fe3h5ira7sqpa')
+            .reply(401);
+        let cko = new Checkout(
+            '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+            {
+                client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                scope: ['flow'],
+                environment: 'sandbox',
+            }
+        );
+        try {
+            let workflows = await cko.workflows.getActionInvocations('evt_az5sblvku4ge3dwpztvyizgcau', 'wfa_uzkxpffkvpiu5fe3h5ira7sqpa');
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
     it('should reflow by event', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',

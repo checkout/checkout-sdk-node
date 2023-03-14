@@ -198,7 +198,7 @@ export default class Workflows {
     }
 
     /**
-     * Update a workflow condition.
+     * Get the details of an event.
      *
      * @memberof Workflows
      * @param {string} id Event ID.
@@ -209,6 +209,29 @@ export default class Workflows {
             const response = await get(
                 fetch,
                 `${this.config.host}/workflows/events/${id}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Get the details of a workflow action executed for the specified event.
+     *
+     * @memberof Workflows
+     * @param {string} eventId Event ID.
+     * @param {string} workflowActionId Workflow Action ID.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async getActionInvocations(eventId, workflowActionId) {
+        try {
+            const response = await get(
+                fetch,
+                `${this.config.host}/workflows/events/${eventId}/actions/${workflowActionId}`,
                 this.config,
                 this.config.sk
             );
