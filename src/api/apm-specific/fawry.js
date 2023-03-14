@@ -5,6 +5,8 @@ import { put } from '../../services/http';
 /**
  * Class dealing with the /fawry endpoint
  *
+ * @deprecated - Since version 2.1.2 - To be removed in future versions.
+ * Should use Payments client instead
  * @export
  * @class Fawry
  */
@@ -16,6 +18,7 @@ export default class Fawry {
     /**
      * Approve Fawry payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.
@@ -38,6 +41,7 @@ export default class Fawry {
     /**
      * Cancel Fawry payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.

@@ -5,6 +5,7 @@ import { post } from '../../services/http';
 /**
  * Class dealing with the /apms/rapipago endpoint
  *
+ * @deprecated - Since version 2.1.2 - Should use Payments client instead
  * @export
  * @class Rapipago
  */
@@ -16,6 +17,7 @@ export default class Rapipago {
     /**
      * Succeed a Rapipago payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof Rapipago
      * @return {Promise<Object>} A promise to the Rapipago response.
@@ -38,6 +40,7 @@ export default class Rapipago {
     /**
      * Cancel Rapipago payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof Rapipago
      * @return {Promise<Object>} A promise to the Rapipago response.

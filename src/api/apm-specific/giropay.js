@@ -5,6 +5,7 @@ import { get } from '../../services/http';
 /**
  * Class dealing with the /giropay endpoint
  *
+ * @deprecated - Since version 2.1.2 - Should use Payments client instead
  * @export
  * @class Giropay
  */
@@ -16,6 +17,7 @@ export default class Giropay {
     /**
      * Get Giropay EPS banks
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @memberof Giropay
      * @return {Promise<Object>} A promise to the banks response.
      */
@@ -37,6 +39,7 @@ export default class Giropay {
     /**
      * Get Giropay banks
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @memberof Giropay
      * @return {Promise<Object>} A promise to the banks response.
      */

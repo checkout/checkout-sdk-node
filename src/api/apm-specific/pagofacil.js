@@ -5,6 +5,7 @@ import { post } from '../../services/http';
 /**
  * Class dealing with the /apms/pagofacil endpoint
  *
+ * @deprecated - Since version 2.1.2 - Should use Payments client instead
  * @export
  * @class PagoFacil
  */
@@ -16,6 +17,7 @@ export default class PagoFacil {
     /**
      * Succeed a PagoFacil payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof PagoFacil
      * @return {Promise<Object>} A promise to the PagoFacil response.
@@ -38,6 +40,7 @@ export default class PagoFacil {
     /**
      * Cancel PagoFacil payment
      *
+     * @deprecated - Since version 2.1.2 - Should use Payments client instead
      * @param {string} id Payment id.
      * @memberof PagoFacil
      * @return {Promise<Object>} A promise to the PagoFacil response.
