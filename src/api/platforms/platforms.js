@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import { get, post, put } from '../../services/http';
+import {get, patch, post, put} from '../../services/http';
 import { PLATFORMS_FILES_LIVE_URL, PLATFORMS_FILES_SANDBOX_URL } from '../../config';
 
 const FormData = require('form-data');
@@ -77,29 +77,6 @@ export default class Platforms {
     }
 
     /**
-     * Retrieve the details of a specific payment instrument used for sub-entity payouts.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The sub-entity's ID.
-     * @param {string} id The payment instrument's ID.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
-    async getPaymentInstrumentDetails(entityId, id) {
-        try {
-            const response = await get(
-                fetch,
-                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
-    }
-
-    /**
      * Use this endpoint to retrieve a sub-entity and its full details.
      *
      * @memberof Platforms
@@ -135,6 +112,54 @@ export default class Platforms {
             const response = await put(
                 fetch,
                 `${this.config.host}/accounts/entities/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Retrieve the details of a specific payment instrument used for sub-entity payouts.
+     *
+     * @memberof Platforms
+     * @param {string} entityId The sub-entity's ID.
+     * @param {string} id The payment instrument's ID.
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async getPaymentInstrumentDetails(entityId, id) {
+        try {
+            const response = await get(
+                fetch,
+                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Update a session by providing information about the environment.
+     *
+     * @memberof Platforms
+     * @param {string} entityId Sub-entity id.
+     * @param {string} id Payment instrument's id.
+     * @param {Object} body Platforms request body.
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async updatePaymentInstrumentDetails(entityId, id, body) {
+        try {
+            const response = await patch(
+                fetch,
+                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
                 this.config,
                 this.config.sk,
                 body

@@ -555,6 +555,72 @@ describe('Platforms', () => {
         }
     });
 
+    it('should update a payment instrument details', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .patch('/accounts/entities/ent_wxglze3wwywujg4nna5fb7ldli/payment-instruments/ppi_qn4nis4k3ykpzzu7cvtuvhqqga')
+            .reply(200, {
+                id: 'ppi_qn4nis4k3ykpzzu7cvtuvhqqga',
+                _links: {
+                    self: {
+                        href: 'https://api.checkout.com/accounts/entities/ent_wxglze3wwywujg4nna5fb7ldli',
+                    },
+                },
+            });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+
+        let instrument = await cko.platforms.updatePaymentInstrumentDetails(
+            'ent_wxglze3wwywujg4nna5fb7ldli',
+            'ppi_qn4nis4k3ykpzzu7cvtuvhqqga',
+            {
+                label: "New Label",
+                default: true,
+            }
+        );
+
+        expect(instrument.id).to.equal('ppi_qn4nis4k3ykpzzu7cvtuvhqqga');
+    });
+
+    it('should throw AuthenticationError when updating a payment instrument details', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .patch('/accounts/entities/ent_wxglze3wwywujg4nna5fb7ldli/payment-instruments/ppi_qn4nis4k3ykpzzu7cvtuvhqqga')
+            .reply(401);
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            let instrument = cko.platforms.updatePaymentInstrumentDetails(
+                'ent_wxglze3wwywujg4nna5fb7ldli',
+                'ppi_qn4nis4k3ykpzzu7cvtuvhqqga',
+                {
+                    label: "New Label",
+                    default: true,
+                }
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
     it('should add a payment instrument', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
