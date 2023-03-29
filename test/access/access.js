@@ -22,6 +22,21 @@ describe('Access', () => {
             scope: 'gateway',
         });
 
+        let auth = {
+            secret: '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
+
+        };
+
+        let config = {
+            ...auth,
+            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+            scope: ['gateway'],
+            host: 'https://api.sandbox.checkout.com',
+            headers: {},
+            timeout: 15000
+
+        }
+
         let cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
             {
@@ -29,7 +44,7 @@ describe('Access', () => {
                 scope: ['gateway'],
                 environment: 'sandbox',
             }
-        );
+        ).accessClient(config).build();
 
         const tkn = await cko.access.request({
             grant_type: 'client_credentials',
