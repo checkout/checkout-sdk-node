@@ -621,6 +621,55 @@ describe('Platforms', () => {
         }
     });
 
+    it('should create a payment instrument [deprecated]', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/instruments')
+            .reply(202, {
+                headers: {
+                    'cko-request-id': 'f02e7328-b7fc-4993-b9f6-4c913421f57e',
+                    'cko-version': '3.34.5',
+                },
+            });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+
+        let instrument = await cko.platforms.createPaymentInstrument(
+            'ent_aneh5mtyobxzazriwuevngrz6y',
+            {
+                label: "Bob's Bank Account",
+                type: 'bank_account',
+                currency: 'GBP',
+                country: 'GB',
+                document: {
+                    type: 'bank_statement',
+                    file_id: 'file_b642nlp54js6nzzb3tz3txgsxu',
+                },
+                account_holder: {
+                    first_name: 'John',
+                    last_name: 'Doe',
+                    billing_address: {
+                        address_line1: '90 Tottenham Court Road',
+                        city: 'London',
+                        zip: 'W1T4TJ',
+                        country: 'GB',
+                    },
+                },
+            }
+        );
+
+        expect(Object.keys(instrument.headers).length).to.equal(2);
+    });
+
     it('should add a payment instrument', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
@@ -665,6 +714,51 @@ describe('Platforms', () => {
         );
 
         expect(instrument.id).to.equal('ppi_goaxfhavh5ztwdf662mnii6zem');
+    });
+
+    it('should throw AuthenticationError when creating a payment instrument [deprecated]', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/instruments')
+            .reply(401);
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            let instrument = await cko.platforms.createPaymentInstrument(
+                'ent_aneh5mtyobxzazriwuevngrz6y',
+                {
+                    label: "Bob's Bank Account",
+                    type: 'bank_account',
+                    currency: 'GBP',
+                    country: 'GB',
+                    document: {
+                        type: 'bank_statement',
+                        file_id: 'file_b642nlp54js6nzzb3tz3txgsxu',
+                    },
+                    account_holder: {
+                        first_name: 'John',
+                        last_name: 'Doe',
+                        billing_address: {
+                            address_line1: '90 Tottenham Court Road',
+                            city: 'London',
+                            zip: 'W1T4TJ',
+                            country: 'GB',
+                        },
+                    },
+                }
+            );
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
     });
 
     it('should throw AuthenticationError when adding a payment instrument', async () => {
