@@ -59,17 +59,14 @@ export const createAccessToken = async (config, fetch, body) => {
     });
 };
 
-// eslint-disable-next-line consistent-return,default-param-last
-const http = async (fetch, method, path, config, auth, request, idempotencyKey) => {
+export const OAuthCredentials = async (auth, config, fetch) => {
     let authHeader = null;
 
     if (auth) {
         authHeader = auth;
     } else if (config.client) {
-        // TODO Refactor OAuth credentials request
-
         // For NAS
-        // If an access tokens exists and it's not expired re-use it
+        // If an access tokens exists & it's not expired re-use it
         if (config.access && !isTokenExpired(config.access.expires, new Date())) {
             authHeader = `${config.access.type} ${config.access.token}`;
         } else {
@@ -85,6 +82,12 @@ const http = async (fetch, method, path, config, auth, request, idempotencyKey) 
             };
         }
     }
+    return authHeader;
+};
+
+// eslint-disable-next-line consistent-return,default-param-last
+const http = async (fetch, method, path, config, auth, request, idempotencyKey) => {
+    const authHeader = await OAuthCredentials(auth, config, fetch);
 
     const headers = getRequestHeaders(config, request, authHeader, idempotencyKey);
 
