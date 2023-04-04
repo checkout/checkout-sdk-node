@@ -4,7 +4,7 @@ export default class Payments {
 
     request: (body: Object, idempotencyKey?: string) => Promise<Object>;
     get: (id: string) => Promise<any>;
-    getPaymentsList: (body?: Object) => Promise<any>;
+    getPaymentList: (body?: Object) => Promise<any>;
     getActions: (id: string) => Promise<Object>;
     increment: (paymentId: string, body?: Object, idempotencyKey?: string) => Promise<Object>;
     capture: (paymentId: string, body?: Object, idempotencyKey?: string) => Promise<Object>;
