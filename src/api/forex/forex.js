@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
-import { post } from '../../services/http';
+import { get, post } from '../../services/http';
+import { buildQueryParams } from '../../services/utils';
 
 /**
  * Class dealing with the forex api
@@ -30,8 +31,25 @@ export default class Forex {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Use the Forex (FX) rates API to get the indicative foreign exchange rates that Checkout.com
+     * uses to process payments for card payouts
+     *
+     * @param {Object} body Forex params.
+     * @return {Promise<Object>} A promise to the Forex response.
+     */
+    async getRates(body) {
+        try {
+            const url = buildQueryParams(`${this.config.host}/forex/rates`, body);
+
+            const response = await get(fetch, url, this.config, this.config.sk);
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
         }
     }
 }
