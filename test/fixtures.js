@@ -1,7 +1,7 @@
 import {cleanAll, enableNetConnect} from "nock";
 import Checkout from "../src";
 
-beforeEach(() => {
+afterEach(() => {
     cleanAll();
     enableNetConnect();
 });
@@ -13,6 +13,6 @@ const cko_issuing = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIE
 });
 
 module.exports = {
-    beforeEach,
+    afterEach,
     cko_issuing
 };
