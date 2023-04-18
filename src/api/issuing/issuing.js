@@ -375,4 +375,26 @@ export default class Issuing {
             throw await determineError(err);
         }
     }
+
+    /**
+     * Simulate an authorization request with a card you issued previously.
+     *
+     * @memberof Issuing
+     * @param {Object} body Card params.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async simulateAuthorization(body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/simulate/authorizations`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
 }
