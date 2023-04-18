@@ -14,4 +14,9 @@ export default class Issuing {
     getCardCredentials: (id: string, body: Object) => Promise<Object>;
     revokeCard: (id: string, body: Object) => Promise<Object>;
     suspendCard: (id: string, body: Object) => Promise<Object>;
+    createCardControl: (body: Object) => Promise<Object>;
+    getCardControls: (params: Object) => Promise<Object>;
+    getCardControlDetails: (id: string) => Promise<Object>;
+    updateCardControl: (id: string, body: Object) => Promise<Object>;
+    deleteCardControl: (id: string) => Promise<Object>;
 }

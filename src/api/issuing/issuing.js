@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
-import { get, patch, post } from '../../services/http';
+import { _delete, get, patch, post, put } from "../../services/http";
 import { determineError } from '../../services/errors';
+import { buildQueryParams } from '../../services/utils';
 
 export default class Issuing {
     constructor(config) {
@@ -212,14 +213,10 @@ export default class Issuing {
      */
     async getCardCredentials(id, body) {
         try {
-            let url = `${this.config.host}/issuing/cards/${id}/credentials`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(
+                `${this.config.host}/issuing/cards/${id}/credentials`,
+                body
+            );
 
             const response = await get(fetch, url, this.config, this.config.sk);
             return await response.json;
@@ -267,6 +264,111 @@ export default class Issuing {
                 this.config,
                 this.config.sk,
                 body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Creates a card control and applies it to the specified card.
+     *
+     * @memberof Issuing
+     * @param {Object} body Card control params.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async createCardControl(body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/controls`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Retrieves a list of spending controls applied to the specified card.
+     *
+     * @memberof Issuing
+     * @param {Object} params Card control params.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async getCardControls(params) {
+        try {
+            const url = buildQueryParams(`${this.config.host}/issuing/controls`, params);
+
+            const response = await get(fetch, url, this.config, this.config.sk);
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Retrieves the details of a card control you created previously.
+     *
+     * @memberof Issuing
+     * @param {string} id Card control id.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async getCardControlDetails(id) {
+        try {
+            const response = await get(
+                fetch,
+                `${this.config.host}/issuing/controls/${id}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Updates an existing card control.
+     *
+     * @memberof Issuing
+     * @param {string} id Card control id.
+     * @param {Object} body Card control params.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async updateCardControl(id, body) {
+        try {
+            const response = await put(
+                fetch,
+                `${this.config.host}/issuing/controls/${id}`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Removes an existing card control from the card it was applied to.
+     *
+     * @memberof Issuing
+     * @param {string} id Card control id.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async deleteCardControl(id) {
+        try {
+            const response = await _delete(
+                fetch,
+                `${this.config.host}/issuing/controls/${id}`,
+                this.config,
+                this.config.sk
             );
             return await response.json;
         } catch (err) {
