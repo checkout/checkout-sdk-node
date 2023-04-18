@@ -1,7 +1,7 @@
 import nock from "nock";
 import {Checkout} from "../../src";
 import {expect} from "chai";
-import {AuthenticationError, NotFoundError} from "../../src/services/errors";
+import { AuthenticationError, NotFoundError, ValidationError } from "../../src/services/errors";
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
@@ -864,4 +864,59 @@ describe('Unit::Issuing', () => {
             }
         });
     });
+
+    describe('Authorizations', () => {
+        it('should simulate an authorization', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations')
+                .reply(201, {
+                    id: "trx_aaqc4uaaybigcaaqc4uaayfiga",
+                    status: "Authorized"
+                });
+
+            const cko = new Checkout(SK);
+
+            const authorizationResponse = await cko.issuing.simulateAuthorization({
+                card: {
+                    id: "crd_fa6psq242dcd6fdn5gifcq1491",
+                    expiry_month: 5,
+                    expiry_year: 2025
+                },
+                transaction: {
+                    type: "purchase",
+                    amount: 6540,
+                    currency: "GBP"
+                }
+            });
+
+            expect(authorizationResponse).to.not.be.null
+            expect(authorizationResponse.id).to.equal("trx_aaqc4uaaybigcaaqc4uaayfiga")
+            expect(authorizationResponse.status).to.equal("Authorized")
+        });
+
+        it('should throw when simulating an authorization with invalid card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations')
+                .reply(422);
+
+            try {
+                const cko = new Checkout(SK);
+
+                await cko.issuing.simulateAuthorization({
+                    card: {
+                        id: "not_found",
+                        expiry_month: 5,
+                        expiry_year: 2025
+                    },
+                    transaction: {
+                        type: "purchase",
+                        amount: 6540,
+                        currency: "GBP"
+                    }
+                });
+            } catch (err) {
+                expect(err).to.be.instanceOf(ValidationError);
+            }
+        });
+    })
 });
