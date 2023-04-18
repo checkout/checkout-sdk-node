@@ -295,6 +295,86 @@ describe('Integration::Issuing', () => {
             expect(cardResponse.status).to.equal("revoked")
         });
     });
+
+    describe('Card Controls', () => {
+
+        let cardholder;
+        let card;
+        let control;
+
+        before(async () => {
+            cardholder = await createCardholder()
+            card = await createCard(cardholder, true)
+            control = await createCardControl(card)
+        })
+
+        it('should create a card control', async () => {
+            const controlResponse = await cko_issuing.issuing.createCardControl({
+                description: "Max spend of 500€ per week for restaurants",
+                control_type: "velocity_limit",
+                target_id: card.id,
+                velocity_limit: {
+                    amount_limit: 5000,
+                    velocity_window: {
+                        type: "weekly"
+                    }
+                }
+            })
+
+            expect(controlResponse).to.not.be.null
+            expect(controlResponse.target_id).to.equal(card.id)
+            expect(controlResponse.control_type).to.equal("velocity_limit")
+            expect(controlResponse.velocity_limit.amount_limit).to.equal(5000)
+            expect(controlResponse.velocity_limit.velocity_window.type).to.equal("weekly")
+        });
+
+        it('should get a card`s controls', async () => {
+            const controlResponse = await cko_issuing.issuing.getCardControls({
+                target_id: card.id,
+            })
+
+            expect(controlResponse).to.not.be.null
+            for (const control of controlResponse.controls) {
+                expect(control.target_id).to.equal(card.id)
+                expect(control.control_type).to.oneOf(["velocity_limit", "mcc_limit"])
+            }
+        });
+
+        it('should get a card`s control details', async () => {
+            const controlResponse = await cko_issuing.issuing.getCardControlDetails(control.id)
+
+            expect(controlResponse).to.not.be.null
+            expect(controlResponse.id).to.equal(control.id)
+            expect(controlResponse.target_id).to.equal(card.id)
+            expect(controlResponse.control_type).to.equal("velocity_limit")
+            expect(controlResponse.velocity_limit.amount_limit).to.equal(5000)
+            expect(controlResponse.velocity_limit.velocity_window.type).to.equal("weekly")
+        });
+
+        it('should update a card control', async () => {
+            const controlResponse = await cko_issuing.issuing.updateCardControl(control.id, {
+                description: "Max spend of 500€ per day for restaurants",
+                velocity_limit: {
+                    amount_limit: 5000,
+                    velocity_window: {
+                        type: "daily"
+                    }
+                }
+            })
+
+            expect(controlResponse).to.not.be.null
+            expect(controlResponse.target_id).to.equal(card.id)
+            expect(controlResponse.control_type).to.equal("velocity_limit")
+            expect(controlResponse.velocity_limit.velocity_window.type).to.equal("daily")
+        });
+
+        it('should delete a card`s control', async () => {
+            const controlResponse = await cko_issuing.issuing.deleteCardControl(control.id)
+
+            expect(controlResponse).to.not.be.null
+            expect(controlResponse.id).to.equal(control.id)
+        });
+    });
 });
 
 const createCardholder = async () => {
@@ -335,7 +415,7 @@ const createCardholder = async () => {
     });
 }
 
-const createCard = async (cardholder) => {
+const createCard = async (cardholder, active = false) => {
     return await cko_issuing.issuing.createCard({
         type: "virtual",
         cardholder_id: cardholder.id,
@@ -347,6 +427,20 @@ const createCard = async (cardholder) => {
         card_product_id: "pro_2ebzpnw3wvcefnu7fqglqmg56m",
         display_name: "JOHN KENNEDY",
         is_single_use: false,
-        activate_card: false
+        activate_card: active
+    });
+}
+
+const createCardControl = async (card) => {
+    return await cko_issuing.issuing.createCardControl({
+        description: "Max spend of 500€ per week for restaurants",
+        control_type: "velocity_limit",
+        target_id: card.id,
+        velocity_limit: {
+            amount_limit: 5000,
+            velocity_window: {
+                type: "weekly"
+            }
+        }
     });
 }
