@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { _delete, get, patch, post, put } from "../../services/http";
+import { _delete, get, patch, post, put } from '../../services/http';
 import { determineError } from '../../services/errors';
 import { buildQueryParams } from '../../services/utils';
 
@@ -369,6 +369,28 @@ export default class Issuing {
                 `${this.config.host}/issuing/controls/${id}`,
                 this.config,
                 this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Simulate an authorization request with a card you issued previously.
+     *
+     * @memberof Issuing
+     * @param {Object} body Card params.
+     * @return {Promise<Object>} A promise to the card response.
+     */
+    async simulateAuthorization(body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/simulate/authorizations`,
+                this.config,
+                this.config.sk,
+                body
             );
             return await response.json;
         } catch (err) {

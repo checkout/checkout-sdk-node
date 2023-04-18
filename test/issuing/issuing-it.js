@@ -375,6 +375,59 @@ describe('Integration::Issuing', () => {
             expect(controlResponse.id).to.equal(control.id)
         });
     });
+
+    describe('Authorizations', () => {
+
+        let cardholder;
+        let card;
+        let cardDetails;
+
+        before(async () => {
+            cardholder = await createCardholder()
+            card = await createCard(cardholder, true)
+            cardDetails = await cko_issuing.issuing.getCardDetails(card.id)
+        })
+
+        it('should simulate an authorization', async () => {
+            const authorizationResponse = await cko_issuing.issuing.simulateAuthorization({
+                card: {
+                    id: card.id,
+                    expiry_month: cardDetails.expiry_month,
+                    expiry_year: cardDetails.expiry_year
+                },
+                transaction: {
+                    type: "purchase",
+                    amount: 2500,
+                    currency: "GBP"
+                }
+            })
+
+            expect(authorizationResponse).to.not.be.null
+            expect(authorizationResponse.status).to.equal("Authorized")
+        });
+
+        it('should fail to authorize when amount is bigger than limit', async () => {
+            await createCardControl(card)
+
+            try {
+                await cko_issuing.issuing.simulateAuthorization({
+                    card: {
+                        id: card.id,
+                        expiry_month: cardDetails.expiry_month,
+                        expiry_year: cardDetails.expiry_year
+                    },
+                    transaction: {
+                        type: "purchase",
+                        amount: 100000,
+                        currency: "GBP"
+                    }
+                })
+            } catch (err) {
+                expect(err.http_code).to.equal(401);
+            }
+        })
+
+    });
 });
 
 const createCardholder = async () => {

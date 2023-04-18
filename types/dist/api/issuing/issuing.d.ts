@@ -19,4 +19,5 @@ export default class Issuing {
     getCardControlDetails: (id: string) => Promise<Object>;
     updateCardControl: (id: string, body: Object) => Promise<Object>;
     deleteCardControl: (id: string) => Promise<Object>;
+    simulateAuthorization: (body: Object) => Promise<Object>;
 }
