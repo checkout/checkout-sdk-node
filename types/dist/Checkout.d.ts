@@ -1,113 +1,84 @@
-//@ts-ignore
-import * as http from 'http';
-
-import {
-    Payments,
-    Sources,
-    Tokens,
-    Instruments,
-    Webhooks,
-    Events,
-    Disputes,
-    Files,
-    Reconciliation,
-    Customers,
-    HostedPayments,
-    Giropay,
-    Ideal,
-    Fawry,
-    PagoFacil,
-    Rapipago,
-    Boleto,
-    Baloto,
-    Oxxo,
-    Klarna,
-    Sepa,
-    PaymentLinks,
-    Access,
-    Forex,
-    ApplePay,
-    Sessions,
-    Workflows,
-    Platforms,
-    Transfers,
-    Balances,
-    CardMetadata,
-    Reports,
-    Financial,
-} from './index';
-
-export type access = {
-    token: string;
-    type: string;
-    scope: string;
-    expires: Date;
-};
-
-export type config = {
-    host: string;
-    sk: string;
-    pk: string;
-    timeout: number;
-    agent?: http.Agent;
-    headers?: Record<string, string>;
-    access?: access;
-    scope?: Array<string>;
-    client?: string;
-};
-
-type options = {
-    host?: string;
-    timeout?: number;
-    agent?: http.Agent;
-    headers?: Record<string, string>;
-} & (staticKeyOptions | oauthOptions);
-
-type staticKeyOptions = {
-    pk: string;
-};
-
-type oauthOptions = {
-    client: string;
-    scope?: Array<string>;
-    environment?: string;
-};
-
+/**
+ * Main Checkout.com SDK class
+ *
+ * @export
+ * @class Checkout
+ */
 export default class Checkout {
-    payments: Payments;
-    sources: Sources;
-    tokens: Tokens;
-    instruments: Instruments;
-    webhooks: Webhooks;
-    events: Events;
-    disputes: Disputes;
-    files: Files;
-    reconciliation: Reconciliation;
-    customers: Customers;
-    hostedPayments: HostedPayments;
-    giropay: Giropay;
-    ideal: Ideal;
-    fawry: Fawry;
-    pagoFacil: PagoFacil;
-    rapipago: Rapipago;
-    boleto: Boleto;
-    baloto: Baloto;
-    oxxo: Oxxo;
-    klarna: Klarna;
-    sepa: Sepa;
-    paymentLinks: PaymentLinks;
-    access: Access;
-    forex: Forex;
-    applePay: ApplePay;
-    sessions: Sessions;
-    workflows: Workflows;
-    platforms: Platforms;
-    transfers: Transfers;
-    balances: Balances;
-    cardMetadata: CardMetadata;
-    reports: Reports;
-    financial: Financial;
-    config: config;
-
-    constructor(key?: string, options?: options);
+    /**
+     * Creates an instance of Checkout.com's SDK.
+     *
+     * Determines the environment based on the key
+     *
+     * @constructor
+     * @param {string} [key] Secret Key /^(sk)
+     * @param {Object}  [options] Configuration options
+     * @memberof Payments
+     */
+    constructor(key?: string, options?: any);
+    config: {
+        timeout: any;
+        agent: any;
+        headers: any;
+        access: any;
+        secret: string;
+        client: string;
+        scope: string;
+        host: any;
+    } | {
+        timeout: any;
+        agent: any;
+        headers: any;
+        access: any;
+        secret: string;
+        pk: any;
+        client: any;
+        scope: any;
+        host: any;
+    } | {
+        timeout: any;
+        agent: any;
+        headers: any;
+        access: any;
+        sk: any;
+        pk: any;
+        host: any;
+    };
+    payments: ENDPOINTS.Payments;
+    sources: ENDPOINTS.Sources;
+    tokens: ENDPOINTS.Tokens;
+    instruments: ENDPOINTS.Instruments;
+    webhooks: ENDPOINTS.Webhooks;
+    events: ENDPOINTS.Events;
+    disputes: ENDPOINTS.Disputes;
+    files: ENDPOINTS.Files;
+    reconciliation: ENDPOINTS.Reconciliation;
+    customers: ENDPOINTS.Customers;
+    hostedPayments: ENDPOINTS.HostedPayments;
+    giropay: ENDPOINTS.Giropay;
+    ideal: ENDPOINTS.Ideal;
+    fawry: ENDPOINTS.Fawry;
+    pagoFacil: ENDPOINTS.PagoFacil;
+    rapipago: ENDPOINTS.Rapipago;
+    boleto: ENDPOINTS.Boleto;
+    baloto: ENDPOINTS.Baloto;
+    oxxo: ENDPOINTS.Oxxo;
+    klarna: ENDPOINTS.Klarna;
+    sepa: ENDPOINTS.Sepa;
+    paymentLinks: ENDPOINTS.PaymentLinks;
+    risk: ENDPOINTS.Risk;
+    access: ENDPOINTS.Access;
+    forex: ENDPOINTS.Forex;
+    applePay: ENDPOINTS.ApplePay;
+    sessions: ENDPOINTS.Sessions;
+    workflows: ENDPOINTS.Workflows;
+    platforms: ENDPOINTS.Platforms;
+    transfers: ENDPOINTS.Transfers;
+    balances: ENDPOINTS.Balances;
+    cardMetadata: ENDPOINTS.CardMetadata;
+    reports: ENDPOINTS.Reports;
+    financial: ENDPOINTS.Financial;
+    issuing: ENDPOINTS.Issuing;
 }
+import * as ENDPOINTS from './index';
+//# sourceMappingURL=Checkout.d.ts.map
