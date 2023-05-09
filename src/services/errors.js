@@ -56,11 +56,13 @@ export class ActionNotAllowed extends Error {
  * @extends {Error}
  */
 export class UrlAlreadyRegistered extends Error {
-    constructor(message = 'UrlAlreadyRegistered') {
+    constructor(error, message = 'UrlAlreadyRegistered') {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 409;
         this.name = 'UrlAlreadyRegistered';
+        this.body = error;
+
     }
 }
 
@@ -212,7 +214,7 @@ export const determineError = async (err) => {
         case 403:
             return new ActionNotAllowed();
         case 409:
-            return new UrlAlreadyRegistered();
+            return new UrlAlreadyRegistered(await errorJSON);
         case 422:
             return new ValidationError(await errorJSON);
         case 429:

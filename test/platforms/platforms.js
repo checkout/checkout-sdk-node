@@ -166,6 +166,87 @@ describe('Platforms', () => {
         expect(platform.reference).to.equal('superhero123444');
     });
 
+    it('should throw conflict error onboarding a sub-entity', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities')
+            .reply(409, {
+                id: 'ent_stuoyqyx4bsnsgfgair7hjdwna',
+                _links: {
+                    self: {
+                        href: 'https://api.sandbox.checkout.com/accounts/entities/ent_stuoyqyx4bsnsgfgair7hjdwna',
+                    },
+                },
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+            let platform = await cko.platforms.onboardSubEntity({
+                reference: 'superhero123444',
+                contact_details: {
+                    phone: {
+                        number: '2345678910',
+                    },
+                },
+                profile: {
+                    urls: ['https://www.ljnkjnnjjknk.com'],
+                    mccs: ['0742'],
+                },
+                company: {
+                    legal_name: 'Super Hero Masks Inc.',
+                    trading_name: 'Super Hero Masks',
+                    principal_address: {
+                        address_line1: '90 Tottenham Court Road',
+                        city: 'London',
+                        zip: 'W1T4TJ',
+                        country: 'GB',
+                    },
+                    registered_address: {
+                        address_line1: '90 Tottenham Court Road',
+                        city: 'London',
+                        zip: 'W1T4TJ',
+                        country: 'GB',
+                    },
+                    representatives: [
+                        {
+                            first_name: 'John',
+                            last_name: 'Doe',
+                            address: {
+                                address_line1: '90 Tottenham Court Road',
+                                city: 'London',
+                                zip: 'W1T4TJ',
+                                country: 'GB',
+                            },
+                            identification: {
+                                national_id_number: 'AB123456C',
+                            },
+                            phone: {
+                                number: '2345678910',
+                            },
+                            date_of_birth: {
+                                day: 5,
+                                month: 6,
+                                year: 1995,
+                            },
+                        },
+                    ],
+                },
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(UrlAlreadyRegistered);
+            expect(err.body.id).to.equal('ent_stuoyqyx4bsnsgfgair7hjdwna');
+        }
+    });
+
     it('should throw AuthenticationError when onboarding sub-entity', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
