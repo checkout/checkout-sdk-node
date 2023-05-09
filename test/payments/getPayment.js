@@ -6,8 +6,8 @@ import {
   AuthenticationError,
   NotFoundError
 } from "../../src/services/errors";
-import { Checkout } from "../../src/index";
-import { expect } from "chai";
+import {Checkout} from "../../src/index";
+import {expect} from "chai";
 import nock from "nock";
 
 const SK = "sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808";
@@ -45,6 +45,20 @@ describe("Get payment details", () => {
         payment_type: "Regular",
         status: "Card Verified",
         approved: true,
+        '3ds': {
+          downgraded: false,
+          enrolled: 'Y',
+          signature_valid: 'Y',
+          authentication_response: 'Y',
+          authentication_status_reason: 'string',
+          cryptogram: 'hv8mUFzPzRZoCAAAAAEQBDMAAAA=',
+          xid: 'MDAwMDAwMDAwMDAwMDAwMzIyNzY=',
+          version: '2.1.0',
+          exemption: 'low_value',
+          exemption_applied: 'string',
+          challenged: true,
+          upgrade_reason: 'sca_retry'
+        },
         risk: {
           flagged: false
         },
@@ -74,6 +88,8 @@ describe("Get payment details", () => {
     /* eslint-disable no-unused-expressions */
     expect(transaction.approved).to.be.true;
     expect(transaction.id).to.equal("pay_je5hbbb4u3oe7k4u3lbwlu3zkq");
+    expect(transaction['3ds'].cryptogram).to.equal("hv8mUFzPzRZoCAAAAAEQBDMAAAA=");
+    expect(transaction['3ds'].authentication_status_reason).to.equal("string");
   });
 
   it("should throw authentication error", async () => {
