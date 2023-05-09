@@ -16,7 +16,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 describe('Reports', () => {
     it('should get all reports', async () => {
         nock('https://api.sandbox.checkout.com')
-            .get('/reports?entity_id=ent_fz5knnpfjkceta7kpzlbu6dkt4')
+            .get('/reports?entity_id=ent_fz5knnpfjkceta7kpzlbu6dkt4&created_after=2022-02-17T00:00:00&created_before=2022-02-19T00:00:00')
             .reply(200, {
                 count: 1,
                 limit: 5,
@@ -67,6 +67,8 @@ describe('Reports', () => {
         const cko = new Checkout(SK);
 
         const reports = await cko.reports.getAllReports({
+            created_after: '2022-02-17T00:00:00',
+            created_before: '2022-02-19T00:00:00',
             entity_id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4',
         });
     });
