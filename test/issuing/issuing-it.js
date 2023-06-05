@@ -132,17 +132,17 @@ describe('Integration::Issuing', () => {
         });
     });
 
-    describe('Cards', () => {
+    describe.skip('Cards', () => {
 
         let cardholder;
         let card;
 
         before(async () => {
             cardholder = await createCardholder()
-            //card = await createCard(cardholder)
+            card = await createCard(cardholder)
         })
 
-        it.skip('should create a virtual card', async () => {
+        it('should create a virtual card', async () => {
             const cardResponse = await cko_issuing.issuing.createCard({
                 type: "virtual",
                 cardholder_id: cardholder.id,
@@ -162,7 +162,7 @@ describe('Integration::Issuing', () => {
             expect(cardResponse.reference).to.equal("X-123456-N11")
         });
 
-        it.skip('should throw ValidationError when creating a card with invalid data', async () => {
+        it('should throw ValidationError when creating a card with invalid data', async () => {
             try {
                 await cko_issuing.issuing.createCard({
                     type: "physical",
@@ -181,7 +181,7 @@ describe('Integration::Issuing', () => {
             }
         });
 
-        it.skip('should get card', async () => {
+        it('should get card', async () => {
             const cardResponse = await cko_issuing.issuing.getCardDetails(card.id)
 
             expect(cardResponse.id).to.equal(card.id)
@@ -190,7 +190,7 @@ describe('Integration::Issuing', () => {
             expect(cardResponse.reference).to.equal("X-123456-N11")
         });
 
-        it.skip('should throw NotFoundError when getting an unexistant card', async () => {
+        it('should throw NotFoundError when getting an unexistant card', async () => {
             try {
                 await cko_issuing.issuing.createCard({
                     type: "physical",
@@ -210,7 +210,7 @@ describe('Integration::Issuing', () => {
         });
 
 
-        it.skip('should enroll card into 3DS', async () => {
+        it('should enroll card into 3DS', async () => {
             const enrollResponse = await cko_issuing.issuing.enrollThreeDS(card.id, {
                 password: "Xtui43FvfiZ",
                     locale: "en-US",
@@ -223,7 +223,7 @@ describe('Integration::Issuing', () => {
             expect(enrollResponse).to.not.be.null
         });
 
-        it.skip('should update enrollment into 3DS', async () => {
+        it('should update enrollment into 3DS', async () => {
             const enrollResponse = await cko_issuing.issuing.updateThreeDS(card.id, {
                 security_pair: {
                     question: "Who are you?",
@@ -240,7 +240,7 @@ describe('Integration::Issuing', () => {
             expect(enrollResponse).to.not.be.null
         });
 
-        it.skip('should get enrollment into 3DS', async () => {
+        it('should get enrollment into 3DS', async () => {
             const enrollmentResponse = await cko_issuing.issuing.getThreeDSDetails(card.id)
 
             expect(enrollmentResponse).to.not.be.null
@@ -249,7 +249,7 @@ describe('Integration::Issuing', () => {
             expect(enrollmentResponse.phone_number.number).to.equal("415 555 2671")
         });
 
-        it.skip('should activate a card', async () => {
+        it('should activate a card', async () => {
             const activationResponse = await cko_issuing.issuing.activateCard(card.id)
 
             expect(activationResponse).to.not.be.null
@@ -260,7 +260,7 @@ describe('Integration::Issuing', () => {
             expect(cardResponse.status).to.equal("active")
         });
 
-        it.skip('should get card credentials', async () => {
+        it('should get card credentials', async () => {
             const credentialsResponse = await cko_issuing.issuing.getCardCredentials(card.id, {
                 credentials: "number, cvc2"
             })
@@ -269,7 +269,7 @@ describe('Integration::Issuing', () => {
             expect(credentialsResponse.cvc2).to.not.be.null
         });
 
-        it.skip('should suspend a card', async () => {
+        it('should suspend a card', async () => {
             const suspendedResponse = await cko_issuing.issuing.suspendCard(card.id, {
                 reason: "suspected_lost"
             })
@@ -282,7 +282,7 @@ describe('Integration::Issuing', () => {
             expect(cardResponse.status).to.equal("suspended")
         });
 
-        it.skip('should revoke a card', async () => {
+        it('should revoke a card', async () => {
             const suspendedResponse = await cko_issuing.issuing.revokeCard(card.id, {
                 reason: "reported_lost"
             })
@@ -296,7 +296,7 @@ describe('Integration::Issuing', () => {
         });
     });
 
-    describe('Card Controls', () => {
+    describe.skip('Card Controls', () => {
 
         let cardholder;
         let card;
@@ -304,11 +304,11 @@ describe('Integration::Issuing', () => {
 
         before(async () => {
             cardholder = await createCardholder()
-            //card = await createCard(cardholder, true)
-            //control = await createCardControl(card)
+            card = await createCard(cardholder, true)
+            control = await createCardControl(card)
         })
 
-        it.skip('should create a card control', async () => {
+        it('should create a card control', async () => {
             const controlResponse = await cko_issuing.issuing.createCardControl({
                 description: "Max spend of 500€ per week for restaurants",
                 control_type: "velocity_limit",
@@ -328,7 +328,7 @@ describe('Integration::Issuing', () => {
             expect(controlResponse.velocity_limit.velocity_window.type).to.equal("weekly")
         });
 
-        it.skip('should get a card`s controls', async () => {
+        it('should get a card`s controls', async () => {
             const controlResponse = await cko_issuing.issuing.getCardControls({
                 target_id: card.id,
             })
@@ -340,7 +340,7 @@ describe('Integration::Issuing', () => {
             }
         });
 
-        it.skip('should get a card`s control details', async () => {
+        it('should get a card`s control details', async () => {
             const controlResponse = await cko_issuing.issuing.getCardControlDetails(control.id)
 
             expect(controlResponse).to.not.be.null
@@ -351,7 +351,7 @@ describe('Integration::Issuing', () => {
             expect(controlResponse.velocity_limit.velocity_window.type).to.equal("weekly")
         });
 
-        it.skip('should update a card control', async () => {
+        it('should update a card control', async () => {
             const controlResponse = await cko_issuing.issuing.updateCardControl(control.id, {
                 description: "Max spend of 500€ per day for restaurants",
                 velocity_limit: {
@@ -368,7 +368,7 @@ describe('Integration::Issuing', () => {
             expect(controlResponse.velocity_limit.velocity_window.type).to.equal("daily")
         });
 
-        it.skip('should delete a card`s control', async () => {
+        it('should delete a card`s control', async () => {
             const controlResponse = await cko_issuing.issuing.deleteCardControl(control.id)
 
             expect(controlResponse).to.not.be.null
@@ -376,19 +376,21 @@ describe('Integration::Issuing', () => {
         });
     });
 
-    describe('Authorizations', () => {
+    describe.skip('Authorizations', () => {
 
         let cardholder;
         let card;
         let cardDetails;
+        let transaction;
 
         before(async () => {
             cardholder = await createCardholder()
-            //card = await createCard(cardholder, true)
-            //cardDetails = await cko_issuing.issuing.getCardDetails(card.id)
+            card = await createCard(cardholder, true)
+            cardDetails = await cko_issuing.issuing.getCardDetails(card.id)
+            transaction = await createTransaction(card)
         })
 
-        it.skip('should simulate an authorization', async () => {
+        it('should simulate an authorization', async () => {
             const authorizationResponse = await cko_issuing.issuing.simulateAuthorization({
                 card: {
                     id: card.id,
@@ -406,7 +408,7 @@ describe('Integration::Issuing', () => {
             expect(authorizationResponse.status).to.equal("Authorized")
         });
 
-        it.skip('should fail to authorize when amount is bigger than limit', async () => {
+        it('should fail to authorize when amount is bigger than limit', async () => {
             await createCardControl(card)
 
             try {
@@ -427,6 +429,31 @@ describe('Integration::Issuing', () => {
             }
         })
 
+        it('should simulate an increment authorization', async () => {
+            const authorizationResponse = await cko_issuing.issuing.simulateIncrement(transaction.id, {
+                amount: 2500,
+            })
+
+            expect(authorizationResponse).to.not.be.null
+            expect(authorizationResponse.status).to.equal("Authorized")
+        })
+
+        it('should simulate the clearing of an authorized transaction', async () => {
+            const clearingResponse = await cko_issuing.issuing.simulateClearing(transaction.id, {
+                amount: 100,
+            })
+
+            expect(clearingResponse).to.not.be.null
+        })
+
+        it('should simulate the reversal of an authorized transaction', async () => {
+            const reversalResponse = await cko_issuing.issuing.simulateReversal(transaction.id, {
+                amount: 100,
+            })
+
+            expect(reversalResponse).to.not.be.null
+            expect(reversalResponse.status).to.equal("Reversed")
+        })
     });
 });
 
@@ -496,4 +523,19 @@ const createCardControl = async (card) => {
             }
         }
     });
+}
+
+const createTransaction = async (card) => {
+    return await cko_issuing.issuing.simulateAuthorization({
+        card: {
+            id: card.id,
+            expiry_month: card.expiry_month,
+            expiry_year: card.expiry_year
+        },
+        transaction: {
+            type: "purchase",
+            amount: 2500,
+            currency: "GBP"
+        }
+    })
 }

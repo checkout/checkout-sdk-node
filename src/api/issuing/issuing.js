@@ -397,4 +397,73 @@ export default class Issuing {
             throw await determineError(err);
         }
     }
+
+    /**
+     * Simulate an incremental authorization request for an existing approved transaction.
+     *
+     * @memberof Issuing
+     * @param {String} id transaction ID.
+     * @param {Object} body Amount.
+     * @return {Promise<Object>} A promise to the simulation response.
+     */
+    async simulateIncrement(id, body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/simulate/authorizations/${id}/authorizations`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Simulate the clearing of an existing approved authorization.
+     *
+     * @memberof Issuing
+     * @param {String} id transaction ID.
+     * @param {Object} body Amount.
+     * @return {Promise<Object>} A promise to the simulation response.
+     */
+    async simulateClearing(id, body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/simulate/authorizations/${id}/presentments`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Simulate the reversal of an existing approved authorization.
+     *
+     * @memberof Issuing
+     * @param {String} id transaction ID.
+     * @param {Object} body Amount.
+     * @return {Promise<Object>} A promise to the simulation response.
+     */
+    async simulateReversal(id, body) {
+        try {
+            const response = await post(
+                fetch,
+                `${this.config.host}/issuing/simulate/authorizations/${id}/reversals`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
 }
