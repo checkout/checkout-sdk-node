@@ -918,5 +918,98 @@ describe('Unit::Issuing', () => {
                 expect(err).to.be.instanceOf(ValidationError);
             }
         });
+
+        it('should simulate an increment authorization', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/transaction_id/authorizations')
+                .reply(201, {
+                    status: "Authorized"
+                });
+
+            const cko = new Checkout(SK);
+
+            const authorizationResponse = await cko.issuing.simulateIncrement('transaction_id', {
+                amount: 1000,
+            });
+
+            expect(authorizationResponse).to.not.be.null
+            expect(authorizationResponse.status).to.equal("Authorized")
+        });
+
+        it('should throw when simulating an authorization with invalid transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/not_found/authorizations')
+                .reply(422);
+
+            try {
+                const cko = new Checkout(SK);
+
+                await cko.issuing.simulateIncrement('not_found', {
+                    amount: 1000,
+                });
+            } catch (err) {
+                expect(err).to.be.instanceOf(ValidationError);
+            }
+        });
+
+        it('should simulate a clearing for a transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/transaction_id/presentments')
+                .reply(202);
+
+            const cko = new Checkout(SK);
+
+            const authorizationResponse = await cko.issuing.simulateClearing('transaction_id', {
+                amount: 1000,
+            });
+
+            expect(authorizationResponse).to.not.be.null
+        });
+
+        it('should throw when simulating a clearing with invalid transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/not_found/presentments')
+                .reply(422);
+
+            try {
+                const cko = new Checkout(SK);
+
+                await cko.issuing.simulateClearing('not_found', {
+                    amount: 1000,
+                });
+            } catch (err) {
+                expect(err).to.be.instanceOf(ValidationError);
+            }
+        });
+
+        it('should simulate a reversal for a transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/transaction_id/reversals')
+                .reply(201);
+
+            const cko = new Checkout(SK);
+
+            const authorizationResponse = await cko.issuing.simulateReversal('transaction_id', {
+                amount: 1000,
+            });
+
+            expect(authorizationResponse).to.not.be.null
+        });
+
+        it('should throw when simulating a reversal with invalid transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/not_found/reversals')
+                .reply(422);
+
+            try {
+                const cko = new Checkout(SK);
+
+                await cko.issuing.simulateReversal('not_found', {
+                    amount: 1000,
+                });
+            } catch (err) {
+                expect(err).to.be.instanceOf(ValidationError);
+            }
+        });
     })
 });
