@@ -26,6 +26,8 @@ export const PAYMENT_TYPES = {
     regular: 'Regular',
     recurring: 'Recurring',
     moto: 'MOTO',
+    installment: 'Installment',
+    unscheduled: 'Unscheduled'
 };
 export const CURRENCIES = {
     ALL: 'ALL',
