@@ -23,7 +23,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: [ self-hosted, checkout-default-runners-github-runners ]
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
