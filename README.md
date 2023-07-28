@@ -1,7 +1,12 @@
-[![zip badge](https://badgen.net/bundlephobia/minzip/checkout-sdk-node)](https://badgen.net/bundlephobia/minzip/action-test)
-[![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg?token=POL9EXI2IS)](https://codecov.io/gh/checkout/checkout-sdk-node)
+[![build-status](https://github.com/checkout/checkout-sdk-node/workflows/build-master/badge.svg)](https://github.com/checkout/checkout-sdk-node/actions/workflows/build-master.yml)
 ![CI Tests](https://github.com/checkout/checkout-sdk-node/workflows/CI%20Tests/badge.svg)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/checkout/checkout-sdk-node.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/checkout/checkout-sdk-node/context:javascript)
+![CodeQL](https://github.com/checkout/checkout-sdk-node/workflows/CodeQL/badge.svg)
+[![codecov](https://codecov.io/gh/checkout/checkout-sdk-node/branch/master/graph/badge.svg?token=POL9EXI2IS)](https://codecov.io/gh/checkout/checkout-sdk-node)
+
+[![build-status](https://github.com/checkout/checkout-sdk-net/workflows/build-release/badge.svg)](https://github.com/checkout/checkout-sdk-net/actions/workflows/build-release.yml)
+[![GitHub release](https://img.shields.io/github/release/checkout/checkout-sdk-node.svg)](https://GitHub.com/checkout/checkout-sdk-node/releases/)
+
+[![zip badge](https://badgen.net/bundlephobia/minzip/checkout-sdk-node)](https://badgen.net/bundlephobia/minzip/action-test)
 
 <p align="center"><img src="https://i.ibb.co/93zwP9m/SDK-Logo.png" width="70%"></p>
 
