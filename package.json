@@ -3,6 +3,7 @@
     "version": "2.2.4",
     "description": "",
     "main": "./dist/index.js",
+    "types": "./types/dist/index.d.ts",
     "devDependencies": {
         "@babel/cli": "^7.16.8",
         "@babel/core": "^7.16.7",
