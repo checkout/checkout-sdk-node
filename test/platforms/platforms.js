@@ -389,6 +389,141 @@ describe('Platforms', () => {
         }
     });
 
+    it('should upload a file', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+          .post('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files')
+          .reply(200, {
+              "id": "file_6lbss42ezvoufcb2beo76rvwly",
+              "maximum_size_in_bytes": 4194304,
+              "document_types_for_purpose": [
+                  "image/jpeg",
+                  "image/png",
+                  "image/jpg"
+              ],
+              "_links": {
+                  "upload": {
+                      "href": null
+                  },
+                  "self": {
+                      "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+                  }
+              }
+          });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+        let platform = await cko.platforms.uploadAFile('ent_aneh5mtyobxzazriwuevngrz6y', {
+            purpose: "bank_verification"
+        });
+        expect(platform.id).to.equal('file_6lbss42ezvoufcb2beo76rvwly');
+        expect(platform.maximum_size_in_bytes).to.equal(4194304);
+    });
+
+    it('should retrieve a file', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+          .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files/file_6lbss42ezvoufcb2beo76rvwly')
+          .reply(200, {
+              "id": "file_6lbss42ezvoufcb2beo76rvwly",
+              "status": "invalid",
+              "status_reasons": [
+                  "InvalidMimeType"
+              ],
+              "size": 1024,
+              "mime_type": "application/pdf",
+              "uploaded_on": "2020-12-01T15:01:01Z",
+              "purpose": "identity_verification",
+              "_links": {
+                  "download": {
+                      "href": "https://s3.eu-west-1.amazonaws.com/mp-files-api-clean-prod/ent_ociwguf5a5fe3ndmpnvpnwsi3e/file_6lbss42ezvoufcb2beo76rvwly?X-Amz-Expires=3600&x-amz-security-token=some_token"
+                  },
+                  "self": {
+                      "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+                  }
+              }
+          });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+
+        let file = await cko.platforms.retrieveAFile('ent_aneh5mtyobxzazriwuevngrz6y', 'file_6lbss42ezvoufcb2beo76rvwly');
+        expect(file.id).to.equal('file_6lbss42ezvoufcb2beo76rvwly');
+        expect(file.status).to.equal('invalid');
+        expect(file.size).to.equal(1024);
+        expect(file.mime_type).to.equal('application/pdf');
+        expect(file.purpose).to.equal('identity_verification');
+    });
+
+    it('should get a sub-entity members', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+          .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members')
+          .reply(200, {
+              "data": [
+                  {
+                      "user_id": "usr_eyk754cqieqexfh6u46no5nnha"
+                  }
+              ]
+          });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+
+        let response = await cko.platforms.getSubEntityMembers('ent_aneh5mtyobxzazriwuevngrz6y');
+        expect(response.data[0].user_id).to.equal('usr_eyk754cqieqexfh6u46no5nnha');
+    });
+
+    it('should reinvite a sub-entity member', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        nock('https://api.sandbox.checkout.com')
+          .put('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members/usr_eyk754cqieqexfh6u46no5nnha')
+          .reply(200, {
+              "id": "usr_eyk754cqieqexfh6u46no5nnha"
+          });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+        });
+
+        let member = await cko.platforms.reinviteSubEntityMember(
+          'ent_aneh5mtyobxzazriwuevngrz6y',
+          'usr_eyk754cqieqexfh6u46no5nnha');
+
+        expect(member.id).to.equal('usr_eyk754cqieqexfh6u46no5nnha');
+    });
+
     it('should get sub-entity details', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
