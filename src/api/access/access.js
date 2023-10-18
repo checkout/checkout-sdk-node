@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { createAccessToken } from '../../services/http';
 
@@ -21,7 +20,11 @@ export default class Access {
      */
     async request(body) {
         try {
-            const response = await createAccessToken(this.config, fetch, body);
+            const response = await createAccessToken(
+                this.config,
+                this.config.httpClient,
+                body
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

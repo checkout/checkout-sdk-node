@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { put } from '../../services/http';
 
@@ -26,7 +25,7 @@ export default class Fawry {
     async approve(reference) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/fawry/payments/${reference}/approval`,
                 this.config,
                 this.config.sk
@@ -49,7 +48,7 @@ export default class Fawry {
     async cancel(reference) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/fawry/payments/${reference}/cancellation`,
                 this.config,
                 this.config.sk

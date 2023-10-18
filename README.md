@@ -67,7 +67,8 @@ const cko = new Checkout('...', {
     ..., //other authentication config
     host: "https://myProxyExample.com", // in case you need to use a custom host for tests
     timeout: 60000,   // HTTP request timout in ms
-    agent: new http.Agent({ keepAlive: true }) // custom HTTP agent
+    agent: new http.Agent({ keepAlive: true }), // custom HTTP agent
+    httpClient: 'axios' // specify axios httpClient, by default fetch. Optional
 });
 ```
 

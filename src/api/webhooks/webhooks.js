@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { _delete, get, patch, post, put } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class Webhooks {
     async retrieveWebhooks() {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks`,
                 this.config,
                 this.config.sk
@@ -44,7 +43,7 @@ export default class Webhooks {
     async registerWebhook(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks`,
                 this.config,
                 this.config.sk,
@@ -66,7 +65,7 @@ export default class Webhooks {
     async retrieveWebhook(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks/${id}`,
                 this.config,
                 this.config.sk
@@ -87,7 +86,7 @@ export default class Webhooks {
     async updateWebhook(id, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks/${id}`,
                 this.config,
                 this.config.sk,
@@ -109,7 +108,7 @@ export default class Webhooks {
     async partiallyUpdateWebhook(id, body) {
         try {
             const response = await patch(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks/${id}`,
                 this.config,
                 this.config.sk,
@@ -131,7 +130,7 @@ export default class Webhooks {
     async removeWebhook(id) {
         try {
             const response = await _delete(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/webhooks/${id}`,
                 this.config,
                 this.config.sk

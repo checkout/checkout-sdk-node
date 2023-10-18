@@ -2,39 +2,39 @@
 import * as http from 'http';
 
 import {
+    Access,
+    ApplePay,
+    Balances,
+    Baloto,
+    Boleto,
+    CardMetadata,
+    Customers,
+    Disputes,
+    Events,
+    Fawry,
+    Files,
+    Financial,
+    Forex,
+    Giropay,
+    HostedPayments,
+    Ideal,
+    Instruments,
+    Klarna,
+    Oxxo,
+    PagoFacil,
+    PaymentLinks,
     Payments,
+    Platforms,
+    Rapipago,
+    Reconciliation,
+    Reports,
+    Sepa,
+    Sessions,
     Sources,
     Tokens,
-    Instruments,
-    Webhooks,
-    Events,
-    Disputes,
-    Files,
-    Reconciliation,
-    Customers,
-    HostedPayments,
-    Giropay,
-    Ideal,
-    Fawry,
-    PagoFacil,
-    Rapipago,
-    Boleto,
-    Baloto,
-    Oxxo,
-    Klarna,
-    Sepa,
-    PaymentLinks,
-    Access,
-    Forex,
-    ApplePay,
-    Sessions,
-    Workflows,
-    Platforms,
     Transfers,
-    Balances,
-    CardMetadata,
-    Reports,
-    Financial,
+    Webhooks,
+    Workflows,
 } from './index';
 
 export type access = {
@@ -61,6 +61,7 @@ type options = {
     timeout?: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
+    httpClient?: string;
 } & (staticKeyOptions | oauthOptions);
 
 type staticKeyOptions = {

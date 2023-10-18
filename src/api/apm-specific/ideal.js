@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get } from '../../services/http';
 
@@ -22,7 +21,7 @@ export default class Ideal {
     async get() {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/ideal-external`,
                 this.config,
                 this.config.sk
@@ -43,7 +42,7 @@ export default class Ideal {
     async getIssuers() {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/ideal-external/issuers`,
                 this.config,
                 this.config.sk

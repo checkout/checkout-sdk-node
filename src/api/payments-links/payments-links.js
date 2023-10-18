@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class PaymentLinks {
     async create(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payment-links`,
                 this.config,
                 this.config.sk,
@@ -46,7 +45,7 @@ export default class PaymentLinks {
     async get(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payment-links/${id}`,
                 this.config,
                 this.config.sk

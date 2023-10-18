@@ -1,4 +1,5 @@
 import { config } from '../../Checkout';
+
 export default class Issuing {
     constructor(config: config);
 

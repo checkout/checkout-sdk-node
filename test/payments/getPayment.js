@@ -1,13 +1,6 @@
-import {
-  BadGateway,
-  TooManyRequestsError,
-  ValidationError,
-  ValueError,
-  AuthenticationError,
-  NotFoundError
-} from "../../src/services/errors";
-import {Checkout} from "../../src/index";
-import {expect} from "chai";
+import { AuthenticationError, NotFoundError } from "../../src/services/errors.js";
+import { Checkout } from "../../src/index.js";
+import { expect } from "chai";
 import nock from "nock";
 
 const SK = "sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808";

@@ -1,13 +1,4 @@
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-    AuthenticationError,
-    NotFoundError,
-    ActionNotAllowed,
-    UrlAlreadyRegistered,
-} from '../../src/services/errors';
+import { AuthenticationError, NotFoundError, UrlAlreadyRegistered, ValidationError, } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';

@@ -1,6 +1,4 @@
-import {
-    AuthenticationError,
-} from '../../src/services/errors';
+import { AuthenticationError, } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -97,7 +95,7 @@ describe('Forex', () => {
                     }
                 ],
                 invalid_currency_pairs: 'JPNCAD',
-        });
+            });
 
         let cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',

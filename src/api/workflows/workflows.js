@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { _delete, get, patch, post, put } from '../../services/http';
 
@@ -22,7 +21,7 @@ export default class Workflows {
     async getAll() {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows`,
                 this.config,
                 this.config.sk
@@ -44,7 +43,7 @@ export default class Workflows {
     async add(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows`,
                 this.config,
                 this.config.sk,
@@ -67,7 +66,7 @@ export default class Workflows {
     async get(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/${id}`,
                 this.config,
                 this.config.sk
@@ -90,7 +89,7 @@ export default class Workflows {
     async remove(id) {
         try {
             const response = await _delete(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/${id}`,
                 this.config,
                 this.config.sk
@@ -113,7 +112,7 @@ export default class Workflows {
     async patch(id, body) {
         try {
             const response = await patch(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/${id}`,
                 this.config,
                 this.config.sk,
@@ -138,7 +137,7 @@ export default class Workflows {
     async updateAction(workflowId, workflowActionId, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
                 this.config,
                 this.config.sk,
@@ -163,7 +162,7 @@ export default class Workflows {
     async updateCondition(workflowId, workflowConditionId, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
                 this.config,
                 this.config.sk,
@@ -185,7 +184,7 @@ export default class Workflows {
     async getEventTypes() {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/event-types`,
                 this.config,
                 this.config.sk
@@ -207,7 +206,7 @@ export default class Workflows {
     async getEvent(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/${id}`,
                 this.config,
                 this.config.sk
@@ -230,7 +229,7 @@ export default class Workflows {
     async getActionInvocations(eventId, workflowActionId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/${eventId}/actions/${workflowActionId}`,
                 this.config,
                 this.config.sk
@@ -253,7 +252,7 @@ export default class Workflows {
     async reflowByEvent(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/${id}/reflow`,
                 this.config,
                 this.config.sk
@@ -278,7 +277,7 @@ export default class Workflows {
     async reflowByEventAndWorkflow(eventId, workflowId) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/${eventId}/workflow/${workflowId}/reflow`,
                 this.config,
                 this.config.sk
@@ -302,7 +301,7 @@ export default class Workflows {
     async reflowEventsByEventAndWorkflowIds(events, workflows) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/reflow`,
                 this.config,
                 this.config.sk,
@@ -330,7 +329,7 @@ export default class Workflows {
     async reflowEventsBySubjectAndWorkflowIds(subjects, workflows) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/reflow`,
                 this.config,
                 this.config.sk,
@@ -356,7 +355,7 @@ export default class Workflows {
     async getSubjectEvents(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/subject/${id}`,
                 this.config,
                 this.config.sk
@@ -379,7 +378,7 @@ export default class Workflows {
     async reflowBySubject(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/subject/${id}/reflow`,
                 this.config,
                 this.config.sk
@@ -403,7 +402,7 @@ export default class Workflows {
     async reflowBySubjectAndWorkflow(subjectId, workflowId) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/workflows/events/subject/${subjectId}/workflow/${workflowId}/reflow`,
                 this.config,
                 this.config.sk

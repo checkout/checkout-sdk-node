@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { _delete, get, patch, post, put } from '../../services/http';
 import { determineError } from '../../services/errors';
 import { buildQueryParams } from '../../services/utils';
@@ -18,7 +17,7 @@ export default class Issuing {
     async createCardholder(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cardholders`,
                 this.config,
                 this.config.sk,
@@ -40,7 +39,7 @@ export default class Issuing {
     async getCardholder(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cardholders/${id}`,
                 this.config,
                 this.config.sk
@@ -61,7 +60,7 @@ export default class Issuing {
     async getCardholderCards(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cardholders/${id}/cards`,
                 this.config,
                 this.config.sk
@@ -82,7 +81,7 @@ export default class Issuing {
     async createCard(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards`,
                 this.config,
                 this.config.sk,
@@ -104,7 +103,7 @@ export default class Issuing {
     async getCardDetails(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}`,
                 this.config,
                 this.config.sk
@@ -126,7 +125,7 @@ export default class Issuing {
     async enrollThreeDS(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
                 this.config,
                 this.config.sk,
@@ -149,7 +148,7 @@ export default class Issuing {
     async updateThreeDS(id, body) {
         try {
             const response = await patch(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
                 this.config,
                 this.config.sk,
@@ -171,7 +170,7 @@ export default class Issuing {
     async getThreeDSDetails(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
                 this.config,
                 this.config.sk
@@ -192,7 +191,7 @@ export default class Issuing {
     async activateCard(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/activate`,
                 this.config,
                 this.config.sk
@@ -218,7 +217,12 @@ export default class Issuing {
                 body
             );
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             throw await determineError(err);
@@ -236,7 +240,7 @@ export default class Issuing {
     async revokeCard(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/revoke`,
                 this.config,
                 this.config.sk,
@@ -259,7 +263,7 @@ export default class Issuing {
     async suspendCard(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/cards/${id}/suspend`,
                 this.config,
                 this.config.sk,
@@ -281,7 +285,7 @@ export default class Issuing {
     async createCardControl(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/controls`,
                 this.config,
                 this.config.sk,
@@ -304,7 +308,12 @@ export default class Issuing {
         try {
             const url = buildQueryParams(`${this.config.host}/issuing/controls`, params);
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             throw await determineError(err);
@@ -321,7 +330,7 @@ export default class Issuing {
     async getCardControlDetails(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/controls/${id}`,
                 this.config,
                 this.config.sk
@@ -343,7 +352,7 @@ export default class Issuing {
     async updateCardControl(id, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/controls/${id}`,
                 this.config,
                 this.config.sk,
@@ -365,7 +374,7 @@ export default class Issuing {
     async deleteCardControl(id) {
         try {
             const response = await _delete(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/controls/${id}`,
                 this.config,
                 this.config.sk
@@ -386,7 +395,7 @@ export default class Issuing {
     async simulateAuthorization(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/simulate/authorizations`,
                 this.config,
                 this.config.sk,
@@ -409,7 +418,7 @@ export default class Issuing {
     async simulateIncrement(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/simulate/authorizations/${id}/authorizations`,
                 this.config,
                 this.config.sk,
@@ -432,7 +441,7 @@ export default class Issuing {
     async simulateClearing(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/simulate/authorizations/${id}/presentments`,
                 this.config,
                 this.config.sk,
@@ -455,7 +464,7 @@ export default class Issuing {
     async simulateReversal(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/issuing/simulate/authorizations/${id}/reversals`,
                 this.config,
                 this.config.sk,

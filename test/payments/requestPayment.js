@@ -1,11 +1,6 @@
 import { expect } from 'chai';
 import nock from 'nock';
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-} from '../../src/services/errors';
+import { BadGateway, TooManyRequestsError, ValidationError, ValueError, } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';

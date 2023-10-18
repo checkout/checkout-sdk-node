@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get } from '../../services/http';
 
@@ -32,7 +31,7 @@ export default class Financial {
             }
 
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 url,
                 this.config,
                 this.config.sk

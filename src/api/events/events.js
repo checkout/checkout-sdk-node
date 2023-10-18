@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
 
@@ -27,7 +26,12 @@ export default class Events {
             if (version) {
                 url += `?version=${version}`;
             }
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -54,7 +58,7 @@ export default class Events {
                 url += `?${queryString}`;
             }
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -73,7 +77,7 @@ export default class Events {
     async retrieveEvent(eventId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/events/${eventId}`,
                 this.config,
                 this.config.sk
@@ -95,7 +99,7 @@ export default class Events {
     async retrieveEventNotification(body) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
                 this.config,
                 this.config.sk
@@ -117,7 +121,7 @@ export default class Events {
     async retry(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
                 this.config,
                 this.config.sk
@@ -139,7 +143,7 @@ export default class Events {
     async retryAll(eventId) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/events/${eventId}/webhooks/retry`,
                 this.config,
                 this.config.sk

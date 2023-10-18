@@ -1,8 +1,9 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
-import { TRANSFERS_SANDBOX_URL, TRANSFERS_LIVE_URL } from '../../config';
-import { setTokenType } from '../../services/validation';
+import { 
+    TRANSFERS_LIVE_URL, 
+    TRANSFERS_SANDBOX_URL 
+} from '../../config';
 
 /**
  * Class dealing with the /transfers endpoint
@@ -25,12 +26,11 @@ export default class Transfers {
      */
     async initiate(body, idempotencyKey) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
-            }`;
+            const url = `${this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
+                }`;
 
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 url,
                 this.config,
                 this.config.sk,
@@ -53,11 +53,16 @@ export default class Transfers {
      */
     async retrieve(id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
-            }/${id}`;
+            const url = `${this.config.host.includes('sandbox') 
+            ? TRANSFERS_SANDBOX_URL 
+            : TRANSFERS_LIVE_URL}/${id}`;
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

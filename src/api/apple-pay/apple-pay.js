@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 
@@ -22,7 +21,7 @@ export default class ApplePay {
     async upload(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/applepay/certificates`,
                 this.config,
                 this.config.pk,
@@ -43,7 +42,7 @@ export default class ApplePay {
     async generate() {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/applepay/signing-requests`,
                 this.config,
                 this.config.pk

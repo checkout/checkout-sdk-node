@@ -1,10 +1,8 @@
-import { ApiError, AuthenticationError, ValidationError } from '../../src/services/errors';
+import { AuthenticationError, ValidationError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import fs from 'fs';
 import { expect } from 'chai';
 import nock from 'nock';
-import fetch from 'node-fetch';
-const FormData = require('form-data');
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 

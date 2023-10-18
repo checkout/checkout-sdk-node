@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class CardMetadata {
     async get(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/metadata/card`,
                 this.config,
                 this.config.sk,

@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
 import { buildQueryParams } from '../../services/utils';
@@ -23,7 +22,7 @@ export default class Forex {
     async request(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/forex/quotes`,
                 this.config,
                 this.config.sk,
@@ -46,7 +45,12 @@ export default class Forex {
         try {
             const url = buildQueryParams(`${this.config.host}/forex/rates`, body);
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             throw await determineError(err);

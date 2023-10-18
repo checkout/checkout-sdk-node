@@ -1,12 +1,3 @@
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-    AuthenticationError,
-    NotFoundError,
-    ActionNotAllowed,
-} from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -165,7 +156,7 @@ describe('Increment a payment', () => {
 
         const increment = await cko.payments.increment(auth.id, {
             amount: 200,
-        });
+        }, undefined);
 
         expect(increment.amount).to.equal(200);
     });
@@ -310,7 +301,7 @@ describe('Increment a payment', () => {
 
         const increment = await cko.payments.increment(auth.id, {
             amount: 200,
-        });
+        }, undefined);
 
         expect(increment.amount).to.equal(200);
     });
@@ -339,7 +330,7 @@ describe('Increment a payment', () => {
 
             const increment = await cko.payments.increment('pay_bvxdyo7xdssuhcx3e74dpcrfmu', {
                 amount: 200,
-            });
+            }, undefined);
         } catch (err) {
             expect(err.name).to.equal('AuthenticationError');
         }

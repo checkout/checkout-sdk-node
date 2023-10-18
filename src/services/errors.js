@@ -83,22 +83,6 @@ export class NotFoundError extends Error {
 }
 
 /**
- * UnprocessableError
- *
- * @export
- * @class UnprocessableError
- * @extends {Error}
- */
-// export class UnprocessableError extends Error {
-//     constructor(message = 'UnprocessableError') {
-//         UnprocessableError.http_code = 400;
-//         super(message);
-//         Object.setPrototypeOf(this, new.target.prototype);
-//         this.name = UnprocessableError.name;
-//     }
-// }
-
-/**
  * ValidationError
  *
  * @export
@@ -120,7 +104,7 @@ export class ErrorWithBody extends Error {
  *
  * @export
  * @class ValidationError
- * @extends {Error}
+ * @extends {ErrorWithBody}
  */
 export class ValidationError extends ErrorWithBody {
     constructor(error, message = 'ValidationError') {
@@ -133,7 +117,7 @@ export class ValidationError extends ErrorWithBody {
  *
  * @export
  * @class TooManyRequestsError
- * @extends {Error}
+ * @extends {ErrorWithBody}
  */
 export class TooManyRequestsError extends ErrorWithBody {
     constructor(error, message = 'TooManyRequestsError') {
@@ -201,7 +185,12 @@ export const determineError = async (err) => {
     }
 
     // For 'no body' response, replace with empty object
-    let errorJSON = err.json !== undefined ? await err.json.then((data) => data) : {};
+    let errorJSON = err.json !== undefined ? err.json : {};
+
+    if (Object.keys(errorJSON).length > 0 && errorJSON.code === 'ECONNABORTED') {
+        return new ApiTimeout();
+    }
+
     if (Object.keys(errorJSON).length === 0 && err.message) {
         errorJSON = err.message;
     }
