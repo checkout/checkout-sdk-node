@@ -120,7 +120,7 @@ export default class Checkout {
         } else {
             // For MBC or NAS with static keys with declared vars
             auth = {
-                sk: determineSecretKey(key, options),
+                sk: determineSecretKey(key),
                 pk: determinePublicKey(options),
                 host: determineHost(determineSecretKey(key), options),
             };
@@ -132,6 +132,7 @@ export default class Checkout {
             agent: options && options.agent ? options.agent : undefined,
             headers: options && options.headers ? options.headers : {},
             access: undefined,
+            httpClient: options && options.httpClient ? options.httpClient : undefined,
         };
 
         this.payments = new ENDPOINTS.Payments(this.config);

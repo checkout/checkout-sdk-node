@@ -1,9 +1,11 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, patch, post, put } from '../../services/http';
-import { PLATFORMS_FILES_LIVE_URL, PLATFORMS_FILES_SANDBOX_URL } from '../../config';
+import { 
+    PLATFORMS_FILES_LIVE_URL, 
+    PLATFORMS_FILES_SANDBOX_URL 
+} from '../../config';
 
-const FormData = require('form-data');
+import FormData from 'form-data';
 
 /**
  * Class dealing with the platforms api
@@ -30,14 +32,13 @@ export default class Platforms {
             form.append('path', path);
             form.append('purpose', purpose);
 
-            const url = `${
-                this.config.host.includes('sandbox')
+            const url = `${this.config.host.includes('sandbox')
                     ? PLATFORMS_FILES_SANDBOX_URL
                     : PLATFORMS_FILES_LIVE_URL
-            }`;
+                }`;
 
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 url,
                 { ...this.config, formData: true },
                 this.config.sk,
@@ -63,7 +64,7 @@ export default class Platforms {
     async onboardSubEntity(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities`,
                 this.config,
                 this.config.sk,
@@ -90,7 +91,7 @@ export default class Platforms {
     async uploadAFile(entityId, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/files`,
                 this.config,
                 this.config.sk,
@@ -114,7 +115,7 @@ export default class Platforms {
     async retrieveAFile(entityId, fileId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/files/${fileId}`,
                 this.config,
                 this.config.sk
@@ -140,7 +141,7 @@ export default class Platforms {
     async getSubEntityMembers(entityId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/members`,
                 this.config,
                 this.config.sk
@@ -169,7 +170,7 @@ export default class Platforms {
     async reinviteSubEntityMember(entityId, userId, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/members/${userId}`,
                 this.config,
                 this.config.sk,
@@ -192,7 +193,7 @@ export default class Platforms {
     async getSubEntityDetails(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}`,
                 this.config,
                 this.config.sk
@@ -216,7 +217,7 @@ export default class Platforms {
     async updateSubEntityDetails(id, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}`,
                 this.config,
                 this.config.sk,
@@ -240,7 +241,7 @@ export default class Platforms {
     async getPaymentInstrumentDetails(entityId, id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
                 this.config,
                 this.config.sk
@@ -264,7 +265,7 @@ export default class Platforms {
     async updatePaymentInstrumentDetails(entityId, id, body) {
         try {
             const response = await patch(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
                 this.config,
                 this.config.sk,
@@ -289,7 +290,7 @@ export default class Platforms {
     async createPaymentInstrument(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}/instruments`,
                 this.config,
                 this.config.sk,
@@ -313,7 +314,7 @@ export default class Platforms {
     async addPaymentInstrument(id, body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}/payment-instruments`,
                 this.config,
                 this.config.sk,
@@ -337,11 +338,10 @@ export default class Platforms {
      */
     async queryPaymentInstruments(id, status) {
         try {
-            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${
-                status ? `?status=${status}` : ''
-            }`;
+            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${status ? `?status=${status}` : ''
+                }`;
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -360,7 +360,7 @@ export default class Platforms {
     async retrieveSubEntityPayoutSchedule(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}/payout-schedules`,
                 this.config,
                 this.config.sk
@@ -384,7 +384,7 @@ export default class Platforms {
     async updateSubEntityPayoutSchedule(id, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}/payout-schedules`,
                 this.config,
                 this.config.sk,

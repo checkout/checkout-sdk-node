@@ -1,8 +1,7 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
 
-const FormData = require('form-data');
+import FormData from 'form-data';
 
 /**
  * Class dealing with the /files endpoint
@@ -40,7 +39,7 @@ export default class Files {
             form.append('purpose', 'dispute_evidence');
 
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/files`,
                 { ...this.config, formData: true },
                 this.config.sk,
@@ -63,7 +62,7 @@ export default class Files {
     async getFile(fileId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/files/${fileId}`,
                 this.config,
                 this.config.sk

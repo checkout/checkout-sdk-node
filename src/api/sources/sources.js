@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 import { setSourceType } from '../../services/validation';
@@ -26,7 +25,7 @@ export default class Sources {
         setSourceType(body);
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sources`,
                 this.config,
                 this.config.sk,

@@ -1,4 +1,4 @@
-import { ValidationError, AuthenticationError } from '../../src/services/errors';
+import { AuthenticationError, ValidationError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -133,7 +133,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: {flagged: false},
+                risk: { flagged: false },
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -155,7 +155,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -273,7 +273,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: {flagged: false},
+                risk: { flagged: false },
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -295,7 +295,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -417,7 +417,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: {flagged: false},
+                risk: { flagged: false },
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -439,7 +439,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {
@@ -576,7 +576,7 @@ describe('Disputes', () => {
                 scheme_id: '457027721465486',
                 response_code: '10000',
                 response_summary: 'Approved',
-                risk: {flagged: false},
+                risk: { flagged: false },
                 source: {
                     id: 'src_sum4kuu2fb3edbn6lws7s6ilsm',
                     type: 'card',
@@ -598,7 +598,7 @@ describe('Disputes', () => {
                     payouts: true,
                     fast_funds: 'd',
                 },
-                customer: {id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell'},
+                customer: { id: 'cus_wwgz2l2ywsiujj25l4tx2xscqy', name: 'Sarah Mitchell' },
                 processed_on: '2020-04-26T20:47:30Z',
                 reference: 'CB',
                 processing: {

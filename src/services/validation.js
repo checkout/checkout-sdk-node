@@ -1,6 +1,9 @@
 /* eslint-disable prefer-template */
 import { ValueError } from './errors';
-import { CURRENCIES, PAYMENT_TYPES } from '../config';
+import { 
+    CURRENCIES, 
+    PAYMENT_TYPES 
+} from '../config';
 
 export const validatePayment = (request) => {
     if (request.amount && ('' + request.amount).indexOf('.') !== -1) {

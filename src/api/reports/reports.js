@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get } from '../../services/http';
 
@@ -31,7 +30,12 @@ export default class Reports {
                 url += `?${queryString}`;
             }
 
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -49,7 +53,7 @@ export default class Reports {
     async getReportDetails(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/reports/${id}`,
                 this.config,
                 this.config.sk
@@ -72,7 +76,7 @@ export default class Reports {
     async getReportFile(id, fileId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/reports/${id}/files/${fileId}`,
                 { ...this.config, csv: true },
                 this.config.sk

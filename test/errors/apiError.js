@@ -12,7 +12,7 @@ describe('Handling Errors', () => {
         nock.cleanAll();
     });
 
-    it('should handle API error', async() => {
+    it('should handle API error', async () => {
         nock('https://api.sandbox.checkout.com')
             .post('/tokens')
             .reply(mockErrorCode, mockErrorResponse);
@@ -30,10 +30,10 @@ describe('Handling Errors', () => {
                 expiry_year: 2029,
                 cvv: '100'
             });
-        } catch(error) {
+        } catch (error) {
             errorWasThrown = true;
 
-            expect(error.http_code).to.equal(mockErrorCode);   
+            expect(error.http_code).to.equal(mockErrorCode);
             expect(error.body).to.deep.equal(mockErrorResponse);
         }
 

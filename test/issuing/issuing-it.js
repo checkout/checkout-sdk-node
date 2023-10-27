@@ -1,7 +1,18 @@
-import {expect} from "chai";
-import { determineError, NotFoundError, ValidationError } from "../../src/services/errors";
+import { expect } from "chai";
+import nock from "nock";
+import Checkout from '../../src/Checkout.js'
+import { NotFoundError, ValidationError } from "../../src/services/errors.js";
 
-const {afterEach, cko_issuing} = require('../fixtures');
+afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+});
+
+const cko_issuing = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_SECRET, {
+    client: process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_ID,
+    scope: ['issuing:card-mgmt issuing:client issuing:controls-read issuing:controls-write vault'],
+    environment: 'sandbox',
+});
 
 describe('Integration::Issuing', () => {
     describe('Cardholder', () => {
@@ -213,10 +224,10 @@ describe('Integration::Issuing', () => {
         it('should enroll card into 3DS', async () => {
             const enrollResponse = await cko_issuing.issuing.enrollThreeDS(card.id, {
                 password: "Xtui43FvfiZ",
-                    locale: "en-US",
-                    phone_number: {
+                locale: "en-US",
+                phone_number: {
                     country_code: "+1",
-                        number: "415 555 2671"
+                    number: "415 555 2671"
                 }
             })
 

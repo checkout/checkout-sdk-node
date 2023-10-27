@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post, put } from '../../services/http';
 
@@ -33,7 +32,12 @@ export default class Disputes {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -51,7 +55,7 @@ export default class Disputes {
     async getDetails(disputeId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}`,
                 this.config,
                 this.config.sk
@@ -73,7 +77,7 @@ export default class Disputes {
     async accept(disputeId) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}/accept`,
                 this.config,
                 this.config.sk
@@ -102,7 +106,7 @@ export default class Disputes {
     async provideEvidence(disputeId, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}/evidence`,
                 this.config,
                 this.config.sk,
@@ -125,7 +129,7 @@ export default class Disputes {
     async getEvidence(disputeId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}/evidence`,
                 this.config,
                 this.config.sk
@@ -149,7 +153,7 @@ export default class Disputes {
     async submit(disputeId) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}/evidence`,
                 this.config,
                 this.config.sk
@@ -172,7 +176,7 @@ export default class Disputes {
     async getDisputeSchemeFiles(disputeId) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/disputes/${disputeId}/schemefiles`,
                 this.config,
                 this.config.sk

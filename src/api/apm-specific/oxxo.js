@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 
@@ -25,7 +24,7 @@ export default class Oxxo {
     async succeed(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/apms/oxxo/payments/${id}/succeed`,
                 this.config,
                 this.config.sk
@@ -48,7 +47,7 @@ export default class Oxxo {
     async expire(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/apms/oxxo/payments/${id}/expire`,
                 this.config,
                 this.config.sk

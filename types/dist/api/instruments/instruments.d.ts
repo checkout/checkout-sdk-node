@@ -1,4 +1,5 @@
-import { config } from '../../Checkout';
+import {config} from '../../Checkout';
+
 export default class Instruments {
     constructor(config: config);
 

@@ -1,13 +1,4 @@
-import {
-    BadGateway,
-    TooManyRequestsError,
-    ValidationError,
-    ValueError,
-    AuthenticationError,
-    NotFoundError,
-    ActionNotAllowed,
-    UrlAlreadyRegistered,
-} from '../../src/services/errors';
+import { AuthenticationError, UrlAlreadyRegistered, } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -397,24 +388,24 @@ describe('Platforms', () => {
             scope: 'flow',
         });
         nock('https://api.sandbox.checkout.com')
-          .post('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files')
-          .reply(200, {
-              "id": "file_6lbss42ezvoufcb2beo76rvwly",
-              "maximum_size_in_bytes": 4194304,
-              "document_types_for_purpose": [
-                  "image/jpeg",
-                  "image/png",
-                  "image/jpg"
-              ],
-              "_links": {
-                  "upload": {
-                      "href": null
-                  },
-                  "self": {
-                      "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
-                  }
-              }
-          });
+            .post('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files')
+            .reply(200, {
+                "id": "file_6lbss42ezvoufcb2beo76rvwly",
+                "maximum_size_in_bytes": 4194304,
+                "document_types_for_purpose": [
+                    "image/jpeg",
+                    "image/png",
+                    "image/jpg"
+                ],
+                "_links": {
+                    "upload": {
+                        "href": null
+                    },
+                    "self": {
+                        "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+                    }
+                }
+            });
 
         let cko = new Checkout(platforms_secret, {
             client: platforms_ack,
@@ -436,26 +427,26 @@ describe('Platforms', () => {
             scope: 'flow',
         });
         nock('https://api.sandbox.checkout.com')
-          .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files/file_6lbss42ezvoufcb2beo76rvwly')
-          .reply(200, {
-              "id": "file_6lbss42ezvoufcb2beo76rvwly",
-              "status": "invalid",
-              "status_reasons": [
-                  "InvalidMimeType"
-              ],
-              "size": 1024,
-              "mime_type": "application/pdf",
-              "uploaded_on": "2020-12-01T15:01:01Z",
-              "purpose": "identity_verification",
-              "_links": {
-                  "download": {
-                      "href": "https://s3.eu-west-1.amazonaws.com/mp-files-api-clean-prod/ent_ociwguf5a5fe3ndmpnvpnwsi3e/file_6lbss42ezvoufcb2beo76rvwly?X-Amz-Expires=3600&x-amz-security-token=some_token"
-                  },
-                  "self": {
-                      "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
-                  }
-              }
-          });
+            .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/files/file_6lbss42ezvoufcb2beo76rvwly')
+            .reply(200, {
+                "id": "file_6lbss42ezvoufcb2beo76rvwly",
+                "status": "invalid",
+                "status_reasons": [
+                    "InvalidMimeType"
+                ],
+                "size": 1024,
+                "mime_type": "application/pdf",
+                "uploaded_on": "2020-12-01T15:01:01Z",
+                "purpose": "identity_verification",
+                "_links": {
+                    "download": {
+                        "href": "https://s3.eu-west-1.amazonaws.com/mp-files-api-clean-prod/ent_ociwguf5a5fe3ndmpnvpnwsi3e/file_6lbss42ezvoufcb2beo76rvwly?X-Amz-Expires=3600&x-amz-security-token=some_token"
+                    },
+                    "self": {
+                        "href": "https://files.checkout.com/files/file_6lbss42ezvoufcb2beo76rvwly"
+                    }
+                }
+            });
 
         let cko = new Checkout(platforms_secret, {
             client: platforms_ack,
@@ -479,14 +470,14 @@ describe('Platforms', () => {
             scope: 'flow',
         });
         nock('https://api.sandbox.checkout.com')
-          .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members')
-          .reply(200, {
-              "data": [
-                  {
-                      "user_id": "usr_eyk754cqieqexfh6u46no5nnha"
-                  }
-              ]
-          });
+            .get('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members')
+            .reply(200, {
+                "data": [
+                    {
+                        "user_id": "usr_eyk754cqieqexfh6u46no5nnha"
+                    }
+                ]
+            });
 
         let cko = new Checkout(platforms_secret, {
             client: platforms_ack,
@@ -506,10 +497,10 @@ describe('Platforms', () => {
             scope: 'flow',
         });
         nock('https://api.sandbox.checkout.com')
-          .put('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members/usr_eyk754cqieqexfh6u46no5nnha')
-          .reply(200, {
-              "id": "usr_eyk754cqieqexfh6u46no5nnha"
-          });
+            .put('/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/members/usr_eyk754cqieqexfh6u46no5nnha')
+            .reply(200, {
+                "id": "usr_eyk754cqieqexfh6u46no5nnha"
+            });
 
         let cko = new Checkout(platforms_secret, {
             client: platforms_ack,
@@ -518,8 +509,8 @@ describe('Platforms', () => {
         });
 
         let member = await cko.platforms.reinviteSubEntityMember(
-          'ent_aneh5mtyobxzazriwuevngrz6y',
-          'usr_eyk754cqieqexfh6u46no5nnha');
+            'ent_aneh5mtyobxzazriwuevngrz6y',
+            'usr_eyk754cqieqexfh6u46no5nnha');
 
         expect(member.id).to.equal('usr_eyk754cqieqexfh6u46no5nnha');
     });

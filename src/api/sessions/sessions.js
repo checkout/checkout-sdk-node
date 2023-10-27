@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post, put } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class Sessions {
     async request(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sessions`,
                 this.config,
                 this.config.sk,
@@ -49,7 +48,7 @@ export default class Sessions {
             this.config.headers = { ...this.config.headers, channel };
 
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sessions/${id}`,
                 this.config,
                 this.config.sk
@@ -72,7 +71,7 @@ export default class Sessions {
     async update(id, body) {
         try {
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sessions/${id}/collect-data`,
                 this.config,
                 this.config.sk,
@@ -96,7 +95,7 @@ export default class Sessions {
     async complete(id) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sessions/${id}/complete`,
                 this.config,
                 this.config.sk
@@ -124,7 +123,7 @@ export default class Sessions {
             };
 
             const response = await put(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/sessions/${id}/issuer-fingerprint`,
                 this.config,
                 this.config.sk,

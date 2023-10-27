@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
 
@@ -24,7 +23,12 @@ export default class Sepa {
             ? `${this.config.host}/sepa-external/mandates/${id}`
             : `${this.config.host}/sepa/mandates/${id}`;
         try {
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -44,7 +48,12 @@ export default class Sepa {
             : `${this.config.host}/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await post(fetch, url, this.config, this.config.sk);
+            const response = await post(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -63,7 +72,12 @@ export default class Sepa {
             ? `${this.config.host}/ppro/sepa-external/mandates/${id}`
             : `${this.config.host}/ppro/sepa/mandates/${id}`;
         try {
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -83,7 +97,12 @@ export default class Sepa {
             : `${this.config.host}/ppro/sepa/mandates/${id}/cancel`;
 
         try {
-            const response = await post(fetch, url, this.config, this.config.sk);
+            const response = await post(
+                this.config.httpClient, 
+                url, 
+                this.config, 
+                this.config.sk
+            );
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

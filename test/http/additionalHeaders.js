@@ -21,7 +21,7 @@ describe('HTTP', () => {
         expiry_year: 2029
     }
 
-    it('should be able to pass additional headers', async() => {
+    it('should be able to pass additional headers', async () => {
         nock('https://api.sandbox.checkout.com', {
             reqheaders: mockHeadersMatcher
         })
@@ -47,7 +47,7 @@ describe('HTTP', () => {
         expect(token).to.deep.equal(mockToken);
     });
 
-    it('should not match a request when additional headers are not provided', async() => {
+    it('should not match a request when additional headers are not provided', async () => {
         nock('https://api.sandbox.checkout.com', {
             reqheaders: mockHeadersMatcher
         })
@@ -67,7 +67,7 @@ describe('HTTP', () => {
                 expiry_year: 2029,
                 cvv: '100'
             });
-        } catch(error) {
+        } catch (error) {
             errorWasThrown = true;
         }
 

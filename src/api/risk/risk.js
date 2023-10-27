@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class Risk {
     async requestPreAuthentication(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/risk/assessments/pre-authentication`,
                 this.config,
                 this.config.sk,
@@ -46,7 +45,7 @@ export default class Risk {
     async requestPreCapture(body) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/risk/assessments/pre-capture`,
                 this.config,
                 this.config.sk,

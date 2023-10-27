@@ -1,8 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
-import { validatePayment, setSourceOrDestinationType } from '../../services/validation';
+import { setSourceOrDestinationType, validatePayment } from '../../services/validation';
 
 const addUtilityParams = (json) => {
     let requiresRedirect = false;
@@ -52,7 +51,7 @@ export default class Payments {
             validatePayment(body);
 
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments`,
                 this.config,
                 this.config.sk,
@@ -84,7 +83,12 @@ export default class Payments {
         }
 
         try {
-            const response = await get(fetch, url, this.config, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
             return response.json;
         } catch (err) {
             throw await determineError(err);
@@ -101,7 +105,7 @@ export default class Payments {
     async get(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${id}`,
                 this.config,
                 this.config.sk
@@ -123,7 +127,7 @@ export default class Payments {
     async getActions(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${id}/actions`,
                 this.config,
                 this.config.sk
@@ -146,7 +150,7 @@ export default class Payments {
     async increment(id, body, idempotencyKey) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${id}/authorizations`,
                 this.config,
                 this.config.sk,
@@ -172,7 +176,7 @@ export default class Payments {
     async capture(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${paymentId}/captures`,
                 this.config,
                 this.config.sk,
@@ -189,7 +193,7 @@ export default class Payments {
      * Refunds a payment if supported by the payment method.
      *
      * @memberof Payments
-     * @param {string} id /^(pay)_(\w{26})$/ The payment or payment session identifier.
+     * @param {string} paymentId /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Refund request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the refund response.
@@ -197,7 +201,7 @@ export default class Payments {
     async refund(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${paymentId}/refunds`,
                 this.config,
                 this.config.sk,
@@ -214,7 +218,7 @@ export default class Payments {
      * Voids a payment if supported by the payment method.
      *
      * @memberof Payments
-     * @param {string} id /^(pay)_(\w{26})$/ The payment or payment session identifier.
+     * @param {string} paymentId /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Void request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the void response.
@@ -222,7 +226,7 @@ export default class Payments {
     async void(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/payments/${paymentId}/voids`,
                 this.config,
                 this.config.sk,

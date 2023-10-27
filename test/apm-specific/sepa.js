@@ -1,4 +1,4 @@
-import { ValidationError, NotFoundError } from '../../src/services/errors';
+import { NotFoundError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
 import nock from 'nock';

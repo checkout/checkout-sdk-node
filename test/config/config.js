@@ -1,7 +1,5 @@
-import { NotFoundError } from '../../src/services/errors';
 import { Checkout } from '../../src/index';
 import { expect } from 'chai';
-import nock from 'nock';
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
@@ -26,6 +24,16 @@ describe('MBC', () => {
         expect(cko.config.host).to.equal('https:/test.com');
         expect(cko.config.timeout).to.equal(9000);
         expect(cko.config.agent).to.equal(fakeAgent);
+    });
+
+    it('should initialize with key and custom httpClient', () => {
+        const cko = new Checkout(SK, {
+            timeout: 9000,
+            httpClient: 'axios',
+        });
+        expect(cko.config.sk).to.equal(SK);
+        expect(cko.config.timeout).to.equal(9000);
+        expect(cko.config.httpClient).to.equal('axios');
     });
 
     it('should set the public key', () => {

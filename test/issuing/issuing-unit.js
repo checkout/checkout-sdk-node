@@ -1,7 +1,7 @@
 import nock from "nock";
-import {Checkout} from "../../src";
-import {expect} from "chai";
-import { AuthenticationError, NotFoundError, ValidationError } from "../../src/services/errors";
+import { expect } from "chai";
+import Checkout from "../../src/Checkout.js";
+import { AuthenticationError, NotFoundError, ValidationError } from "../../src/services/errors.js";
 
 const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
@@ -380,7 +380,7 @@ describe('Unit::Issuing', () => {
 
             const cko = new Checkout(SK);
 
-            const enrollmentResponse = await cko.issuing.enrollThreeDS( "crd_fa6psq242dcd6fdn5gifcq1491", {
+            const enrollmentResponse = await cko.issuing.enrollThreeDS("crd_fa6psq242dcd6fdn5gifcq1491", {
                 password: "Xtui43FvfiZ",
                 locale: "en-US",
                 phone_number: {
@@ -510,7 +510,7 @@ describe('Unit::Issuing', () => {
 
             const cko = new Checkout(SK);
 
-            const activationResponse = await cko.issuing.activateCard( "crd_fa6psq242dcd6fdn5gifcq1491")
+            const activationResponse = await cko.issuing.activateCard("crd_fa6psq242dcd6fdn5gifcq1491")
 
             expect(activationResponse).to.not.be.null
         });
@@ -539,7 +539,7 @@ describe('Unit::Issuing', () => {
 
             const cko = new Checkout(SK);
 
-            const credentialsResponse = await cko.issuing.getCardCredentials( "crd_fa6psq242dcd6fdn5gifcq1491", {
+            const credentialsResponse = await cko.issuing.getCardCredentials("crd_fa6psq242dcd6fdn5gifcq1491", {
                 credentials: "number, cvc2"
             })
 
@@ -560,7 +560,7 @@ describe('Unit::Issuing', () => {
 
             const cko = new Checkout(SK);
 
-            const revokeResponse = await cko.issuing.revokeCard( "crd_fa6psq242dcd6fdn5gifcq1491", {
+            const revokeResponse = await cko.issuing.revokeCard("crd_fa6psq242dcd6fdn5gifcq1491", {
                 reason: "reported_lost"
             })
 
@@ -594,7 +594,7 @@ describe('Unit::Issuing', () => {
 
             const cko = new Checkout(SK);
 
-            const suspendedResponse = await cko.issuing.suspendCard( "crd_fa6psq242dcd6fdn5gifcq1491", {
+            const suspendedResponse = await cko.issuing.suspendCard("crd_fa6psq242dcd6fdn5gifcq1491", {
                 reason: "suspected_lost"
             })
 

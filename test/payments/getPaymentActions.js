@@ -1,12 +1,5 @@
-import {
-  BadGateway,
-  TooManyRequestsError,
-  ValidationError,
-  ValueError,
-  AuthenticationError,
-  NotFoundError
-} from "../../src/services/errors";
-import { Checkout } from "../../src/index";
+import { NotFoundError } from "../../src/services/errors.js";
+import { Checkout } from "../../src/index.js";
 import { expect } from "chai";
 import nock from "nock";
 

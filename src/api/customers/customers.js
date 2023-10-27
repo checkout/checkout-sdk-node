@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { determineError } from '../../services/errors';
 import { _delete, get, patch, post } from '../../services/http';
 
@@ -23,7 +22,7 @@ export default class Customers {
     async create(customer) {
         try {
             const response = await post(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/customers`,
                 this.config,
                 this.config.sk,
@@ -46,7 +45,7 @@ export default class Customers {
     async get(id) {
         try {
             const response = await get(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/customers/${id}`,
                 this.config,
                 this.config.sk
@@ -69,7 +68,7 @@ export default class Customers {
     async update(id, body) {
         try {
             const response = await patch(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/customers/${id}`,
                 this.config,
                 this.config.sk,
@@ -92,7 +91,7 @@ export default class Customers {
     async delete(id) {
         try {
             const response = await _delete(
-                fetch,
+                this.config.httpClient,
                 `${this.config.host}/customers/${id}`,
                 this.config,
                 this.config.sk
