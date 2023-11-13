@@ -37,14 +37,13 @@ node_modules
 typings/
 lib/*.js
 lib/
-test/*.js
 *.map
 
 .DS_Store
-.vscode/*
+/.vscode/
 
 doc
 out
 .idea/*
 
-dist
+/dist/
