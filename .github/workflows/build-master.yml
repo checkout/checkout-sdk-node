@@ -18,6 +18,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - id: build-and-analyse
         env:
+          CHECKOUT_PROCESSING_CHANNEL_ID: ${{ secrets.IT_CHECKOUT_PROCESSING_CHANNEL_ID }}
           CHECKOUT_PREVIOUS_SECRET_KEY: ${{ secrets.IT_CHECKOUT_PREVIOUS_SECRET_KEY }}
           CHECKOUT_PREVIOUS_PUBLIC_KEY: ${{ secrets.IT_CHECKOUT_PREVIOUS_PUBLIC_KEY }}
           CHECKOUT_DEFAULT_SECRET_KEY: ${{ secrets.IT_CHECKOUT_DEFAULT_SECRET_KEY }}
