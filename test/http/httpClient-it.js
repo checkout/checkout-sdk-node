@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import nock from "nock";
+import https from 'https';
 import Checkout from '../../src/Checkout.js'
 import { ApiTimeout } from "../../src/services/errors.js";
 
@@ -40,12 +41,41 @@ describe('Integration::HttpClient', () => {
         expect(token.card_category).to.equal('CONSUMER');
       });
 
+      it('should get a token response setting agent', async () => {
+        const checkout = new Checkout(
+          process.env.CHECKOUT_DEFAULT_SECRET_KEY,
+          {
+            pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
+            timeout: 3000,
+            httpClient: 'axios',
+            agent: new https.Agent({ keepAlive: true }),
+          }
+        );
+        const token = await checkout.tokens.request(
+          {
+            type: 'card',
+            number: '4543474002249996',
+            expiry_month: 6,
+            expiry_year: 2025,
+            cvv: '956',
+          });
+
+        expect(token.type).to.equal('card');
+        expect(token.expiry_month).to.equal(6);
+        expect(token.expiry_year).to.equal(2025);
+        expect(token.scheme).to.equal('VISA');
+        expect(token.last4).to.equal('9996');
+        expect(token.bin).to.equal('454347');
+        expect(token.card_type).to.equal('CREDIT');
+        expect(token.card_category).to.equal('CONSUMER');
+      });
+
       it('should get a timeout error response', async () => {
         const checkout = new Checkout(
           process.env.CHECKOUT_DEFAULT_SECRET_KEY,
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
-            timeout: 200,
+            timeout: 100,
             httpClient: 'axios'
           }
         );
@@ -76,6 +106,36 @@ describe('Integration::HttpClient', () => {
             timeout: 3000,
           }
         );
+        const token = await checkout.tokens.request(
+          {
+            type: 'card',
+            number: '4543474002249996',
+            expiry_month: 6,
+            expiry_year: 2025,
+            cvv: '956',
+          }
+        );
+
+        expect(token.type).to.equal('card');
+        expect(token.expiry_month).to.equal(6);
+        expect(token.expiry_year).to.equal(2025);
+        expect(token.scheme).to.equal('VISA');
+        expect(token.last4).to.equal('9996');
+        expect(token.bin).to.equal('454347');
+        expect(token.card_type).to.equal('CREDIT');
+        expect(token.card_category).to.equal('CONSUMER');
+      });
+
+      it('should get a token response setting agent', async () => {
+        const checkout = new Checkout(
+          process.env.CHECKOUT_DEFAULT_SECRET_KEY,
+          {
+            pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
+            timeout: 3000,
+            agent: new https.Agent({ keepAlive: true }),
+          }
+        );
+
         const token = await checkout.tokens.request(
           {
             type: 'card',

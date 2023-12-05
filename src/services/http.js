@@ -1,12 +1,12 @@
 /* eslint-disable no-throw-literal */
 import fetch from 'node-fetch';
+import axios from 'axios';
 import {
     API_VERSION_HEADER,
     LIVE_ACCESS_URL,
     REQUEST_ID_HEADER,
     SANDBOX_ACCESS_URL,
 } from '../config';
-import axios from 'axios';
 
 const pjson = require('../../package.json');
 
@@ -140,7 +140,7 @@ export const createAccessToken = async (config, httpClient, body) => {
                 },
                 data: new URLSearchParams(requestBody),
                 timeout: config.timeout,
-                httpAgent: config.agent,
+                httpsAgent: config.agent,
             })
                 .catch((error) => {
                     if (error.response) {
@@ -196,7 +196,7 @@ export const createAccessToken = async (config, httpClient, body) => {
 };
 
 // eslint-disable-next-line consistent-return
-const http = async (httpClient, method, path, config, auth, request, idempotencyKey) => {
+const httpRequest = async (httpClient, method, path, config, auth, request, idempotencyKey) => {
     let authHeader = null;
 
     if (auth) {
@@ -234,7 +234,7 @@ const http = async (httpClient, method, path, config, auth, request, idempotency
                 headers,
                 data: config.formData ? request : JSON.stringify(request),
                 timeout: config.timeout,
-                httpAgent: config.agent,
+                httpsAgent: config.agent,
             })
                 .catch((error) => {
                     if (error.response) {
@@ -276,18 +276,18 @@ const http = async (httpClient, method, path, config, auth, request, idempotency
 };
 
 export const get = async (httpClient, path, config, auth) =>
-    http(httpClient, 'get', path, config, auth);
+    httpRequest(httpClient, 'get', path, config, auth);
 
 export const post = async (httpClient, path, config, auth, request, idempotencyKey) =>
-    http(httpClient, 'post', path, config, auth, request, idempotencyKey);
+    httpRequest(httpClient, 'post', path, config, auth, request, idempotencyKey);
 
 export const patch = async (httpClient, path, config, auth, request) =>
-    http(httpClient, 'patch', path, config, auth, request);
+    httpRequest(httpClient, 'patch', path, config, auth, request);
 
 export const put = async (httpClient, path, config, auth, request) =>
-    http(httpClient, 'put', path, config, auth, request);
+    httpRequest(httpClient, 'put', path, config, auth, request);
 
 export const _delete = async (httpClient, path, config, auth) =>
-    http(httpClient, 'delete', path, config, auth);
+    httpRequest(httpClient, 'delete', path, config, auth);
 
 export default createAccessToken;

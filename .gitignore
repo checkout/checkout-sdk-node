@@ -44,6 +44,6 @@ lib/
 
 doc
 out
-.idea/*
+.idea
 
 /dist/
