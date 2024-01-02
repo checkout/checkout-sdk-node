@@ -18,10 +18,9 @@ export default class PaymentContexts {
      *
      * @memberof PaymentContexts
      * @param {object} body PaymentContexts Request body.
-     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<object>} A promise to payment context response.
      */
-    async request(body, idempotencyKey) {
+    async request(body) {
         try {
             validatePayment(body);
 
@@ -30,8 +29,7 @@ export default class PaymentContexts {
                 `${this.config.host}/payment-contexts`,
                 this.config,
                 this.config.sk,
-                body,
-                idempotencyKey
+                body
             );
             return await response.json;
         } catch (error) {

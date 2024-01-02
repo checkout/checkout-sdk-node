@@ -32,6 +32,8 @@ export { default as Balances } from './api/balances/balances';
 export { default as CardMetadata } from './api/card-metadata/card-metadata';
 export { default as Reports } from './api/reports/reports';
 export { default as Financial } from './api/financial/financial';
+export { default as Issuing } from './api/issuing/issuing';
+export { default as PaymentContexts } from './api/payment-contexts/payment-contexts';
 export { default as PaymentSessions } from './api/payment-sessions/payment-sessions';
 export { default as Checkout } from './Checkout';
 export { default } from './Checkout';
