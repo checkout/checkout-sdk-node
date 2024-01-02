@@ -171,5 +171,6 @@ export default class Checkout {
         this.financial = new ENDPOINTS.Financial(this.config);
         this.issuing = new ENDPOINTS.Issuing(this.config);
         this.paymentContexts = new ENDPOINTS.PaymentContexts(this.config);
+        this.paymentSessions = new ENDPOINTS.PaymentSessions(this.config);
     }
 }

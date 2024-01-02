@@ -9,6 +9,7 @@ export const validatePayment = (request) => {
     if (request.amount && ('' + request.amount).indexOf('.') !== -1) {
         throw new ValueError('The amount can not contain decimals.');
     }
+    
     if (!(request.currency in CURRENCIES)) {
         throw new ValueError('The currency value is not valid.');
     }

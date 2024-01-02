@@ -23,6 +23,7 @@ import {
     Oxxo,
     PagoFacil,
     PaymentLinks,
+    PaymentSessions,
     Payments,
     Platforms,
     Rapipago,
@@ -108,6 +109,7 @@ export default class Checkout {
     cardMetadata: CardMetadata;
     reports: Reports;
     financial: Financial;
+    paymentSessions: PaymentSessions;
     config: config;
 
     constructor(key?: string, options?: options);
