@@ -36,7 +36,7 @@ export default class Access {
      * Update the access details in the config.
      *
      * @param {Object} body Access response body.
-     * @return {Promise<Object>} A promise to the Access response.
+     * @return {void} 
      */
     updateAccessToken(body) {
         this.config.access = {

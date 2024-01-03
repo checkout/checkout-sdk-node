@@ -19,9 +19,11 @@ import {
     HostedPayments,
     Ideal,
     Instruments,
+    Issuing,
     Klarna,
     Oxxo,
     PagoFacil,
+    PaymentContexts,
     PaymentLinks,
     PaymentSessions,
     Payments,
@@ -109,6 +111,8 @@ export default class Checkout {
     cardMetadata: CardMetadata;
     reports: Reports;
     financial: Financial;
+    issuing: Issuing;
+    paymentContexts: PaymentContexts;
     paymentSessions: PaymentSessions;
     config: config;
 
