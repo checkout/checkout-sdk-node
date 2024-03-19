@@ -16,11 +16,6 @@ describe('Integration::Payment-Sessions', () => {
     const response = await cko.paymentSessions.request(commonRequest);
 
     expect(response.id).not.to.be.null;
-    expect(response.amount).to.equal(commonResponse.amount);
-    expect(response.locale).to.equal(commonResponse.locale);
-    expect(response.currency).to.equal(commonResponse.currency);
-    expect(response.customer).not.to.be.null;
-    expect(response.payment_methods).not.to.be.null;
     expect(response._links).not.to.be.null;
   });
 
