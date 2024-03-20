@@ -13,233 +13,213 @@ import {
 describe('Unit::Payment-Contexts', () => {
   const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
   const commonRequest = {
-    source: {
-      type: 'paypal'
+    "source": {
+      "type": "paypal"
     },
-    amount: 6540,
-    currency: 'USD',
-    payment_type: 'Recurring',
-    capture: true,
-    shipping: {
-      first_name: 'John',
-      last_name: 'Smith',
-      address: {
-        address_line1: 'Checkout.com',
-        address_line2: '90 Tottenham Court Road',
-        city: 'London',
-        state: 'str',
-        zip: 'W1T 4TJ',
-        country: 'GB'
+    "amount": 6540,
+    "currency": "USD",
+    "payment_type": "Recurring",
+    "capture": true,
+    "shipping": {
+      "first_name": "John",
+      "last_name": "Smith",
+      "email": "john.smith@example.com",
+      "address": {
+        "address_line1": "123 High St.",
+        "address_line2": "Flat 456",
+        "city": "London",
+        "state": "str",
+        "zip": "SW1A 1AA",
+        "country": "GB"
       },
-      phone: {
-        country_code: '+1',
-        number: '415 555 2671'
+      "phone": {
+        "country_code": "+1",
+        "number": "415 555 2671"
       },
-      from_address_zip: '10014',
-      type: 'pickup_in_person'
+      "from_address_zip": "123456",
+      "timeframe": "SameDay",
+      "method": "BillingAddress",
+      "delay": 5
     },
-    processing: {
-      order_id: '123456789',
-      tax_amount: 3000,
-      discount_amount: 0,
-      duty_amount: 0,
-      shipping_amount: 300,
-      shipping_tax_amount: 100,
-      aft: true,
-      preferred_scheme: 'mastercard',
-      merchant_initiated_reason: 'Delayed_charge',
-      campaign_id: 0,
-      product_type: 'QR Code',
-      open_id: 'oUpF8uMuAJO_M2pxb1Q9zNjWeS6o',
-      original_order_amount: 10,
-      receipt_id: 10,
-      terminal_type: 'WAP',
-      os_type: 'ANDROID',
-      invoice_id: 'string',
-      brand_name: 'Super Brand',
-      locale: 'en-US',
-      shipping_preference: 'SET_PROVIDED_ADDRESS',
-      user_action: 'PAY_NOW',
-      set_transaction_context: {
-        key: 'string',
-        value: 'string'
+    "processing": {
+      "plan": {
+        "type": "MERCHANT_INITIATED_BILLING",
+        "skip_shipping_address": true,
+        "immutable_shipping_address": true
       },
-      airline_data: [
+      "shipping_amount": 300,
+      "invoice_id": "string",
+      "brand_name": "Acme Corporation",
+      "locale": "en-US",
+      "shipping_preference": "set_provided_address",
+      "user_action": "pay_now",
+      "partner_customer_risk_data": {
+        "key": "string",
+        "value": "string"
+      },
+      "airline_data": [
         {
-          ticket: {
-            number: 'string',
-            issue_date: 'stringstri',
-            issuing_carrier_code: 'st',
-            travel_agency_name: 'string',
-            travel_agency_code: 'string'
+          "ticket": {
+            "number": "045-21351455613",
+            "issue_date": "2023-05-20",
+            "issuing_carrier_code": "AI",
+            "travel_package_indicator": "B",
+            "travel_agency_name": "World Tours",
+            "travel_agency_code": "01"
           },
-          passenger: {
-            name: {
-              full_name: 'string'
-            },
-            date_of_birth: 'stringstri',
-            country_code: 'st'
-          },
-          flight_leg_details: [
+          "passenger": [
             {
-              flight_number: 0,
-              carrier_code: 'string',
-              service_class: 'string',
-              departure_date: 'string',
-              departure_time: 'string',
-              departure_airport: 'string',
-              arrival_airport: 'string',
-              stopover_code: 'string',
-              fare_basis_code: 'string'
+              "first_name": "John",
+              "last_name": "White",
+              "date_of_birth": "1990-05-26",
+              "address": {
+                "country": "US"
+              }
+            }
+          ],
+          "flight_leg_details": [
+            {
+              "flight_number": "101",
+              "carrier_code": "BA",
+              "class_of_travelling": "J",
+              "departure_airport": "LHR",
+              "departure_date": "2023-06-19",
+              "departure_time": "15:30",
+              "arrival_airport": "LAX",
+              "stop_over_code": "x",
+              "fare_basis_code": "SPRSVR"
             }
           ]
         }
-      ],
-      purchase_country: 'GB',
-      custom_payment_method_ids: [
-        'string'
-      ],
-      merchant_callback_url: 'string',
-      line_of_business: 'Flights'
+      ]
     },
-    processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
-    reference: 'ORD-5023-4E89',
-    description: 'Set of 3 masks',
-    success_url: 'https://example.com/payments/success',
-    failure_url: 'https://example.com/payments/fail',
-    items: [
+    "processing_channel_id": "pc_q4dbxom5jbgudnjzjpz7j2z6uq",
+    "reference": "ORD-5023-4E89",
+    "description": "Set of 3 masks",
+    "success_url": "https://example.com/payments/success",
+    "failure_url": "https://example.com/payments/fail",
+    "items": [
       {
-        name: 'Kevlar batterang',
-        quantity: 2,
-        unit_price: 50,
-        reference: '858818ac',
-        commodity_code: 'DEF123',
-        unit_of_measure: 'metres',
-        total_amount: 29000,
-        tax_amount: 1000,
-        discount_amount: 1000,
-        wxpay_goods_id: 1001,
-        url: 'string',
-        image_url: 'string'
+        "name": "Test item",
+        "quantity": 2,
+        "unit_price": 50,
+        "reference": "858818ac",
+        "total_amount": 29000,
+        "tax_amount": 1000,
+        "discount_amount": 1000,
+        "url": "string",
+        "image_url": "string"
       }
     ]
   };
   const commonResponse = {
-    payment_request: {
-      source: {
-        type: 'paypal'
+    "payment_request": {
+      "source": {
+        "type": "paypal"
       },
-      amount: 6540,
-      currency: 'USD',
-      payment_type: 'Recurring',
-      capture: true,
-      shipping: {
-        first_name: 'John',
-        last_name: 'Smith',
-        address: {
-          address_line1: 'Checkout.com',
-          address_line2: '90 Tottenham Court Road',
-          city: 'London',
-          state: 'str',
-          zip: 'W1T 4TJ',
-          country: 'GB'
-        },
-        phone: {
-          country_code: '+1',
-          number: '415 555 2671'
-        },
-        from_address_zip: '10014',
-        type: 'pickup_in_person'
+      "amount": 6540,
+      "currency": "USD",
+      "payment_type": "Recurring",
+      "capture": true,
+      "customer": {
+        "email": "johnsmith@example.com",
+        "name": "John Smith"
       },
-      processing: {
-        order_id: '123456789',
-        tax_amount: 3000,
-        discount_amount: 0,
-        duty_amount: 0,
-        shipping_amount: 300,
-        shipping_tax_amount: 100,
-        aft: true,
-        preferred_scheme: 'mastercard',
-        merchant_initiated_reason: 'Delayed_charge',
-        campaign_id: 0,
-        product_type: 'QR Code',
-        open_id: 'oUpF8uMuAJO_M2pxb1Q9zNjWeS6o',
-        original_order_amount: 10,
-        receipt_id: 10,
-        terminal_type: 'WAP',
-        os_type: 'ANDROID',
-        invoice_id: 'string',
-        brand_name: 'Super Brand',
-        locale: 'en-US',
-        shipping_preference: 'SET_PROVIDED_ADDRESS',
-        user_action: 'PAY_NOW',
-        set_transaction_context: {
-          key: 'string',
-          value: 'string'
+      "shipping": {
+        "first_name": "John",
+        "last_name": "Smith",
+        "email": "john.smith@example.com",
+        "address": {
+          "address_line1": "123 High St.",
+          "address_line2": "Flat 456",
+          "city": "London",
+          "state": "str",
+          "zip": "SW1A 1AA",
+          "country": "GB"
         },
-        airline_data: [
+        "phone": {
+          "country_code": "+1",
+          "number": "415 555 2671"
+        },
+        "from_address_zip": "123456",
+        "timeframe": "SameDay",
+        "method": "BillingAddress",
+        "delay": 5
+      },
+      "processing": {
+        "plan": {
+          "type": "MERCHANT_INITIATED_BILLING",
+          "skip_shipping_address": true,
+          "immutable_shipping_address": true
+        },
+        "shipping_amount": 300,
+        "invoice_id": "string",
+        "brand_name": "Acme Corporation",
+        "locale": "en-US",
+        "shipping_preference": "set_provided_address",
+        "user_action": "pay_now",
+        "partner_customer_risk_data": {
+          "key": "string",
+          "value": "string"
+        },
+        "airline_data": [
           {
-            ticket: {
-              number: 'string',
-              issue_date: 'stringstri',
-              issuing_carrier_code: 'st',
-              travel_agency_name: 'string',
-              travel_agency_code: 'string'
+            "ticket": {
+              "number": "045-21351455613",
+              "issue_date": "2023-05-20",
+              "issuing_carrier_code": "AI",
+              "travel_package_indicator": "B",
+              "travel_agency_name": "World Tours",
+              "travel_agency_code": "01"
             },
-            passenger: {
-              name: {
-                full_name: 'string'
-              },
-              date_of_birth: 'stringstri',
-              country_code: 'st'
-            },
-            flight_leg_details: [
+            "passenger": [
               {
-                flight_number: 0,
-                carrier_code: 'string',
-                service_class: 'string',
-                departure_date: 'string',
-                departure_time: 'string',
-                departure_airport: 'string',
-                arrival_airport: 'string',
-                stopover_code: 'string',
-                fare_basis_code: 'string'
+                "first_name": "John",
+                "last_name": "White",
+                "date_of_birth": "1990-05-26",
+                "address": {
+                  "country": null
+                }
+              }
+            ],
+            "flight_leg_details": [
+              {
+                "flight_number": "101",
+                "carrier_code": "BA",
+                "class_of_travelling": "J",
+                "departure_airport": "LHR",
+                "departure_date": "2023-06-19",
+                "departure_time": "15:30",
+                "arrival_airport": "LAX",
+                "stop_over_code": "x",
+                "fare_basis_code": "SPRSVR"
               }
             ]
           }
-        ],
-        purchase_country: 'GB',
-        custom_payment_method_ids: [
-          'string'
-        ],
-        merchant_callback_url: 'string',
-        line_of_business: 'Flights'
+        ]
       },
-      processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
-      reference: 'ORD-5023-4E89',
-      description: 'Set of 3 masks',
-      success_url: 'https://example.com/payments/success',
-      failure_url: 'https://example.com/payments/fail',
-      items: [
+      "processing_channel_id": "pc_q4dbxom5jbgudnjzjpz7j2z6uq",
+      "reference": "ORD-5023-4E89",
+      "description": "Set of 3 masks",
+      "success_url": "https://example.com/payments/success",
+      "failure_url": "https://example.com/payments/fail",
+      "items": [
         {
-          name: 'Kevlar batterang',
-          quantity: 2,
-          unit_price: 50,
-          reference: '858818ac',
-          commodity_code: 'DEF123',
-          unit_of_measure: 'metres',
-          total_amount: 29000,
-          tax_amount: 1000,
-          discount_amount: 1000,
-          wxpay_goods_id: 1001,
-          url: 'string',
-          image_url: 'string'
+          "name": "Test item",
+          "quantity": 2,
+          "unit_price": 50,
+          "reference": "858818ac",
+          "total_amount": 29000,
+          "tax_amount": 1000,
+          "discount_amount": 1000,
+          "url": "string",
+          "image_url": "string"
         }
       ]
     },
-    partner_metadata: {
-      order_id: 'test_order_123',
-      customer_id: 'cus_123'
+    "partner_metadata": {
+      "order_id": "test_order_123",
+      "customer_id": "cus_123"
     }
   };
 
