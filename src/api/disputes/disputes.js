@@ -166,6 +166,30 @@ export default class Disputes {
     }
 
     /**
+     * Retrieves the unique identifier of the PDF file containing all the evidence submitted to represent the dispute case.
+     * To retrieve the file's download link, call the GET /files/{file_id} endpoint with the returned file ID.
+     * Evidence submitted before February 2024 cannot be retrieved using this endpoint.
+     *
+     * @memberof Disputes
+     * @param {string} disputeId Dispute id.
+     * @return {Promise<Object>} A promise to the compiled submitted evidence response.
+     */
+    async getCompiledSubmittedEvidence(disputeId) {
+        try {
+            const response = await get(
+                this.config.httpClient,
+                `${this.config.host}/disputes/${disputeId}/evidence/submitted`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
      * Returns all of the scheme files of a dispute using the dispute identifier.
      * Currently available only for VISA disputes.
      *

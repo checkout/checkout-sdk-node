@@ -708,6 +708,24 @@ describe('Disputes', () => {
         }
     });
 
+    it('should get compiled submitted evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/submitted')
+            .reply(200, {
+                file_id: 'file_iweu3nxyt6zund3gwhg7wo4fhq',
+                _links: {
+                    self: {
+                        href: 'https://api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/evidence/submitted',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK);
+
+        const compiledSubmittedEvidence = await cko.disputes.getCompiledSubmittedEvidence('dsp_3dc29c89ce075g46136d');
+        expect(compiledSubmittedEvidence.file_id).to.equal('file_iweu3nxyt6zund3gwhg7wo4fhq');
+    });
+
     it('should get dispute scheme files', async () => {
         nock('https://api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/schemefiles')
