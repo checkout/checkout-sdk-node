@@ -139,7 +139,52 @@ describe('NAS oAuth', () => {
         expect(cko.config.agent).to.be.undefined;
     });
 
-    it('should default to sandbox  and gateway scope with oAuth credentials', () => {
+    it('should initialize with oAuth credentials with subdomain', () => {
+        const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+            scope: ['gateway'],
+            environment: 'sandbox',
+            subdomain: '12345domain'
+        });
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
+        expect(cko.config.host).to.equal('https://12345domain.api.sandbox.checkout.com');
+        expect(cko.config.scope[0]).to.equal('gateway');
+        expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
+    it('should initialize with oAuth credentials with bad subdomain', () => {
+        const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+            scope: ['gateway'],
+            environment: 'sandbox',
+            subdomain: '12345domain12345'
+        });
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
+        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+        expect(cko.config.scope[0]).to.equal('gateway');
+        expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
+    it('should initialize with oAuth credentials with subdomain empty', () => {
+        const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+            scope: ['gateway'],
+            environment: 'sandbox',
+            subdomain: ''
+        });
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
+        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+        expect(cko.config.scope[0]).to.equal('gateway');
+        expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
+    it('should default to sandbox and gateway scope with oAuth credentials', () => {
         const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
             client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
         });
@@ -148,7 +193,7 @@ describe('NAS oAuth', () => {
         expect(cko.config.scope).to.equal('gateway');
     });
 
-    it('should default to sandbox  and gateway scope with oAuth credentials from env vars', () => {
+    it('should default to sandbox and gateway scope with oAuth credentials from env vars', () => {
         process.env.CKO_SECRET = '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-';
         process.env.CKO_CLIENT = 'ack_vvzhoai466su3j3vbxb47ts5oe';
 

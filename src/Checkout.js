@@ -1,6 +1,27 @@
 import * as CONFIG from './config';
 import * as ENDPOINTS from './index';
 
+/**
+ * Determine the full URL based on the environment and subdomain.
+ * 
+ * @param {string} environment 
+ * @param {object} options 
+ * @returns {string}
+ */
+const determineUrl = (environment, options) => {
+    const apiUrl = new URL(environment);
+
+    if (options && options.subdomain) {
+        const subdomain = options.subdomain;
+        if (typeof subdomain === 'string' && /^[0-9a-z]{8,11}$/.test(subdomain)) {
+            const { protocol, port, hostname } = apiUrl;
+            return new URL(`${protocol}//${subdomain}.${hostname}${port ? `:${port}` : ''}`).toString().slice(0, -1);
+        }
+    }
+
+    return apiUrl.toString().slice(0, -1);
+};
+
 const determineHost = (key, options) => {
     // If specified, use the custom host
     if (options && options.host) {
@@ -17,9 +38,9 @@ const determineHost = (key, options) => {
             (process.env.CKO_ENVIRONMENT &&
                 process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'live')
         ) {
-            return CONFIG.LIVE_BASE_URL;
+            return determineUrl(CONFIG.LIVE_BASE_URL, options);
         }
-        return CONFIG.SANDBOX_BASE_URL;
+        return determineUrl(CONFIG.SANDBOX_BASE_URL, options);
     }
     // Priority 2: oAuth declared vars
     if (options && options.client) {
@@ -28,9 +49,9 @@ const determineHost = (key, options) => {
             (options.environment && options.environment.toLowerCase().trim() === 'production') ||
             (options.environment && options.environment.toLowerCase().trim() === 'live')
         ) {
-            return CONFIG.LIVE_BASE_URL;
+            return determineUrl(CONFIG.LIVE_BASE_URL, options);
         }
-        return CONFIG.SANDBOX_BASE_URL;
+        return determineUrl(CONFIG.SANDBOX_BASE_URL, options);
     }
 
     // Priority 3: MBC or NAS static keys
@@ -39,8 +60,8 @@ const determineHost = (key, options) => {
         key = key.replace('Bearer', '').trim();
     }
     return CONFIG.MBC_LIVE_SECRET_KEY_REGEX.test(key) || CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(key)
-        ? CONFIG.LIVE_BASE_URL
-        : CONFIG.SANDBOX_BASE_URL;
+        ? determineUrl(CONFIG.LIVE_BASE_URL, options)
+        : determineUrl(CONFIG.SANDBOX_BASE_URL, options);
 };
 
 const determineSecretKey = (key) => {
@@ -133,6 +154,7 @@ export default class Checkout {
             headers: options && options.headers ? options.headers : {},
             access: undefined,
             httpClient: options && options.httpClient ? options.httpClient : undefined,
+            subdomain: options && options.subdomain ? options.subdomain : undefined,
         };
 
         this.payments = new ENDPOINTS.Payments(this.config);
