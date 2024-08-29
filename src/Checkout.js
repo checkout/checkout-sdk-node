@@ -13,7 +13,7 @@ const determineUrl = (environment, options) => {
 
     if (options && options.subdomain) {
         const subdomain = options.subdomain;
-        if (typeof subdomain === 'string' && /^[0-9a-z]{8,11}$/.test(subdomain)) {
+        if (typeof subdomain === 'string' && /^[0-9a-z]+$/.test(subdomain)) {
             const { protocol, port, hostname } = apiUrl;
             return new URL(`${protocol}//${subdomain}.${hostname}${port ? `:${port}` : ''}`).toString().slice(0, -1);
         }
