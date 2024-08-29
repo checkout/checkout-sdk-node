@@ -139,16 +139,31 @@ describe('NAS oAuth', () => {
         expect(cko.config.agent).to.be.undefined;
     });
 
-    it('should initialize with oAuth credentials with subdomain', () => {
+    it('should initialize with oAuth credentials with short subdomain', () => {
         const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
             client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
             scope: ['gateway'],
             environment: 'sandbox',
-            subdomain: '12345domain'
+            subdomain: 'ab'
         });
         expect(cko).to.be.instanceOf(Checkout);
         expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
-        expect(cko.config.host).to.equal('https://12345domain.api.sandbox.checkout.com');
+        expect(cko.config.host).to.equal('https://ab.api.sandbox.checkout.com');
+        expect(cko.config.scope[0]).to.equal('gateway');
+        expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
+        expect(cko.config.agent).to.be.undefined;
+    });
+
+    it('should initialize with oAuth credentials with long subdomain', () => {
+        const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+            scope: ['gateway'],
+            environment: 'sandbox',
+            subdomain: 'longsubdomain'
+        });
+        expect(cko).to.be.instanceOf(Checkout);
+        expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
+        expect(cko.config.host).to.equal('https://longsubdomain.api.sandbox.checkout.com');
         expect(cko.config.scope[0]).to.equal('gateway');
         expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
         expect(cko.config.agent).to.be.undefined;
@@ -159,7 +174,7 @@ describe('NAS oAuth', () => {
             client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
             scope: ['gateway'],
             environment: 'sandbox',
-            subdomain: '12345domain12345'
+            subdomain: '  '
         });
         expect(cko).to.be.instanceOf(Checkout);
         expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
