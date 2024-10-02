@@ -126,6 +126,30 @@ export default class Workflows {
     }
 
     /**
+     * Adds a workflow action. Actions determine what the workflow will do when it is triggered.
+     *
+     * @memberof Workflows
+     * @param {string} id Workflow Id.
+     * @param {Object} body Workflows request body.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async addAction(id, body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/workflows/${id}/actions/`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
      * Update a workflow action.
      *
      * @memberof Workflows
@@ -151,6 +175,53 @@ export default class Workflows {
     }
 
     /**
+     * Removes a workflow action. Actions determine what the workflow will do when it is triggered.
+     *
+     * @memberof Workflows
+     * @param {string} workflowId Workflow id.
+     * @param {string} workflowActionId Workflow action Id.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async removeAction(workflowId, workflowActionId) {
+        try {
+            const response = await _delete(
+                this.config.httpClient,
+                `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Adds a workflow condition. Conditions determine when the workflow will trigger.
+     *
+     * @memberof Workflows
+     * @param {string} id Workflow Id.
+     * @param {Object} body Workflows request body.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async addCondition(id, body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/workflows/${id}/conditions/`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
      * Update a workflow condition.
      *
      * @memberof Workflows
@@ -164,6 +235,53 @@ export default class Workflows {
             const response = await put(
                 this.config.httpClient,
                 `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Removes a workflow condition. Conditions determine when the workflow will trigger.
+     *
+     * @memberof Workflows
+     * @param {string} workflowId Workflow id.
+     * @param {string} workflowConditionId Workflow condition Id.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async removeCondition(workflowId, workflowConditionId) {
+        try {
+            const response = await _delete(
+                this.config.httpClient,
+                `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Validate a workflow in our Sandbox environment.
+     *
+     * @memberof Workflows
+     * @param {string} id Workflow id.
+     * @param {Object} body Event types for which the workflow will execute.
+     * @return {Promise<Object>} A promise to the Workflows response.
+     */
+    async test(id, body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/workflows/${id}/test`,
                 this.config,
                 this.config.sk,
                 body
