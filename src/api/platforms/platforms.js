@@ -396,4 +396,109 @@ export default class Platforms {
             throw error;
         }
     }
+
+    /**
+     * Retrieve the details of a specific reserve rule.
+     *
+     * @memberof Platforms
+     * @param {string} entityId The sub-entity's ID.
+     * @param {string} id The reserve rule ID.
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async getReserveRuleDetails(entityId, id) {
+        try {
+            const response = await get(
+                this.config.httpClient,
+                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Update an upcoming reserve rule. Only reserve rules that have never been active can be updated.
+     *
+     * @memberof Platforms
+     * @param {string} entityId The sub-entity's ID.
+     * @param {string} id The reserve rule ID.
+     * @param {Object} body The body to be sent.
+     * @param {string} ifMatch Identifies a specific version of a reserve rule to update. Example: Y3Y9MCZydj0w
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async updateReserveRule(entityId, id, body, ifMatch) {
+        try {
+
+            const config = {
+                ...this.config,
+                headers: {
+                    ...this.config.headers,
+                    'If-Match': ifMatch,
+                },
+            };
+
+            const response = await put(
+                this.config.httpClient,
+                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
+                config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Create a sub-entity reserve rule.
+     *
+     * @memberof Platforms
+     * @param {string} id The sub-entity's ID.
+     * @param {Object} body The body of the reserve rule to be added.
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async addReserveRule(id, body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Fetch all of the reserve rules for a sub-entity.
+     *
+     * @memberof Platforms
+     * @param {string} id The sub-entity's ID.
+     * @return {Promise<Object>} A promise to the Platforms response.
+     */
+    async queryReserveRules(id) {
+        try {
+            const response = await get(
+                this.config.httpClient,
+                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
 }
