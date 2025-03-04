@@ -17,4 +17,8 @@ export default class Platforms {
     queryPaymentInstruments: (id: string, status?: string) => Promise<Object>;
     retrieveSubEntityPayoutSchedule: (id: string) => Promise<Object>;
     updateSubEntityPayoutSchedule: (body: Object) => Promise<Object>;
+    getReserveRuleDetails: (entityId: string, id: string) => Promise<Object>;
+    updateReserveRule: (entityId: string, id: string, body: Object, ifMatch: string) => Promise<Object>;
+    addReserveRule: (id: string, body: Object) => Promise<Object>;
+    queryReserveRules: (id: string) => Promise<Object>;
 }

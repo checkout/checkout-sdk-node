@@ -41,8 +41,8 @@ describe('Integration::Payment-Contexts', () => {
     });
 
     it('should get a payment context', async () => {
-      const responseRquest = await cko.paymentContexts.request(request);
-      const response = await cko.paymentContexts.get(responseRquest.id);
+      const responseRequest = await cko.paymentContexts.request(request);
+      const response = await cko.paymentContexts.get(responseRequest.id);
 
       expect(response.payment_request.source.type).to.equal('paypal');
       expect(response.payment_request.amount).to.equal(2000);
@@ -108,8 +108,8 @@ describe('Integration::Payment-Contexts', () => {
     });
 
     it.skip('should get a payment context', async () => {
-      const responseRquest = await cko.paymentContexts.request(request);
-      const response = await cko.paymentContexts.get(responseRquest.id);
+      const responseRequest = await cko.paymentContexts.request(request);
+      const response = await cko.paymentContexts.get(responseRequest.id);
 
       expect(response.payment_request.source.type).to.equal('klarna');
       expect(response.payment_request.source.account_holder).to.not.be.null;

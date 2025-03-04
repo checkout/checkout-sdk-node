@@ -180,7 +180,7 @@ describe('Hosted Payments', () => {
 
             const hp = await cko.hostedPayments.get('hpp_kQhs_fI9b8oQ');
 
-            expect(hp.id).to.equal(id);
+            expect(hp.id).to.equal('hpp_kQhs_fI9b8oQ');
         } catch (err) {
             expect(err).to.be.instanceOf(AuthenticationError);
         }

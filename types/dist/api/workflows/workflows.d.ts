@@ -8,12 +8,17 @@ export default class Workflows {
     get: (id: string) => Promise<Object>;
     remove: (id: string) => Promise<Object>;
     patch: (id: string, body: Object) => Promise<Object>;
+    addAction: (id: string, body: Object) => Promise<Object>;
     updateAction: (workflowId: string, workflowActionId: string, body: Object) => Promise<Object>;
+    removeAction: (workflowId: string, workflowActionId: string) => Promise<Object>;
+    addCondition: (id: string, body: Object) => Promise<Object>;
     updateCondition: (
         workflowId: string,
         workflowConditionId: string,
         body: Object
     ) => Promise<Object>;
+    removeCondition: (workflowId: string, workflowConditionId: string) => Promise<Object>;
+    test: (id: string, body: Object) => Promise<Object>;
     getEventTypes: () => Promise<Object>;
     getEvent: (id: string) => Promise<Object>;
     getActionInvocations: (eventId: string, workflowActionId: string) => Promise<Object>;
