@@ -145,6 +145,7 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay)_(\w{26})$/ The payment identifier.
      * @param {Object} body Payment Request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the getActions response.
      */
     async increment(id, body, idempotencyKey) {
@@ -152,6 +153,33 @@ export default class Payments {
             const response = await post(
                 this.config.httpClient,
                 `${this.config.host}/payments/${id}/authorizations`,
+                this.config,
+                this.config.sk,
+                body,
+                idempotencyKey
+            );
+            return await response.json;
+        } catch (err) {
+            const error = await determineError(err);
+            throw error;
+        }
+    }
+
+    /**
+     * Cancels an upcoming retry, if there is one scheduled
+     * Cancellation requests are processed asynchronously. You can use workflows to be notified if the cancellation is successful.
+     *
+     * @memberof Payments
+     * @param {string} id /^(pay)_(\w{26})$/ The unique payment identifier.
+     * @param {Object} body Payment Request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
+     * @return {Promise<Object>} A promise to the getActions response.
+     */
+    async cancelScheduledRetry(id, body, idempotencyKey) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/payments/${id}/cancellations`,
                 this.config,
                 this.config.sk,
                 body,
@@ -215,6 +243,31 @@ export default class Payments {
     }
 
     /**
+     * Reverse a payment if supported by the payment method.
+     *
+     * @memberof Payments
+     * @param {string} paymentId /^(pay)_(\w{26})$/ The unique identifier for the payment.
+     * @param {Object} [body] Reverse request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
+     * @return {Promise<Object>} A promise to the refund response.
+     */
+    async reverse(paymentId, body, idempotencyKey) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/payments/${paymentId}/reversals`,
+                this.config,
+                this.config.sk,
+                body,
+                idempotencyKey
+            );
+            return response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
      * Voids a payment if supported by the payment method.
      *
      * @memberof Payments
@@ -232,6 +285,28 @@ export default class Payments {
                 this.config.sk,
                 body,
                 idempotencyKey
+            );
+            return response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Search payments if supported by the payment method.
+     *
+     * @memberof Payments
+     * @param {Object} [body] Search request body.
+     * @return {Promise<Object>} A promise to the void response.
+     */
+    async search( body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/payments/search`,
+                this.config,
+                this.config.sk,
+                body
             );
             return response.json;
         } catch (err) {
