@@ -2,7 +2,7 @@ import { determineError } from '../../services/errors';
 import { post } from '../../services/http';
 import { validatePayment } from '../../services/validation';
 
-/*
+/**
  * Class dealing with the /payment-sessions endpoint
  *
  * @export
@@ -14,7 +14,7 @@ export default class PaymentSessions {
     }
 
     /**
-     * Sends payment sessions requests.
+     * Creates a payment session.
      *
      * @memberof PaymentSessions
      * @param {object} body PaymentSessions Request body.
