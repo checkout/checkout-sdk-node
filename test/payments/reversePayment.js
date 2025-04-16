@@ -119,7 +119,7 @@ describe('Reverse a payment', () => {
       }
     });
 
-    expect(reverse).to.be.undefined;
+    expect(reverse).to.deep.equal({});
   });
 
   it('should throw AuthenticationError', async () => {
