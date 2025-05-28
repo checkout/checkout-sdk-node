@@ -44,3 +44,45 @@ export const commonResponse = {
     }
   }
 };
+
+export const commonSubmitRequest = {
+  session_data: "string",
+  amount: 1000,
+  reference: "ORD-123A",
+  items: [
+    {
+      reference: "string",
+      commodity_code: "string",
+      unit_of_measure: "string",
+      total_amount: 1000,
+      tax_amount: 1000,
+      discount_amount: 1000,
+      url: "string",
+      image_url: "string",
+      name: "Gold Necklace",
+      quantity: 1,
+      unit_price: 1000
+    }
+  ],
+  "3ds": {
+    enabled: false,
+    attempt_n3d: false,
+    challenge_indicator: "no_preference",
+    exemption: "low_value",
+    allow_upgrade: true
+  },
+  ip_address: "90.197.169.245"
+};
+
+export const commonSubmitResponseCreated = {
+  id: "pay_mbabizu24mvu3mela5njyhpit4",
+  status: "Approved",
+  type: "alipay_cn"
+};
+
+export const commonSubmitResponseAccepted = {
+  id: "pay_mbabizu24mvu3mela5njyhpit4",
+  status: "Action Required",
+  type: "string",
+  action: {}
+};
