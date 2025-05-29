@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import nock from "nock";
 import Checkout from '../../src/Checkout.js'
-import { commonRequest, commonResponse } from "./payment-sessions-common.js";
+import { commonRequest, commonSubmitRequest } from "./payment-sessions-common.js";
 
 afterEach(() => {
   nock.cleanAll();
@@ -17,6 +17,13 @@ describe('Integration::Payment-Sessions', () => {
 
     expect(response.id).not.to.be.null;
     expect(response._links).not.to.be.null;
+  });
+
+  it.skip('should submit a payment session', async () => {
+    const response1 = await cko.paymentSessions.request(commonRequest);
+    const response2 = await cko.paymentSessions.submit(response1.id, commonSubmitRequest);
+
+    expect(response2.id).not.to.be.null;
   });
 
 });

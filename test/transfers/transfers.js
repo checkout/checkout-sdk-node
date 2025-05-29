@@ -106,6 +106,7 @@ describe('Transfers', () => {
             source: {
                 id: 'ent_djigcqx4clmufo2sasgomgpqsq',
                 amount: 100,
+                currency: 'GBP',
             },
             destination: {
                 id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4',
@@ -127,6 +128,7 @@ describe('Transfers', () => {
                 source: {
                     id: 'ent_djigcqx4clmufo2sasgomgpqsq',
                     amount: 100,
+                    currency: 'GBP',
                 },
                 destination: {
                     id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4',
@@ -162,7 +164,7 @@ describe('Transfers', () => {
                 transfer_type: 'commission',
                 destination: { entity_id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4' },
                 reason_codes: [],
-                source: { amount: 100, entity_id: 'ent_djigcqx4clmufo2sasgomgpqsq' },
+                source: { amount: 100, entity_id: 'ent_djigcqx4clmufo2sasgomgpqsq', currency: 'GBP' },
                 _links: {
                     self: {
                         href: 'https://transfers.sandbox.checkout.com/transfers/tra_lx6isvi4lahkrkn462bj77xnki',
@@ -188,7 +190,7 @@ describe('Transfers', () => {
                 transfer_type: 'commission',
                 destination: { entity_id: 'ent_fz5knnpfjkceta7kpzlbu6dkt4' },
                 reason_codes: [],
-                source: { amount: 100, entity_id: 'ent_djigcqx4clmufo2sasgomgpqsq' },
+                source: { amount: 100, entity_id: 'ent_djigcqx4clmufo2sasgomgpqsq', currency: 'GBP' },
                 _links: {
                     self: {
                         href: 'https://transfers.sandbox.checkout.com/transfers/tra_lx6isvi4lahkrkn462bj77xnki',
