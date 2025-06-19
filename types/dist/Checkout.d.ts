@@ -15,6 +15,7 @@ import {
     Files,
     Financial,
     Forex,
+    Forward,
     Giropay,
     HostedPayments,
     Ideal,
@@ -114,6 +115,7 @@ export default class Checkout {
     issuing: Issuing;
     paymentContexts: PaymentContexts;
     paymentSessions: PaymentSessions;
+    forward: Forward;
     config: config;
 
     constructor(key?: string, options?: options);
