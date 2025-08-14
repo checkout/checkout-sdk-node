@@ -36,7 +36,7 @@ describe('Integration::HttpClient', () => {
         expect(token.expiry_year).to.equal(2025);
         expect(token.scheme).to.equal('VISA');
         expect(token.last4).to.equal('9996');
-        expect(token.bin).to.equal('454347');
+        expect(token.bin).to.equal('45434740');
         expect(token.card_type).to.equal('CREDIT');
         expect(token.card_category).to.equal('CONSUMER');
       });
@@ -65,7 +65,7 @@ describe('Integration::HttpClient', () => {
         expect(token.expiry_year).to.equal(2025);
         expect(token.scheme).to.equal('VISA');
         expect(token.last4).to.equal('9996');
-        expect(token.bin).to.equal('454347');
+        expect(token.bin).to.equal('45434740');
         expect(token.card_type).to.equal('CREDIT');
         expect(token.card_category).to.equal('CONSUMER');
       });
@@ -121,7 +121,7 @@ describe('Integration::HttpClient', () => {
         expect(token.expiry_year).to.equal(2025);
         expect(token.scheme).to.equal('VISA');
         expect(token.last4).to.equal('9996');
-        expect(token.bin).to.equal('454347');
+        expect(token.bin).to.equal('45434740');
         expect(token.card_type).to.equal('CREDIT');
         expect(token.card_category).to.equal('CONSUMER');
       });
@@ -151,7 +151,7 @@ describe('Integration::HttpClient', () => {
         expect(token.expiry_year).to.equal(2025);
         expect(token.scheme).to.equal('VISA');
         expect(token.last4).to.equal('9996');
-        expect(token.bin).to.equal('454347');
+        expect(token.bin).to.equal('45434740');
         expect(token.card_type).to.equal('CREDIT');
         expect(token.card_category).to.equal('CONSUMER');
       });
