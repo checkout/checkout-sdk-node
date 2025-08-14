@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "axios": "^0.30.0",
-    "form-data": "^4.0.0",
+    "form-data": "^4.0.4",
     "node-fetch": "^2.6.12"
   },
   "babel": {
