@@ -100,20 +100,45 @@ describe('Workflows', () => {
         );
         const workflows = await cko.workflows.add({
             name: 'Webhooks workflow',
+            active: true,
             conditions: [
                 {
                     type: 'event',
                     events: {
-                        gateway: ['payment_approved', 'payment_declined'],
+                        gateway: [
+                            'payment_approved',
+                            'payment_declined',
+                            'card_verification_declined',
+                            'card_verified',
+                            'payment_authorization_incremented',
+                            'payment_authorization_increment_declined',
+                            'payment_capture_declined',
+                            'payment_captured',
+                            'payment_refund_declined',
+                            'payment_refunded',
+                            'payment_void_declined',
+                            'payment_voided'
+                        ],
+                        dispute: [
+                            'dispute_canceled',
+                            'dispute_evidence_required',
+                            'dispute_expired',
+                            'dispute_lost',
+                            'dispute_resolved',
+                            'dispute_won'
+                        ]
                     },
                 },
                 {
                     type: 'entity',
-                    entities: ['ent_djigcqx4clmufo2sasgomgpqsq'],
+                    entities: [
+                        'ent_xyfdshfudosfdshfdiosfds',
+                        'ent_fidjosfjdisofdjsifdosfu'
+                    ],
                 },
                 {
                     type: 'processing_channel',
-                    processing_channels: ['pc_zs5fqhybzc2e3jmq3efvybybpq'],
+                    processing_channels: ['pc_axclravnqf5u5ejkweijnp5zc4'],
                 },
             ],
             actions: [
@@ -121,7 +146,7 @@ describe('Workflows', () => {
                     type: 'webhook',
                     url: 'https://example.com/webhooks',
                     headers: {
-                        Authorization: '70ed20ff-ba31-4ea3-b3ef-772f2be1cbdf',
+                        Authorization: '<AUTHORIZATION_UUID>',
                     },
                     signature: {
                         method: 'HMACSHA256',
@@ -152,20 +177,45 @@ describe('Workflows', () => {
         try {
             await cko.workflows.add({
                 name: 'Webhooks workflow',
+                active: true,
                 conditions: [
                     {
                         type: 'event',
                         events: {
-                            gateway: ['payment_approved', 'payment_declined'],
+                            gateway: [
+                                'payment_approved',
+                                'payment_declined',
+                                'card_verification_declined',
+                                'card_verified',
+                                'payment_authorization_incremented',
+                                'payment_authorization_increment_declined',
+                                'payment_capture_declined',
+                                'payment_captured',
+                                'payment_refund_declined',
+                                'payment_refunded',
+                                'payment_void_declined',
+                                'payment_voided'
+                            ],
+                            dispute: [
+                                'dispute_canceled',
+                                'dispute_evidence_required',
+                                'dispute_expired',
+                                'dispute_lost',
+                                'dispute_resolved',
+                                'dispute_won'
+                            ]
                         },
                     },
                     {
                         type: 'entity',
-                        entities: ['ent_djigcqx4clmufo2sasgomgpqsq'],
+                        entities: [
+                            'ent_xyfdshfudosfdshfdiosfds',
+                            'ent_fidjosfjdisofdjsifdosfu'
+                        ],
                     },
                     {
                         type: 'processing_channel',
-                        processing_channels: ['pc_zs5fqhybzc2e3jmq3efvybybpq'],
+                        processing_channels: ['pc_axclravnqf5u5ejkweijnp5zc4'],
                     },
                 ],
                 actions: [
@@ -173,7 +223,7 @@ describe('Workflows', () => {
                         type: 'webhook',
                         url: 'https://example.com/webhooks',
                         headers: {
-                            Authorization: '70ed20ff-ba31-4ea3-b3ef-772f2be1cbdf',
+                            Authorization: '<AUTHORIZATION_UUID>',
                         },
                         signature: {
                             method: 'HMACSHA256',

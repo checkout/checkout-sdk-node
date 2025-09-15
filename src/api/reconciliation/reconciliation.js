@@ -30,12 +30,7 @@ export default class Reconciliation {
                 url += `?${queryString}`;
             }
 
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             const res = await response.json;
 
             // In case there is a "next" page, inject it in the response body
@@ -91,9 +86,9 @@ export default class Reconciliation {
                 url += `?${queryString}`;
             }
             const response = await get(
-                this.config.httpClient, 
-                url, 
-                { ...this.config, csv: true }, 
+                this.config.httpClient,
+                url,
+                { ...this.config, csv: true },
                 this.config.sk
             );
             return await response.csv;
@@ -121,12 +116,7 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -175,12 +165,7 @@ export default class Reconciliation {
                 url += `?${queryString}`;
             }
 
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -227,7 +212,12 @@ export default class Reconciliation {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await get(this.config.httpClient, url, { ...this.config, csv: true }, this.config.sk);
+            const response = await get(
+                this.config.httpClient,
+                url,
+                { ...this.config, csv: true },
+                this.config.sk
+            );
             return await response.csv;
         } catch (err) {
             const error = await determineError(err);

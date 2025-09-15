@@ -48,12 +48,7 @@ export default class Klarna {
             ? `${this.config.host}/klarna-external/credit-sessions/${id}`
             : `${this.config.host}/klarna/credit-sessions/${id}`;
         try {
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -74,10 +69,10 @@ export default class Klarna {
             : `${this.config.host}/klarna/orders/${id}/captures`;
         try {
             const response = await post(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk, 
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk,
                 body
             );
             return await response.json;
@@ -100,10 +95,10 @@ export default class Klarna {
             : `${this.config.host}/klarna/orders/${id}/voids`;
         try {
             const response = await post(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk, 
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk,
                 body
             );
             return await response.json;

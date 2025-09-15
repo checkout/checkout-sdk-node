@@ -32,12 +32,7 @@ export default class Disputes {
                     .join('&');
                 url += `?${queryString}`;
             }
-            const response = await get(
-                this.config.httpClient,
-                url,
-                this.config,
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

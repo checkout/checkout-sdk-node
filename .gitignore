@@ -47,3 +47,4 @@ out
 .idea
 
 /dist/
+.tmp.*

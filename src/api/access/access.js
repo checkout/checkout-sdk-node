@@ -20,11 +20,7 @@ export default class Access {
      */
     async request(body) {
         try {
-            const response = await createAccessToken(
-                this.config,
-                this.config.httpClient,
-                body
-            );
+            const response = await createAccessToken(this.config, this.config.httpClient, body);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);
@@ -36,7 +32,7 @@ export default class Access {
      * Update the access details in the config.
      *
      * @param {Object} body Access response body.
-     * @return {void} 
+     * @return {void}
      */
     updateAccessToken(body) {
         this.config.access = {

@@ -3,19 +3,21 @@ import * as ENDPOINTS from './index';
 
 /**
  * Determine the full URL based on the environment and subdomain.
- * 
- * @param {string} environment 
- * @param {object} options 
+ *
+ * @param {string} environment
+ * @param {object} options
  * @returns {string}
  */
 const determineUrl = (environment, options) => {
     const apiUrl = new URL(environment);
 
     if (options && options.subdomain) {
-        const subdomain = options.subdomain;
+        const { subdomain } = options;
         if (typeof subdomain === 'string' && /^[0-9a-z]+$/.test(subdomain)) {
             const { protocol, port, hostname } = apiUrl;
-            return new URL(`${protocol}//${subdomain}.${hostname}${port ? `:${port}` : ''}`).toString().slice(0, -1);
+            return new URL(`${protocol}//${subdomain}.${hostname}${port ? `:${port}` : ''}`)
+                .toString()
+                .slice(0, -1);
         }
     }
 

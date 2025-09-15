@@ -217,12 +217,7 @@ export default class Issuing {
                 body
             );
 
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             throw await determineError(err);
@@ -308,12 +303,7 @@ export default class Issuing {
         try {
             const url = buildQueryParams(`${this.config.host}/issuing/controls`, params);
 
-            const response = await get(
-                this.config.httpClient, 
-                url, 
-                this.config, 
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             throw await determineError(err);

@@ -1,7 +1,6 @@
+import FormData from 'form-data';
 import { determineError } from '../../services/errors';
 import { get, post } from '../../services/http';
-
-import FormData from 'form-data';
 
 /**
  * Class dealing with the /files endpoint

@@ -62,7 +62,6 @@ export class UrlAlreadyRegistered extends Error {
         this.http_code = 409;
         this.name = 'UrlAlreadyRegistered';
         this.body = error;
-
     }
 }
 

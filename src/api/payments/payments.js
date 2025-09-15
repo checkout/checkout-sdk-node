@@ -83,12 +83,7 @@ export default class Payments {
         }
 
         try {
-            const response = await get(
-                this.config.httpClient,
-                url,
-                this.config,
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return response.json;
         } catch (err) {
             throw await determineError(err);
@@ -299,7 +294,7 @@ export default class Payments {
      * @param {Object} [body] Search request body.
      * @return {Promise<Object>} A promise to the void response.
      */
-    async search( body) {
+    async search(body) {
         try {
             const response = await post(
                 this.config.httpClient,
