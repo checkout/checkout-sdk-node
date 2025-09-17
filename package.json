@@ -15,8 +15,7 @@
     "test": "nyc --reporter=html mocha --timeout 300000 'test/**/*.js'",
     "posttest": "nyc report --reporter=json",
     "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch",
-    "build": "babel src --out-dir ./dist --source-maps",
-    "tsc": "tsc"
+    "build": "babel src --out-dir ./dist --source-maps"
   },
   "dependencies": {
     "axios": "^1.12.2",
@@ -25,22 +24,16 @@
   "devDependencies": {
     "@babel/cli": "^7.28.3",
     "@babel/core": "^7.28.4",
-    "@babel/eslint-parser": "^7.28.4",
-    "@babel/eslint-plugin": "^7.27.1",
     "@babel/node": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
     "@types/mocha": "^10.0.10",
     "chai": "^6.0.1",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-chai-friendly": "^1.1.0",
-    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "mocha": "^11.7.2",
-    "mocha-junit-reporter": "^2.2.1",
     "nock": "^14.0.10",
     "nyc": "^17.1.0",
-    "prettier": "^3.6.2",
     "uuid": "^13.0.0"
   },
   "babel": {
