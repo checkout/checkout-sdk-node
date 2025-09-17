@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
-import { setSourceOrDestinationType, validatePayment } from '../../services/validation';
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
+import { setSourceOrDestinationType, validatePayment } from '../../services/validation.js';
 
 const addUtilityParams = (json) => {
     let requiresRedirect = false;

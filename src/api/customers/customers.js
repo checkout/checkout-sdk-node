@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { _delete, get, patch, post } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { _delete, get, patch, post } from '../../services/http.js';
 
 /**
  * Class dealing with the /customers endpoint

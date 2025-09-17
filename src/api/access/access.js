@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { createAccessToken } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { createAccessToken } from '../../services/http.js';
 
 /**
  * Class dealing with the access api

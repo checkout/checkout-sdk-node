@@ -1,6 +1,6 @@
-import { determineError } from '../../services/errors';
-import { _delete, get, patch, post } from '../../services/http';
-import { setInstrumentType } from '../../services/validation';
+import { determineError } from '../../services/errors.js';
+import { _delete, get, patch, post } from '../../services/http.js';
+import { setInstrumentType } from '../../services/validation.js';
 
 /**
  * Class dealing with the /instruments endpoint

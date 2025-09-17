@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
 
 /**
  * Class dealing with the /hosted-payments endpoint

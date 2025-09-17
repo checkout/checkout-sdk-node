@@ -6,9 +6,9 @@ import {
     LIVE_ACCESS_URL,
     REQUEST_ID_HEADER,
     SANDBOX_ACCESS_URL,
-} from '../config';
+} from '../config.js';
 
-const pjson = require('../../package.json');
+import pjson from '../../package.json' assert { type: 'json' };
 
 function buildResponse(config, response) {
     if (config.csv) {

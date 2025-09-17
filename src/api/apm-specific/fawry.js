@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { put } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { put } from '../../services/http.js';
 
 /**
  * Class dealing with the /fawry endpoint

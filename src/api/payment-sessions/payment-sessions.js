@@ -1,6 +1,6 @@
-import { determineError } from '../../services/errors';
-import { post } from '../../services/http';
-import { validatePayment } from '../../services/validation';
+import { determineError } from '../../services/errors.js';
+import { post } from '../../services/http.js';
+import { validatePayment } from '../../services/validation.js';
 
 /**
  * Class dealing with the /payment-sessions endpoint

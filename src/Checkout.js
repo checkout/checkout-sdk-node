@@ -1,5 +1,5 @@
-import * as CONFIG from './config';
-import * as ENDPOINTS from './index';
+import * as CONFIG from './config.js';
+import * as ENDPOINTS from './index.js';
 
 /**
  * Determine the full URL based on the environment and subdomain.

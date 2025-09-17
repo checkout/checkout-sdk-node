@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { _delete, get, patch, post, put } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { _delete, get, patch, post, put } from '../../services/http.js';
 
 /**
  * Create and manage the webhook notifications you receive to keep up to date with

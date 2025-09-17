@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { get } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { get } from '../../services/http.js';
 
 /**
  * Class dealing with the /ideal-external endpoint

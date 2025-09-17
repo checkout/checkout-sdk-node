@@ -1,4 +1,4 @@
-import { Checkout } from '../../src/index';
+import { Checkout } from '../../src/index.js';
 import { expect } from 'chai';
 import nock from 'nock';
 
