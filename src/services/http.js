@@ -8,7 +8,7 @@ import {
     SANDBOX_ACCESS_URL,
 } from '../config.js';
 
-import pjson from '../../package.json' assert { type: 'json' };
+import pjson from '../../package.json' with { type: 'json' };
 
 function buildResponse(config, response) {
     if (config.csv) {

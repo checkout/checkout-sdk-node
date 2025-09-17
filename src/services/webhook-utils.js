@@ -221,7 +221,7 @@ function webhookParsingMiddleware(req, res, next) {
     next();
 }
 
-module.exports = {
+export {
     parseWebhookPayload,
     extractAuthenticationFailedData,
     safeParseWebhook,

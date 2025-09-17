@@ -243,7 +243,7 @@ console.log('2. Works with node-fetch, axios, or native http');
 console.log('3. Handles Unicode issues automatically');
 console.log('4. sanitizeAgainstLogInjection() prevents advanced log attacks');
 
-module.exports = { 
+export { 
     webhookHandler, 
     handleWebhookWithFetch, 
     handleWebhookWithAxios,

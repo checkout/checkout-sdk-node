@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseWebhookPayload, extractAuthenticationFailedData, webhookParsingMiddleware } from '../../src/services/webhook-utils.js';
+import { parseWebhookPayload, extractAuthenticationFailedData, webhookParsingMiddleware, isAuthenticationFailedWebhook } from '../../src/services/webhook-utils.js';
 
 describe('Webhook Utils - Issue #408 Fix', () => {
     const validWebhook = {
@@ -176,8 +176,6 @@ describe('Webhook Utils - Issue #408 Fix', () => {
         });
 
         it('should only clean authentication_failed webhooks', () => {
-            const { isAuthenticationFailedWebhook } = require('../../src/services/webhook-utils.js');
-            
             const authFailedPayload = '{"type":"authentication_failed","data":{}}';
             const paymentPayload = '{"type":"payment_approved","data":{}}';
             
