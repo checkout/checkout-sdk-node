@@ -1,7 +1,4 @@
-import { 
-    BALANCES_LIVE_URL, 
-    BALANCES_SANDBOX_URL 
-} from '../../config';
+import { BALANCES_LIVE_URL, BALANCES_SANDBOX_URL } from '../../config';
 import { determineError } from '../../services/errors';
 import { get } from '../../services/http';
 
@@ -29,12 +26,7 @@ export default class Balances {
             const url = `${
                 this.config.host.includes('sandbox') ? BALANCES_SANDBOX_URL : BALANCES_LIVE_URL
             }/${id}${currency ? `?query=currency:${currency}` : ''}`;
-            const response = await get(
-                this.config.httpClient,
-                url,
-                this.config,
-                this.config.sk
-            );
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             const error = await determineError(err);

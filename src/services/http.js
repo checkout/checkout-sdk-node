@@ -87,10 +87,8 @@ function getResponseAxiosHeaders(response) {
     // Return CKO response headers when available
 
     if (REQUEST_ID_HEADER in response.headers) {
-        const requestId =
-            response.headers[REQUEST_ID_HEADER] || response.headers['request-id'];
-        const version =
-            response.headers[API_VERSION_HEADER] || response.headers.version;
+        const requestId = response.headers[REQUEST_ID_HEADER] || response.headers['request-id'];
+        const version = response.headers[API_VERSION_HEADER] || response.headers.version;
         return {
             'cko-request-id': requestId ? requestId[0] : '',
             'cko-version': version ? version[0] : '',
