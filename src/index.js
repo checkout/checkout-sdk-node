@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 export { default as Payments } from './api/payments/payments.js';
 export { default as Sources } from './api/sources/sources.js';
 export { default as Tokens } from './api/tokens/tokens.js';

@@ -1,4 +1,4 @@
-/* eslint-disable prefer-template */
+ 
 import { ValueError } from './errors.js';
 import {
     CURRENCIES,

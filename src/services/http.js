@@ -1,5 +1,3 @@
-/* eslint-disable no-throw-literal */
-import fetch from 'node-fetch';
 import axios from 'axios';
 import {
     API_VERSION_HEADER,
@@ -67,20 +65,12 @@ function getRequestHeaders(config, request, authHeader, idempotencyKey) {
 }
 
 function getResponseHeaders(response) {
-    // Return CKO response headers when available
-
-    if (REQUEST_ID_HEADER in response.headers.raw()) {
-        const requestId =
-            response.headers.raw()[REQUEST_ID_HEADER] || response.headers.raw()['request-id'];
-        const version =
-            response.headers.raw()[API_VERSION_HEADER] || response.headers.raw().version;
-        return {
-            'cko-request-id': requestId ? requestId[0] : '',
-            'cko-version': version ? version[0] : '',
-        };
-    }
-
-    return {};
+    const requestId = response.headers.get(REQUEST_ID_HEADER) || response.headers.get('request-id');
+    const version = response.headers.get(API_VERSION_HEADER) || response.headers.get('version');
+    return {
+        'cko-request-id': requestId || '',
+        'cko-version': version || '',
+    };
 }
 
 function getResponseAxiosHeaders(response) {
@@ -193,7 +183,7 @@ export const createAccessToken = async (config, httpClient, body) => {
     }
 };
 
-// eslint-disable-next-line consistent-return
+ 
 const httpRequest = async (httpClient, method, path, config, auth, request, idempotencyKey) => {
     let authHeader = null;
 
@@ -210,7 +200,7 @@ const httpRequest = async (httpClient, method, path, config, auth, request, idem
             const access = await createAccessToken(config, httpClient);
             authHeader = `${access.json.token_type} ${access.json.access_token}`;
 
-            // eslint-disable-next-line no-param-reassign
+             
             config.access = {
                 token: access.json.access_token,
                 type: access.json.token_type,
@@ -226,43 +216,51 @@ const httpRequest = async (httpClient, method, path, config, auth, request, idem
 
     switch (httpClient) {
         case 'axios':
-            response = await axios({
-                url: path,
-                method,
-                headers,
-                data: config.formData ? request : JSON.stringify(request),
-                timeout: config.timeout,
-                httpsAgent: config.agent,
-            })
-                .catch((error) => {
-                    if (error.response) {
-                        throw {
-                            status: error.response.status,
-                            json: error.toJSON(),
-                        };
-                    } else if (error.request) {
-                        throw {
-                            request: error.request,
-                            json: error.toJSON(),
-                        };
-                    } else {
-                        throw {
-                            message: error.message,
-                            json: error.toJSON(),
-                        };
-                    }
-                })
-                .then((res) => buildAxiosResponse(config, res));
-            return response;
+            try {
+                response = await axios({
+                    url: path,
+                    method,
+                    headers,
+                    data: config.formData ? request : JSON.stringify(request),
+                    timeout: config.timeout,
+                    httpsAgent: config.agent,
+                });
+                return buildAxiosResponse(config, response);
+            } catch (error) {
+                if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                    const { ApiTimeout } = await import('./errors.js');
+                    throw new ApiTimeout();
+                }
+                if (error.response) {
+                    throw {
+                        status: error.response.status,
+                        json: error.toJSON ? error.toJSON() : error.response.data,
+                    };
+                }
+                if (error.request) {
+                    throw new Error(`request to ${path} failed, reason: ${error.message}`);
+                }
+                throw new Error(`request to ${path} failed, reason: ${error.message}`);
+            }
 
         default:
-            response = await fetch(path, {
+            const fetchOptions = {
                 method,
-                timeout: config.timeout,
-                agent: config.agent,
                 body: config.formData ? request : JSON.stringify(request),
                 headers,
-            });
+            };
+            if (typeof config.agent !== 'undefined') {
+                fetchOptions.agent = config.agent;
+            }
+            try {
+                response = await fetch(path, fetchOptions);
+            } catch (error) {
+                if (error.name === 'AbortError' || error.message?.includes('timeout')) {
+                    const { ApiTimeout } = await import('./errors.js');
+                    throw new ApiTimeout();
+                }
+                throw new Error(`request to ${path} failed, reason: ${error.message}`);
+            }
 
             if (!response.ok) {
                 const json = bodyParser(response);

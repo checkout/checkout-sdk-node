@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable max-classes-per-file */
 /**
  * Error raised for pre-api value validation
  *
@@ -174,8 +172,13 @@ export class ValueError extends Error {
 }
 
 export const determineError = async (err) => {
-    // Fot time outs
-    if (err.type === 'request-timeout') {
+
+    if (
+        err instanceof ApiTimeout ||
+        err?.name === 'ApiTimeout' ||
+        err.type === 'request-timeout' ||
+        (err.json && err.json.code === 'ECONNABORTED')
+    ) {
         return new ApiTimeout();
     }
 
