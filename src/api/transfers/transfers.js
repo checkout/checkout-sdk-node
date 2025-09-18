@@ -26,8 +26,10 @@ export default class Transfers {
      */
     async initiate(body, idempotencyKey) {
         try {
-            const url = `${this.config.host.includes('sandbox') ? TRANSFERS_SANDBOX_URL : TRANSFERS_LIVE_URL
-                }`;
+            const url = `${typeof this.config.host === 'string' &&
+                this.config.host.includes('sandbox')
+                ? TRANSFERS_SANDBOX_URL
+                : TRANSFERS_LIVE_URL}`;
 
             const response = await post(
                 this.config.httpClient,
@@ -53,9 +55,10 @@ export default class Transfers {
      */
     async retrieve(id) {
         try {
-            const url = `${this.config.host.includes('sandbox')
-            ? TRANSFERS_SANDBOX_URL
-            : TRANSFERS_LIVE_URL}/${id}`;
+            const url = `${(typeof this.config.host === 'string' &&
+                this.config.host.includes('sandbox')
+                ? TRANSFERS_SANDBOX_URL
+                : TRANSFERS_LIVE_URL)}/${id}`;
 
             const response = await get(
                 this.config.httpClient,
