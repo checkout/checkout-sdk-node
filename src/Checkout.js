@@ -1,5 +1,5 @@
-import * as CONFIG from './config';
-import * as ENDPOINTS from './index';
+import * as CONFIG from './config.js';
+import * as ENDPOINTS from './index.js';
 
 /**
  * Determine the full URL based on the environment and subdomain.
@@ -58,7 +58,7 @@ const determineHost = (key, options) => {
 
     // Priority 3: MBC or NAS static keys
     if (key.startsWith('Bearer')) {
-        // eslint-disable-next-line no-param-reassign
+         
         key = key.replace('Bearer', '').trim();
     }
     return CONFIG.MBC_LIVE_SECRET_KEY_REGEX.test(key) || CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(key)

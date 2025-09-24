@@ -1,6 +1,6 @@
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
-import { buildQueryParams } from '../../services/utils';
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 /**
  * Class dealing with the forex api

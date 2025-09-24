@@ -3,22 +3,20 @@
  * Handles malformed authentication_failed webhooks with HTTP clients
  */
 
-const { parseWebhookPayload, extractAuthenticationFailedData } = require('../src/services/webhook-utils.js');
-const { sanitizeForLog, sanitizePaymentId, sanitizeError, sanitizeAgainstLogInjection } = require('./utils/security.js');
+import { parseWebhookPayload, extractAuthenticationFailedData } from '../src/services/webhook-utils.js';
+import { sanitizeForLog, sanitizePaymentId, sanitizeError, sanitizeAgainstLogInjection } from './utils/security.js';
+import http from 'http';
 
-// Try to load node-fetch for Node 12 compatibility
-let fetch;
-try {
-    fetch = require('node-fetch');
-} catch (error) {
-    // node-fetch not available, will use simulation
-    console.log(`📝 Note: Install with: npm install node-fetch@2, ${error.message}`);
+// Use native fetch in Node 18+ only
+const fetch = typeof globalThis.fetch === 'function' ? globalThis.fetch : undefined;
+if (!fetch) {
+    console.log('📝 Note: Native fetch is only available in Node 18+. Please upgrade your Node.js version.');
 }
 
 // Try to load axios
 let axios;
 try {
-    axios = require('axios');
+    axios = (await import('axios')).default;
 } catch (error) {
     // axios not available, will use simulation
     console.log(`📝 Note: Install with: npm install axios, ${error.message}`);
@@ -70,15 +68,15 @@ try {
 
 // === HTTP CLIENT EXAMPLES ===
 
-// Example 1: Using with node-fetch (compatible with Node 12+)
+// Example 1: Using with native fetch (compatible with Node 18+)
 async function handleWebhookWithFetch(rawPayload) {
-    console.log('\n🌐 Example: Using with node-fetch');
+    console.log('\n🌐 Example: Using with native fetch');
     
     try {
         if (!fetch) {
-            console.log('📝 Note: Install with: npm install node-fetch@2');
+            console.log('📝 Note: Native fetch is only available in Node 18+. Please upgrade your Node.js version.');
         } else {
-            console.log('📝 node-fetch available for HTTP requests');
+            console.log('📝 Native fetch available for HTTP requests');
         }
         
         // Process webhook payload (main functionality)
@@ -86,7 +84,7 @@ async function handleWebhookWithFetch(rawPayload) {
         const data = extractAuthenticationFailedData(webhook);
         
         console.log('✅ Processed payment:', sanitizePaymentId(data.paymentId));
-        console.log(`   Status: ${fetch ? 'node-fetch available' : 'simulation mode'}`);
+        console.log(`   Status: ${fetch ? 'native fetch available' : 'simulation mode'}`);
         
         return data;
     } catch (error) {
@@ -121,8 +119,6 @@ async function handleWebhookWithAxios(rawPayload) {
 // Example 3: Node.js HTTP server (built-in, no dependencies)
 function createNodeHttpWebhookServer() {
     console.log('\n🌐 Example: Node.js HTTP server');
-    
-    const http = require('http');
     
     const server = http.createServer((req, res) => {
         if (req.method === 'POST' && req.url === '/webhooks/auth-failed') {
@@ -243,7 +239,7 @@ console.log('2. Works with node-fetch, axios, or native http');
 console.log('3. Handles Unicode issues automatically');
 console.log('4. sanitizeAgainstLogInjection() prevents advanced log attacks');
 
-module.exports = { 
+export { 
     webhookHandler, 
     handleWebhookWithFetch, 
     handleWebhookWithAxios,

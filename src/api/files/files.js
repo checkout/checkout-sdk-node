@@ -1,6 +1,7 @@
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
+
 import FormData from 'form-data';
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
 
 /**
  * Class dealing with the /files endpoint

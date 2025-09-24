@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const buildQueryParams = (path, params) => {
     let url = path;
     if (params) {

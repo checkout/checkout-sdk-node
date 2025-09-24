@@ -1,22 +1,23 @@
-/* eslint-disable no-underscore-dangle */
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
-import { setSourceOrDestinationType, validatePayment } from '../../services/validation';
+ 
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
+import { setSourceOrDestinationType, validatePayment } from '../../services/validation.js';
 
 const addUtilityParams = (json) => {
+    if (!json || typeof json !== 'object') return json;
     let requiresRedirect = false;
 
     if (json.destination) {
         requiresRedirect = false;
     } else {
         const isPending = json.status === 'Pending';
-        const hasRedirectUrl = json._links.redirect !== undefined;
+        const hasRedirectUrl = json._links && json._links.redirect !== undefined;
         requiresRedirect = isPending && hasRedirectUrl;
     }
 
     // If the redirection URL exists add it to the response body as 'redirectLink'
     let redirectLink;
-    if (requiresRedirect && json._links.redirect) {
+    if (requiresRedirect && json._links && json._links.redirect) {
         redirectLink = json._links.redirect.href;
     }
     return {
@@ -60,8 +61,7 @@ export default class Payments {
             );
             return addUtilityParams(await response.json);
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -155,8 +155,7 @@ export default class Payments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -182,8 +181,7 @@ export default class Payments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 

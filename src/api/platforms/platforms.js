@@ -1,7 +1,11 @@
+import { determineError } from '../../services/errors.js';
+import { get, patch, post, put } from '../../services/http.js';
+import {
+    PLATFORMS_FILES_LIVE_URL,
+    PLATFORMS_FILES_SANDBOX_URL
+} from '../../config.js';
+
 import FormData from 'form-data';
-import { determineError } from '../../services/errors';
-import { get, patch, post, put } from '../../services/http';
-import { PLATFORMS_FILES_LIVE_URL, PLATFORMS_FILES_SANDBOX_URL } from '../../config';
 
 /**
  * Class dealing with the platforms api
@@ -28,11 +32,10 @@ export default class Platforms {
             form.append('path', path);
             form.append('purpose', purpose);
 
-            const url = `${
-                this.config.host.includes('sandbox')
+            const url = `${this.config.host.includes('sandbox')
                     ? PLATFORMS_FILES_SANDBOX_URL
                     : PLATFORMS_FILES_LIVE_URL
-            }`;
+                }`;
 
             const response = await post(
                 this.config.httpClient,
@@ -335,9 +338,8 @@ export default class Platforms {
      */
     async queryPaymentInstruments(id, status) {
         try {
-            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${
-                status ? `?status=${status}` : ''
-            }`;
+            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${status ? `?status=${status}` : ''
+                }`;
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -430,6 +432,7 @@ export default class Platforms {
      */
     async updateReserveRule(entityId, id, body, ifMatch) {
         try {
+
             const config = {
                 ...this.config,
                 headers: {
@@ -497,4 +500,5 @@ export default class Platforms {
             throw error;
         }
     }
+
 }

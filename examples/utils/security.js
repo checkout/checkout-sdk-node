@@ -617,7 +617,7 @@ const sanitizeAgainstLogInjection = (input) => sanitize(input, {
   redactSensitive: true 
 });
 
-module.exports = {
+export {
   sanitize,
   sanitizeForLog,
   sanitizePaymentId,

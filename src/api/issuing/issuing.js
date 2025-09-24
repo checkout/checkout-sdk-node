@@ -1,6 +1,6 @@
-import { _delete, get, patch, post, put } from '../../services/http';
-import { determineError } from '../../services/errors';
-import { buildQueryParams } from '../../services/utils';
+import { _delete, get, patch, post, put } from '../../services/http.js';
+import { determineError } from '../../services/errors.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 export default class Issuing {
     constructor(config) {

@@ -1,6 +1,6 @@
-import { determineError } from '../../services/errors';
-import { get, post } from '../../services/http';
-import { validatePayment } from '../../services/validation';
+import { determineError } from '../../services/errors.js';
+import { get, post } from '../../services/http.js';
+import { validatePayment } from '../../services/validation.js';
 
 /*
  * Class dealing with the /payment-contexts endpoint

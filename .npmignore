@@ -1,8 +1,34 @@
-./nyc_output
+documentation
+nyc_output
 coverage
+examples
 src
 test
 types
 .DS_Store
 website
 documentation
+# System and IDE files
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and environment
+*.log
+*.env
+npm-debug.log
+
+# Node and package manager
+node_modules/
+package-lock.json
+yarn.lock
+
+# Config files
+.eslintrc*
+.prettierrc*
+.babelrc*
+.editorconfig
+
+# Source maps and TypeScript (if not needed)
+*.ts
+*.map

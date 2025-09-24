@@ -15,7 +15,7 @@ jobs:
       - id: setup-node
         uses: actions/setup-node@v2.5.1
         with:
-          node-version: 12
+          node-version: 18
           registry-url: https://registry.npmjs.org/
       - id: build-and-analyse
         env:

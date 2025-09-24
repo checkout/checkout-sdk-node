@@ -1,5 +1,5 @@
-import { AuthenticationError, UrlAlreadyRegistered, } from '../../src/services/errors';
-import { Checkout } from '../../src/index';
+import { AuthenticationError, UrlAlreadyRegistered, } from '../../src/services/errors.js';
+import { Checkout } from '../../src/index.js';
 import { expect } from 'chai';
 import nock from 'nock';
 import fs from 'fs';

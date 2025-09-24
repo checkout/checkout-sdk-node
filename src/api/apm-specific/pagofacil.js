@@ -1,5 +1,5 @@
-import { determineError } from '../../services/errors';
-import { post } from '../../services/http';
+import { determineError } from '../../services/errors.js';
+import { post } from '../../services/http.js';
 
 /**
  * Class dealing with the /apms/pagofacil endpoint
