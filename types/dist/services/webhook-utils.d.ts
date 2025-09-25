@@ -122,7 +122,7 @@ export function safeParseWebhook(rawPayload: string): SafeParseResult;
  * @param res - Express response object
  * @param next - Express next function
  */
-export function webhookParsingMiddleware(req: WebhookRequest, res: Response, next: NextFunction): void;
+export function webhookParsingMiddleware(req: WebhookRequest, res: Response, next: Function): void;
 
 /**
  * Check if payload is an authentication_failed webhook (for security validation)

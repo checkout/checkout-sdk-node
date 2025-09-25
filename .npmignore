@@ -28,7 +28,3 @@ yarn.lock
 .prettierrc*
 .babelrc*
 .editorconfig
-
-# Source maps and TypeScript (if not needed)
-*.ts
-*.map
