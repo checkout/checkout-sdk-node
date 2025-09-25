@@ -1,6 +1,6 @@
 {
   "name": "checkout-sdk-node",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "Checkout NodeJS SDK API",
   "type": "module",
   "engines": {
