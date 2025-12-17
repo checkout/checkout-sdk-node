@@ -20,6 +20,9 @@ export default class Files {
      *
      * @memberof Files
      * @param {Object} body Files request body.
+     * @param {string|ReadStream} body.file File URL (for remote files) or file path/ReadStream (for local files).
+     * @param {string|ReadStream} [body.path] Alternative property name for local file path/ReadStream.
+     * @param {string} body.purpose Purpose of the file upload. Valid values: 'dispute_evidence', 'additional_document', 'bank_verification', 'identity_verification'.
      * @return {Promise<Object>} A promise to the files response.
      */
     async upload(body) {
@@ -36,7 +39,7 @@ export default class Files {
                 // use the local file
                 form.append('file', body.file || body.path);
             }
-            form.append('purpose', 'dispute_evidence');
+            form.append('purpose', body.purpose);
 
             const response = await post(
                 this.config.httpClient,
