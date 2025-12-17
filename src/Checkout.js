@@ -196,6 +196,7 @@ export default class Checkout {
         this.issuing = new ENDPOINTS.Issuing(this.config);
         this.paymentContexts = new ENDPOINTS.PaymentContexts(this.config);
         this.paymentSessions = new ENDPOINTS.PaymentSessions(this.config);
+        this.paymentSetups = new ENDPOINTS.PaymentSetups(this.config);
         this.forward = new ENDPOINTS.Forward(this.config);
     }
 }
