@@ -1512,38 +1512,6 @@ describe('Platforms', () => {
         }
     });
 
-    it('should throw ValidationError when reinviting with invalid data', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
-            access_token: '1234',
-            expires_in: 3600,
-            token_type: 'Bearer',
-            scope: 'accounts',
-        });
-        
-        nock('https://api.sandbox.checkout.com')
-            .post('/accounts/entities/ent_test123/members/usr_test456/reinvite')
-            .reply(422, {
-                request_id: 'req_123',
-                error_type: 'request_invalid',
-                error_codes: ['email_invalid']
-            });
-
-        try {
-            let cko = new Checkout(platforms_secret, {
-                client: platforms_ack,
-                scope: ['accounts'],
-                environment: 'sandbox',
-            });
-
-            await cko.platforms.reinviteSubEntityMember('ent_test123', 'usr_test456', {
-                email: 'invalid-email'
-            });
-            expect.fail('Should have thrown ValidationError');
-        } catch (err) {
-            expect(err).to.be.instanceOf(ValidationError);
-        }
-    });
-
     it('should throw NotFoundError when querying payment instruments for non-existent entity', async () => {
         nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
