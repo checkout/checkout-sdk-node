@@ -1,4 +1,4 @@
-import { AuthenticationError, UrlAlreadyRegistered, } from '../../src/services/errors.js';
+import { AuthenticationError, UrlAlreadyRegistered, NotFoundError, ValidationError } from '../../src/services/errors.js';
 import { Checkout } from '../../src/index.js';
 import { expect } from 'chai';
 import nock from 'nock';
@@ -1420,6 +1420,189 @@ describe('Platforms', () => {
             }, 'Y3Y9MCZydj0w');
         } catch (err) {
             expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
+    it('should throw NotFoundError when uploading file to non-existent entity', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities/ent_nonexistent/files')
+            .reply(404, {
+                request_id: 'req_123',
+                error_type: 'resource_not_found'
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.uploadAFile('ent_nonexistent', {
+                purpose: 'identification'
+            });
+            expect.fail('Should have thrown NotFoundError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
+    it('should throw NotFoundError when retrieving non-existent file', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .get('/accounts/entities/ent_test123/files/file_nonexistent')
+            .reply(404, {
+                request_id: 'req_123',
+                error_type: 'resource_not_found'
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.retrieveAFile('ent_test123', 'file_nonexistent');
+            expect.fail('Should have thrown NotFoundError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
+    it('should throw NotFoundError when getting members of non-existent entity', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .get('/accounts/entities/ent_nonexistent/members')
+            .reply(404, {
+                request_id: 'req_123',
+                error_type: 'resource_not_found'
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.getSubEntityMembers('ent_nonexistent');
+            expect.fail('Should have thrown NotFoundError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
+    it('should throw ValidationError when reinviting with invalid data', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities/ent_test123/members/usr_test456/reinvite')
+            .reply(422, {
+                request_id: 'req_123',
+                error_type: 'request_invalid',
+                error_codes: ['email_invalid']
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.reinviteSubEntityMember('ent_test123', 'usr_test456', {
+                email: 'invalid-email'
+            });
+            expect.fail('Should have thrown ValidationError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+        }
+    });
+
+    it('should throw NotFoundError when querying payment instruments for non-existent entity', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .get('/accounts/entities/ent_nonexistent/payment-instruments')
+            .reply(404, {
+                request_id: 'req_123',
+                error_type: 'resource_not_found'
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.queryPaymentInstruments('ent_nonexistent');
+            expect.fail('Should have thrown NotFoundError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(NotFoundError);
+        }
+    });
+
+    it('should throw ValidationError when adding invalid reserve rule', async () => {
+        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        
+        nock('https://api.sandbox.checkout.com')
+            .post('/accounts/entities/ent_test123/reserve-rules')
+            .reply(422, {
+                request_id: 'req_123',
+                error_type: 'request_invalid',
+                error_codes: ['percentage_invalid']
+            });
+
+        try {
+            let cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+            });
+
+            await cko.platforms.addReserveRule('ent_test123', {
+                type: 'rolling',
+                percentage: -10  // Invalid negative percentage
+            });
+            expect.fail('Should have thrown ValidationError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
         }
     });
 });

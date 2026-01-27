@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parseWebhookPayload, extractAuthenticationFailedData, webhookParsingMiddleware, isAuthenticationFailedWebhook } from '../../src/services/webhook-utils.js';
+import { parseWebhookPayload, extractAuthenticationFailedData, webhookParsingMiddleware, isAuthenticationFailedWebhook, safeParseWebhook, cleanAuthenticationFailedPayload } from '../../src/services/webhook-utils.js';
 
 describe('Webhook Utils - Issue #408 Fix', () => {
     const validWebhook = {
@@ -181,6 +181,93 @@ describe('Webhook Utils - Issue #408 Fix', () => {
             
             expect(isAuthenticationFailedWebhook(authFailedPayload)).to.be.true;
             expect(isAuthenticationFailedWebhook(paymentPayload)).to.be.false;
+        });
+
+        it('should reject payload larger than 100KB', () => {
+            const largePayload = '{"type":"authentication_failed","data":' + 'x'.repeat(100001) + '}';
+            expect(() => cleanAuthenticationFailedPayload(largePayload))
+                .to.throw('Payload too large for security processing');
+        });
+
+        it('should handle null/undefined payload in cleanAuthenticationFailedPayload', () => {
+            expect(cleanAuthenticationFailedPayload(null)).to.equal(null);
+            expect(cleanAuthenticationFailedPayload(undefined)).to.equal(undefined);
+        });
+
+        it('should validate invalid webhook object structure', () => {
+            expect(() => extractAuthenticationFailedData(null))
+                .to.throw('Invalid webhook object');
+            expect(() => extractAuthenticationFailedData('string'))
+                .to.throw('Invalid webhook object');
+        });
+
+        it('should validate missing data field', () => {
+            const noDataWebhook = {
+                id: 'evt_test',
+                type: 'authentication_failed'
+                // missing data field
+            };
+            expect(() => extractAuthenticationFailedData(noDataWebhook))
+                .to.throw('Invalid webhook data structure');
+        });
+    });
+
+    describe('safeParseWebhook', () => {
+        it('should parse valid JSON and return metadata', () => {
+            const result = safeParseWebhook(JSON.stringify(validWebhook));
+            expect(result.webhook.id).to.equal('evt_test');
+            expect(result.wasTransformed).to.be.false;
+            expect(result.transformationType).to.equal('');
+            expect(result.originalError).to.be.null;
+        });
+
+        it('should parse malformed authentication_failed and track transformation', () => {
+            const malformed = `{
+  "id": "evt_test",
+  "type": "authentication_failed",
+  "created_on": "2025-09-15T07:31:18.241Z",
+�
+{
+    "reason": "Declined",
+    "payment_id": "pay_test"
+  }
+}`;
+            const result = safeParseWebhook(malformed);
+            expect(result.webhook.id).to.equal('evt_test');
+            expect(result.wasTransformed).to.be.true;
+            expect(result.transformationType).to.equal('authentication_failed_unicode_fix');
+            expect(result.originalError).to.not.be.null;
+        });
+
+        it('should throw for malformed non-authentication_failed webhooks', () => {
+            const malformed = '{"type":"payment_approved", invalid}';
+            expect(() => safeParseWebhook(malformed))
+                .to.throw('Unable to parse webhook payload');
+        });
+    });
+
+    describe('webhookParsingMiddleware edge cases', () => {
+        it('should set error on request if parsing fails', () => {
+            const req = { body: '{"type":"payment_approved", invalid json}' };
+            const res = {};
+            let nextCalled = false;
+            const next = () => { nextCalled = true; };
+
+            webhookParsingMiddleware(req, res, next);
+            expect(req.webhookParsingError).to.exist;
+            expect(nextCalled).to.be.true;
+        });
+
+        it('should track transformation in request metadata', () => {
+            const malformed = `{"id":"evt_test","type":"authentication_failed","created_on":"2025-09-15T07:31:18.241Z",\uFFFD{"payment_id":"pay_test"}}`;
+            const req = { body: malformed };
+            const res = {};
+            const next = () => {};
+
+            webhookParsingMiddleware(req, res, next);
+            expect(req.webhookTransformation).to.exist;
+            expect(req.webhookTransformation.applied).to.be.true;
+            expect(req.webhookTransformation.type).to.equal('authentication_failed_unicode_fix');
         });
     });
 });
