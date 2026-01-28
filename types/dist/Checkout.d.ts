@@ -42,6 +42,9 @@ import {
     Workflows,
 } from './index';
 
+import Environment from './Environment';
+import EnvironmentSubdomain from './EnvironmentSubdomain';
+
 export type access = {
     token: string;
     type: string;
@@ -51,14 +54,19 @@ export type access = {
 
 export type config = {
     host: string;
-    sk: string;
-    pk: string;
+    sk?: string;
+    pk?: string;
+    secret?: string;
+    client?: string;
+    scope?: string | Array<string>;
     timeout: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
     access?: access;
-    scope?: Array<string>;
-    client?: string;
+    httpClient?: string;
+    subdomain?: string;
+    environment?: Environment;
+    environmentSubdomain?: EnvironmentSubdomain;
 };
 
 type options = {
@@ -67,15 +75,16 @@ type options = {
     agent?: http.Agent;
     headers?: Record<string, string>;
     httpClient?: string;
+    subdomain?: string;
 } & (staticKeyOptions | oauthOptions);
 
 type staticKeyOptions = {
-    pk: string;
+    pk?: string;
 };
 
 type oauthOptions = {
     client: string;
-    scope?: Array<string>;
+    scope?: string | Array<string>;
     environment?: string;
 };
 

@@ -1,69 +1,60 @@
 import * as CONFIG from './config.js';
 import * as ENDPOINTS from './index.js';
+import Environment from './Environment.js';
+import EnvironmentSubdomain from './EnvironmentSubdomain.js';
 
-/**
- * Determine the full URL based on the environment and subdomain.
- *
- * @param {string} environment
- * @param {object} options
- * @returns {string}
- */
-const determineUrl = (environment, options) => {
-    const apiUrl = new URL(environment);
-
-    if (options && options.subdomain) {
-        const { subdomain } = options;
-        if (typeof subdomain === 'string' && /^[0-9a-z]+$/.test(subdomain)) {
-            const { protocol, port, hostname } = apiUrl;
-            return new URL(`${protocol}//${subdomain}.${hostname}${port ? `:${port}` : ''}`)
-                .toString()
-                .slice(0, -1);
-        }
-    }
-
-    return apiUrl.toString().slice(0, -1);
-};
-
-const determineHost = (key, options) => {
+const setupConfig = (key, options) => {
     // If specified, use the custom host
     if (options && options.host) {
-        return options.host;
+        // For custom hosts, we still need to determine environment from the host
+        const isLive = !options.host.includes('sandbox');
+        const environment = isLive ? Environment.live() : Environment.sandbox();
+        const environmentSubdomain = (options && options.subdomain && EnvironmentSubdomain.isValidSubdomain(options.subdomain)) 
+            ? new EnvironmentSubdomain(environment, options.subdomain) 
+            : null;
+        
+        return {
+            host: options.host,
+            environment,
+            environmentSubdomain
+        };
     }
 
+    // Determine environment first
+    let isLive = false;
+    
     // Priority 1: oAuth environment vars
     if (process.env.CKO_SECRET) {
-        if (
-            (process.env.CKO_ENVIRONMENT &&
-                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'prod') ||
-            (process.env.CKO_ENVIRONMENT &&
-                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'production') ||
-            (process.env.CKO_ENVIRONMENT &&
-                process.env.CKO_ENVIRONMENT.toLowerCase().trim() === 'live')
-        ) {
-            return determineUrl(CONFIG.LIVE_BASE_URL, options);
-        }
-        return determineUrl(CONFIG.SANDBOX_BASE_URL, options);
+        isLive = (process.env.CKO_ENVIRONMENT &&
+            ['prod', 'production', 'live'].includes(process.env.CKO_ENVIRONMENT.toLowerCase().trim()));
     }
-    // Priority 2: oAuth declared vars
-    if (options && options.client) {
-        if (
-            (options.environment && options.environment.toLowerCase().trim() === 'prod') ||
-            (options.environment && options.environment.toLowerCase().trim() === 'production') ||
-            (options.environment && options.environment.toLowerCase().trim() === 'live')
-        ) {
-            return determineUrl(CONFIG.LIVE_BASE_URL, options);
-        }
-        return determineUrl(CONFIG.SANDBOX_BASE_URL, options);
+    // Priority 2: oAuth declared vars  
+    else if (options && options.client) {
+        isLive = (options.environment && 
+            ['prod', 'production', 'live'].includes(options.environment.toLowerCase().trim()));
+    }
+    // Priority 3: MBC or NAS static keys
+    else {
+        const cleanKey = key.startsWith('Bearer') ? key.replace('Bearer', '').trim() : key;
+        isLive = CONFIG.MBC_LIVE_SECRET_KEY_REGEX.test(cleanKey) || CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(cleanKey);
     }
 
-    // Priority 3: MBC or NAS static keys
-    if (key.startsWith('Bearer')) {
-         
-        key = key.replace('Bearer', '').trim();
-    }
-    return CONFIG.MBC_LIVE_SECRET_KEY_REGEX.test(key) || CONFIG.NAS_LIVE_SECRET_KEY_REGEX.test(key)
-        ? determineUrl(CONFIG.LIVE_BASE_URL, options)
-        : determineUrl(CONFIG.SANDBOX_BASE_URL, options);
+    // Create appropriate environment
+    const environment = isLive ? Environment.live() : Environment.sandbox();
+    
+    // Create EnvironmentSubdomain if subdomain provided, otherwise null
+    const environmentSubdomain = (options && options.subdomain && EnvironmentSubdomain.isValidSubdomain(options.subdomain)) 
+        ? new EnvironmentSubdomain(environment, options.subdomain) 
+        : null;
+    
+    // Determine host URL using the appropriate environment/environmentSubdomain
+    const host = environmentSubdomain ? environmentSubdomain.getCheckoutApi() : environment.getCheckoutApi();
+    
+    return {
+        host,
+        environment,
+        environmentSubdomain
+    };
 };
 
 const determineSecretKey = (key) => {
@@ -116,39 +107,51 @@ export default class Checkout {
         let auth;
         if (process.env.CKO_SECRET) {
             // For NAS with environment vars
+            const { host, environment, environmentSubdomain } = setupConfig(null, options);
             auth = {
                 secret: process.env.CKO_SECRET,
                 client: process.env.CKO_CLIENT,
                 scope: process.env.CKO_SCOPE || 'gateway',
-                host: determineHost(null, options),
+                host,
+                environment,
+                environmentSubdomain,
                 access: null,
             };
         } else if (process.env.CKO_SECRET_KEY) {
             // For MBC or NAS with static keys from environment vars
+            const { host, environment, environmentSubdomain } = setupConfig(determineSecretKey(key), options);
             auth = {
                 sk: determineSecretKey(process.env.CKO_SECRET_KEY),
                 pk: determinePublicKey(process.env.CKO_PUBLIC_KEY),
-                host: determineHost(determineSecretKey(key), options),
+                host,
+                environment,
+                environmentSubdomain,
             };
         } else if (options && options.client) {
             // For NAS with declared vars
+            const { host, environment, environmentSubdomain } = setupConfig(null, options);
             auth = {
                 secret: key,
                 pk: determinePublicKey(options),
                 client: options.client,
                 scope: options.scope || 'gateway',
-                host: determineHost(null, options),
+                host,
+                environment,
+                environmentSubdomain,
                 access: null,
             };
         } else {
             // For MBC or NAS with static keys with declared vars
+            const { host, environment, environmentSubdomain } = setupConfig(determineSecretKey(key), options);
             auth = {
                 sk: determineSecretKey(key),
                 pk: determinePublicKey(options),
-                host: determineHost(determineSecretKey(key), options),
+                host,
+                environment,
+                environmentSubdomain,
             };
         }
-
+        
         this.config = {
             ...auth,
             timeout: options && options.timeout ? options.timeout : CONFIG.DEFAULT_TIMEOUT,
@@ -158,6 +161,8 @@ export default class Checkout {
             httpClient: options && options.httpClient ? options.httpClient : undefined,
             subdomain: options && options.subdomain ? options.subdomain : undefined,
         };
+
+        
 
         this.payments = new ENDPOINTS.Payments(this.config);
         this.sources = new ENDPOINTS.Sources(this.config);

@@ -1,6 +1,7 @@
 import nock from "nock";
 import { expect } from "chai";
 import Checkout from "../../src/Checkout.js";
+import { ValidationError, NotFoundError } from "../../src/services/errors.js";
 import { commonRequest, commonResponse, commonSubmitRequest, commonSubmitResponseAccepted, commonSubmitResponseCreated } from "./payment-sessions-common.js";
 
 
@@ -50,6 +51,43 @@ describe('Unit::Payment-Sessions', () => {
 
     expect(paymentContextResponse.id).to.equal('pay_mbabizu24mvu3mela5njyhpit4');
     expect(paymentContextResponse.status).to.equal('Action Required');
+  });
+
+  it('should throw ValidationError when requesting payment session with invalid data', async () => {
+    nock('https://api.sandbox.checkout.com')
+      .post('/payment-sessions')
+      .reply(422, {
+        request_id: 'req_123',
+        error_type: 'request_invalid',
+        error_codes: ['amount_invalid']
+      });
+
+    const cko = new Checkout(SK);
+
+    try {
+      await cko.paymentSessions.request({ ...commonRequest, amount: -100 });
+      expect.fail('Should have thrown ValidationError');
+    } catch (err) {
+      expect(err).to.be.instanceOf(ValidationError);
+    }
+  });
+
+  it('should throw NotFoundError when submitting to non-existent session', async () => {
+    nock('https://api.sandbox.checkout.com')
+      .post('/payment-sessions/pay_nonexistent/submit')
+      .reply(404, {
+        request_id: 'req_123',
+        error_type: 'resource_not_found'
+      });
+
+    const cko = new Checkout(SK);
+
+    try {
+      await cko.paymentSessions.submit('pay_nonexistent', commonSubmitRequest);
+      expect.fail('Should have thrown NotFoundError');
+    } catch (err) {
+      expect(err).to.be.instanceOf(NotFoundError);
+    }
   });
 
 });

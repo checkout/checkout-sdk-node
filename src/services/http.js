@@ -5,6 +5,7 @@ import {
     REQUEST_ID_HEADER,
     SANDBOX_ACCESS_URL,
 } from '../config.js';
+import Environment from '../Environment.js';
 
 import pjson from '../../package.json' with { type: 'json' };
 
@@ -115,12 +116,20 @@ export const createAccessToken = async (config, httpClient, body) => {
         scope: config.scope.join(' '),
     };
 
+    // Use environmentSubdomain if exists, otherwise use environment
+    let accessUrl;
+    if (config.environmentSubdomain) {
+        accessUrl = config.environmentSubdomain.getOAuthAuthorizationApi();
+    } else {
+        accessUrl = config.environment.getOAuthAuthorizationApi();
+    }
+
     let access;
 
     switch (httpClient) {
         case 'axios':
             access = await axios({
-                url: config.host.includes('sandbox') ? SANDBOX_ACCESS_URL : LIVE_ACCESS_URL,
+                url: accessUrl,
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -156,7 +165,7 @@ export const createAccessToken = async (config, httpClient, body) => {
 
         default:
             access = await fetch(
-                config.host.includes('sandbox') ? SANDBOX_ACCESS_URL : LIVE_ACCESS_URL,
+                accessUrl,
                 {
                     method: 'post',
                     timeout: config.timeout,
