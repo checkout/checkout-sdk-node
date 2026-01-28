@@ -35,6 +35,7 @@ export { default as Financial } from './api/financial/financial.js';
 export { default as Issuing } from './api/issuing/issuing.js';
 export { default as PaymentContexts } from './api/payment-contexts/payment-contexts.js';
 export { default as PaymentSessions } from './api/payment-sessions/payment-sessions.js';
+export { default as PaymentSetups } from './api/payment-setups/payment-setups.js';
 export { default as Forward } from './api/forward/forward.js';
 export { default as Checkout } from './Checkout.js';
 export { default } from './Checkout.js';

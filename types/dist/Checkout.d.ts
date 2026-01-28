@@ -27,6 +27,7 @@ import {
     PaymentContexts,
     PaymentLinks,
     PaymentSessions,
+    PaymentSetups,
     Payments,
     Platforms,
     Rapipago,
@@ -124,6 +125,7 @@ export default class Checkout {
     issuing: Issuing;
     paymentContexts: PaymentContexts;
     paymentSessions: PaymentSessions;
+    paymentSetups: PaymentSetups;
     forward: Forward;
     config: config;
 
