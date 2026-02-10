@@ -203,5 +203,9 @@ export default class Checkout {
         this.paymentSessions = new ENDPOINTS.PaymentSessions(this.config);
         this.paymentSetups = new ENDPOINTS.PaymentSetups(this.config);
         this.forward = new ENDPOINTS.Forward(this.config);
+        this.paymentMethods = new ENDPOINTS.PaymentMethods(this.config);
+        this.networkTokens = new ENDPOINTS.NetworkTokens(this.config);
+        this.identities = new ENDPOINTS.Identities(this.config);
+        this.accountUpdater = new ENDPOINTS.AccountUpdater(this.config);
     }
 }

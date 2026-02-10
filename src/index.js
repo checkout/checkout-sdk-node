@@ -37,5 +37,9 @@ export { default as PaymentContexts } from './api/payment-contexts/payment-conte
 export { default as PaymentSessions } from './api/payment-sessions/payment-sessions.js';
 export { default as PaymentSetups } from './api/payment-setups/payment-setups.js';
 export { default as Forward } from './api/forward/forward.js';
+export { default as PaymentMethods } from './api/payment-methods/payment-methods.js';
+export { default as NetworkTokens } from './api/network-tokens/network-tokens.js';
+export { default as Identities } from './api/identities/identities.js';
+export { default as AccountUpdater } from './api/account-updater/account-updater.js';
 export { default as Checkout } from './Checkout.js';
 export { default } from './Checkout.js';
