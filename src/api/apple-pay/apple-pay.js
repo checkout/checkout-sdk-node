@@ -29,8 +29,7 @@ export default class ApplePay {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -49,8 +48,32 @@ export default class ApplePay {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Enroll a domain to the Apple Pay Service
+     *
+     * @param {Object} body Apple Pay enrollment request body.
+     * @return {Promise<void>} A promise that resolves when enrollment is successful (204 No Content).
+     */
+    async enroll(body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/applepay/enrollments`,
+                this.config,
+                this.config.pk,
+                body
+            );
+            // 204 No Content - return undefined
+            if (response.status === 204) {
+                return undefined;
+            }
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
         }
     }
 }

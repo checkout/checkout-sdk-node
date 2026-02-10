@@ -90,4 +90,83 @@ describe('Unit::Payment-Sessions', () => {
     }
   });
 
+  it('should complete a payment session (create and submit)', async () => {
+    nock('https://api.sandbox.checkout.com')
+      .post('/payment-sessions/complete')
+      .reply(201, {
+        id: 'pay_mbabizu24mvu3mela5njyhpit4',
+        status: 'Approved',
+        type: 'card',
+        amount: 1000,
+        currency: 'GBP',
+        approved: true,
+      });
+
+    const cko = new Checkout(SK);
+
+    const paymentResponse = await cko.paymentSessions.complete({
+      amount: 1000,
+      currency: 'GBP',
+      payment_method: {
+        type: 'card',
+        number: '4242424242424242',
+        expiry_month: 12,
+        expiry_year: 2025,
+        cvv: '100',
+      },
+    });
+
+    expect(paymentResponse.id).to.equal('pay_mbabizu24mvu3mela5njyhpit4');
+    expect(paymentResponse.status).to.equal('Approved');
+  });
+
+  it('should complete and accept a payment session (202)', async () => {
+    nock('https://api.sandbox.checkout.com')
+      .post('/payment-sessions/complete')
+      .reply(202, {
+        id: 'pay_mbabizu24mvu3mela5njyhpit4',
+        status: 'Pending',
+        _links: {
+          redirect: {
+            href: 'https://example.com/redirect',
+          },
+        },
+      });
+
+    const cko = new Checkout(SK);
+
+    const paymentResponse = await cko.paymentSessions.complete({
+      amount: 1000,
+      currency: 'GBP',
+      payment_method: {
+        type: 'alipay_cn',
+      },
+    });
+
+    expect(paymentResponse.id).to.equal('pay_mbabizu24mvu3mela5njyhpit4');
+    expect(paymentResponse.status).to.equal('Pending');
+  });
+
+  it('should throw ValidationError when completing payment session with invalid data', async () => {
+    nock('https://api.sandbox.checkout.com')
+      .post('/payment-sessions/complete')
+      .reply(422, {
+        request_id: 'req_123',
+        error_type: 'request_invalid',
+        error_codes: ['amount_invalid'],
+      });
+
+    const cko = new Checkout(SK);
+
+    try {
+      await cko.paymentSessions.complete({
+        amount: -100,
+        currency: 'GBP',
+      });
+      expect.fail('Should have thrown ValidationError');
+    } catch (err) {
+      expect(err).to.be.instanceOf(ValidationError);
+    }
+  });
+
 });

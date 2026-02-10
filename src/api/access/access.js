@@ -23,8 +23,7 @@ export default class Access {
             const response = await createAccessToken(this.config, this.config.httpClient, body);
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 

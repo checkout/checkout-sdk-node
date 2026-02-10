@@ -50,8 +50,7 @@ export default class Files {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -72,8 +71,7 @@ export default class Files {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }
@@ -83,7 +81,7 @@ const isUrl = (string) => {
 
     try {
         url = new URL(string);
-    } catch (_) {
+    } catch {
         return false;
     }
 

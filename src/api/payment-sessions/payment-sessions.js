@@ -59,4 +59,29 @@ export default class PaymentSessions {
             throw await determineError(error);
         }
     }
+
+    /**
+     * Request a Payment Session with Payment.
+     * Create a payment session and submit a payment attempt for it.
+     *
+     * @memberof PaymentSessions
+     * @param {object} body PaymentSessions Request body.
+     * @return {Promise<object>} A promise to payment response (201 processed or 202 action required).
+     */
+    async complete(body) {
+        try {
+            validatePayment(body);
+
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/payment-sessions/complete`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
 }

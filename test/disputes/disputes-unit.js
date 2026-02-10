@@ -765,4 +765,58 @@ describe('Disputes', () => {
         }
     });
 
+    it('should submit arbitration evidence for dispute', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration')
+            .reply(204);
+
+        const cko = new Checkout(SK);
+
+        const result = await cko.disputes.submitArbitrationEvidence('dsp_3dc29c89ce075g46136d');
+        expect(result).to.be.undefined;
+    });
+
+    it('should throw AuthenticationError when submitting arbitration evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .post('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration')
+            .reply(401);
+
+        const cko = new Checkout(SK);
+
+        try {
+            await cko.disputes.submitArbitrationEvidence('dsp_3dc29c89ce075g46136d');
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
+    it('should get compiled submitted arbitration evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration/submitted')
+            .reply(200, {
+                file_id: 'file_6lbss42ezvoufcb2beo76rvwly',
+            });
+
+        const cko = new Checkout(SK);
+
+        const evidence = await cko.disputes.getCompiledSubmittedArbitrationEvidence(
+            'dsp_3dc29c89ce075g46136d'
+        );
+        expect(evidence.file_id).to.equal('file_6lbss42ezvoufcb2beo76rvwly');
+    });
+
+    it('should throw AuthenticationError when getting compiled submitted arbitration evidence', async () => {
+        nock('https://api.sandbox.checkout.com')
+            .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration/submitted')
+            .reply(401);
+
+        const cko = new Checkout(SK);
+
+        try {
+            await cko.disputes.getCompiledSubmittedArbitrationEvidence('dsp_3dc29c89ce075g46136d');
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
+
 });

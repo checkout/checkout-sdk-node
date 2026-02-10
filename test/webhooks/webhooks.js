@@ -895,16 +895,12 @@ describe('Webhook Event Processing', () => {
 
         // Step 5: Simulate webhook endpoint processing with our fix
         function simulateWebhookEndpoint(rawPayload) {
-            console.log('🔄 Webhook endpoint received payload...');
-            
             try {
                 // This would normally fail with standard JSON.parse due to the � character
                 const webhook = parseWebhookPayload(rawPayload);
-                console.log('✅ Successfully parsed malformed webhook payload');
                 
                 if (webhook.type === 'authentication_failed') {
                     const authData = extractAuthenticationFailedData(webhook);
-                    console.log('✅ Successfully extracted authentication data');
                     
                     // Simulate business logic processing
                     const processingResult = {
@@ -925,7 +921,6 @@ describe('Webhook Event Processing', () => {
                         ]
                     };
                     
-                    console.log('Business logic processed successfully');
                     return processingResult;
                 }
                 
@@ -983,7 +978,5 @@ describe('Webhook Event Processing', () => {
         const workflowDetails = await cko.workflows.get('wfl_auth_failed_integration');
         expect(workflowDetails.active).to.be.true;
         expect(workflowDetails.conditions[0].events.gateway).to.include('authentication_failed');
-
-        console.log('Complete integration test passed! The workflow for authentication_failed events works correctly even with malformed webhook payloads.');
     });
 });

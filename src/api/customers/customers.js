@@ -30,8 +30,7 @@ export default class Customers {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -52,8 +51,7 @@ export default class Customers {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -76,8 +74,7 @@ export default class Customers {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -99,8 +96,7 @@ export default class Customers {
 
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }

@@ -35,8 +35,7 @@ export default class Disputes {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -57,8 +56,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -79,8 +77,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -109,8 +106,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -131,8 +127,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -155,8 +150,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -179,8 +173,7 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -202,8 +195,57 @@ export default class Disputes {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Submit dispute arbitration evidence.
+     * Submits the previously provided arbitration evidence to the scheme.
+     * You cannot amend evidence after you submit with this endpoint. Ensure you have provided all of the required information.
+     *
+     * @memberof Disputes
+     * @param {string} disputeId Dispute id.
+     * @return {Promise<void>} A promise that resolves when evidence is submitted successfully (204 No Content).
+     */
+    async submitArbitrationEvidence(disputeId) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/disputes/${disputeId}/evidence/arbitration`,
+                this.config,
+                this.config.sk
+            );
+            // 204 No Content - return undefined
+            if (response.status === 204) {
+                return undefined;
+            }
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Get dispute submitted arbitration evidence.
+     * Retrieves the unique identifier of the PDF file containing all the evidence submitted to escalate the dispute to arbitration.
+     * To retrieve the file's download link, call the GET /files/{file_id} endpoint with the returned file ID.
+     *
+     * @memberof Disputes
+     * @param {string} disputeId Dispute id.
+     * @return {Promise<Object>} A promise to the compiled submitted arbitration evidence response.
+     */
+    async getCompiledSubmittedArbitrationEvidence(disputeId) {
+        try {
+            const response = await get(
+                this.config.httpClient,
+                `${this.config.host}/disputes/${disputeId}/evidence/arbitration/submitted`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
         }
     }
 }

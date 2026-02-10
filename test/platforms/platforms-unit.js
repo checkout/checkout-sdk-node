@@ -1573,4 +1573,122 @@ describe('Platforms', () => {
             expect(err).to.be.instanceOf(ValidationError);
         }
     });
+
+    describe('Reserve Rules - Extended', () => {
+        it('should get a reserve rule', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/accounts/entities/ent_123/reserve-rules/rsr_123')
+                .reply(200, {
+                    id: "rsr_123",
+                    entity_id: "ent_123",
+                    reserve_amount: 1000
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.getReserveRuleDetails("ent_123", "rsr_123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("rsr_123");
+        });
+
+        it('should update a reserve rule', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .put('/accounts/entities/ent_123/reserve-rules/rsr_123')
+                .reply(200, {
+                    id: "rsr_123",
+                    reserve_amount: 2000
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.updateReserveRule("ent_123", "rsr_123", {
+                reserve_amount: 2000
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.reserve_amount).to.equal(2000);
+        });
+    });
+
+    describe('Payout Schedules', () => {
+        it('should get payout schedule', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/accounts/entities/ent_123/payout-schedules')
+                .reply(200, {
+                    entity_id: "ent_123",
+                    frequency: "daily"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.retrieveSubEntityPayoutSchedule("ent_123");
+
+            expect(response).to.not.be.null;
+            expect(response.frequency).to.equal("daily");
+        });
+
+        it('should update payout schedule', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .put('/accounts/entities/ent_123/payout-schedules')
+                .reply(200, {
+                    entity_id: "ent_123",
+                    frequency: "weekly"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.updateSubEntityPayoutSchedule("ent_123", {
+                frequency: "weekly"
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.frequency).to.equal("weekly");
+        });
+    });
+
+    describe('Members', () => {
+        it('should get sub entity members', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/accounts/entities/ent_123/members')
+                .reply(200, {
+                    data: [
+                        {
+                            user_id: "usr_123",
+                            email: "user@example.com"
+                        }
+                    ]
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.getSubEntityMembers("ent_123");
+
+            expect(response).to.not.be.null;
+            expect(response.data).to.be.an('array');
+        });
+
+        it('should reinvite sub entity member', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .put('/accounts/entities/ent_123/members/usr_123')
+                .reply(200);
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.reinviteSubEntityMember("ent_123", "usr_123");
+
+            expect(response).to.not.be.null;
+        });
+    });
+
+    describe('Files', () => {
+        it('should retrieve a file from entity', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/accounts/entities/ent_123/files/file_123')
+                .reply(200, {
+                    id: "file_123",
+                    filename: "document.pdf"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.platforms.retrieveAFile("ent_123", "file_123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("file_123");
+        });
+    });
 });

@@ -1,5 +1,9 @@
+import {
+    FORWARD_LIVE_URL,
+    FORWARD_SANDBOX_URL
+} from '../../config.js';
 import { determineError } from '../../services/errors.js';
-import { get, post } from '../../services/http.js';
+import { _delete, get, patch, post } from '../../services/http.js';
 
 /**
  * Class dealing with the /forward endpoint
@@ -25,15 +29,14 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/forward`,
+                this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL,
                 this.config,
                 this.config.sk,
                 body
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -49,14 +52,119 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/forward/${id}`,
+                `${
+                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
+                }/${id}`,
                 this.config,
                 this.config.sk
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Create a new secret with a plaintext value.
+     * 
+     * Validation Rules:
+     * - name: 1-64 characters, alphanumeric + underscore
+     * - value: max 8KB
+     * - entity_id (optional): when provided, secret is scoped to this entity
+     *
+     * Create secret
+     * @param {Object} body Secret creation body with name, value, and optional entity_id
+     * @return {Promise<Object>} A promise to the secret metadata
+     */
+    async createSecret(body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${
+                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
+                }/secrets`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Returns metadata for secrets scoped for client_id.
+     *
+     * List secrets
+     * @return {Promise<Object>} A promise to the list of secrets metadata
+     */
+    async listSecrets() {
+        try {
+            const response = await get(
+                this.config.httpClient,
+                `${
+                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
+                }/secrets`,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Update an existing secret. After updating, the version is automatically incremented.
+     * 
+     * Validation Rules:
+     * - Only value and entity_id can be updated
+     * - value: max 8KB
+     *
+     * Update secret
+     * @param {string} name The secret name
+     * @param {Object} body Update body with value and/or entity_id
+     * @return {Promise<Object>} A promise to the updated secret metadata with incremented version
+     */
+    async updateSecret(name, body) {
+        try {
+            const response = await patch(
+                this.config.httpClient,
+                `${
+                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
+                }/secrets/${name}`,
+                this.config,
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Permanently delete a secret by name.
+     *
+     * Delete secret
+     * @param {string} name The secret name to delete
+     * @return {Promise<Object>} A promise to the deletion response
+     */
+    async deleteSecret(name) {
+        try {
+            const response = await _delete(
+                this.config.httpClient,
+                `${
+                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
+                }/secrets/${name}`,
+                this.config,
+                this.config.sk
+            );
+            // DELETE typically returns 204 with no content, so return undefined
+            return response.status === 204 ? undefined : await response.json;
+        } catch (err) {
+            throw await determineError(err);
         }
     }
 }

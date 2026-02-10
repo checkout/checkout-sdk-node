@@ -69,4 +69,36 @@ describe('Apple Pay', () => {
             expect(err).to.be.instanceOf(AuthenticationError);
         }
     });
+
+    it('should enroll a merchant for Apple Pay', async () => {
+        nock('https://api.sandbox.checkout.com').post('/applepay/enrollments').reply(204);
+
+        let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
+            pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+        });
+
+        const result = await cko.applePay.enroll({
+            apple_merchant_id: 'merchant.com.example',
+            display_name: 'Example Merchant',
+        });
+
+        expect(result).to.be.undefined;
+    });
+
+    it('should throw AuthenticationError enrolling merchant', async () => {
+        nock('https://api.sandbox.checkout.com').post('/applepay/enrollments').reply(401);
+
+        try {
+            let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
+                pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+            });
+
+            const result = await cko.applePay.enroll({
+                apple_merchant_id: 'merchant.com.example',
+                display_name: 'Example Merchant',
+            });
+        } catch (err) {
+            expect(err).to.be.instanceOf(AuthenticationError);
+        }
+    });
 });

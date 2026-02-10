@@ -19,6 +19,22 @@ export default class Platforms {
     }
 
     /**
+     * Creates a config with Accept header required for /accounts/entities endpoints
+     * @private
+     * @param {string} [schemaVersion='3.0'] - The schema version (1.0, 2.0, or 3.0)
+     * @returns {Object} Config with Accept header
+     */
+    _getConfigWithAcceptHeader(schemaVersion = '3.0') {
+        return {
+            ...this.config,
+            headers: {
+                ...(this.config.headers || {}),
+                Accept: `application/json;schema_version=${schemaVersion}`
+            }
+        };
+    }
+
+    /**
      * Our Platforms solution provides an easy way to upload identity documentation required for full due diligence.
      *
      * @memberof Platforms
@@ -46,8 +62,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -59,21 +74,21 @@ export default class Platforms {
      *
      * @memberof Platforms
      * @param {Object} body Platforms request body.
+     * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response.
      */
-    async onboardSubEntity(body) {
+    async onboardSubEntity(body, schemaVersion) {
         try {
             const response = await post(
                 this.config.httpClient,
                 `${this.config.host}/accounts/entities`,
-                this.config,
+                this._getConfigWithAcceptHeader(schemaVersion),
                 this.config.sk,
                 body
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -99,8 +114,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -122,8 +136,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -148,8 +161,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -178,8 +190,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -188,20 +199,20 @@ export default class Platforms {
      *
      * @memberof Platforms
      * @param {string} id Sub-entity id.
+     * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response.
      */
-    async getSubEntityDetails(id) {
+    async getSubEntityDetails(id, schemaVersion) {
         try {
             const response = await get(
                 this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}`,
-                this.config,
+                this._getConfigWithAcceptHeader(schemaVersion),
                 this.config.sk
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -212,21 +223,21 @@ export default class Platforms {
      * @memberof Platforms
      * @param {string} id Sub-entity id.
      * @param {Object} body Platforms request body.
+     * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response.
      */
-    async updateSubEntityDetails(id, body) {
+    async updateSubEntityDetails(id, body, schemaVersion) {
         try {
             const response = await put(
                 this.config.httpClient,
                 `${this.config.host}/accounts/entities/${id}`,
-                this.config,
+                this._getConfigWithAcceptHeader(schemaVersion),
                 this.config.sk,
                 body
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -248,8 +259,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -273,8 +283,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -298,8 +307,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -322,8 +330,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -344,8 +351,7 @@ export default class Platforms {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -367,8 +373,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -392,8 +397,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -415,8 +419,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -432,11 +435,10 @@ export default class Platforms {
      */
     async updateReserveRule(entityId, id, body, ifMatch) {
         try {
-
             const config = {
                 ...this.config,
                 headers: {
-                    ...this.config.headers,
+                    ...(this.config.headers || {}),
                     'If-Match': ifMatch,
                 },
             };
@@ -450,8 +452,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -474,8 +475,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -496,8 +496,7 @@ export default class Platforms {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
