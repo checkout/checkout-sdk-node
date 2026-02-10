@@ -35,14 +35,13 @@ The official Node.js SDK for [Checkout.com](https://www.checkout.com) payment ga
 - [Error Handling](#interrobang-error-handling)
 - [Testing](#white_check_mark-testing)
 - [Documentation](#book-examples-of-usage)
-- [Contributing](#handshake-contributing)
 
 ## Features
 
 - ✅ **Full API Coverage** - Support for all Checkout.com API endpoints
 - ✅ **TypeScript Support** - Includes TypeScript definitions
 - ✅ **Dual Authentication** - API Keys and OAuth/Access Credentials
-- ✅ **High Test Coverage** - 97.95% code coverage with 813+ tests
+- ✅ **High Test Coverage** - 97.95% code coverage with 816 tests
 - ✅ **Modern Node.js** - Built for Node.js 18+
 - ✅ **Flexible HTTP Client** - Use native fetch or axios
 - ✅ **Promise-based** - Async/await support
@@ -445,10 +444,10 @@ Here you have all the possible SDK specific errors:
 
 | error.name           | error.http_code | error.body              |
 | -------------------- | --------------- | ----------------------- |
-| AuthenticationError  | 401             | undefined               |
-| ActionNotAllowed     | 403             | undefined               |
+| AuthenticationError  | 401             | object                  |
+| ActionNotAllowed     | 403             | object                  |
 | UrlAlreadyRegistered | 409             | undefined               |
-| NotFoundError        | 404             | undefined               |
+| NotFoundError        | 404             | object                  |
 | BadGateway           | 502             | undefined               |
 | ValidationError      | 422             | object                  |
 | TooManyRequestsError | 429             | object/undefined        |
@@ -457,7 +456,7 @@ Here you have all the possible SDK specific errors:
 
 # :white_check_mark: Testing
 
-The SDK comes with comprehensive test coverage (97.95% with 813+ tests).
+The SDK comes with comprehensive test coverage (97.95% with 816 tests).
 
 ## Running Tests
 
@@ -484,46 +483,13 @@ open coverage/index.html
 # :book: Examples of usage
 
 You can see examples of how to use the SDK for every endpoint documented in our  [API Reference](https://api-reference.checkout.com/). All you have to do is to navigate to the endpoint you want to use, and select "Node" for the example on the right side.
-> NOTE: If you use access credentials (ack_XXXX) the link to the API reference relevant to you will be shared by your Solutions Engineers. 
-
-# :handshake: Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Add tests for your changes
-5. Run tests and ensure coverage remains high (`npm test`)
-6. Commit your changes (`git commit -m 'Add amazing feature'`)
-7. Push to the branch (`git push origin feature/amazing-feature`)
-8. Open a Pull Request
-
-### Development Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/checkout/checkout-sdk-node.git
-cd checkout-sdk-node
-
-# Install dependencies
-npm install
-
-# Run tests
-npm test
-
-# Build the project
-npm run build
-
-# Run linter
-npm run lint
-```
-
-# :eyeglasses: Try it on RunKit
-
-You can try the SDK [here](https://npm.runkit.com/checkout-sdk-node).
+> NOTE: If you use access credentials (ack_XXXX) the link to the API reference relevant to you will be shared by your Solutions Engineers.
 
 ---
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
 ## License
 
