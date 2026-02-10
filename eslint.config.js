@@ -8,13 +8,14 @@ export default [
       "examples/",
       "test/",
       "node_modules/",
-      "types/"
+      "types/",
+      "src/services/http.js"
     ],
   },
   {
     files: ["src/**/*.js"],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2024,
       sourceType: "module",
       globals: {
         URL: "readonly",
@@ -25,6 +26,13 @@ export default [
       }
     },
     rules: {
+      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "no-console": "off",
+      "prefer-const": "error",
+      "no-var": "error",
+      "eqeqeq": ["error", "always", { "null": "ignore" }],
+      "no-throw-literal": "error",
+      "prefer-promise-reject-errors": "error"
     }
   },
   prettier
