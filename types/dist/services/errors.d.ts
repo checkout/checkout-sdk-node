@@ -17,8 +17,9 @@ export class ApiTimeout extends Error {
  * @extends {Error}
  */
 export class AuthenticationError extends Error {
-    constructor(message: any);
+    constructor(error: any, message?: string);
     http_code: number;
+    body: any;
 }
 /**
  * ActionNotAllowed
@@ -28,7 +29,9 @@ export class AuthenticationError extends Error {
  * @extends {Error}
  */
 export class ActionNotAllowed extends Error {
+    constructor(error: any, message?: string);
     http_code: number;
+    body: any;
 }
 /**
  * UrlAlreadyRegistered
@@ -48,7 +51,9 @@ export class UrlAlreadyRegistered extends Error {
  * @extends {Error}
  */
 export class NotFoundError extends Error {
+    constructor(error: any, message?: string);
     http_code: number;
+    body: any;
 }
 /**
  * UnprocessableError
