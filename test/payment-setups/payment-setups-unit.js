@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import nock from 'nock';
 
 describe('Unit::Payment-Setups', () => {
-    describe('ConfirmAPaymentSetup response 201', () => {
-        it('should match response schema 1', async () => {
+    describe('Confirm payment setup - Success (201)', () => {
+        it('should return approved payment with valid response structure', async () => {
             // Arrange
             const response = {
               id: 'pay_mbabizu24mvu3mela5njyhpit4',
@@ -106,8 +106,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('ConfirmAPaymentSetup response 400', () => {
-        it('should match response schema 2', async () => {
+    describe('Confirm payment setup - Bad Request (400)', () => {
+        it('should throw ValidationError for malformed request', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -136,8 +136,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('ConfirmAPaymentSetup response 401', () => {
-        it('should match response schema 3', async () => {
+    describe('Confirm payment setup - Unauthorized (401)', () => {
+        it('should throw AuthenticationError for invalid credentials', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -168,8 +168,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('ConfirmAPaymentSetup response 403', () => {
-        it('should match response schema 4', async () => {
+    describe('Confirm payment setup - Forbidden (403)', () => {
+        it('should throw ActionNotAllowed for insufficient permissions', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -198,8 +198,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('ConfirmAPaymentSetup response 422', () => {
-        it('should match response schema 5', async () => {
+    describe('Confirm payment setup - Validation Error (422)', () => {
+        it('should throw ValidationError for invalid payment data', async () => {
             // Arrange
             var err = null;
             const response = {
@@ -235,8 +235,8 @@ describe('Unit::Payment-Setups', () => {
 
     });
 
-    describe('CreateAPaymentSetup response 200', () => {
-        it('should match response schema 1', async () => {
+    describe('Create payment setup - Success (200)', () => {
+        it('should create payment setup with payment method options', async () => {
             // Arrange
             const response = {
               processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
@@ -650,8 +650,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('CreateAPaymentSetup response 400', () => {
-        it('should match response schema 2', async () => {
+    describe('Create payment setup - Bad Request (400)', () => {
+        it('should throw ValidationError for malformed request', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -858,8 +858,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('CreateAPaymentSetup response 401', () => {
-        it('should match response schema 3', async () => {
+    describe('Create payment setup - Unauthorized (401)', () => {
+        it('should throw AuthenticationError for invalid credentials', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -1066,8 +1066,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('CreateAPaymentSetup response 403', () => {
-        it('should match response schema 4', async () => {
+    describe('Create payment setup - Forbidden (403)', () => {
+        it('should throw ActionNotAllowed for insufficient permissions', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -1274,8 +1274,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('CreateAPaymentSetup response 422', () => {
-        it('should match response schema 5', async () => {
+    describe('Create payment setup - Validation Error (422)', () => {
+        it('should throw ValidationError for invalid payment data', async () => {
             // Arrange
             var err = null;
             const response = {
@@ -1489,8 +1489,8 @@ describe('Unit::Payment-Setups', () => {
 
     });
 
-    describe('GetAPaymentSetup response 200', () => {
-        it('should match response schema 1', async () => {
+    describe('Get payment setup - Success (200)', () => {
+        it('should return payment setup details with complete data', async () => {
             // Arrange
             const response = {
               id: 'string',
@@ -1726,8 +1726,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('GetAPaymentSetup response 401', () => {
-        it('should match response schema 2', async () => {
+    describe('Get payment setup - Unauthorized (401)', () => {
+        it('should throw AuthenticationError for invalid credentials', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -1754,8 +1754,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('GetAPaymentSetup response 403', () => {
-        it('should match response schema 3', async () => {
+    describe('Get payment setup - Forbidden (403)', () => {
+        it('should throw ActionNotAllowed for insufficient permissions', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -1783,8 +1783,8 @@ describe('Unit::Payment-Setups', () => {
 
     });
 
-    describe('UpdateAPaymentSetup response 200', () => {
-        it('should match response schema 1', async () => {
+    describe('Update payment setup - Success (200)', () => {
+        it('should update payment setup with new configuration', async () => {
             // Arrange
             const response = {
               id: 'string',
@@ -2200,8 +2200,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('UpdateAPaymentSetup response 400', () => {
-        it('should match response schema 2', async () => {
+    describe('Update payment setup - Bad Request (400)', () => {
+        it('should throw ValidationError for malformed request', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -2409,8 +2409,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('UpdateAPaymentSetup response 401', () => {
-        it('should match response schema 3', async () => {
+    describe('Update payment setup - Unauthorized (401)', () => {
+        it('should throw AuthenticationError for invalid credentials', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -2618,8 +2618,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('UpdateAPaymentSetup response 403', () => {
-        it('should match response schema 4', async () => {
+    describe('Update payment setup - Forbidden (403)', () => {
+        it('should throw ActionNotAllowed for insufficient permissions', async () => {
             // Arrange
             var err = null;
             const response = {};
@@ -2827,8 +2827,8 @@ describe('Unit::Payment-Setups', () => {
         });
 
     });
-    describe('UpdateAPaymentSetup response 422', () => {
-        it('should match response schema 5', async () => {
+    describe('Update payment setup - Validation Error (422)', () => {
+        it('should throw ValidationError for invalid payment data', async () => {
             // Arrange
             var err = null;
             const response = {
@@ -3041,5 +3041,22 @@ describe('Unit::Payment-Setups', () => {
             expect(err).to.be.instanceOf(ValidationError);
         });
 
+    });
+
+    describe('Confirm payment setup - End-to-end flow', () => {
+        it('should successfully confirm payment setup with payment method option', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/payments/setups/psu_abc123/confirm/pmo_abc123')
+                .reply(200, {
+                    id: "psu_abc123",
+                    status: "confirmed"
+                });
+
+            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+            const response = await cko.paymentSetups.confirmAPaymentSetup("psu_abc123", "pmo_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.status).to.equal("confirmed");
+        });
     });
 });

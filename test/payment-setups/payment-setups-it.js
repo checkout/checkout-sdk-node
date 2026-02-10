@@ -147,9 +147,6 @@ describe('Integration::Payment-Setups', () => {
           expect(response.id).not.to.be.null;
           expect(response.status).not.to.be.null;
           expect(response.approved).to.be.a('boolean');
-        } else {
-          // If no payment method options available, skip this test
-          console.log('Skipping confirm test - no payment method options available');
         }
       } catch (error) {
         // Payment setups might not be fully configured in test environment
