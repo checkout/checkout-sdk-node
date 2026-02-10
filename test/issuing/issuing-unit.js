@@ -187,6 +187,42 @@ describe('Unit::Issuing', () => {
             }
         });
 
+        it('should update a cardholder', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .patch('/issuing/cardholders/crh_d3ozhf43pcq2xbldn2g45qnb44')
+                .reply(200, {
+                    id: 'crh_d3ozhf43pcq2xbldn2g45qnb44',
+                    type: "individual",
+                    status: "active",
+                    reference: "X-123456-N11-UPDATED",
+                    last_modified_date: "2019-09-10T10:11:12Z"
+                });
+
+            const cko = new Checkout(SK);
+
+            const cardholderResponse = await cko.issuing.updateCardholder('crh_d3ozhf43pcq2xbldn2g45qnb44', {
+                reference: "X-123456-N11-UPDATED",
+                email: "john.kennedy.updated@myemaildomain.com"
+            });
+
+            expect(cardholderResponse.id).to.equal("crh_d3ozhf43pcq2xbldn2g45qnb44");
+            expect(cardholderResponse.reference).to.equal("X-123456-N11-UPDATED");
+        });
+
+        it('should throw when updating a cardholder', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .patch('/issuing/cardholders/not_found')
+                .reply(404);
+
+            const cko = new Checkout('sk_123');
+
+            try {
+                await cko.issuing.updateCardholder('not_found', { reference: "test" });
+            } catch (err) {
+                expect(err).to.be.instanceOf(NotFoundError);
+            }
+        });
+
         it('should get a cardholder cards', async () => {
             nock('https://api.sandbox.checkout.com')
                 .get('/issuing/cardholders/crh_d3ozhf43pcq2xbldn2g45qnb44/cards')
@@ -361,6 +397,41 @@ describe('Unit::Issuing', () => {
 
             try {
                 await cko.issuing.getCardDetails('not_found');
+            } catch (err) {
+                expect(err).to.be.instanceOf(NotFoundError);
+            }
+        });
+
+        it('should update a card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .patch('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491')
+                .reply(200, {
+                    id: "crd_fa6psq242dcd6fdn5gifcq1491",
+                    status: "inactive",
+                    reference: "X-123456-N11-UPDATED"
+                });
+
+            const cko = new Checkout(SK);
+
+            const cardResponse = await cko.issuing.updateCard('crd_fa6psq242dcd6fdn5gifcq1491', {
+                status: "inactive",
+                reference: "X-123456-N11-UPDATED"
+            });
+
+            expect(cardResponse.id).to.equal("crd_fa6psq242dcd6fdn5gifcq1491");
+            expect(cardResponse.status).to.equal("inactive");
+            expect(cardResponse.reference).to.equal("X-123456-N11-UPDATED");
+        });
+
+        it('should throw when updating a card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .patch('/issuing/cards/not_found')
+                .reply(404);
+
+            const cko = new Checkout('sk_123');
+
+            try {
+                await cko.issuing.updateCard('not_found', { status: "inactive" });
             } catch (err) {
                 expect(err).to.be.instanceOf(NotFoundError);
             }
@@ -547,6 +618,46 @@ describe('Unit::Issuing', () => {
             expect(credentialsResponse.cvc2).to.equal(604)
         });
 
+        it('should renew a card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491/renew')
+                .reply(200, {
+                    id: "crd_renewed123456789abcd",
+                    cardholder_id: "crh_d3ozhf43pcq2xbldn2g45qnb44",
+                    status: "active",
+                    display_name: "JOHN KENNEDY",
+                    type: "virtual",
+                    _links: {
+                        self: {
+                            href: "https://api.checkout.com/issuing/cards/crd_renewed123456789abcd"
+                        }
+                    }
+                });
+
+            const cko = new Checkout(SK);
+
+            const renewalResponse = await cko.issuing.renewCard("crd_fa6psq242dcd6fdn5gifcq1491", {
+                card_type: "virtual"
+            });
+
+            expect(renewalResponse.id).to.equal("crd_renewed123456789abcd");
+            expect(renewalResponse.cardholder_id).to.equal("crh_d3ozhf43pcq2xbldn2g45qnb44");
+        });
+
+        it('should throw when renewing a card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/cards/not_found/renew')
+                .reply(404);
+
+            const cko = new Checkout(SK);
+
+            try {
+                await cko.issuing.renewCard("not_found", { card_type: "virtual" });
+            } catch (err) {
+                expect(err).to.be.instanceOf(NotFoundError);
+            }
+        });
+
         it('should revoke a card', async () => {
             nock('https://api.sandbox.checkout.com')
                 .post('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491/revoke')
@@ -576,6 +687,74 @@ describe('Unit::Issuing', () => {
 
             try {
                 await cko.issuing.revokeCard("not_found", {});
+            } catch (err) {
+                expect(err).to.be.instanceOf(NotFoundError);
+            }
+        });
+
+        it('should schedule card revocation', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491/schedule-revocation')
+                .reply(200, {
+                    scheduled_date: "2025-12-31T23:59:59Z",
+                    _links: {
+                        self: {
+                            href: "https://api.checkout.com/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491"
+                        }
+                    }
+                });
+
+            const cko = new Checkout(SK);
+
+            const scheduleResponse = await cko.issuing.scheduleCardRevocation("crd_fa6psq242dcd6fdn5gifcq1491", {
+                scheduled_date: "2025-12-31T23:59:59Z",
+                reason: "expiring"
+            });
+
+            expect(scheduleResponse.scheduled_date).to.equal("2025-12-31T23:59:59Z");
+        });
+
+        it('should throw when scheduling card revocation', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/cards/not_found/schedule-revocation')
+                .reply(404);
+
+            const cko = new Checkout('sk_123');
+
+            try {
+                await cko.issuing.scheduleCardRevocation("not_found", { scheduled_date: "2025-12-31T23:59:59Z" });
+            } catch (err) {
+                expect(err).to.be.instanceOf(NotFoundError);
+            }
+        });
+
+        it('should cancel scheduled card revocation', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .delete('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491/schedule-revocation')
+                .reply(200, {
+                    _links: {
+                        self: {
+                            href: "https://api.checkout.com/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491"
+                        }
+                    }
+                });
+
+            const cko = new Checkout(SK);
+
+            const cancelResponse = await cko.issuing.cancelScheduledCardRevocation("crd_fa6psq242dcd6fdn5gifcq1491");
+
+            expect(cancelResponse).to.not.be.null;
+        });
+
+        it('should throw when canceling scheduled card revocation', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .delete('/issuing/cards/not_found/schedule-revocation')
+                .reply(404);
+
+            const cko = new Checkout('sk_123');
+
+            try {
+                await cko.issuing.cancelScheduledCardRevocation("not_found");
             } catch (err) {
                 expect(err).to.be.instanceOf(NotFoundError);
             }
@@ -982,6 +1161,40 @@ describe('Unit::Issuing', () => {
             }
         });
 
+        it('should simulate a refund for a transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/transaction_id/refunds')
+                .reply(201, {
+                    id: "trx_refund123",
+                    status: "Refunded"
+                });
+
+            const cko = new Checkout(SK);
+
+            const refundResponse = await cko.issuing.simulateRefund('transaction_id', {
+                amount: 1000,
+            });
+
+            expect(refundResponse).to.not.be.null;
+            expect(refundResponse.status).to.equal("Refunded");
+        });
+
+        it('should throw when simulating a refund with invalid transaction', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/authorizations/not_found/refunds')
+                .reply(422);
+
+            try {
+                const cko = new Checkout(SK);
+
+                await cko.issuing.simulateRefund('not_found', {
+                    amount: 1000,
+                });
+            } catch (err) {
+                expect(err).to.be.instanceOf(ValidationError);
+            }
+        });
+
         it('should simulate a reversal for a transaction', async () => {
             nock('https://api.sandbox.checkout.com')
                 .post('/issuing/simulate/authorizations/transaction_id/reversals')
@@ -1011,5 +1224,342 @@ describe('Unit::Issuing', () => {
                 expect(err).to.be.instanceOf(ValidationError);
             }
         });
-    })
+    });
+
+    describe('Digital Cards', () => {
+        it('should get a digital card', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/digital-cards/dgc_abc123')
+                .reply(200, {
+                    id: "dgc_abc123",
+                    card_id: "crd_fa6psq242dcd6fdn5gifcq1491",
+                    wallet: "apple_pay",
+                    status: "active"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getDigitalCard("dgc_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("dgc_abc123");
+            expect(response.wallet).to.equal("apple_pay");
+        });
+    });
+
+    describe('Transactions', () => {
+        it('should get transactions list', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/transactions')
+                .reply(200, {
+                    data: [
+                        {
+                            id: "trx_abc123",
+                            type: "authorization",
+                            amount: 1000
+                        }
+                    ]
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getTransactions();
+
+            expect(response).to.not.be.null;
+            expect(response.data).to.be.an('array');
+        });
+
+        it('should get a transaction by id', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/transactions/trx_abc123')
+                .reply(200, {
+                    id: "trx_abc123",
+                    type: "authorization",
+                    amount: 1000
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getTransactionById("trx_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("trx_abc123");
+        });
+    });
+
+    describe('Disputes', () => {
+        it('should create a dispute', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/disputes')
+                .reply(201, {
+                    id: "dis_abc123",
+                    status: "pending"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.createDispute({
+                transaction_id: "trx_abc123",
+                reason: "fraudulent"
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("dis_abc123");
+        });
+
+        it('should get a dispute', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/disputes/dis_abc123')
+                .reply(200, {
+                    id: "dis_abc123",
+                    status: "pending"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getDispute("dis_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("dis_abc123");
+        });
+
+        it('should cancel a dispute', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/disputes/dis_abc123/cancel')
+                .reply(200, {
+                    id: "dis_abc123",
+                    status: "cancelled"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.cancelDispute("dis_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.status).to.equal("cancelled");
+        });
+
+        it('should escalate a dispute', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/disputes/dis_abc123/escalate')
+                .reply(200, {
+                    id: "dis_abc123",
+                    status: "escalated"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.escalateDispute("dis_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.status).to.equal("escalated");
+        });
+
+        it('should submit a dispute', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/disputes/dis_abc123/submit')
+                .reply(200, {
+                    id: "dis_abc123",
+                    status: "submitted"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.submitDispute("dis_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.status).to.equal("submitted");
+        });
+    });
+
+    describe('Control Groups', () => {
+        it('should create a control group', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/controls/control-groups')
+                .reply(201, {
+                    id: "ctg_abc123",
+                    description: "Test group"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.createControlGroup({
+                description: "Test group",
+                control_ids: ["ctr_123", "ctr_456"]
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("ctg_abc123");
+        });
+
+        it('should get control groups by target', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/controls/control-groups?target_id=crd_123')
+                .reply(200, {
+                    data: [{
+                        id: "ctg_abc123"
+                    }]
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getControlGroupByTarget({ target_id: "crd_123" });
+
+            expect(response).to.not.be.null;
+        });
+
+        it('should get a control group', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/controls/control-groups/ctg_abc123')
+                .reply(200, {
+                    id: "ctg_abc123",
+                    description: "Test group"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getControlGroup("ctg_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("ctg_abc123");
+        });
+
+        it('should delete a control group', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .delete('/issuing/controls/control-groups/ctg_abc123')
+                .reply(200);
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.deleteControlGroup("ctg_abc123");
+
+            expect(response).to.not.be.null;
+        });
+    });
+
+    describe('Control Profiles', () => {
+        it('should create a control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/controls/control-profiles')
+                .reply(201, {
+                    id: "ctp_abc123",
+                    name: "Test profile"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.createControlProfile({
+                name: "Test profile",
+                control_group_ids: ["ctg_123"]
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("ctp_abc123");
+        });
+
+        it('should get control profiles by target', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/controls/control-profiles?target_id=crd_123')
+                .reply(200, {
+                    data: [{
+                        id: "ctp_abc123"
+                    }]
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getControlProfilesByTarget({ target_id: "crd_123" });
+
+            expect(response).to.not.be.null;
+        });
+
+        it('should get a control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .get('/issuing/controls/control-profiles/ctp_abc123')
+                .reply(200, {
+                    id: "ctp_abc123",
+                    name: "Test profile"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.getControlProfile("ctp_abc123");
+
+            expect(response).to.not.be.null;
+            expect(response.id).to.equal("ctp_abc123");
+        });
+
+        it('should update a control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .patch('/issuing/controls/control-profiles/ctp_abc123')
+                .reply(200, {
+                    id: "ctp_abc123",
+                    name: "Updated profile"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.updateControlProfile("ctp_abc123", {
+                name: "Updated profile"
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.name).to.equal("Updated profile");
+        });
+
+        it('should delete a control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .delete('/issuing/controls/control-profiles/ctp_abc123')
+                .reply(200);
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.deleteControlProfile("ctp_abc123");
+
+            expect(response).to.not.be.null;
+        });
+
+        it('should add target to control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/controls/control-profiles/ctp_abc123/add/crd_123')
+                .reply(200);
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.addTargetToControlProfile("ctp_abc123", "crd_123");
+
+            expect(response).to.not.be.null;
+        });
+
+        it('should remove target from control profile', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/controls/control-profiles/ctp_abc123/remove/crd_123')
+                .reply(200);
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.removeTargetFromControlProfile("ctp_abc123", "crd_123");
+
+            expect(response).to.not.be.null;
+        });
+    });
+
+    describe('OOB Authentication', () => {
+        it('should simulate OOB authentication', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/simulate/oob/authentication')
+                .reply(200, {
+                    status: "authenticated"
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.simulateOobAuthentication({
+                cardholder_id: "crh_123",
+                authentication_type: "sms"
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.status).to.equal("authenticated");
+        });
+    });
+
+    describe('Cardholder Access Tokens', () => {
+        it('should request cardholder access token', async () => {
+            nock('https://api.sandbox.checkout.com')
+                .post('/issuing/access/connect/token')
+                .reply(200, {
+                    access_token: "token_abc123",
+                    expires_in: 3600
+                });
+
+            const cko = new Checkout(SK);
+            const response = await cko.issuing.requestCardholderAccessToken({
+                cardholder_id: "crh_123"
+            });
+
+            expect(response).to.not.be.null;
+            expect(response.access_token).to.equal("token_abc123");
+        });
+    });
 });
