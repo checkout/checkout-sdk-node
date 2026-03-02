@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Financial', () => {
     it('should get financial actions', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/financial-actions?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq&limit=5')
             .reply(200, {
                 count: 1,
@@ -59,15 +59,15 @@ describe('Financial', () => {
                 ],
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/financial-actions?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq&limit=5',
+                        href: 'https://123456789.api.checkout.com/financial-actions?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq&limit=5',
                     },
                     next: {
-                        href: 'https://api.checkout.com/financial-actions?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq&limit=5',
+                        href: 'https://123456789.api.checkout.com/financial-actions?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq&limit=5',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const actions = await cko.financial.query({
             limit: 5,
@@ -79,10 +79,10 @@ describe('Financial', () => {
     });
 
     it('should throw auth error getting financial actions', async () => {
-        nock('https://api.sandbox.checkout.com').get('/financial-actions').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/financial-actions').reply(401);
 
         try {
-            const cko = new Checkout();
+            const cko = new Checkout('invalid_key', { subdomain: '123456789' });
 
             const reports = await cko.financial.query();
         } catch (err) {

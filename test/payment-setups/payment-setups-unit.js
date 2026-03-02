@@ -73,21 +73,21 @@ describe('Unit::Payment-Setups', () => {
               scheme_id: '489341065491658',
               _links: {
                 self: {
-                  href: 'https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4'
+                  href: 'https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4'
                 },
                 actions: {
-                  href: 'https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions'
+                  href: 'https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions'
                 },
                 void: {
-                  href: 'https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids'
+                  href: 'https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids'
                 },
                 capture: {
-                  href: 'https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures'
+                  href: 'https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures'
                 }
               }
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/pay_setup_123/confirm/pmo_456')
                 .reply(201, response
             );
@@ -97,7 +97,7 @@ describe('Unit::Payment-Setups', () => {
             const payment_method_option_id = "pmo_456";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id);
 
@@ -112,7 +112,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/pay_setup_123/confirm/pmo_456')
                 .reply(400
             );
@@ -122,7 +122,7 @@ describe('Unit::Payment-Setups', () => {
             const payment_method_option_id = "pmo_456";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
@@ -142,7 +142,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/pay_setup_123/confirm/pmo_456')
                 .reply(401
             );
@@ -152,7 +152,7 @@ describe('Unit::Payment-Setups', () => {
             const payment_method_option_id = "pmo_456";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
@@ -174,7 +174,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/pay_setup_123/confirm/pmo_456')
                 .reply(403
             );
@@ -184,7 +184,7 @@ describe('Unit::Payment-Setups', () => {
             const payment_method_option_id = "pmo_456";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
@@ -210,7 +210,7 @@ describe('Unit::Payment-Setups', () => {
               ]
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/pay_setup_123/confirm/pmo_456')
                 .reply(422
             );
@@ -220,7 +220,7 @@ describe('Unit::Payment-Setups', () => {
             const payment_method_option_id = "pmo_456";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
@@ -452,7 +452,7 @@ describe('Unit::Payment-Setups', () => {
               }
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups')
                 .reply(200, response
             );
@@ -641,7 +641,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const result = await cko.paymentSetups.createAPaymentSetup(request);
 
@@ -656,7 +656,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups')
                 .reply(400
             );
@@ -845,7 +845,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.createAPaymentSetup(request);
@@ -864,7 +864,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups')
                 .reply(401
             );
@@ -1053,7 +1053,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.createAPaymentSetup(request);
@@ -1072,7 +1072,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups')
                 .reply(403
             );
@@ -1261,7 +1261,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.createAPaymentSetup(request);
@@ -1286,7 +1286,7 @@ describe('Unit::Payment-Setups', () => {
               ]
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups')
                 .reply(422
             );
@@ -1475,7 +1475,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.createAPaymentSetup(request);
@@ -1707,7 +1707,7 @@ describe('Unit::Payment-Setups', () => {
               }
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .get('/payments/setups/pay_setup_123')
                 .reply(200, response
             );
@@ -1717,7 +1717,7 @@ describe('Unit::Payment-Setups', () => {
             const request = {};
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const result = await cko.paymentSetups.getAPaymentSetup(id);
 
@@ -1732,7 +1732,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .get('/payments/setups/pay_setup_123')
                 .reply(401
             );
@@ -1741,7 +1741,7 @@ describe('Unit::Payment-Setups', () => {
             const id = "pay_setup_123";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.getAPaymentSetup(id);
@@ -1760,7 +1760,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .get('/payments/setups/pay_setup_123')
                 .reply(403
             );
@@ -1769,7 +1769,7 @@ describe('Unit::Payment-Setups', () => {
             const id = "pay_setup_123";
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.getAPaymentSetup(id);
@@ -2001,7 +2001,7 @@ describe('Unit::Payment-Setups', () => {
               }
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .put('/payments/setups/pay_setup_123')
                 .reply(200, response
             );
@@ -2191,7 +2191,7 @@ describe('Unit::Payment-Setups', () => {
             };
             
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const result = await cko.paymentSetups.updateAPaymentSetup(id, request);
 
@@ -2206,7 +2206,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .put('/payments/setups/pay_setup_123')
                 .reply(400
             );
@@ -2396,7 +2396,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.updateAPaymentSetup(id, request);
@@ -2415,7 +2415,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .put('/payments/setups/pay_setup_123')
                 .reply(401
             );
@@ -2605,7 +2605,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.updateAPaymentSetup(id, request);
@@ -2624,7 +2624,7 @@ describe('Unit::Payment-Setups', () => {
             var err = null;
             const response = {};
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .put('/payments/setups/pay_setup_123')
                 .reply(403
             );
@@ -2814,7 +2814,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.updateAPaymentSetup(id, request);
@@ -2839,7 +2839,7 @@ describe('Unit::Payment-Setups', () => {
               ]
             };
 
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .put('/payments/setups/pay_setup_123')
                 .reply(422
             );
@@ -3029,7 +3029,7 @@ describe('Unit::Payment-Setups', () => {
             };
 
             const SK = 'sk_test_xxx';
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try {
               const result = await cko.paymentSetups.updateAPaymentSetup(id, request);
@@ -3045,14 +3045,14 @@ describe('Unit::Payment-Setups', () => {
 
     describe('Confirm payment setup - End-to-end flow', () => {
         it('should successfully confirm payment setup with payment method option', async () => {
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/payments/setups/psu_abc123/confirm/pmo_abc123')
                 .reply(200, {
                     id: "psu_abc123",
                     status: "confirmed"
                 });
 
-            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789' });
             const response = await cko.paymentSetups.confirmAPaymentSetup("psu_abc123", "pmo_abc123");
 
             expect(response).to.not.be.null;

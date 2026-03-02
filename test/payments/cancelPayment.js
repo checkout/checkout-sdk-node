@@ -6,7 +6,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Cancel a scheduled retry', () => {
   it('should cancel payment with a body', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post('/payments')
       .reply(
         201,
@@ -48,16 +48,16 @@ describe('Cancel a scheduled retry', () => {
           scheme_id: '638284745624527',
           _links: {
             self: {
-              href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+              href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
             },
             actions: {
-              href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+              href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
             },
             capture: {
-              href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+              href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
             },
             void: {
-              href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+              href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
             },
           },
         },
@@ -67,19 +67,19 @@ describe('Cancel a scheduled retry', () => {
         }
       );
 
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post(/cancellations$/)
       .reply(202, {
         action_id: 'act_y3oqhf46pyzuxjbcn2giaqnb44',
         reference: 'ORD-5023-4E89',
         _links: {
           payment: {
-            href: 'https://api.checkout.com/payments/pay_y3oqhf46pyzuxjbcn2giaqnb44',
+            href: 'https://123456789.api.checkout.com/payments/pay_y3oqhf46pyzuxjbcn2giaqnb44',
           },
         },
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const transaction = await cko.payments.request({
       source: {
@@ -102,12 +102,12 @@ describe('Cancel a scheduled retry', () => {
   });
 
   it('should throw AuthenticationError', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post('/payments/pay_7enxra4adw6evgalvfabl6nbqy/cancellations')
       .reply(401);
 
     try {
-      const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809');
+      const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809', { subdomain: '123456789' });
       await cko.payments.cancelScheduledRetry('pay_7enxra4adw6evgalvfabl6nbqy', {
         reference: 'ORD-5023-4E89',
       });
@@ -117,12 +117,12 @@ describe('Cancel a scheduled retry', () => {
   });
 
   it('should throw action not allowed error', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post('/payments/pay_7enxra4adw6evgalvfabl6nbaa/cancellations')
       .reply(403);
 
     try {
-      const cko = new Checkout(SK);
+      const cko = new Checkout(SK, { subdomain: '123456789' });
       await cko.payments.cancelScheduledRetry('pay_7enxra4adw6evgalvfabl6nbaa', {
         reference: 'ORD-5023-4E89',
       });
@@ -132,12 +132,12 @@ describe('Cancel a scheduled retry', () => {
   });
 
   it('should throw payment not found error', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post('/payments/pay_7enxra4adw6evgalvfabl6nbaa/cancellations')
       .reply(404);
 
     try {
-      const cko = new Checkout(SK);
+      const cko = new Checkout(SK, { subdomain: '123456789' });
       await cko.payments.cancelScheduledRetry('pay_7enxra4adw6evgalvfabl6nbaa', {
         reference: 'ORD-5023-4E89',
       });

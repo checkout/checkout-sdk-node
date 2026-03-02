@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Payment Methods', () => {
     it('should get payment methods', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/payment-methods')
             .query({ processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq' })
             .reply(200, {
@@ -23,7 +23,7 @@ describe('Payment Methods', () => {
                 ],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const paymentMethods = await cko.paymentMethods.getPaymentMethods(
             'pc_q4dbxom5jbgudnjzjpz7j2z6uq'
@@ -34,13 +34,13 @@ describe('Payment Methods', () => {
     });
 
     it('should throw auth error getting payment methods', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/payment-methods')
             .query({ processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq' })
             .reply(401);
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
             await cko.paymentMethods.getPaymentMethods('pc_q4dbxom5jbgudnjzjpz7j2z6uq');
         } catch (err) {
             expect(err).to.be.instanceOf(AuthenticationError);

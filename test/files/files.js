@@ -8,19 +8,19 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Files', () => {
     it('should upload file', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/files')
             .reply(200, {
                 id: 'file_zna32sccqbwevd3ldmejtplbhu',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
+                            'https://123456789.api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const file = await cko.files.upload({
             path: fs.createReadStream('./test/files/evidence.jpg'),
@@ -32,19 +32,19 @@ describe('Files', () => {
     }).timeout(120000);
 
     it('should upload file from the external source', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/files')
             .reply(200, {
                 id: 'file_qzhaicujhxme3fe5g75sscmqme',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/files/file_qzhaicujhxme3fe5g75sscmqme',
+                            'https://123456789.api.sandbox.checkout.com/files/file_qzhaicujhxme3fe5g75sscmqme',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const file = await cko.files.upload({
             file: 'https://media.ethicalads.io/media/images/2020/12/ethicalads_2.jpg',
@@ -57,14 +57,14 @@ describe('Files', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when trying to upload file', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/files')
             .reply(422, {
                 request_id: '0HM3QH3MKNCKA:00000001',
                 error_type: 'request_unprocessable',
                 error_codes: ['file_required'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const file = await cko.files.upload({
@@ -77,19 +77,19 @@ describe('Files', () => {
     });
 
     it('should get file', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/files')
             .reply(200, {
                 id: 'file_zna32sccqbwevd3ldmejtplbhu',
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
+                            'https://123456789.api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/files/file_zna32sccqbwevd3ldmejtplbhu')
             .reply(200, {
                 id: 'file_zna32sccqbwevd3ldmejtplbhu',
@@ -100,7 +100,7 @@ describe('Files', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
+                            'https://123456789.api.sandbox.checkout.com/files/file_zna32sccqbwevd3ldmejtplbhu',
                     },
                     download: {
                         href: 'https://example.com/evidence.jpg',
@@ -108,7 +108,7 @@ describe('Files', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const file = await cko.files.upload({
             path: fs.createReadStream('./test/files/evidence.jpg'),
@@ -127,18 +127,18 @@ describe('Files', () => {
         
         for (const purpose of purposes) {
             // Simple mock without body inspection since FormData can't be easily inspected
-            nock('https://api.sandbox.checkout.com')
+            nock('https://123456789.api.sandbox.checkout.com')
                 .post('/files')
                 .reply(200, {
                     id: 'file_test_' + purpose,
                     _links: {
                         self: {
-                            href: `https://api.sandbox.checkout.com/files/file_test_${purpose}`,
+                            href: `https://123456789.api.sandbox.checkout.com/files/file_test_${purpose}`,
                         },
                     },
                 });
 
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const file = await cko.files.upload({
                 path: fs.createReadStream('./test/files/evidence.jpg'),
@@ -153,7 +153,7 @@ describe('Files', () => {
         let capturedRequest = null;
         
         // Mock to capture the request details
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/files')
             .reply(function() {
                 // Capture the request body for verification
@@ -162,13 +162,13 @@ describe('Files', () => {
                     id: 'file_test_purpose_check',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/files/file_test_purpose_check',
+                            href: 'https://123456789.api.sandbox.checkout.com/files/file_test_purpose_check',
                         },
                     },
                 }];
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         await cko.files.upload({
             path: fs.createReadStream('./test/files/evidence.jpg'),
@@ -183,7 +183,7 @@ describe('Files', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when purpose is missing', async () => {
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const file = await cko.files.upload({
@@ -197,10 +197,10 @@ describe('Files', () => {
     });
 
     it('should throw Authentication error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/files/file_zna32sccqbwevd3ldmejtplbhu')
             .reply(401);
-        const cko = new Checkout();
+        const cko = new Checkout('invalid_key', { subdomain: '123456789' });
 
         try {
             const disputes = await cko.files.getFile('file_zna32sccqbwevd3ldmejtplbhu');

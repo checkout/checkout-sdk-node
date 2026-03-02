@@ -5,14 +5,14 @@ import nock from 'nock';
 
 describe('Sessions', () => {
     it('should create session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions')
             .reply(201, {
                 id: 'sid_jlfm4ithpgpefdxgzzdnc3xrc4',
@@ -36,13 +36,13 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
                     },
                     issuer_fingerprint: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
                     },
                     collect_channel_data: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
                     },
                     three_ds_method_url: {
                         href: 'https://3ds2-sandbox.ckotech.co/simulator/acs/3ds-method',
@@ -57,6 +57,7 @@ describe('Sessions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['sessions:browser'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let session = await cko.sessions.request({
@@ -92,13 +93,13 @@ describe('Sessions', () => {
     });
 
     it('should throw AuthenticationError creating session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com').post('/sessions').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/sessions').reply(401);
 
         try {
             let cko = new Checkout(
@@ -107,6 +108,7 @@ describe('Sessions', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['sessions:browser'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
             let session = await cko.sessions.request({
@@ -143,14 +145,14 @@ describe('Sessions', () => {
     });
 
     it('should get session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions')
             .reply(201, {
                 id: 'sid_jlfm4ithpgpefdxgzzdnc3xrc4',
@@ -174,13 +176,13 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
                     },
                     issuer_fingerprint: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
                     },
                     collect_channel_data: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
                     },
                     three_ds_method_url: {
                         href: 'https://3ds2-sandbox.ckotech.co/simulator/acs/3ds-method',
@@ -189,7 +191,7 @@ describe('Sessions', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4')
             .reply(201, {
                 id: 'sid_jlfm4ithpgpefdxgzzdnc3xrc4',
@@ -213,13 +215,13 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
                     },
                     issuer_fingerprint: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
                     },
                     collect_channel_data: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
                     },
                     three_ds_method_url: {
                         href: 'https://3ds2-sandbox.ckotech.co/simulator/acs/3ds-method',
@@ -234,6 +236,7 @@ describe('Sessions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['sessions:browser'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let session = await cko.sessions.request({
@@ -270,13 +273,13 @@ describe('Sessions', () => {
     });
 
     it('should throw AuthenticationError getting the session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4')
             .reply(401);
 
@@ -287,6 +290,7 @@ describe('Sessions', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['sessions:browser'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
             let session = await cko.sessions.get('sid_jlfm4ithpgpefdxgzzdnc3xrc4');
@@ -296,14 +300,14 @@ describe('Sessions', () => {
     });
 
     it('should update session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions')
             .reply(201, {
                 id: 'sid_jlfm4ithpgpefdxgzzdnc3xrc4',
@@ -327,13 +331,13 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4',
                     },
                     issuer_fingerprint: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/issuer-fingerprint',
                     },
                     collect_channel_data: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_jlfm4ithpgpefdxgzzdnc3xrc4/collect-data',
                     },
                     three_ds_method_url: {
                         href: 'https://3ds2-sandbox.ckotech.co/simulator/acs/3ds-method',
@@ -342,7 +346,7 @@ describe('Sessions', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/collect-data')
             .reply(201, {
                 id: 'sid_rwhwl4kb3eeenglibbvej2qtdy',
@@ -366,13 +370,13 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy',
                     },
                     issuer_fingerprint: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/issuer-fingerprint',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/issuer-fingerprint',
                     },
                     collect_channel_data: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/collect-data',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/collect-data',
                     },
                     three_ds_method_url: {
                         href: 'https://3ds2-sandbox.ckotech.co/simulator/acs/3ds-method',
@@ -387,6 +391,7 @@ describe('Sessions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['sessions:browser'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let session = await cko.sessions.update('sid_rwhwl4kb3eeenglibbvej2qtdy', {
@@ -408,13 +413,13 @@ describe('Sessions', () => {
     });
 
     it('should throw AuthenticationError updating the session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/sessions/sid_rwhwl4kb3eeenglibbvej2qtdy/collect-data')
             .reply(401);
 
@@ -425,6 +430,7 @@ describe('Sessions', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['sessions:browser'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
             let session = await cko.sessions.update('sid_rwhwl4kb3eeenglibbvej2qtdy', {
@@ -447,14 +453,14 @@ describe('Sessions', () => {
     });
 
     it('should complete session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'sessions:browser',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions')
             .reply(201, {
                 id: 'sid_kfa2wttsisdude7acvva4irrfm',
@@ -496,10 +502,10 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm',
                     },
                     complete: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm/complete',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm/complete',
                     },
                     callback_url: {
                         href: 'https://example.com/sessions/callback',
@@ -507,7 +513,7 @@ describe('Sessions', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions/sid_j47vcmk3uaaerlv3zv7xhzg6du/complete')
             .reply(201, {});
 
@@ -517,19 +523,20 @@ describe('Sessions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['sessions:browser'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let session = await cko.sessions.complete('sid_j47vcmk3uaaerlv3zv7xhzg6du');
     });
 
     it('should throw AuthenticationError complete the session', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions/sid_j47vcmk3uaaerlv3zv7xhzg6du/complete')
             .reply(401);
 
@@ -540,6 +547,7 @@ describe('Sessions', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['sessions:browser'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
             let session = await cko.sessions.complete('sid_j47vcmk3uaaerlv3zv7xhzg6du');
@@ -549,14 +557,14 @@ describe('Sessions', () => {
     });
 
     it('should update session 3DS Method completion indicator', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'sessions:browser',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sessions')
             .reply(201, {
                 id: 'sid_aurdb2b3yv6eniu7mbrl7nfopm',
@@ -598,10 +606,10 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm',
                     },
                     complete: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm/complete',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_kfa2wttsisdude7acvva4irrfm/complete',
                     },
                     callback_url: {
                         href: 'https://example.com/sessions/callback',
@@ -609,7 +617,7 @@ describe('Sessions', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/sessions/sid_aurdb2b3yv6eniu7mbrl7nfopm/issuer-fingerprint')
             .reply(201, {
                 id: 'sid_aurdb2b3yv6eniu7mbrl7nfopm',
@@ -651,10 +659,10 @@ describe('Sessions', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_aurdb2b3yv6eniu7mbrl7nfopm',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_aurdb2b3yv6eniu7mbrl7nfopm',
                     },
                     complete: {
-                        href: 'https://api.sandbox.checkout.com/sessions/sid_aurdb2b3yv6eniu7mbrl7nfopm/complete',
+                        href: 'https://123456789.api.sandbox.checkout.com/sessions/sid_aurdb2b3yv6eniu7mbrl7nfopm/complete',
                     },
                     callback_url: {
                         href: 'https://checkout.com/',
@@ -668,6 +676,7 @@ describe('Sessions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['sessions:browser'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let session = await cko.sessions.request({
@@ -722,13 +731,13 @@ describe('Sessions', () => {
     });
 
     it('should throw AuthenticationError when updating session 3DS Method completion indicator', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/sessions/sid_j47vcmk3uaaerlv3zv7xhzg6du/issuer-fingerprint')
             .reply(401);
 
@@ -739,6 +748,7 @@ describe('Sessions', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['sessions:browser'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
             let updated = await cko.sessions.update3DSMethodCompletionIndicator(

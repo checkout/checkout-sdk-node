@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Fawry', () => {
     it('should approve Fawry payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_bvoryvj7bktuvdv7aajab6zixu',
@@ -17,22 +17,22 @@ describe('Fawry', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
                     },
                     approve: {
-                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/approval',
+                        href: 'https://123456789.api.sandbox.checkout.com/fawry/payments/661440940/approval',
                     },
                     cancel: {
-                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
+                        href: 'https://123456789.api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/fawry/payments/661440940/approval')
             .reply(200);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const payment = await cko.payments.request({
             amount: 1000,
@@ -60,9 +60,9 @@ describe('Fawry', () => {
     });
 
     it('should throw NotFoundError trying to approve Fawry payment', async () => {
-        nock('https://api.sandbox.checkout.com').put('/fawry/payments/1234/approval').reply(404);
+        nock('https://123456789.api.sandbox.checkout.com').put('/fawry/payments/1234/approval').reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const fawry = await cko.fawry.approve('1234');
@@ -72,7 +72,7 @@ describe('Fawry', () => {
     });
 
     it('should cancel Fawry payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_bvoryvj7bktuvdv7aajab6zixu',
@@ -82,22 +82,22 @@ describe('Fawry', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvoryvj7bktuvdv7aajab6zixu',
                     },
                     approve: {
-                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/approval',
+                        href: 'https://123456789.api.sandbox.checkout.com/fawry/payments/661440940/approval',
                     },
                     cancel: {
-                        href: 'https://api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
+                        href: 'https://123456789.api.sandbox.checkout.com/fawry/payments/661440940/cancellation',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/fawry/payments/661440940/cancellation')
             .reply(200);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const payment = await cko.payments.request({
             amount: 1000,
@@ -125,11 +125,11 @@ describe('Fawry', () => {
     });
 
     it('should throw NotFoundError trying to cancel Fawry payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/fawry/payments/1234/cancellation')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const fawry = await cko.fawry.cancel('1234');

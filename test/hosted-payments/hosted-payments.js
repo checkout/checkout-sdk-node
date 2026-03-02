@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Hosted Payments', () => {
     it('should create a hosted payment link', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/hosted-payments')
             .reply(201, {
                 reference: 'ORD-5023-4E89',
@@ -18,7 +18,7 @@ describe('Hosted Payments', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const hostedResponse = await cko.hostedPayments.create({
             amount: 10,
@@ -44,7 +44,7 @@ describe('Hosted Payments', () => {
     });
 
     it('should throw Authentication Error', async () => {
-        nock('https://api.sandbox.checkout.com').post('/hosted-payments').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/hosted-payments').reply(401);
 
         try {
             const cko = new Checkout('sk_');
@@ -72,12 +72,12 @@ describe('Hosted Payments', () => {
     });
 
     it('should throw network error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/hosted-payments')
             .replyWithError('something happened');
 
         try {
-            const cko = new Checkout('sk_');
+            const cko = new Checkout('sk_', { subdomain: '123456789' });
 
             const hostedResponse = await cko.hostedPayments.create({
                 amount: 10,
@@ -98,13 +98,13 @@ describe('Hosted Payments', () => {
             });
         } catch (err) {
             expect(err.body).to.be.equal(
-                'request to https://api.sandbox.checkout.com/hosted-payments failed, reason: something happened'
+                'request to https://123456789.api.sandbox.checkout.com/hosted-payments failed, reason: something happened'
             );
         }
     });
 
     it('should get a hosted payment ', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/hosted-payments')
             .reply(201, {
                 id: 'hpp_kQhs_fI9b8oQ',
@@ -116,7 +116,7 @@ describe('Hosted Payments', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get(/.*/)
             .reply(201, {
                 id: 'hpp_kQhs_fI9b8oQ',
@@ -139,13 +139,13 @@ describe('Hosted Payments', () => {
                 failure_url: 'https://example.com/failure',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/hosted-payments/hpp_kQhs_fI9b8oQ',
+                        href: 'https://123456789.api.sandbox.checkout.com/hosted-payments/hpp_kQhs_fI9b8oQ',
                     },
                     redirect: { href: 'https://pay.sandbox.checkout.com/page/hpp_kQhs_fI9b8oQ' },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const hostedResponse = await cko.hostedPayments.create({
             amount: 10,
@@ -171,12 +171,12 @@ describe('Hosted Payments', () => {
     });
 
     it('should throw Authentication Error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/hosted-payments/hpp_kQhs_fI9b8oQ')
             .reply(401);
 
         try {
-            const cko = new Checkout();
+            const cko = new Checkout('invalid_key', { subdomain: '123456789' });
 
             const hp = await cko.hostedPayments.get('hpp_kQhs_fI9b8oQ');
 

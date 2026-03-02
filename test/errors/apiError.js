@@ -14,12 +14,11 @@ describe('Handling Errors', () => {
     });
 
     it('should handle API error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(mockErrorCode, mockErrorResponse);
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         let errorWasThrown = false;
 
@@ -44,12 +43,11 @@ describe('Handling Errors', () => {
     it('should include body for 401 AuthenticationError', async () => {
         const body = { error_type: 'authentication_error', message: 'invalid_key' };
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(401, body);
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         try {
             await cko.tokens.request({
@@ -71,12 +69,11 @@ describe('Handling Errors', () => {
     it('should include body for 403 ActionNotAllowed', async () => {
         const body = { error_type: 'action_not_allowed', message: 'card_not_enrolled' };
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(403, body);
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         try {
             await cko.tokens.request({
@@ -98,12 +95,11 @@ describe('Handling Errors', () => {
     it('should include body for 404 NotFoundError', async () => {
         const body = { error_type: 'not_found', message: 'resource_not_found' };
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(404, body);
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         try {
             await cko.tokens.request({

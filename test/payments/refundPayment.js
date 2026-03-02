@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Refund a payment', () => {
     it('should refund payment without a body', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -49,16 +49,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -68,31 +68,31 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -114,7 +114,7 @@ describe('Refund a payment', () => {
     });
 
     it('should refund payment with a body', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -156,16 +156,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -175,31 +175,31 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
                 reference: 'REFUND',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -223,7 +223,7 @@ describe('Refund a payment', () => {
     });
 
     it('should partially refund payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -265,16 +265,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -284,31 +284,31 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
                 reference: 'REFUND',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -333,12 +333,12 @@ describe('Refund a payment', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_7enxra4adw6evgalvfabl6nbqy/refunds')
             .reply(401);
 
         try {
-            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809');
+            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809', { subdomain: '123456789' });
             const refund = await cko.payments.refund('pay_7enxra4adw6evgalvfabl6nbqy');
         } catch (err) {
             expect(err.name).to.equal('AuthenticationError');
@@ -346,7 +346,7 @@ describe('Refund a payment', () => {
     });
 
     it('should throw Capture not allowed error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -388,16 +388,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -407,11 +407,11 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(403);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -435,12 +435,12 @@ describe('Refund a payment', () => {
     });
 
     it('should throw payment not found error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_7enxra4adw6evgalvfabl6nbaa/refunds')
             .reply(404);
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
             const refund = await cko.payments.refund('pay_7enxra4adw6evgalvfabl6nbaa');
         } catch (err) {
             expect(err.name).to.equal('NotFoundError');
@@ -448,7 +448,7 @@ describe('Refund a payment', () => {
     });
 
     it('should throw Validation error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -490,16 +490,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -509,19 +509,19 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(422, {
                 request_id: '7867a675-deac-4270-a4dc-04fa2ba4fe8d',
@@ -529,7 +529,7 @@ describe('Refund a payment', () => {
                 error_codes: ['amount_exceeds_balance'],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -555,7 +555,7 @@ describe('Refund a payment', () => {
     });
 
     it('should use the idempotency key', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_gm3rx3aniyeufp4oz6bmxy22ci',
@@ -599,56 +599,56 @@ describe('Refund a payment', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gm3rx3aniyeufp4oz6bmxy22ci/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: '',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'my-idempotent-refund',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'my-idempotent-refund',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -683,7 +683,7 @@ describe('Refund a payment', () => {
     });
 
     it('should refund payment with correct header response', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -725,16 +725,16 @@ describe('Refund a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -744,31 +744,31 @@ describe('Refund a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/refunds$/)
             .reply(202, {
                 action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {

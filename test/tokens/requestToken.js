@@ -7,7 +7,7 @@ const PK = 'pk_test_4296fd52-efba-4a38-b6ce-cf0d93639d8a';
 
 describe('Request a token', () => {
     it('should create token', async () => {
-        nock('https://api.sandbox.checkout.com').post('/tokens').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/tokens').reply(201, {
             type: 'card',
             token: 'tok_pmjyslgaam4uzmvaiwqyhovvsy',
             expires_on: '2020-01-30T15:08:33Z',
@@ -24,8 +24,7 @@ describe('Request a token', () => {
             product_type: 'Visa Traditional',
         });
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         const transaction = await cko.tokens.request({
             type: 'card',
@@ -39,7 +38,7 @@ describe('Request a token', () => {
     });
 
     it('should dynamically determine card type', async () => {
-        nock('https://api.sandbox.checkout.com').post('/tokens').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/tokens').reply(201, {
             type: 'card',
             token: 'tok_pmjyslgaam4uzmvaiwqyhovvsy',
             expires_on: '2020-01-30T15:08:33Z',
@@ -56,8 +55,7 @@ describe('Request a token', () => {
             product_type: 'Visa Traditional',
         });
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         const transaction = await cko.tokens.request({
             number: '4242424242424242',
@@ -70,7 +68,7 @@ describe('Request a token', () => {
     });
 
     it('should dynamically determine applepay type', async () => {
-        nock('https://api.sandbox.checkout.com').post('/tokens').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/tokens').reply(201, {
             type: 'applepay',
             token: 'tok_in5b4abfmi4ulcsgv2omh4f5se',
             expires_on: '2020-01-30T15:29:28Z',
@@ -80,8 +78,7 @@ describe('Request a token', () => {
             bin: '481749',
         });
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         const transaction = await cko.tokens.request({
             token_data: {
@@ -103,7 +100,7 @@ describe('Request a token', () => {
     });
 
     it('should dynamically determine googlepay type', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(422, {
                 request_id: '8c6c8e49-1eca-4e66-91a0-709abbc1a6a5',
@@ -111,8 +108,7 @@ describe('Request a token', () => {
                 error_codes: ['token_data_invalid'],
             });
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         try {
             const transaction = await cko.tokens.request({
@@ -129,9 +125,9 @@ describe('Request a token', () => {
     });
 
     it('should throw authentication error', async () => {
-        nock('https://api.sandbox.checkout.com').post('/tokens').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/tokens').reply(401);
 
-        const cko = new Checkout();
+        const cko = new Checkout(PK, { subdomain: '123456789' });
         cko.config.pk = 'test';
 
         try {
@@ -148,7 +144,7 @@ describe('Request a token', () => {
     });
 
     it('should throw ValidationError error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/tokens')
             .reply(422, {
                 request_id: '0HL80RJLS76I7',
@@ -156,8 +152,7 @@ describe('Request a token', () => {
                 error_codes: ['token_type_required'],
             });
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         try {
             const transaction = await cko.tokens.request({

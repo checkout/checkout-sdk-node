@@ -6,13 +6,13 @@ import nock from 'nock';
 describe('Workflows', () => {
     
     it('should get all workflows', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows')
             .reply(200, {
                 data: [
@@ -22,7 +22,7 @@ describe('Workflows', () => {
                         active: true,
                         _links: {
                             self: {
-                                href: 'https://api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
+                                href: 'https://123456789.api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
                             },
                         },
                     },
@@ -32,7 +32,7 @@ describe('Workflows', () => {
                         active: false,
                         _links: {
                             self: {
-                                href: 'https://api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
+                                href: 'https://123456789.api.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
                             },
                         },
                     },
@@ -44,6 +44,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.getAll();
@@ -51,19 +52,20 @@ describe('Workflows', () => {
     });
 
     it('should throw AuthenticationError when getting all worflows', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').get('/workflows').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/workflows').reply(401);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
             {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -74,19 +76,19 @@ describe('Workflows', () => {
     });
 
     it('should add a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows')
             .reply(201, {
                 id: 'wf_wlu3wxc26jounofs5iez75qaqa',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
+                        href: 'https://123456789.api.sandbox.checkout.com/workflows/wf_wlu3wxc26jounofs5iez75qaqa',
                     },
                 },
             });
@@ -96,6 +98,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.add({
@@ -159,19 +162,20 @@ describe('Workflows', () => {
     });
 
     it('should throw AuthenticationError when adding a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').post('/workflows').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/workflows').reply(401);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
             {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -238,13 +242,13 @@ describe('Workflows', () => {
     });
 
     it('should get a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/wf_34pacj7ae6wexju4avpecxvp6e')
             .reply(200, {
                 id: 'wf_34pacj7ae6wexju4avpecxvp6e',
@@ -277,7 +281,7 @@ describe('Workflows', () => {
                 ],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/workflows/wf_34pacj7ae6wexju4avpecxvp6e',
+                        href: 'https://123456789.api.sandbox.checkout.com/workflows/wf_34pacj7ae6wexju4avpecxvp6e',
                     },
                 },
             });
@@ -287,6 +291,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.get('wf_34pacj7ae6wexju4avpecxvp6e');
@@ -294,13 +299,13 @@ describe('Workflows', () => {
     });
 
     it('should throw AuthenticationError when getting a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/wf_34pacj7ae6wexju4avpecxvp6e')
             .reply(401);
         const cko = new Checkout(
@@ -309,6 +314,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -319,13 +325,13 @@ describe('Workflows', () => {
     });
 
     it('should remove a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_34pacj7ae6wexju4avpecxvp6e')
             .reply(204);
         const cko = new Checkout(
@@ -334,6 +340,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.remove('wf_34pacj7ae6wexju4avpecxvp6e');
@@ -341,13 +348,13 @@ describe('Workflows', () => {
     });
 
     it('should throw AuthenticationError when removing a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_34pacj7ae6wexju4avpecxvp6e')
             .reply(401);
         const cko = new Checkout(
@@ -356,6 +363,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -366,13 +374,13 @@ describe('Workflows', () => {
     });
 
     it('should patch a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .patch('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(201, { name: 'Webhooks workflow updated' });
         const cko = new Checkout(
@@ -381,6 +389,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.patch('wf_c7svxlvo2bbuva4f6s3xu4f7wm', {
@@ -390,13 +399,13 @@ describe('Workflows', () => {
     });
 
     it('should throw AuthenticationError when patching a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .patch('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(401);
         const cko = new Checkout(
@@ -405,6 +414,7 @@ describe('Workflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -420,19 +430,19 @@ describe('Workflows', () => {
 describe('Workflow Actions', () => {
 
     it('should add a workflow action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions')
             .reply(201, {
                 id: 'wfa_wlu3wxc26jounofs5iez75qaqa',
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions/wfa_wlu3wxc26jounofs5iez75qaqa',
+                        href: 'https://123456789.api.checkout.com/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions/wfa_wlu3wxc26jounofs5iez75qaqa',
                     },
                 },
             });
@@ -442,6 +452,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const action = await cko.workflows.addAction('wf_c7svxlvo2bbuva4f6s3xu4f7wm', {
@@ -452,14 +463,14 @@ describe('Workflow Actions', () => {
     });
 
     it('should throw AuthenticationError when adding an action with invalid credentials', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/actions')
             .reply(401);
 
         const cko = new Checkout(
@@ -468,6 +479,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -482,14 +494,14 @@ describe('Workflow Actions', () => {
     });
 
     it('should throw NotFoundError when adding an action to a non-existent workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_nonexistent/actions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_nonexistent/actions')
             .reply(404);
 
         const cko = new Checkout(
@@ -498,6 +510,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -512,14 +525,14 @@ describe('Workflow Actions', () => {
     });
 
     it('should throw an error for server issues when adding an action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wfa_wlu3wxc26jounofs5iez75qaqa/actions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wfa_wlu3wxc26jounofs5iez75qaqa/actions')
             .reply(500);
 
         const cko = new Checkout(
@@ -528,6 +541,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -542,13 +556,13 @@ describe('Workflow Actions', () => {
     });
 
     it('should update a workflow action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/actions/wfa_5qxwp7stgcqufj63mkr42xyeqi')
             .reply(200);
         const cko = new Checkout(
@@ -557,6 +571,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.updateAction(
@@ -571,13 +586,13 @@ describe('Workflow Actions', () => {
     });
 
     it('should throw AuthenticationError when updating a workflow action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/actions/wfa_5qxwp7stgcqufj63mkr42xyeqi')
             .reply(401);
         const cko = new Checkout(
@@ -586,6 +601,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -603,13 +619,13 @@ describe('Workflow Actions', () => {
     });
 
     it('should remove a workflow action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_rou7m32mhmyeblg4xebx5pueoi/actions/wfa_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(204);
         const cko = new Checkout(
@@ -618,6 +634,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.removeAction(
@@ -628,13 +645,13 @@ describe('Workflow Actions', () => {
     });
 
     it('should throw AuthenticationError when removing a workflow action', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_rou7m32mhmyeblg4xebx5pueoi/actions/wfa_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(401);
         const cko = new Checkout(
@@ -643,6 +660,7 @@ describe('Workflow Actions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -660,19 +678,19 @@ describe('Workflow Actions', () => {
 describe('Workflow Conditions', () => {
 
     it('should add a workflow condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions')
             .reply(201, {
                 id: 'wfc_wlu3wxc26jounofs5iez75qaqa',
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions/wfc_wlu3wxc26jounofs5iez75qaqa',
+                        href: 'https://123456789.api.checkout.com/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions/wfc_wlu3wxc26jounofs5iez75qaqa',
                     },
                 },
             });
@@ -683,6 +701,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const condition = await cko.workflows.addCondition('wf_2i7z3lwdoe5uzmomm7yzrytqdy', {
@@ -695,14 +714,14 @@ describe('Workflow Conditions', () => {
     });
 
     it('should throw AuthenticationError when adding a condition with invalid credentials', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions')
             .reply(401);
 
         const cko = new Checkout(
@@ -711,6 +730,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -727,14 +747,14 @@ describe('Workflow Conditions', () => {
     });
 
     it('should throw NotFoundError when adding a condition to a non-existent workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_nonexistent/conditions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_nonexistent/conditions')
             .reply(404);
 
         const cko = new Checkout(
@@ -743,6 +763,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -759,14 +780,14 @@ describe('Workflow Conditions', () => {
     });
 
     it('should throw an error for server issues when adding a condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
-            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions/')
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/conditions')
             .reply(500);
 
         const cko = new Checkout(
@@ -775,6 +796,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -791,13 +813,13 @@ describe('Workflow Conditions', () => {
     });
 
     it('should update a workflow condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put(
                 '/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/conditions/wfc_d5estuyxzshubhly2wu3hloehi'
             )
@@ -808,6 +830,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.updateCondition(
@@ -824,13 +847,13 @@ describe('Workflow Conditions', () => {
     });
 
     it('should throw AuthenticationError when updating a workflow condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put(
                 '/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/conditions/wfc_d5estuyxzshubhly2wu3hloehi'
             )
@@ -841,6 +864,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -864,14 +888,14 @@ describe('Workflow Conditions', () => {
     });
 
     it('should remove a workflow condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token')
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token')
         .reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/conditions/wfc_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(204);
         const cko = new Checkout(
@@ -880,6 +904,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.removeCondition(
@@ -890,13 +915,13 @@ describe('Workflow Conditions', () => {
     });
 
     it('should throw AuthenticationError when removing a workflow condition', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete('/workflows/wf_c7svxlvo2bbuva4f6s3xu4f7wm/conditions/wfc_c7svxlvo2bbuva4f6s3xu4f7wm')
             .reply(401);
         const cko = new Checkout(
@@ -905,6 +930,7 @@ describe('Workflow Conditions', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -922,13 +948,13 @@ describe('Workflow Conditions', () => {
 describe('Workflow Test', () => {
 
     it('should test a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/test'
             )
@@ -939,6 +965,7 @@ describe('Workflow Test', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.test(
@@ -971,13 +998,13 @@ describe('Workflow Test', () => {
     });
 
     it('should throw AuthenticationError when testing a workflow with invalid credentials', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/test')
             .reply(401);
     
@@ -987,6 +1014,7 @@ describe('Workflow Test', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
     
@@ -1000,13 +1028,13 @@ describe('Workflow Test', () => {
     });
     
     it('should throw NotFoundError when testing a non-existent workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/wf_nonexistent/test')
             .reply(404);
     
@@ -1016,6 +1044,7 @@ describe('Workflow Test', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
     
@@ -1029,13 +1058,13 @@ describe('Workflow Test', () => {
     });
     
     it('should throw an error for server issues when testing a workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/wf_2i7z3lwdoe5uzmomm7yzrytqdy/test')
             .reply(500);
     
@@ -1045,6 +1074,7 @@ describe('Workflow Test', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
     
@@ -1062,13 +1092,13 @@ describe('Workflow Test', () => {
 describe('Workflow Events', () => {
 
     it('should get event types', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/event-types')
             .reply(200, [
                 {
@@ -1084,6 +1114,7 @@ describe('Workflow Events', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.getEventTypes();
@@ -1091,19 +1122,20 @@ describe('Workflow Events', () => {
     });
 
     it('should throw AuthenticationError when get a workflow event', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').get('/workflows/event-types').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/workflows/event-types').reply(401);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
             {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1114,13 +1146,13 @@ describe('Workflow Events', () => {
     });
 
     it('should get an event', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka')
             .reply(200, {
                 id: 'evt_hsfxtjwidv6ulah5gdbiqwqnka',
@@ -1133,6 +1165,7 @@ describe('Workflow Events', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.getEvent('evt_hsfxtjwidv6ulah5gdbiqwqnka');
@@ -1141,13 +1174,13 @@ describe('Workflow Events', () => {
     });
 
     it('should throw AuthenticationError when get a workflow event', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka')
             .reply(401);
         const cko = new Checkout(
@@ -1156,6 +1189,7 @@ describe('Workflow Events', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1170,13 +1204,13 @@ describe('Workflow Events', () => {
 describe('Workflow Action Invocations', () => {
 
     it('should get action invocations', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/evt_az5sblvku4ge3dwpztvyizgcau/actions/wfa_uzkxpffkvpiu5fe3h5ira7sqpa')
             .reply(200, {
                 workflow_id: 'wf_c7svxlvo2bbuva4f6s3xu4f7wm',
@@ -1219,6 +1253,7 @@ describe('Workflow Action Invocations', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.getActionInvocations('evt_az5sblvku4ge3dwpztvyizgcau', 'wfa_uzkxpffkvpiu5fe3h5ira7sqpa');
@@ -1229,13 +1264,13 @@ describe('Workflow Action Invocations', () => {
     });
 
     it('should throw AuthenticationError when get an action invocation', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/evt_az5sblvku4ge3dwpztvyizgcau/actions/wfa_uzkxpffkvpiu5fe3h5ira7sqpa')
             .reply(401);
         const cko = new Checkout(
@@ -1244,6 +1279,7 @@ describe('Workflow Action Invocations', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1258,13 +1294,13 @@ describe('Workflow Action Invocations', () => {
 describe('Workflow Reflows', () => {
 
     it('should reflow by event', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka/reflow')
             .reply(202);
         const cko = new Checkout(
@@ -1273,6 +1309,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowByEvent('evt_hsfxtjwidv6ulah5gdbiqwqnka');
@@ -1281,13 +1318,13 @@ describe('Workflow Reflows', () => {
     });
 
     it('should throw AuthenticationError when reflowing by event id', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka/reflow')
             .reply(401);
         const cko = new Checkout(
@@ -1296,6 +1333,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1306,13 +1344,13 @@ describe('Workflow Reflows', () => {
     });
 
     it('should reflow by event and workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka/workflow/wf_6p73pesh75vu7fqo6p6exhpe54/reflow'
             )
@@ -1324,6 +1362,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowByEventAndWorkflow(
@@ -1335,14 +1374,14 @@ describe('Workflow Reflows', () => {
     });
 
     it('should throw AuthenticationError when reflowing by event and workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token')
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token')
         .reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/workflows/events/evt_hsfxtjwidv6ulah5gdbiqwqnka/workflow/wf_6p73pesh75vu7fqo6p6exhpe54/reflow'
             )
@@ -1353,6 +1392,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1366,14 +1406,14 @@ describe('Workflow Reflows', () => {
     });
 
     it('should reflow events by event and workflow ids', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token')
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token')
         .reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').post('/workflows/events/reflow')
+        nock('https://123456789.api.sandbox.checkout.com').post('/workflows/events/reflow')
         .reply(202);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
@@ -1381,6 +1421,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowEventsByEventAndWorkflowIds(
@@ -1392,14 +1433,14 @@ describe('Workflow Reflows', () => {
     });
 
     it('should throw AuthenticationError when reflowing events by event and workflow ids', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token')
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token')
         .reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').post('/workflows/events/reflow')
+        nock('https://123456789.api.sandbox.checkout.com').post('/workflows/events/reflow')
         .reply(401);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
@@ -1407,6 +1448,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1420,14 +1462,14 @@ describe('Workflow Reflows', () => {
     });
 
     it('should reflow events by subject and workflow ids', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token')
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token')
         .reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').post('/workflows/events/reflow')
+        nock('https://123456789.api.sandbox.checkout.com').post('/workflows/events/reflow')
         .reply(202);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
@@ -1435,6 +1477,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowEventsBySubjectAndWorkflowIds(
@@ -1446,13 +1489,13 @@ describe('Workflow Reflows', () => {
     });
 
     it('should throw AuthenticationError when reflowing events by subject and workflow ids', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com').post('/workflows/events/reflow')
+        nock('https://123456789.api.sandbox.checkout.com').post('/workflows/events/reflow')
         .reply(401);
         const cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
@@ -1460,6 +1503,7 @@ describe('Workflow Reflows', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1477,13 +1521,13 @@ describe('Workflow Reflows', () => {
 describe('Workflow Subjects', () => {
 
     it('should get subject events', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e')
             .reply(200, {
                 data: [
@@ -1501,6 +1545,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.getSubjectEvents('pay_ymhp72mhubcejmjjwcupzalm5e');
@@ -1508,13 +1553,13 @@ describe('Workflow Subjects', () => {
     });
 
     it('should throw AuthenticationError when getting subject events', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e')
             .reply(401);
         const cko = new Checkout(
@@ -1523,6 +1568,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1533,13 +1579,13 @@ describe('Workflow Subjects', () => {
     });
 
     it('should reflow by subject', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e/reflow')
             .reply(202);
         const cko = new Checkout(
@@ -1548,6 +1594,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowBySubject('pay_ymhp72mhubcejmjjwcupzalm5e');
@@ -1555,13 +1602,13 @@ describe('Workflow Subjects', () => {
     });
 
     it('should throw AuthenticationError when reflowing by subject', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e/reflow')
             .reply(401);
         const cko = new Checkout(
@@ -1570,6 +1617,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {
@@ -1580,13 +1628,13 @@ describe('Workflow Subjects', () => {
     });
 
     it('should reflow by subject and workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e/workflow/wf_6p73pesh75vu7fqo6p6exhpe54/reflow'
             )
@@ -1597,6 +1645,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const workflows = await cko.workflows.reflowBySubjectAndWorkflow(
@@ -1607,13 +1656,13 @@ describe('Workflow Subjects', () => {
     });
 
     it('should throw AuthenticationError when reflowing by subject and workflow', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: ['flow', 'flow:workflows'],
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/workflows/events/subject/pay_ymhp72mhubcejmjjwcupzalm5e/workflow/wf_6p73pesh75vu7fqo6p6exhpe54/reflow'
             )
@@ -1624,6 +1673,7 @@ describe('Workflow Subjects', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['flow', 'flow:workflows'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         try {

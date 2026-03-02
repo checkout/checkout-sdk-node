@@ -5,14 +5,14 @@ import nock from 'nock';
 
 describe('Forex', () => {
     it('should request a quote', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
 
-        nock('https://api.sandbox.checkout.com').post('/forex/quotes').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/forex/quotes').reply(201, {
             id: 'qte_sdx7f7henoeetkqsdric7ehoum',
             expires_on: '2021-12-27T22:30:51.7771385Z',
             source_amount: 30000,
@@ -29,6 +29,7 @@ describe('Forex', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['fx'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let forex = await cko.forex.request({
@@ -42,13 +43,13 @@ describe('Forex', () => {
     });
 
     it('should throw AuthenticationError when requesting quote', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com').post('/forex/quotes').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/forex/quotes').reply(401);
 
         let cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
@@ -56,6 +57,7 @@ describe('Forex', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['fx'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -72,14 +74,14 @@ describe('Forex', () => {
     });
 
     it('should get rates', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/forex/rates?product=card_payouts&source=visa&currency_pairs=GBPEUR,USDNOK,JPNCAD&processing_channel_id=pc_zs5fqhybzc2e3jmq3efvybybpq')
             .reply(201, {
                 product: 'card_payouts',
@@ -103,6 +105,7 @@ describe('Forex', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['fx'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         let rates = await cko.forex.getRates({
@@ -117,13 +120,13 @@ describe('Forex', () => {
     });
 
     it('should throw AuthenticationError when getting rates', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'fx',
         });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/forex/rates?product=card_payouts&source=visa&currency_pairs=GBPEUR,USDNOK,JPNCAD&processing_channel_id=pc_zs5fqhybzc2e3jmq3efvybybpq')
             .reply(401);
 
@@ -133,6 +136,7 @@ describe('Forex', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['fx'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 

@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Events', () => {
     it('should retrieve all event types', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/event-types')
             .reply(200, [
                 {
@@ -61,7 +61,7 @@ describe('Events', () => {
                 },
             ]);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const events = await cko.events.retrieveEventTypes();
 
@@ -70,7 +70,7 @@ describe('Events', () => {
     });
 
     it('should retrieve all event types for a version', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/event-types?version=2.0')
             .reply(200, [
                 {
@@ -105,16 +105,16 @@ describe('Events', () => {
                 },
             ]);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const events = await cko.events.retrieveEventTypes('2.0');
         expect(events[0].version).to.equal('2.0');
     });
 
     it('should throw authentication error', async () => {
-        nock('https://api.sandbox.checkout.com').get('/event-types').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/event-types').reply(401);
 
-        const cko = new Checkout();
+        const cko = new Checkout('invalid_key', { subdomain: '123456789' });
         try {
             const events = await cko.events.retrieveEventTypes();
         } catch (err) {
@@ -123,7 +123,7 @@ describe('Events', () => {
     });
 
     it('should retrieve events', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/events?from=2019-03-01T00:00:00Z')
             .reply(200, {
                 total_count: 861,
@@ -195,7 +195,7 @@ describe('Events', () => {
                 ],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
         const events = await cko.events.retrieveEvents({
             from: '2019-03-01T00:00:00Z',
         });
@@ -204,11 +204,11 @@ describe('Events', () => {
     });
 
     it('should retrieve no events', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/events?from=2007-03-01T00:00:00Z&to=2008-03-01T00:00:00Z')
             .reply(204, {});
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
         const events = await cko.events.retrieveEvents({
             from: '2007-03-01T00:00:00Z',
             to: '2008-03-01T00:00:00Z',
@@ -218,9 +218,9 @@ describe('Events', () => {
     });
 
     it('should throw ValidationError error', async () => {
-        nock('https://api.sandbox.checkout.com').get('/events?from=XXXX').reply(400, {}); // pending GW response for potential 422 code
+        nock('https://123456789.api.sandbox.checkout.com').get('/events?from=XXXX').reply(400, {}); // pending GW response for potential 422 code
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const events = await cko.events.retrieveEvents({
@@ -233,7 +233,7 @@ describe('Events', () => {
     });
 
     it('should retrieve event', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/events/evt_c2qelfixai2u3es3ksovngkx3e')
             .reply(200, {
                 id: 'evt_c2qelfixai2u3es3ksovngkx3e',
@@ -258,27 +258,27 @@ describe('Events', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e',
                     },
                     'webhooks-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
         const event = await cko.events.retrieveEvent('evt_c2qelfixai2u3es3ksovngkx3e');
 
         expect(event.id).to.equal('evt_c2qelfixai2u3es3ksovngkx3e');
     });
 
     it('should throw not found error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/events/evt_miytws22arje7jq2c4vdlcjaqy')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
         try {
             const event = await cko.events.retrieveEvent('evt_miytws22arje7jq2c4vdlcjaqy');
         } catch (err) {
@@ -287,7 +287,7 @@ describe('Events', () => {
     });
 
     it('should retrieve event notification', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/events/evt_pwhgncrvd3julmuutcoz4deu2u')
             .reply(200, {
                 id: 'evt_pwhgncrvd3julmuutcoz4deu2u',
@@ -346,16 +346,16 @@ describe('Events', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u',
                     },
                     'webhooks-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/retry',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/retry',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get(
                 '/events/evt_pwhgncrvd3julmuutcoz4deu2u/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm'
             )
@@ -374,16 +374,16 @@ describe('Events', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm',
                     },
                     'webhook-retry': {
                         href:
-                            'https://api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry',
+                            'https://123456789.api.sandbox.checkout.com/events/evt_pwhgncrvd3julmuutcoz4deu2u/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const event = await cko.events.retrieveEvent('evt_pwhgncrvd3julmuutcoz4deu2u');
         const eventId = event.id;
@@ -398,12 +398,12 @@ describe('Events', () => {
     });
 
     it('should throw Not Found when trying to retrive event notification', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get(
                 '/events/evt_pwhgncrvd3julmuutcoz4deu2q/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm'
             )
             .reply(404);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const notification = await cko.events.retrieveEventNotification({
@@ -416,13 +416,13 @@ describe('Events', () => {
     });
 
     it('should retry event', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry'
             )
             .reply(202);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const event = await cko.events.retry({
             eventId: 'evt_c2qelfixai2u3es3ksovngkx3e',
@@ -433,12 +433,12 @@ describe('Events', () => {
     });
 
     it('should throw Not Found when trying to retry a notification', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(
                 '/events/evt_c2qelfixai2u3es3ksovngkx3q/webhooks/wh_mpkyioafmajulnhjvwmrklenb4/retry'
             )
             .reply(404);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const event = await cko.events.retry({
@@ -451,11 +451,11 @@ describe('Events', () => {
     });
 
     it('should retry all events', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/events/evt_c2qelfixai2u3es3ksovngkx3e/webhooks/retry')
             .reply(202);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const event = await cko.events.retryAll('evt_c2qelfixai2u3es3ksovngkx3e');
 
@@ -463,10 +463,10 @@ describe('Events', () => {
     });
 
     it('should throw Not Found when trying to retry all events', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/events/evt_c2qelfixai2u3es3ksovngkx3q/webhooks/retry')
             .reply(404);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const event = await cko.events.retryAll('evt_c2qelfixai2u3es3ksovngkx3q');

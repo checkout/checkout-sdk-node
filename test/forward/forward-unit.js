@@ -50,7 +50,7 @@ describe('Unit::Forward', () => {
                             'application/json'
                         ]
                     },
-                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
                 }
             });
 
@@ -97,7 +97,7 @@ describe('Unit::Forward', () => {
                         'application/json'
                     ]
                 },
-                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
             }
         });
     });
@@ -129,7 +129,7 @@ describe('Unit::Forward', () => {
                             'application/json'
                         ]
                     },
-                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
                 },
                 created_on: '2024-01-02T15:04:05+00:00'
             });
@@ -160,18 +160,18 @@ describe('Unit::Forward', () => {
                         'application/json'
                     ]
                 },
-                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
             },
             created_on: '2024-01-02T15:04:05+00:00'
         });
     });
 
     it('should throw an error for unauthorized (401)', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/forward')
             .reply(401, {});
 
-        const cko = new Checkout('sk_test_invalid');
+        const cko = new Checkout('sk_test_invalid', { subdomain: '123456789' });
         try {
             await cko.forward.forwardRequest({
                 source: { id: 'src_v5rgkf3gdtpuzjqesyxmyodnya', type: 'id' },
@@ -242,7 +242,7 @@ describe('Unit::Forward', () => {
     });
 
     it('should throw an error for not found (404)', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/forward/fwd_invalid_id')
             .reply(404, {
                 error_type: 'not_found',

@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Disputes', () => {
     it('should retrieve all disputes', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?limit=5&id=dsp_bc94ebda8d275i461229')
             .reply(200, {
                 limit: 5,
@@ -30,7 +30,7 @@ describe('Disputes', () => {
                     },
                 ],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputes = await cko.disputes.get({
             limit: 5,
@@ -41,8 +41,8 @@ describe('Disputes', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com').get('/disputes').reply(401);
-        const cko = new Checkout(SK);
+        nock('https://123456789.api.sandbox.checkout.com').get('/disputes').reply(401);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const disputes = await cko.disputes.get();
@@ -52,14 +52,14 @@ describe('Disputes', () => {
     });
 
     it('should throw ValidationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?limit=-1')
             .reply(422, {
                 request_id: '0HLUQS5FNKDTF:00000001',
                 error_type: 'request_invalid',
                 error_codes: ['paging_limit_invalid'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const disputes = await cko.disputes.get({
@@ -71,7 +71,7 @@ describe('Disputes', () => {
     });
 
     it('should get dispute details', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_bc94ebda8d275i461229')
             .reply(200, {
                 id: 'dsp_bc94ebda8d275i461229',
@@ -92,24 +92,24 @@ describe('Disputes', () => {
                 last_update: '2020-04-24T18:01:20Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229',
+                        href: 'https://123456789.api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229',
                     },
                     evidence: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence',
+                        href: 'https://123456789.api.sandbox.checkout.com/disputes/dsp_bc94ebda8d275i461229/evidence',
                     },
                 },
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputeDetails = await cko.disputes.getDetails('dsp_bc94ebda8d275i461229');
         expect(disputeDetails.id).to.equal('dsp_bc94ebda8d275i461229');
     });
 
     it('should throw AuthenticationError error when getting dispute details', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_bc94ebda8d275i461229')
             .reply(401);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const disputeDetails = await cko.disputes.getDetails('dsp_bc94ebda8d275i461229');
@@ -119,7 +119,7 @@ describe('Disputes', () => {
     });
 
     it('should accept dispute', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
@@ -164,23 +164,23 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
             .reply(200, {
                 limit: 50,
@@ -206,11 +206,11 @@ describe('Disputes', () => {
                 ],
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/accept')
             .reply(200);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputedPayment = await cko.payments.request({
             source: {
@@ -242,14 +242,14 @@ describe('Disputes', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when trying to accept dispute', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/accept')
             .reply(422, {
                 request_id: '0HM412MFDPPV8:00000004',
                 error_type: 'request_invalid',
                 error_codes: ['dispute_already_expired'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const accept = await cko.disputes.accept('dsp_3dc29c89ce075g46136d');
@@ -259,7 +259,7 @@ describe('Disputes', () => {
     });
 
     it('should provide dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
@@ -304,23 +304,23 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
             .reply(200, {
                 limit: 50,
@@ -346,11 +346,11 @@ describe('Disputes', () => {
                 ],
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(204);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputedPayment = await cko.payments.request({
             source: {
@@ -384,14 +384,14 @@ describe('Disputes', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when trying to provide dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(422, {
                 request_id: '0HM412MFDPQ1U:00000001',
                 error_type: 'request_invalid',
                 error_codes: ['dispute_already_accepted'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const evidence = await cko.disputes.provideEvidence('dsp_3dc29c89ce075g46136d', {
@@ -403,7 +403,7 @@ describe('Disputes', () => {
     });
 
     it('should get dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
@@ -448,23 +448,23 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
             .reply(200, {
                 limit: 50,
@@ -490,25 +490,25 @@ describe('Disputes', () => {
                 ],
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(204);
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(200, {
                 proof_of_delivery_or_service_text: 'http://checkout.com/document.pdf',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence',
+                        href: 'https://123456789.api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9/evidence',
                     },
                     parent: {
-                        href: 'https://api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9',
+                        href: 'https://123456789.api.sandbox.checkout.com/disputes/dsp_8a81da79fe075k4613b9',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputedPayment = await cko.payments.request({
             source: {
@@ -545,14 +545,14 @@ describe('Disputes', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when trying to get dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(422, {
                 request_id: '0HM412MFDPQ1U:00000001',
                 error_type: 'request_invalid',
                 error_codes: ['dispute_already_accepted'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const getEvidence = await cko.disputes.getEvidence('dsp_3dc29c89ce075g46136d');
@@ -562,7 +562,7 @@ describe('Disputes', () => {
     });
 
     it('should submit dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_l5rvkbinxztepjskr7vwlovzsq',
@@ -607,23 +607,23 @@ describe('Disputes', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes?payment_id=pay_l5rvkbinxztepjskr7vwlovzsq')
             .reply(200, {
                 limit: 50,
@@ -649,15 +649,15 @@ describe('Disputes', () => {
                 ],
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(204);
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(204);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputedPayment = await cko.payments.request({
             source: {
@@ -692,14 +692,14 @@ describe('Disputes', () => {
     }).timeout(120000);
 
     it('should throw ValidationError when trying to submit dispute evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/evidence')
             .reply(422, {
                 request_id: '0HM412MFDPQ1U:00000001',
                 error_type: 'request_invalid',
                 error_codes: ['dispute_already_accepted'],
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const submitEvidence = await cko.disputes.submit('dsp_3dc29c89ce075g46136d');
@@ -709,25 +709,25 @@ describe('Disputes', () => {
     });
 
     it('should get compiled submitted evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/submitted')
             .reply(200, {
                 file_id: 'file_iweu3nxyt6zund3gwhg7wo4fhq',
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/evidence/submitted',
+                        href: 'https://123456789.api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/evidence/submitted',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const compiledSubmittedEvidence = await cko.disputes.getCompiledSubmittedEvidence('dsp_3dc29c89ce075g46136d');
         expect(compiledSubmittedEvidence.file_id).to.equal('file_iweu3nxyt6zund3gwhg7wo4fhq');
     });
 
     it('should get dispute scheme files', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/schemefiles')
             .reply(200, {
                 id: 'dsp_3dc29c89ce075g46136d',
@@ -739,12 +739,12 @@ describe('Disputes', () => {
                 ],
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/schemefiles',
+                        href: 'https://123456789.api.checkout.com/disputes/dsp_3dc29c89ce075g46136d/schemefiles',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const disputeSchemeFiles = await cko.disputes.getDisputeSchemeFiles('dsp_3dc29c89ce075g46136d');
         expect(disputeSchemeFiles.id).to.equal('dsp_3dc29c89ce075g46136d');
@@ -753,10 +753,10 @@ describe('Disputes', () => {
     });
 
     it('should throw AuthenticationError error when getting dispute scheme files', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_bc94ebda8d275i461229/schemefiles')
             .reply(401);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const disputeDetails = await cko.disputes.getDisputeSchemeFiles('dsp_bc94ebda8d275i461229');
@@ -766,22 +766,22 @@ describe('Disputes', () => {
     });
 
     it('should submit arbitration evidence for dispute', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration')
             .reply(204);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const result = await cko.disputes.submitArbitrationEvidence('dsp_3dc29c89ce075g46136d');
         expect(result).to.be.undefined;
     });
 
     it('should throw AuthenticationError when submitting arbitration evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration')
             .reply(401);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             await cko.disputes.submitArbitrationEvidence('dsp_3dc29c89ce075g46136d');
@@ -791,13 +791,13 @@ describe('Disputes', () => {
     });
 
     it('should get compiled submitted arbitration evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration/submitted')
             .reply(200, {
                 file_id: 'file_6lbss42ezvoufcb2beo76rvwly',
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const evidence = await cko.disputes.getCompiledSubmittedArbitrationEvidence(
             'dsp_3dc29c89ce075g46136d'
@@ -806,11 +806,11 @@ describe('Disputes', () => {
     });
 
     it('should throw AuthenticationError when getting compiled submitted arbitration evidence', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/disputes/dsp_3dc29c89ce075g46136d/evidence/arbitration/submitted')
             .reply(401);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             await cko.disputes.getCompiledSubmittedArbitrationEvidence('dsp_3dc29c89ce075g46136d');

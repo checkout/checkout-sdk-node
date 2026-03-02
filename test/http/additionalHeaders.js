@@ -22,7 +22,7 @@ describe('HTTP', () => {
     }
 
     it('should be able to pass additional headers', async () => {
-        nock('https://api.sandbox.checkout.com', {
+        nock('https://123456789.api.sandbox.checkout.com', {
             reqheaders: mockHeadersMatcher
         })
             .post('/tokens')
@@ -32,7 +32,8 @@ describe('HTTP', () => {
             headers: {
                 'additional-header-a': 'valueA',
                 'additional-Header-b': 'valueB',
-            }
+            },
+            subdomain: '123456789'
         });
         cko.config.pk = PK;
 
@@ -48,14 +49,13 @@ describe('HTTP', () => {
     });
 
     it('should not match a request when additional headers are not provided', async () => {
-        nock('https://api.sandbox.checkout.com', {
+        nock('https://123456789.api.sandbox.checkout.com', {
             reqheaders: mockHeadersMatcher
         })
             .post('/tokens')
             .reply(201, mockToken);
 
-        const cko = new Checkout();
-        cko.config.pk = PK;
+        const cko = new Checkout(PK, { subdomain: '123456789' });
 
         let errorWasThrown = false;
 

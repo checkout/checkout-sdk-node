@@ -8,7 +8,9 @@ afterEach(() => {
     nock.enableNetConnect();
 });
 
-const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY);
+const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
+    subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+});
 
 describe('Integration::NetworkTokens', () => {
     describe('Provision Network Token', () => {

@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Klarna', () => {
     it('should create session', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/credit-sessions')
             .reply(201, {
                 session_id: 'kcs_nogezkjesatuzj3g7ejlkzb66m',
@@ -38,12 +38,12 @@ describe('Klarna', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
+                            'https://123456789.api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const session = await cko.klarna.createSession({
             purchase_country: 'GB',
@@ -66,7 +66,7 @@ describe('Klarna', () => {
     });
 
     it('should create session in prod', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .post('/klarna/credit-sessions')
             .reply(201, {
                 session_id: 'kcs_nogezkjesatuzj3g7ejlkzb66m',
@@ -97,12 +97,12 @@ describe('Klarna', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
+                            'https://123456789.api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
                     },
                 },
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const session = await cko.klarna.createSession({
             purchase_country: 'GB',
@@ -125,7 +125,7 @@ describe('Klarna', () => {
     });
 
     it('should throw ValidationError when trying to create a session', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/credit-sessions')
             .reply(422, {
                 request_id: '0HM3MI9LCAB4D:00000003',
@@ -134,7 +134,7 @@ describe('Klarna', () => {
             });
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const session = await cko.klarna.createSession({
                 purchase_country: 'GB',
@@ -158,7 +158,7 @@ describe('Klarna', () => {
     });
 
     it('should get session', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m')
             .reply(200, {
                 client_token:
@@ -166,7 +166,7 @@ describe('Klarna', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
+                            'https://123456789.api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
                     },
                 },
                 purchase_country: 'gb',
@@ -188,14 +188,14 @@ describe('Klarna', () => {
                 ],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const session = await cko.klarna.getSession('kcs_nogezkjesatuzj3g7ejlkzb66m');
         expect(session.purchase_country).to.equal('gb');
     });
 
     it('should get live session', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .get('/klarna/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m')
             .reply(200, {
                 client_token:
@@ -203,7 +203,7 @@ describe('Klarna', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
+                            'https://123456789.api.sandbox.checkout.com/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb66m',
                     },
                 },
                 purchase_country: 'gb',
@@ -225,18 +225,18 @@ describe('Klarna', () => {
                 ],
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const session = await cko.klarna.getSession('kcs_nogezkjesatuzj3g7ejlkzb66m');
         expect(session.purchase_country).to.equal('gb');
     });
 
     it('should throw NotFound error when trying to get session', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/klarna-external/credit-sessions/kcs_nogezkjesatuzj3g7ejlkzb622')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const session = await cko.klarna.getSession('kcs_nogezkjesatuzj3g7ejlkzb622');
@@ -246,13 +246,13 @@ describe('Klarna', () => {
     });
 
     it('should capture prod', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/captures')
             .reply(202, {
                 action_id: 'act_4sz4seltcrzuvcgaetumnlamq4',
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const session = await cko.klarna.capture('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             amount: 1000,
@@ -290,13 +290,13 @@ describe('Klarna', () => {
     });
 
     it('should capture', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .post('/klarna/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/captures')
             .reply(202, {
                 action_id: 'act_4sz4seltcrzuvcgaetumnlamq4',
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const session = await cko.klarna.capture('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             amount: 1000,
@@ -334,11 +334,11 @@ describe('Klarna', () => {
     });
 
     it('should throw NotFoundError error when trying to capture', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/orders/pay_ij7kdgw7htredmsyoqt3jn7111/captures')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const session = await cko.klarna.capture('pay_ij7kdgw7htredmsyoqt3jn7111', {
@@ -380,13 +380,13 @@ describe('Klarna', () => {
     });
 
     it('should void', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/voids')
             .reply(202, {
                 action_id: 'act_v6572a7elpuupbaljmoi4tk3ma',
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const klarna = await cko.klarna.void('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             reference: 'ORD-5023-4E89',
@@ -396,13 +396,13 @@ describe('Klarna', () => {
     });
 
     it('should void prod', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .post('/klarna/orders/pay_ij7kdgw7htredmsyoqt3jn7f3y/voids')
             .reply(202, {
                 action_id: 'act_v6572a7elpuupbaljmoi4tk3ma',
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const klarna = await cko.klarna.void('pay_ij7kdgw7htredmsyoqt3jn7f3y', {
             reference: 'ORD-5023-4E89',
@@ -412,11 +412,11 @@ describe('Klarna', () => {
     });
 
     it('should throw NotFoundError error when trying to void', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/klarna-external/orders/pay_ij7kdgw7htredmsyoqt3jn7111/voids')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const session = await cko.klarna.void('pay_ij7kdgw7htredmsyoqt3jn7111', {

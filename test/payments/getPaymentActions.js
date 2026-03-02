@@ -7,7 +7,7 @@ const SK = "sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808";
 
 describe("Get payment actions", () => {
   it("should get payment acrtions", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://test.api.sandbox.checkout.com")
       .get("/payments/pay_juevt3h5mcjulir2t5g3wfug6u/actions")
       .reply(200, [
         {
@@ -38,7 +38,7 @@ describe("Get payment actions", () => {
           }
         }
       ]);
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: 'test' });
     const transaction = await cko.payments.getActions(
       "pay_juevt3h5mcjulir2t5g3wfug6u"
     );
@@ -48,12 +48,12 @@ describe("Get payment actions", () => {
   });
 
   it("should throw AuthenticationError", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://test.api.sandbox.checkout.com")
       .get("/payments/pay_juevt3h5mcjulir2t5g3wfug6u/actions")
       .reply(401);
 
     try {
-      const cko = new Checkout("sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f801");
+      const cko = new Checkout("sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f801", { subdomain: 'test' });
       const transaction = await cko.payments.getActions(
         "pay_juevt3h5mcjulir2t5g3wfug6u"
       );
@@ -63,12 +63,12 @@ describe("Get payment actions", () => {
   });
 
   it("should throw payment not found error", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://test.api.sandbox.checkout.com")
       .get("/payments/pay_juevt3h5mcjulir2t5g3wfug6u/actions")
       .reply(404);
 
     try {
-      const cko = new Checkout(SK);
+      const cko = new Checkout(SK, { subdomain: 'test' });
       const transaction = await cko.payments.getActions(
         "pay_juevt3h5mcjulir2t5g3wfug6u"
       );

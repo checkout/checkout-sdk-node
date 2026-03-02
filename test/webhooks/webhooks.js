@@ -8,7 +8,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Webhooks', () => {
     it('should retrieve all webhooks', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/webhooks')
             .reply(200, [
                 {
@@ -66,15 +66,15 @@ describe('Webhooks', () => {
                 },
             ]);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhooks = await cko.webhooks.retrieveWebhooks();
         expect(webhooks[0].active).to.equal(true);
     });
 
     it('should throw AuthenticationError when trying to retrieve webhooks', async () => {
-        nock('https://api.sandbox.checkout.com').get('/webhooks').reply(401);
-        const cko = new Checkout(SK);
+        nock('https://123456789.api.sandbox.checkout.com').get('/webhooks').reply(401);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhooks = await cko.webhooks.retrieveWebhooks();
@@ -84,16 +84,16 @@ describe('Webhooks', () => {
     });
 
     it('should retrieve all webhooks', async () => {
-        nock('https://api.sandbox.checkout.com').get('/webhooks').reply(204, {});
+        nock('https://123456789.api.sandbox.checkout.com').get('/webhooks').reply(204, {});
 
-        const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2');
+        const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2', { subdomain: '123456789' });
 
         const webhooks = await cko.webhooks.retrieveWebhooks();
         expect(webhooks).to.eqls({});
     });
 
     it('should register webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(201, {
                 id: 'wh_twptvjwln4zuzbxbd7v5xyh2kq',
@@ -105,12 +105,12 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_twptvjwln4zuzbxbd7v5xyh2kq',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_twptvjwln4zuzbxbd7v5xyh2kq',
                     },
                 },
             });
 
-        const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2');
+        const cko = new Checkout('sk_test_da688e4d-0086-49a5-85dc-3ac6943adcb2', { subdomain: '123456789' });
 
         const url = `https://example.com/webhooks/${v1()}`;
 
@@ -127,9 +127,9 @@ describe('Webhooks', () => {
     });
 
     it('should throw UrlAlreadyRegistered', async () => {
-        nock('https://api.sandbox.checkout.com').post('/webhooks').reply(409);
+        nock('https://123456789.api.sandbox.checkout.com').post('/webhooks').reply(409);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhook = await cko.webhooks.registerWebhook({
@@ -148,7 +148,7 @@ describe('Webhooks', () => {
     });
 
     it('should retrive webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i')
             .reply(200, {
                 id: 'wh_tdt72zlbe7cudogxdgit6nwk6i',
@@ -181,19 +181,19 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhook = await cko.webhooks.retrieveWebhook('wh_tdt72zlbe7cudogxdgit6nwk6i');
         expect(webhook.url).to.equal('https://webhook.site/e09becba-a86d-46c5-8486-0d4b0c2dd93a');
     });
 
     it('should throw ValidationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(422, {
                 request_id: '0HLULE6FQN9M3:00000F03',
@@ -201,7 +201,7 @@ describe('Webhooks', () => {
                 error_codes: ['url_required'],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhook = await cko.webhooks.registerWebhook({
@@ -219,11 +219,11 @@ describe('Webhooks', () => {
     });
 
     it('should throw NotFownd', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/webhooks/wh_tdt72zlbe7cudogxdgit6nw222')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhook = await cko.webhooks.retrieveWebhook('wh_tdt72zlbe7cudogxdgit6nw222');
@@ -233,7 +233,7 @@ describe('Webhooks', () => {
     });
 
     it('should update webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
             .reply(200, {
                 id: 'wh_ahun3lg7bf4e3lohbhni65335u',
@@ -245,12 +245,12 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhook = await cko.webhooks.updateWebhook('wh_ahun3lg7bf4e3lohbhni65335u', {
             url: 'https://example.com/webhooks/updated',
@@ -265,10 +265,10 @@ describe('Webhooks', () => {
     });
 
     it('should throw AuthenticationError when trying to update webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .put('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
             .reply(401);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhook = await cko.webhooks.updateWebhook('wh_ahun3lg7bf4e3lohbhni65335u', {
@@ -286,7 +286,7 @@ describe('Webhooks', () => {
     });
 
     it('should partially update webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .patch('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
             .reply(200, {
                 id: 'wh_ahun3lg7bf4e3lohbhni65335u',
@@ -298,12 +298,12 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhook = await cko.webhooks.partiallyUpdateWebhook('wh_ahun3lg7bf4e3lohbhni65335u', {
             url: 'https://example.com/webhooks/updated',
@@ -312,10 +312,10 @@ describe('Webhooks', () => {
     });
 
     it('should throw AuthenticationError when trying to partially update webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .patch('/webhooks/wh_ahun3lg7bf4e3lohbhni65335u')
             .reply(401);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const webhook = await cko.webhooks.partiallyUpdateWebhook(
@@ -330,7 +330,7 @@ describe('Webhooks', () => {
     });
 
     it('should delete webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(200, {
                 id: 'wh_ahun3lg7bf4e3lohbhni65335u',
@@ -342,16 +342,16 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete((uri) => uri.includes('/webhooks/wh_'))
             .reply(200, {});
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhookToDelete = await cko.webhooks.registerWebhook({
             url: 'https://todelete.com/webhook',
@@ -368,7 +368,7 @@ describe('Webhooks', () => {
     });
 
     it('should throw AuthenticationError when trying to remove webhook', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(200, {
                 id: 'wh_ahun3lg7bf4e3lohbhni65335u',
@@ -380,15 +380,15 @@ describe('Webhooks', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
+                            'https://123456789.api.sandbox.checkout.com/webhooks/wh_ahun3lg7bf4e3lohbhni65335u',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .delete((uri) => uri.includes('/webhooks/wh_'))
             .reply(401);
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhookToDelete = await cko.webhooks.registerWebhook({
             url: 'https://todelete.com/webhook',
@@ -408,7 +408,7 @@ describe('Webhooks', () => {
     });
 
     it('should register webhook for authentication_failed event', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(201, {
                 id: 'wh_auth_fail_test123456',
@@ -419,12 +419,12 @@ describe('Webhooks', () => {
                 event_types: ['authentication_failed'],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/webhooks/wh_auth_fail_test123456',
+                        href: 'https://123456789.api.sandbox.checkout.com/webhooks/wh_auth_fail_test123456',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhook = await cko.webhooks.registerWebhook({
             url: 'https://example.com/webhooks/authentication-events',
@@ -478,7 +478,7 @@ describe('Webhooks', () => {
             },
             _links: {
                 self: {
-                    href: 'https://api.checkout.com/workflows/events/evt_ql5mtq624twrdnpkajbkyeqaai'
+                    href: 'https://123456789.api.checkout.com/workflows/events/evt_ql5mtq624twrdnpkajbkyeqaai'
                 }
             }
         };
@@ -506,7 +506,7 @@ describe('Webhooks', () => {
 
 describe('Webhook Event Processing', () => {
     it('should process authentication_failed webhook event with real webhook endpoint', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(201, {
                 id: 'wh_auth_events_123',
@@ -517,12 +517,12 @@ describe('Webhook Event Processing', () => {
                 event_types: ['authentication_failed', 'authentication_successful'],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/webhooks/wh_auth_events_123',
+                        href: 'https://123456789.api.sandbox.checkout.com/webhooks/wh_auth_events_123',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/webhooks/wh_auth_events_123')
             .reply(200, {
                 id: 'wh_auth_events_123',
@@ -533,12 +533,12 @@ describe('Webhook Event Processing', () => {
                 event_types: ['authentication_failed', 'authentication_successful'],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/webhooks/wh_auth_events_123',
+                        href: 'https://123456789.api.sandbox.checkout.com/webhooks/wh_auth_events_123',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const webhook = await cko.webhooks.registerWebhook({
             url: 'https://example.com/webhooks/auth-events',
@@ -601,7 +601,7 @@ describe('Webhook Event Processing', () => {
   },
   "_links": {
     "self": {
-      "href": "https://api.checkout.com/workflows/events/evt_xxx"
+      "href": "https://123456789.api.checkout.com/workflows/events/evt_xxx"
     }
   },
   "__topic": "payments"
@@ -657,7 +657,7 @@ describe('Webhook Event Processing', () => {
         expect(extractedData.acsChallengeMandated).to.be.true;
 
         // Test 6: Simulate webhook endpoint receiving this data
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/webhooks')
             .reply(201, {
                 id: 'wh_issue408_fix',
@@ -668,12 +668,12 @@ describe('Webhook Event Processing', () => {
                 event_types: ['authentication_failed'],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/webhooks/wh_issue408_fix',
+                        href: 'https://123456789.api.sandbox.checkout.com/webhooks/wh_issue408_fix',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         // Register a webhook to handle authentication_failed events
         const webhook = await cko.webhooks.registerWebhook({
@@ -725,10 +725,10 @@ describe('Webhook Event Processing', () => {
         // Import the webhook utils to test the integration
         const { parseWebhookPayload, extractAuthenticationFailedData } = await import('../../src/services/webhook-utils.js');
         
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
         
         // Step 1: Create a workflow for authentication_failed events
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/workflows')
             .reply(201, {
                 id: 'wfl_auth_failed_integration',
@@ -752,7 +752,7 @@ describe('Webhook Event Processing', () => {
                 }],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/workflows/wfl_auth_failed_integration'
+                        href: 'https://123456789.api.sandbox.checkout.com/workflows/wfl_auth_failed_integration'
                     }
                 }
             });
@@ -781,7 +781,7 @@ describe('Webhook Event Processing', () => {
         expect(workflow.active).to.be.true;
 
         // Step 2: Simulate a payment request that will fail authentication
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_auth_fail_test_123',
@@ -789,7 +789,7 @@ describe('Webhook Event Processing', () => {
                 reference: 'AUTH-FAIL-TEST-001',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_auth_fail_test_123'
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_auth_fail_test_123'
                     },
                     redirect: {
                         href: 'https://3ds.checkout.com/authentication/pay_auth_fail_test_123'
@@ -820,7 +820,7 @@ describe('Webhook Event Processing', () => {
         expect(payment.status).to.equal('Pending');
 
         // Step 3: Simulate the 3DS authentication failure
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/payments/pay_auth_fail_test_123')
             .reply(200, {
                 id: 'pay_auth_fail_test_123',
@@ -887,7 +887,7 @@ describe('Webhook Event Processing', () => {
   },
   "_links": {
     "self": {
-      "href": "https://api.checkout.com/workflows/events/evt_auth_fail_integration_test"
+      "href": "https://123456789.api.checkout.com/workflows/events/evt_auth_fail_integration_test"
     }
   },
   "__topic": "payments"
@@ -951,7 +951,7 @@ describe('Webhook Event Processing', () => {
         expect(webhookResult.nextActions).to.include('notify_customer_auth_failed');
 
         // Step 7: Verify workflow would have triggered correctly
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/workflows/wfl_auth_failed_integration')
             .reply(200, {
                 id: 'wfl_auth_failed_integration',

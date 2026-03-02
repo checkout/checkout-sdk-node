@@ -224,7 +224,7 @@ describe('Unit::Payment-Contexts', () => {
   };
 
   it('should request a payment context', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .post('/payment-contexts')
       .reply(201, {
         id: 'pct_y3oqhf46pyzuxjbcn2giaqnb44',
@@ -232,12 +232,13 @@ describe('Unit::Payment-Contexts', () => {
           order_id: 'test_order_123',
           customer_id: 'cus_123'
         },
+        processed_on: '2025-01-15T10:30:00Z',
         _links: {
-          self: 'https://api.checkout.com/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44'
+          self: 'https://123456789.api.checkout.com/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44'
         }
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const paymentContextResponse = await cko.paymentContexts.request(commonRequest);
 
@@ -247,9 +248,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 401 when request a payment context', async () => {
-    nock('https://api.sandbox.checkout.com').post('/payment-contexts').reply(401);
+    nock('https://123456789.api.sandbox.checkout.com').post('/payment-contexts').reply(401);
 
-    const cko = new Checkout('sk_123');
+    const cko = new Checkout('sk_123', { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.request(commonRequest);
@@ -259,9 +260,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 422 when request a payment context', async () => {
-    nock('https://api.sandbox.checkout.com').post('/payment-contexts').reply(422);
+    nock('https://123456789.api.sandbox.checkout.com').post('/payment-contexts').reply(422);
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.request({
@@ -274,9 +275,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 429 when request a payment context', async () => {
-    nock('https://api.sandbox.checkout.com').post('/payment-contexts').reply(429);
+    nock('https://123456789.api.sandbox.checkout.com').post('/payment-contexts').reply(429);
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.request(commonRequest);
@@ -286,9 +287,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 502 when request a payment context', async () => {
-    nock('https://api.sandbox.checkout.com').post('/payment-contexts').reply(502);
+    nock('https://123456789.api.sandbox.checkout.com').post('/payment-contexts').reply(502);
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.request(commonRequest);
@@ -298,11 +299,14 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should get a payment context details', async () => {
-    nock('https://api.sandbox.checkout.com')
+    nock('https://123456789.api.sandbox.checkout.com')
       .get('/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44')
-      .reply(200, commonResponse);
+      .reply(200, {
+        id: 'pct_y3oqhf46pyzuxjbcn2giaqnb44',
+        ...commonResponse
+      });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const paymentContextResponse = await cko.paymentContexts.get('pct_y3oqhf46pyzuxjbcn2giaqnb44');
 
@@ -310,9 +314,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 401 when getting a payment context details', async () => {
-    nock('https://api.sandbox.checkout.com').get('/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44').reply(401);
+    nock('https://123456789.api.sandbox.checkout.com').get('/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44').reply(401);
 
-    const cko = new Checkout('sk_123');
+    const cko = new Checkout('sk_123', { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.get('pct_y3oqhf46pyzuxjbcn2giaqnb44');
@@ -322,9 +326,9 @@ describe('Unit::Payment-Contexts', () => {
   });
 
   it('should throw 404 when getting a payment context details', async () => {
-    nock('https://api.sandbox.checkout.com').get('/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44').reply(404);
+    nock('https://123456789.api.sandbox.checkout.com').get('/payment-contexts/pct_y3oqhf46pyzuxjbcn2giaqnb44').reply(404);
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     try {
       await cko.paymentContexts.get('pct_y3oqhf46pyzuxjbcn2giaqnb44');

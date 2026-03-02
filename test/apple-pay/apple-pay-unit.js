@@ -5,13 +5,14 @@ import nock from 'nock';
 
 describe('Apple Pay', () => {
     it('should generate a certificate signing request', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/signing-requests').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/signing-requests').reply(201, {
             content:
                 '-----BEGIN CERTIFICATE REQUEST-----MIIBSTCB8AIBADCBjzELMAkGA1UEBhMCR0IxDzANBgNVBAgMBkxvbmRvbjEPMA0GA1UEBwwGTG9uZG9uMRUwEwYDVQQKDAxDaGVja291dC5jb20xCzAJBgNVBA8MAklUMRUwEwYDVQQDDAxjaGVja291dC5jb20xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY2hlY2tvdXQuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEX7NLQlhOnep5cXxaX62yrkaWAiMaY1TdDYg6CD0CNv9fuFa6zK3yZYuaAIIRwiFFwKJ9EKUNXD0/pixMu1WPszAKBggqhkjOPQQDAgNIADBFAiEAlZC6APP0zinbM7p3mVjjc6H8Hcf2rkhH0S+1oBAl8LcCIHdE2UgEXJrJpgXTLfFo05LXbquQgZmUq9gYVx7fsAno-----END CERTIFICATE REQUEST-----',
         });
 
         let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
             pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+            subdomain: '123456789'
         });
 
         const apple = await cko.applePay.generate();
@@ -20,7 +21,7 @@ describe('Apple Pay', () => {
     });
 
     it('should upload a payment processing certificate', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/certificates').reply(201, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/certificates').reply(201, {
             id: 'aplc_edyp2wgokuyubfan5bnmei6q6m',
             public_key_hash: 'qTDHUJQKEEkvjOiLp1mCPWXUrZIJRv+6EPavTzSQZN4=',
             valid_from: '2022-01-02T12:27:28Z',
@@ -29,6 +30,7 @@ describe('Apple Pay', () => {
 
         let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
             pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+            subdomain: '123456789'
         });
 
         const apple = await cko.applePay.upload({
@@ -40,11 +42,12 @@ describe('Apple Pay', () => {
     });
 
     it('should throw AuthenticationError creating the certificate', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/signing-requests').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/signing-requests').reply(401);
 
         try {
             let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
                 pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+                subdomain: '123456789'
             });
 
             const apple = await cko.applePay.generate();
@@ -54,11 +57,12 @@ describe('Apple Pay', () => {
     });
 
     it('should throw AuthenticationError uploading the certificate', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/certificates').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/certificates').reply(401);
 
         try {
             let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
                 pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+                subdomain: '123456789'
             });
 
             const apple = await cko.applePay.upload({
@@ -71,31 +75,54 @@ describe('Apple Pay', () => {
     });
 
     it('should enroll a merchant for Apple Pay', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/enrollments').reply(204);
+        nock('https://123456789.access.sandbox.checkout.com')
+            .post('/connect/token')
+            .reply(201, {
+                access_token: 'test_access_token',
+                expires_in: 3600,
+                token_type: 'Bearer',
+                scope: 'vault:apme-enrollment'
+            });
 
-        let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
-            pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/enrollments').reply(204);
+
+        let cko = new Checkout('test_client_secret', {
+            client: 'ack_testclie123456',
+            scope: ['vault:apme-enrollment'],
+            subdomain: '123456789',
+            environment: 'sandbox',
+            subdomain: '123456789'
         });
 
         const result = await cko.applePay.enroll({
-            apple_merchant_id: 'merchant.com.example',
-            display_name: 'Example Merchant',
+            domain: 'https://example.com',
         });
 
         expect(result).to.be.undefined;
     });
 
     it('should throw AuthenticationError enrolling merchant', async () => {
-        nock('https://api.sandbox.checkout.com').post('/applepay/enrollments').reply(401);
+        nock('https://123456789.access.sandbox.checkout.com')
+            .post('/connect/token')
+            .reply(201, {
+                access_token: 'test_access_token',
+                expires_in: 3600,
+                token_type: 'Bearer',
+                scope: 'vault:apme-enrollment'
+            });
+
+        nock('https://123456789.api.sandbox.checkout.com').post('/applepay/enrollments').reply(401);
 
         try {
-            let cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', {
-                pk: 'pk_sbox_xg66bnn6tpspd6pt3psc7otrqa=',
+            let cko = new Checkout('test_client_secret', {
+                client: 'ack_testclie123456',
+                scope: ['vault:apme-enrollment'],
+                environment: 'sandbox',
+                subdomain: '123456789'
             });
 
             const result = await cko.applePay.enroll({
-                apple_merchant_id: 'merchant.com.example',
-                display_name: 'Example Merchant',
+                domain: 'https://example.com',
             });
         } catch (err) {
             expect(err).to.be.instanceOf(AuthenticationError);

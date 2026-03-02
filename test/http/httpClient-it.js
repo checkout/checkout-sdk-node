@@ -18,7 +18,8 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
-            httpClient: 'axios'
+            httpClient: 'axios',
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
         const token = await checkout.tokens.request(
@@ -49,6 +50,7 @@ describe('Integration::HttpClient', () => {
             timeout: 3000,
             httpClient: 'axios',
             agent: new https.Agent({ keepAlive: true }),
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
         const token = await checkout.tokens.request(
@@ -76,7 +78,8 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 100,
-            httpClient: 'axios'
+            httpClient: 'axios',
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
         try {
@@ -104,6 +107,7 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
         const token = await checkout.tokens.request(
@@ -133,6 +137,7 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
             agent: new https.Agent({ keepAlive: true }),
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
 
@@ -162,6 +167,7 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 200,
+            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
           }
         );
         try {
