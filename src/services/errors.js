@@ -200,7 +200,18 @@ export const determineError = async (err) => {
         errorJSON = err.message;
     }
 
-    switch (err.status) {
+    // Normalize status (number) from our throw format or raw axios/fetch error
+    const status = Number(err?.status ?? err?.response?.status ?? 0);
+
+    // Handle OAuth authentication errors (status 400 with error field)
+    if (status === 400 && errorJSON.error) {
+        const oauthErrors = ['invalid_client', 'invalid_grant', 'unauthorized_client', 'access_denied', 'invalid_context'];
+        if (oauthErrors.includes(errorJSON.error)) {
+            return new AuthenticationError(await errorJSON);
+        }
+    }
+
+    switch (status) {
         case 401:
             return new AuthenticationError(await errorJSON);
         case 404:
@@ -216,7 +227,7 @@ export const determineError = async (err) => {
         case 502:
             return new BadGateway();
         default: {
-            return new ApiError(err.status, await errorJSON);
+            return new ApiError(status || err?.status, await errorJSON);
         }
     }
 };
