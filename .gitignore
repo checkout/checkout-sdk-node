@@ -41,6 +41,7 @@ lib/
 
 .DS_Store
 /.vscode/
+.cursor/
 
 doc
 out
@@ -48,3 +49,11 @@ out
 
 /dist/
 .tmp.*
+
+.github/skills/
+
+docs/
+*_REVIEW.md
+
+swagger-spec.json
+swagger.*

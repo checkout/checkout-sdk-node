@@ -35,6 +35,7 @@ The official Node.js SDK for [Checkout.com](https://www.checkout.com) payment ga
 - [Error Handling](#interrobang-error-handling)
 - [Testing](#white_check_mark-testing)
 - [Documentation](#book-examples-of-usage)
+- [Migration Guide](MIGRATION.md)
 
 ## Features
 
@@ -53,6 +54,8 @@ The official Node.js SDK for [Checkout.com](https://www.checkout.com) payment ga
 - npm or yarn
 
 > **⚠️ Important:** Each Checkout.com account has its own unique base URL prefix. You must configure this prefix when initializing the SDK to connect to your specific account. Find your unique prefix in the [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers). See [Base URL Configuration](#base-url-configuration-account-specific) for details.
+
+> **⚠️ Deprecation Notice:** Initializing the SDK without the `subdomain` parameter is **deprecated** and will be removed in a future major version. Please ensure you provide your account-specific subdomain to avoid disruption when upgrading.
 
 # :rocket: Install
 
@@ -73,38 +76,97 @@ const { Checkout } = require('checkout-sdk-node');
 
 # :clapper: Initialize SDK
 
-## With api keys or access credentials
-Based on how your account was set up, you will either have a pair of API keys or a set of access credentials. Here is how you can use the SDK in both scenarios:
-```js
-// API Keys
-const cko = new Checkout('sk_XXXXXXXXX', {
-    pk: 'pk_XXXXXXX',
-    subdomain: 'YOUR_PREFIX'  // Get from Dashboard → Developers → Overview
-});
+## Initialization Methods
 
-// Access credentials
-const cko = new Checkout('your api secret here', {
-    client: 'ack_XXXXXXXX',
-    scope: ['gateway'], // or whatever scope required
-    environment: 'sandbox', // or 'production'
-    subdomain: 'YOUR_PREFIX'  // Get from Dashboard → Developers → Overview
+The SDK supports 4 ways to initialize, depending on your authentication method and credential storage:
+
+### 1. Static Keys (API Keys) - Declared Options
+
+Use when you have `sk_XXX` and `pk_XXX` keys and want to pass them directly:
+
+```js
+const cko = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...',
+    subdomain: 'YOUR_PREFIX'  // Required: Get from Dashboard → Developers → Overview
 });
 ```
 
-> **Note:** Replace `YOUR_PREFIX` with your account's unique prefix (first 8 characters of your client_id). Find it in [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers). See [Base URL Configuration](#base-url-configuration-account-specific) for more details.
+**Required:**
+- First parameter: Secret Key (sk_XXX)
+- `pk`: Public Key (pk_XXX) - Required
+- `subdomain`: Account prefix - Required
 
-## With environment variables
-If your account uses API Keys (pk_XXX + sk_XXX), you can set the following environment variables, and the SDK will pick them up:
-- *CKO_SECRET_KEY*    (with a value like sk_XXX)
-- *CKO_PUBLIC_KEY*   (with a value like pk_XXX)
+### 2. OAuth (Access Credentials) - Declared Options
 
-If you use access credentials (ack_XXXX), you can set the following environment variables, and the SDK will pick them up:
-- *CKO_SECRET*
-- *CKO_CLIENT*   (with a value like ack_XXXX)
-- *CKO_SCOPE*   (with a value of the scope or semicolon separated scopes in case you use multiple)
-- *CKO_ENVIRONMENT*   (with a value like sandbox or production)
+Use when you have `ack_XXXX` access credentials and want to pass them directly:
 
-**Note:** The `subdomain` option must be passed explicitly when initializing the SDK. It cannot be set via environment variables.
+```js
+const cko = new Checkout('your_api_secret', {
+    client: 'ack_XXXXXXXX',
+    pk: 'pk_sbox_...',          // Required for OAuth
+    scope: ['gateway'],         // Required - scopes your app needs
+    environment: 'sandbox',     // 'sandbox' or 'production'
+    subdomain: 'YOUR_PREFIX'    // Required: Get from Dashboard → Developers → Overview
+});
+```
+
+**Required:**
+- First parameter: API Secret (OAuth secret)
+- `client`: Access credential ID (ack_XXXX) - Triggers OAuth mode
+- `pk`: Public Key - Required for OAuth
+- `scope`: OAuth scopes (array or string) - Required
+- `environment`: 'sandbox' or 'production' - Required
+- `subdomain`: Account prefix - Required
+
+### 3. Static Keys (API Keys) - Environment Variables
+
+Use when you have `sk_XXX` and `pk_XXX` in environment variables and want zero-config:
+
+Set environment variables:
+```bash
+export CKO_SECRET_KEY=sk_sbox_...
+export CKO_PUBLIC_KEY=pk_sbox_...
+```
+
+Initialize:
+```js
+const cko = new Checkout(null, {
+    subdomain: 'YOUR_PREFIX'  // Must be passed explicitly
+});
+```
+
+**Environment Variables:**
+- `CKO_SECRET_KEY`: Secret Key (sk_XXX)
+- `CKO_PUBLIC_KEY`: Public Key (pk_XXX) - Optional
+
+### 4. OAuth (Access Credentials) - Environment Variables
+
+Use when you have OAuth credentials in environment variables:
+
+Set environment variables:
+```bash
+export CKO_SECRET=your_api_secret
+export CKO_CLIENT=ack_XXXXXXXX
+export CKO_SCOPE=gateway,vault
+export CKO_ENVIRONMENT=sandbox
+```
+
+Initialize:
+```js
+const cko = new Checkout(null, {
+    subdomain: 'YOUR_PREFIX'  // Must be passed explicitly
+});
+```
+
+**Environment Variables:**
+- `CKO_SECRET`: API Secret (OAuth secret) - Triggers OAuth mode
+- `CKO_CLIENT`: Access credential ID (ack_XXXX)
+- `CKO_SCOPE`: OAuth scopes - Optional, defaults to 'gateway'
+- `CKO_ENVIRONMENT`: 'sandbox' or 'production' - Optional
+
+### Important Notes
+
+> **⚠️ Subdomain is always required:** The `subdomain` option must be passed explicitly when initializing the SDK. It cannot be set via environment variables. Find your unique prefix in [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers).
 
 ## Set custom config
 Besides the authentication, you also have the option to configure some extra elements about the SDK 
@@ -127,8 +189,8 @@ The SDK supports two HTTP clients: **fetch** (default) and **axios**.
 By default, the SDK uses the native `fetch` API available in Node.js 18+. No additional configuration is needed:
 
 ```js
-const cko = new Checkout('sk_test_...', {
-    pk: 'pk_test_...'
+const cko = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...'
     // fetch is used by default
 });
 ```
@@ -144,14 +206,14 @@ npm install axios
 ```js
 import https from 'https';
 
-const cko = new Checkout('sk_test_...', {
-    pk: 'pk_test_...',
+const cko = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...',
     httpClient: 'axios'
 });
 
 // With custom agent for connection pooling
-const ckoWithAgent = new Checkout('sk_test_...', {
-    pk: 'pk_test_...',
+const ckoWithAgent = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...',
     httpClient: 'axios',
     agent: new https.Agent({ 
         keepAlive: true,
@@ -170,6 +232,8 @@ const ckoWithAgent = new Checkout('sk_test_...', {
 
 **Important:** The base URLs for Checkout.com APIs are **unique to your account**. Each account has a specific prefix (the first 8 characters of your `client_id`, excluding the `cli_` prefix) that must be used in all API requests.
 
+> **⚠️ Deprecation Warning:** When initializing the SDK without the `subdomain` parameter, a deprecation warning will be logged to the console. This functionality is deprecated and will be removed in a future major version. Always provide your account-specific subdomain to ensure compatibility with future releases.
+
 ### Finding Your Unique Base URL
 
 1. Sign in to your [Checkout.com Dashboard](https://dashboard.checkout.com)
@@ -177,62 +241,6 @@ const ckoWithAgent = new Checkout('sk_test_...', {
 3. Your unique base URL is displayed on the Developer overview page
    - Example: `https://vkuhvk4v.api.checkout.com`
 4. Alternatively: Go to **Settings → Account details** → Connection settings
-
-### Configuring the SDK with Your Prefix
-
-#### With API Keys
-
-```js
-const cko = new Checkout('sk_test_...', {
-    pk: 'pk_test_...',
-    subdomain: 'vkuhvk4v'  // Your account's unique prefix
-});
-
-// API requests will go to: https://vkuhvk4v.api.sandbox.checkout.com
-```
-
-#### With OAuth Credentials
-
-```js
-const cko = new Checkout('your_api_secret', {
-    client: 'ack_...',
-    scope: ['gateway'],
-    environment: 'sandbox',
-    subdomain: 'vkuhvk4v'  // Your account's unique prefix
-});
-
-// API requests: https://vkuhvk4v.api.sandbox.checkout.com
-// OAuth token:  https://vkuhvk4v.access.sandbox.checkout.com/connect/token
-```
-
-#### With Environment Variables
-
-You can use environment variables for authentication while still providing the subdomain explicitly:
-
-```bash
-export CKO_SECRET_KEY=sk_test_...
-export CKO_PUBLIC_KEY=pk_test_...
-```
-
-```js
-const cko = new Checkout(null, {
-    subdomain: 'vkuhvk4v'  // Must be provided explicitly
-});
-```
-
-Or read from an additional environment variable:
-
-```bash
-export CKO_SECRET_KEY=sk_test_...
-export CKO_PUBLIC_KEY=pk_test_...
-export CKO_SUBDOMAIN=vkuhvk4v
-```
-
-```js
-const cko = new Checkout(null, {
-    subdomain: process.env.CKO_SUBDOMAIN
-});
-```
 
 ### Prefix Requirements
 
@@ -243,6 +251,8 @@ const cko = new Checkout(null, {
 
 ### Base URL Formats
 
+These formats match the [Checkout.com API Reference – Base URLs](https://api-reference.checkout.com/#section/Base-URLs) and the OpenAPI `servers` in the project's `swagger-spec.json`.
+
 **Sandbox:**
 - API Base URL: `https://{prefix}.api.sandbox.checkout.com`
 - OAuth Authorization: `https://{prefix}.access.sandbox.checkout.com/connect/token`
@@ -250,6 +260,8 @@ const cko = new Checkout(null, {
 **Production:**
 - API Base URL: `https://{prefix}.api.checkout.com`
 - OAuth Authorization: `https://{prefix}.access.checkout.com/connect/token`
+
+See [Initialization Methods](#initialization-methods) above for examples of how to configure your SDK with the correct prefix.
 
 ### Special Service URLs
 
@@ -273,8 +285,8 @@ When using API Keys (pk_XXX + sk_XXX) the SDK will automatically figure out what
 Here are some common operations to get you started. All examples assume you have already initialized the SDK with your credentials and subdomain:
 
 ```js
-const cko = new Checkout('sk_test_...', {
-    pk: 'pk_test_...',
+const cko = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...',
     subdomain: 'YOUR_PREFIX'  // Your unique prefix from Dashboard
 });
 ```
@@ -356,8 +368,8 @@ The SDK includes TypeScript definitions out of the box. No need to install addit
 import { Checkout } from 'checkout-sdk-node';
 import type { PaymentRequest, PaymentResponse } from 'checkout-sdk-node';
 
-const cko: Checkout = new Checkout('sk_test_...', {
-    pk: 'pk_test_...',
+const cko: Checkout = new Checkout('sk_sbox_...', {
+    pk: 'pk_sbox_...',
     subdomain: 'YOUR_PREFIX'  // Your unique prefix from Dashboard
 });
 
