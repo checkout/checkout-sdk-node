@@ -1,7 +1,3 @@
-import {
-    FORWARD_LIVE_URL,
-    FORWARD_SANDBOX_URL
-} from '../../config.js';
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
 
@@ -29,7 +25,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL,
+                this.config.forwardUrl,
                 this.config,
                 this.config.sk,
                 body
@@ -52,9 +48,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${
-                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
-                }/${id}`,
+                `${this.config.forwardUrl}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -80,9 +74,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${
-                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
-                }/secrets`,
+                `${this.config.forwardUrl}/secrets`,
                 this.config,
                 this.config.sk,
                 body
@@ -103,9 +95,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${
-                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
-                }/secrets`,
+                `${this.config.forwardUrl}/secrets`,
                 this.config,
                 this.config.sk
             );
@@ -131,9 +121,7 @@ export default class Forward {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${
-                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
-                }/secrets/${name}`,
+                `${this.config.forwardUrl}/secrets/${name}`,
                 this.config,
                 this.config.sk,
                 body
@@ -155,9 +143,7 @@ export default class Forward {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${
-                    this.config.host.includes('sandbox') ? FORWARD_SANDBOX_URL : FORWARD_LIVE_URL
-                }/secrets/${name}`,
+                `${this.config.forwardUrl}/secrets/${name}`,
                 this.config,
                 this.config.sk
             );

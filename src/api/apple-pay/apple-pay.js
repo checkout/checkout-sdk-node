@@ -13,10 +13,12 @@ export default class ApplePay {
     }
 
     /**
-     * Request an access token
+     * Upload a payment processing certificate.
+     * This will allow you to start processing payments via Apple Pay.
      *
-     * @param {Object} body Apple Pay object body.
-     * @return {Promise<Object>} A promise to the Apple Pay response.
+     * @param {Object} body Apple Pay certificate request.
+     * @param {string} body.content The payment processing certificate content.
+     * @return {Promise<Object>} A promise to the Apple Pay certificate response.
      */
     async upload(body) {
         try {
@@ -34,17 +36,21 @@ export default class ApplePay {
     }
 
     /**
-     * Generate a certificate signing request
+     * Generate a certificate signing request.
+     * You'll need to upload this to your Apple Developer account to download a payment processing certificate.
      *
-     * @return {Promise<Object>} A promise to the Apple Pay response.
+     * @param {Object} body Apple Pay signing request (optional).
+     * @param {string} [body.protocol_version] The protocol version (ec_v1 or rsa_v1). Default: ec_v1.
+     * @return {Promise<Object>} A promise to the Apple Pay signing request response.
      */
-    async generate() {
+    async generate(body) {
         try {
             const response = await post(
                 this.config.httpClient,
                 `${this.config.host}/applepay/signing-requests`,
                 this.config,
-                this.config.pk
+                this.config.pk,
+                body
             );
             return await response.json;
         } catch (err) {
@@ -53,9 +59,11 @@ export default class ApplePay {
     }
 
     /**
-     * Enroll a domain to the Apple Pay Service
+     * Enroll a domain to the Apple Pay Service.
+     * Requires OAuth authentication with scope: vault:apme-enrollment
      *
-     * @param {Object} body Apple Pay enrollment request body.
+     * @param {Object} body Apple Pay enrollment request.
+     * @param {string} body.domain The domain to enroll (e.g., 'https://example.com').
      * @return {Promise<void>} A promise that resolves when enrollment is successful (204 No Content).
      */
     async enroll(body) {
@@ -64,7 +72,7 @@ export default class ApplePay {
                 this.config.httpClient,
                 `${this.config.host}/applepay/enrollments`,
                 this.config,
-                this.config.pk,
+                null,
                 body
             );
             // 204 No Content - return undefined

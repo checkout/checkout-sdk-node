@@ -16,6 +16,7 @@ export default class AccountUpdater {
      * Get updated card credentials.
      * Retrieve updated card credentials. The following card schemes are supported: Mastercard, Visa, American Express.
      * The response may include status: CARD_UPDATED, CARD_CLOSED, CARD_EXPIRY_UPDATED, or UPDATE_FAILED.
+     * Requires OAuth authentication with scope: vault:real-time-account-updater
      *
      * @memberof AccountUpdater
      * @param {Object} body Account updater request params (source_options with card details or instrument ID).
@@ -27,7 +28,7 @@ export default class AccountUpdater {
                 this.config.httpClient,
                 `${this.config.host}/account-updater/cards`,
                 this.config,
-                this.config.sk,
+                null,
                 body
             );
             return await response.json;

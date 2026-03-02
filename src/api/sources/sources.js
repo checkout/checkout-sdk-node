@@ -4,6 +4,7 @@ import { setSourceType } from '../../services/validation.js';
 
 /**
  * Class dealing with the /sources endpoint
+ * @deprecated v2.x.x - Use Payment Sources API instead
  *
  * @export
  * @class Sources

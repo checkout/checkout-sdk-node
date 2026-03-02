@@ -96,6 +96,10 @@ export default class Instruments {
                 this.config,
                 this.config.sk
             );
+            // 204 No Content - return empty object
+            if (response.status === 204) {
+                return {};
+            }
             return await response.json;
         } catch (err) {
             throw await determineError(err);

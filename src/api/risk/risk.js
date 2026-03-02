@@ -3,6 +3,7 @@ import { post } from '../../services/http.js';
 
 /**
  * Class dealing with the /risk endpoint
+ * @deprecated v2.x.x - Use Risk Assessment API instead
  *
  * @export
  * @class Risk

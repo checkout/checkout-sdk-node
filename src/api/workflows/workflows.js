@@ -33,7 +33,7 @@ export default class Workflows {
     }
 
     /**
-     * Add a new Flow workflow.
+     * Add a workflow
      *
      * @memberof Workflows
      * @param {Object} body Workflows request body.
@@ -132,7 +132,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}/actions/`,
+                `${this.config.host}/workflows/${id}/actions`,
                 this.config,
                 this.config.sk,
                 body
@@ -201,7 +201,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}/conditions/`,
+                `${this.config.host}/workflows/${id}/conditions`,
                 this.config,
                 this.config.sk,
                 body
@@ -282,7 +282,7 @@ export default class Workflows {
     }
 
     /**
-     * Get a list of sources and their events for building new workflows
+     * Get event types
      *
      * @memberof Workflows
      * @return {Promise<Object>} A promise to the Workflows response.
@@ -302,7 +302,7 @@ export default class Workflows {
     }
 
     /**
-     * Get the details of an event.
+     * Get an event
      *
      * @memberof Workflows
      * @param {string} id Event ID.
@@ -323,7 +323,7 @@ export default class Workflows {
     }
 
     /**
-     * Get the details of a workflow action executed for the specified event.
+     * Get action invocations
      *
      * @memberof Workflows
      * @param {string} eventId Event ID.
@@ -345,8 +345,7 @@ export default class Workflows {
     }
 
     /**
-     * Reflows a past event denoted by the event ID and triggers the actions of any
-     * workflows with matching conditions.
+     * Reflow by event
      *
      * @memberof Workflows
      * @param {string} id Event ID.
@@ -391,8 +390,7 @@ export default class Workflows {
     }
 
     /**
-     * Reflow past events attached to multiple event IDs and workflow IDs. If you don't
-     * specify any workflow IDs, all matching workflows will be retriggered.
+     * Reflow
      *
      * @memberof Workflows
      * @param {Array} events Array of IDs for the events you want reflowed.
@@ -418,8 +416,7 @@ export default class Workflows {
     }
 
     /**
-     * Reflow past events attached to multiple subject IDs and workflow IDs. If you don't
-     * specify any workflow IDs, all matching workflows will be retriggered.
+     * Reflow
      *
      * @memberof Workflows
      * @param {Array} subjects Array of IDs for the subjects you want reflowed.
@@ -445,7 +442,7 @@ export default class Workflows {
     }
 
     /**
-     * Get all events that relate to a specific subject
+     * Get subject events
      *
      * @memberof Workflows
      * @param {string} id The event identifier.
@@ -466,8 +463,7 @@ export default class Workflows {
     }
 
     /**
-     * Reflows the events associated with a subject ID (for example, a payment ID or a
-     * dispute ID) and triggers the actions of any workflows with matching conditions.
+     * Reflow by subject
      *
      * @memberof Workflows
      * @param {string} id The subject identifier (for example, a payment ID or a dispute ID).
@@ -488,8 +484,7 @@ export default class Workflows {
     }
 
     /**
-     * Reflows the events associated with a subject ID (for example, a payment ID or a
-     * dispute ID) and triggers the actions of the specified workflow if the conditions match.
+     * Reflow by subject and workflow
      *
      * @memberof Workflows
      * @param {string} subjectId Subject ID.

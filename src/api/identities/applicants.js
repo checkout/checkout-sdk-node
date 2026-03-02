@@ -1,7 +1,3 @@
-import {
-    IDENTITY_VERIFICATION_LIVE_URL,
-    IDENTITY_VERIFICATION_SANDBOX_URL
-} from '../../config.js';
 import { determineError } from '../../services/errors.js';
 import { get, post, patch } from '../../services/http.js';
 
@@ -25,9 +21,7 @@ export default class Applicants {
      */
     async createApplicant(body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/applicants`;
+            const url = `${this.config.identityVerificationUrl}/applicants`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -50,9 +44,7 @@ export default class Applicants {
      */
     async getApplicant(applicantId) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/applicants/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -75,9 +67,7 @@ export default class Applicants {
      */
     async updateApplicant(applicantId, body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/applicants/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}`;
             const response = await patch(
                 this.config.httpClient,
                 url,
@@ -100,9 +90,7 @@ export default class Applicants {
      */
     async anonymizeApplicant(applicantId) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/applicants/${applicantId}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}/anonymize`;
             const response = await post(
                 this.config.httpClient,
                 url,

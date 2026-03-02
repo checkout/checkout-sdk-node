@@ -14,7 +14,7 @@ export default class PaymentContexts {
     }
 
     /**
-     * Sends payment contexts requests.
+     * Request a Payment Context.
      *
      * @memberof PaymentContexts
      * @param {object} body PaymentContexts Request body.
@@ -40,10 +40,11 @@ export default class PaymentContexts {
     }
 
     /**
-     * Returns a payment-context details with the specified identifier string.
+     * Get Payment Context details.
      *
      * @memberof PaymentContexts
-     * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
+     * @param {string} id /^(pay|sid)_(
+{26})$/ The payment or payment session identifier.
      * @return {Promise<object>} A promise to the get payment context response.
      */
     async get(id) {

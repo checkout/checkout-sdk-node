@@ -13,10 +13,10 @@ export default class HostedPayments {
     }
 
     /**
-     * Update details of a customer
+     * Create a Hosted Payments Page session
      *
      * @memberof HostedPayments
-     * @param {Object} body
+     * @param {Object} body - Hosted Payments Page session request body
      * @return {Promise<Object>} A promise to the Hosted Payment response.
      */
     async create(body) {
@@ -35,10 +35,10 @@ export default class HostedPayments {
     }
 
     /**
-     * Returns details of an instrument
+     * Get Hosted Payments Page details
      *
      * @memberof HostedPayments
-     * @param {string} id Hosted payment id.
+     * @param {string} id - Hosted payment id
      * @return {Promise<Object>} A promise to the Hosted Payment response.
      */
     async get(id) {

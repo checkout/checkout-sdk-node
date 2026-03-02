@@ -1,7 +1,3 @@
-import {
-    BALANCES_LIVE_URL,
-    BALANCES_SANDBOX_URL
-} from '../../config.js';
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
@@ -21,14 +17,31 @@ export default class Balances {
      *
      * @memberof Balances
      * @param {string} id The ID of the entity.
-     * @param {string} currency The query to apply to limit the currency accounts.
+     * @param {string|Object} [options] Filter options. Can be:
+     *   - string: currency code (e.g., 'EUR') - backward compatible
+     *   - object: { query: 'currency:EUR', withCurrencyAccountId: true }
      * @return {Promise<Object>} A promise to the balances response.
      */
-    async retrieve(id, currency) {
+    async retrieve(id, options) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? BALANCES_SANDBOX_URL : BALANCES_LIVE_URL
-            }/${id}${currency ? `?query=currency:${currency}` : ''}`;
+            let queryParams = [];
+            
+            // Backward compatibility: if options is a string, treat it as currency
+            if (typeof options === 'string') {
+                queryParams.push(`query=currency:${options}`);
+            } else if (typeof options === 'object' && options !== null) {
+                // New object-based API
+                if (options.query) {
+                    queryParams.push(`query=${options.query}`);
+                }
+                if (options.withCurrencyAccountId !== undefined) {
+                    queryParams.push(`withCurrencyAccountId=${options.withCurrencyAccountId}`);
+                }
+            }
+            
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+            const url = `${this.config.balancesUrl}/${id}${queryString}`;
+            
             const response = await get(
                 this.config.httpClient,
                 url,

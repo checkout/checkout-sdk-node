@@ -3,6 +3,7 @@ import { get } from '../../services/http.js';
 
 /**
  * Class dealing with the /reporting endpoint
+ * @deprecated v2.x.x - Use Reports API instead
  *
  * @export
  * @class Reconciliation

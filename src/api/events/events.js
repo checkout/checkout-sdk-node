@@ -3,6 +3,8 @@ import { get, post } from '../../services/http.js';
 
 /**
  * Class dealing with the /events endpoint
+ * @deprecated v2.x.x - Use Workflows API instead
+ * @see Workflows
  *
  * @export
  * @class Events
@@ -16,6 +18,7 @@ export default class Events {
      * Retrieve a list of event types grouped by their respective version that you can
      * configure on your webhooks.
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {string} version Events Version.
      * @return {Promise<Object>} A promise to the request events response.
@@ -37,6 +40,7 @@ export default class Events {
      * Retrieves events ordered by the event date in descending order (latest first).
      * Results can be paged by specifying the skip and limit query parameters.
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {Object} body Events request body.
      * @return {Promise<Object>} A promise to the request events response.
@@ -63,6 +67,7 @@ export default class Events {
      * Retrieves the event with the specified identifier string. The event data includes the full event
      * details, the schema of which will vary based on the type.
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the request event response.
@@ -84,6 +89,7 @@ export default class Events {
     /**
      * Retrieves the attempts for a specific event notification
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the request event notifications response.
@@ -105,6 +111,7 @@ export default class Events {
     /**
      * Retries a specific webhook notification for the given event
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the retry event response.
@@ -126,6 +133,7 @@ export default class Events {
     /**
      * Retries all webhook notifications configured for the specified event
      *
+     * @deprecated v2.x.x - Use Workflows API instead
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the retry events response.

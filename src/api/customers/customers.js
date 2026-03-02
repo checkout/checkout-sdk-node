@@ -72,6 +72,10 @@ export default class Customers {
                 this.config.sk,
                 body
             );
+            // 204 No Content - return empty object
+            if (response.status === 204) {
+                return {};
+            }
             return await response.json;
         } catch (err) {
             throw await determineError(err);
@@ -94,6 +98,10 @@ export default class Customers {
                 this.config.sk
             );
 
+            // 204 No Content - return empty object
+            if (response.status === 204) {
+                return {};
+            }
             return await response.json;
         } catch (err) {
             throw await determineError(err);

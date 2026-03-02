@@ -1,7 +1,3 @@
-import {
-    IDENTITY_VERIFICATION_LIVE_URL,
-    IDENTITY_VERIFICATION_SANDBOX_URL
-} from '../../config.js';
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
@@ -26,9 +22,7 @@ export default class IdentityVerifications {
      */
     async createAndStartIdentityVerification(body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/create-and-open-idv`;
+            const url = `${this.config.identityVerificationUrl}/create-and-open-idv`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -52,9 +46,7 @@ export default class IdentityVerifications {
      */
     async createIdentityVerification(body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -78,9 +70,7 @@ export default class IdentityVerifications {
      */
     async getIdentityVerification(identity_verification_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -103,9 +93,7 @@ export default class IdentityVerifications {
      */
     async anonymizeIdentityVerification(identity_verification_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/anonymize`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -129,9 +117,7 @@ export default class IdentityVerifications {
      */
     async createAttempt(identity_verification_id, body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -155,9 +141,7 @@ export default class IdentityVerifications {
      */
     async listAttempts(identity_verification_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -181,9 +165,7 @@ export default class IdentityVerifications {
      */
     async getAttempt(identity_verification_id, attempt_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -207,9 +189,7 @@ export default class IdentityVerifications {
      */
     async getPDFReport(identity_verification_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/identity-verifications/${identity_verification_id}/pdf-report`;
+            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/pdf-report`;
             const response = await get(
                 this.config.httpClient,
                 url,

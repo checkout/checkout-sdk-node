@@ -1,7 +1,3 @@
-import {
-    IDENTITY_VERIFICATION_LIVE_URL,
-    IDENTITY_VERIFICATION_SANDBOX_URL
-} from '../../config.js';
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
@@ -26,9 +22,7 @@ export default class FaceAuthentications {
      */
     async createFaceAuthentication(body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -52,9 +46,7 @@ export default class FaceAuthentications {
      */
     async getFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications/${face_authentication_id}`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -77,9 +69,7 @@ export default class FaceAuthentications {
      */
     async listAttempts(face_authentication_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications/${face_authentication_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -103,9 +93,7 @@ export default class FaceAuthentications {
      */
     async getAttempt(face_authentication_id, attempt_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications/${face_authentication_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -129,9 +117,7 @@ export default class FaceAuthentications {
      */
     async createAttempt(face_authentication_id, body) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications/${face_authentication_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -155,9 +141,7 @@ export default class FaceAuthentications {
      */
     async anonymizeFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${
-                this.config.host.includes('sandbox') ? IDENTITY_VERIFICATION_SANDBOX_URL : IDENTITY_VERIFICATION_LIVE_URL
-            }/face-authentications/${face_authentication_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/anonymize`;
             const response = await post(
                 this.config.httpClient,
                 url,
