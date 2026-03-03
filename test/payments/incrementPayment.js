@@ -4,14 +4,14 @@ import nock from 'nock';
 
 describe('Increment a payment', () => {
     it('should increment auth with a body', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'gateway',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_bvxdyo7xdssuhcx3e74dpcrfmu',
@@ -67,24 +67,24 @@ describe('Increment a payment', () => {
                 expires_on: '2022-01-09T18:05:35.9803885Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
                     },
                     authorizations: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(`/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations`)
             .reply(201, {
                 action_id: 'act_lswhshupa76ujol47pnuepswhe',
@@ -115,19 +115,19 @@ describe('Increment a payment', () => {
                 expires_on: '2022-01-09T18:05:49.8993047Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
                     },
                     authorizations: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
                     },
                 },
             });
@@ -138,6 +138,7 @@ describe('Increment a payment', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['gateway'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
         const auth = await cko.payments.request({
@@ -162,7 +163,7 @@ describe('Increment a payment', () => {
     });
 
     it('should increment auth with a body and static key', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_bvxdyo7xdssuhcx3e74dpcrfmu',
@@ -218,24 +219,24 @@ describe('Increment a payment', () => {
                 expires_on: '2022-01-09T18:05:35.9803885Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
                     },
                     authorizations: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(`/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations`)
             .reply(201, {
                 action_id: 'act_lswhshupa76ujol47pnuepswhe',
@@ -266,24 +267,24 @@ describe('Increment a payment', () => {
                 expires_on: '2022-01-09T18:05:49.8993047Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/voids',
                     },
                     authorizations: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations',
                     },
                 },
             });
 
-        const cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m');
+        const cko = new Checkout('sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m', { subdomain: '123456789' });
 
         const auth = await cko.payments.request({
             source: {
@@ -307,14 +308,14 @@ describe('Increment a payment', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
             token_type: 'Bearer',
             scope: 'gateway',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_bvxdyo7xdssuhcx3e74dpcrfmu/authorizations')
             .reply(401);
 
@@ -325,6 +326,7 @@ describe('Increment a payment', () => {
                     client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                     scope: ['gateway'],
                     environment: 'sandbox',
+                subdomain: '123456789'
                 }
             );
 

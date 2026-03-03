@@ -14,13 +14,14 @@ export default class PaymentContexts {
     }
 
     /**
-     * Sends payment contexts requests.
+     * Request a Payment Context.
      *
      * @memberof PaymentContexts
      * @param {object} body PaymentContexts Request body.
+     * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<object>} A promise to payment context response.
      */
-    async request(body) {
+    async request(body, idempotencyKey) {
         try {
             validatePayment(body);
 
@@ -29,7 +30,8 @@ export default class PaymentContexts {
                 `${this.config.host}/payment-contexts`,
                 this.config,
                 this.config.sk,
-                body
+                body,
+                idempotencyKey
             );
             return await response.json;
         } catch (error) {
@@ -38,10 +40,11 @@ export default class PaymentContexts {
     }
 
     /**
-     * Returns a payment-context details with the specified identifier string.
+     * Get Payment Context details.
      *
      * @memberof PaymentContexts
-     * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
+     * @param {string} id /^(pay|sid)_(
+{26})$/ The payment or payment session identifier.
      * @return {Promise<object>} A promise to the get payment context response.
      */
     async get(id) {

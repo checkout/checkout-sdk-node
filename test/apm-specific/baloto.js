@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Baloto', () => {
     it('should succeed Baloto payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_b4wrbvczujuujja72omsufguzu',
@@ -53,30 +53,30 @@ describe('Baloto', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/apms/baloto/payments/pay_b4wrbvczujuujja72omsufguzu/succeed')
             .reply(200);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const payment = await cko.payments.request({
             source: {
@@ -97,11 +97,11 @@ describe('Baloto', () => {
     });
 
     it('should throw NotFoundError trying to succeed Baloto payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/apms/baloto/payments/1234/succeed')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const baloto = await cko.baloto.succeed('1234');
@@ -111,7 +111,7 @@ describe('Baloto', () => {
     });
 
     it('should expire Baloto payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_b4wrbvczujuujja72omsufguzu',
@@ -157,30 +157,30 @@ describe('Baloto', () => {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq',
                     },
                     actions: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/actions',
                     },
                     capture: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/captures',
                     },
                     void: {
                         href:
-                            'https://api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
+                            'https://123456789.api.sandbox.checkout.com/payments/pay_l5rvkbinxztepjskr7vwlovzsq/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/apms/baloto/payments/pay_b4wrbvczujuujja72omsufguzu/expire')
             .reply(200);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const payment = await cko.payments.request({
             source: {
@@ -201,11 +201,11 @@ describe('Baloto', () => {
     });
 
     it('should throw NotFoundError trying to expire Baloto payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/apms/baloto/payments/1234/expire')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const baloto = await cko.baloto.expire('1234');

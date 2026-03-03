@@ -4,6 +4,7 @@ import Checkout from '../../src/Checkout.js';
 const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
   pk: process.env.CHECKOUT_PREVIOUS_PUBLIC_KEY,
   environment: 'sandbox',
+  subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
 });
 const processingChannelId = process.env.CHECKOUT_PROCESSING_CHANNEL_ID;
 

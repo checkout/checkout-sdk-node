@@ -33,8 +33,7 @@ export default class Instruments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -55,8 +54,7 @@ export default class Instruments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -79,8 +77,7 @@ export default class Instruments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -99,10 +96,13 @@ export default class Instruments {
                 this.config,
                 this.config.sk
             );
+            // 204 No Content - return empty object
+            if (response.status === 204) {
+                return {};
+            }
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -124,8 +124,7 @@ export default class Instruments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }

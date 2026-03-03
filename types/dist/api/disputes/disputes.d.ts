@@ -11,4 +11,6 @@ export default class Disputes {
     submit: (disputeId: string) => Promise<Object>;
     getCompiledSubmittedEvidence: (disputeId: string) => Promise<Object>;
     getDisputeSchemeFiles: (disputeId: string) => Promise<Object>;
+    submitArbitrationEvidence: (disputeId: string) => Promise<void>;
+    getCompiledSubmittedArbitrationEvidence: (disputeId: string) => Promise<Object>;
 }

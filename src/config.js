@@ -1,3 +1,4 @@
+/** Base URLs for main API. Per API Reference Base URLs, account-specific URLs use {prefix}.api.(sandbox.)checkout.com; see EnvironmentSubdomain when subdomain is set. */
 export const SANDBOX_BASE_URL = 'https://api.sandbox.checkout.com';
 export const LIVE_BASE_URL = 'https://api.checkout.com';
 export const SANDBOX_ACCESS_URL = 'https://access.sandbox.checkout.com/connect/token';
@@ -9,11 +10,18 @@ export const PLATFORMS_FILES_SANDBOX_URL = 'https://files.sandbox.checkout.com/f
 export const TRANSFERS_SANDBOX_URL = 'https://transfers.sandbox.checkout.com/transfers';
 export const TRANSFERS_LIVE_URL = 'https://transfers.checkout.com/transfers';
 
+export const FORWARD_SANDBOX_URL = 'https://forward.sandbox.checkout.com/forward';
+export const FORWARD_LIVE_URL = 'https://forward.checkout.com/forward';
+
 export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
 export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
 
+export const IDENTITY_VERIFICATION_SANDBOX_URL = 'https://identity-verification.api.sandbox.checkout.com';
+export const IDENTITY_VERIFICATION_LIVE_URL = 'https://identity-verification.api.checkout.com';
+
 export const REQUEST_ID_HEADER = 'cko-request-id';
 export const API_VERSION_HEADER = 'cko-version';
+export const ETAG_HEADER = 'etag';
 
 export const DEFAULT_TIMEOUT = 15000;
 

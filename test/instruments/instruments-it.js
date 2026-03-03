@@ -11,6 +11,7 @@ afterEach(() => {
 const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
   pk: process.env.CHECKOUT_PREVIOUS_PUBLIC_KEY,
   environment: 'sandbox',
+  subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
 });
 
 const sepaRequest = {
@@ -36,23 +37,44 @@ const sepaRequest = {
   }
 }
 
-describe('Instruments::Create', () => {
-  describe('Sepa', () => {
+describe('Instruments', () => {
+  describe('Create', () => {
+    describe('Sepa', () => {
+      it('Should create a Sepa Instrument', async () => {
+        const response = await cko.instruments.create(sepaRequest);
 
-    it('Should create a Sepa Instrument', async () => {
-      const response = await cko.instruments.create(sepaRequest);
+        expect(response).to.not.be.null;
+        expect(response.id).to.not.be.null;
+        expect(response.fingerprint).to.not.be.null;
+      });
 
-      expect(response).to.not.be.null;
-      expect(response.id).to.not.be.null;
-      expect(response.fingerprint).to.not.be.null;
+      it('Should return a ValidationError with invalid Sepa Instrument Request', async () => {
+        try {
+          await cko.instruments.create({});
+        } catch (error) {
+          expect(error).to.be.instanceOf(ValidationError);
+        }
+      });
     });
+  });
 
-    it('Should return a ValidationError with invalid Sepa Instrument Request', async () => {
-      try {
-        await cko.instruments.create({});
-      } catch (error) {
-        expect(error).to.be.instanceOf(ValidationError);
-      }
+  describe('Get', () => {
+    it('Should get an instrument by id', async () => {
+      const created = await cko.instruments.create(sepaRequest);
+      const retrieved = await cko.instruments.get(created.id);
+
+      expect(retrieved).to.not.be.null;
+      expect(retrieved.id).to.equal(created.id);
+      expect(retrieved.type).to.equal('sepa');
+    });
+  });
+
+  describe('Delete', () => {
+    it('Should delete an instrument', async () => {
+      const created = await cko.instruments.create(sepaRequest);
+      const result = await cko.instruments.delete(created.id);
+
+      expect(result).to.deep.equal({});
     });
   });
 });

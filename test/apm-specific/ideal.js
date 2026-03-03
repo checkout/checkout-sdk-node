@@ -7,37 +7,37 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('iDEal', () => {
     it('should get iDeal details', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/ideal-external')
             .reply(200, {
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/ideal-external/',
+                        href: 'https://123456789.api.sandbox.checkout.com/ideal-external/',
                     },
                     curies: [
                         {
                             name: 'ideal',
                             href:
-                                'https://api.sandbox.checkout.com/ideal-external/relations/ideal/{rel}',
+                                'https://123456789.api.sandbox.checkout.com/ideal-external/relations/ideal/{rel}',
                             templated: true,
                         },
                     ],
                     'ideal:issuers': {
-                        href: 'https://api.sandbox.checkout.com/ideal-external/issuers',
+                        href: 'https://123456789.api.sandbox.checkout.com/ideal-external/issuers',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const ideal = await cko.ideal.get();
         expect(ideal._links.curies[0].name).to.equal('ideal');
     });
 
     it('should throw Authentication error trying to get iDeal details', async () => {
-        nock('https://api.sandbox.checkout.com').get('/ideal-external').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/ideal-external').reply(401);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const ideal = await cko.ideal.get();
@@ -47,7 +47,7 @@ describe('iDEal', () => {
     });
 
     it('should get iDeal issuers', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/ideal-external/issuers')
             .reply(200, {
                 countries: [
@@ -67,21 +67,21 @@ describe('iDEal', () => {
                 ],
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/ideal-external/issuers',
+                        href: 'https://123456789.api.sandbox.checkout.com/ideal-external/issuers',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const issuers = await cko.ideal.getIssuers();
         expect(issuers.countries[0].name).to.equal('Nederland');
     });
 
     it('should throw Authentication error trying to get iDeal issuers', async () => {
-        nock('https://api.sandbox.checkout.com').get('/ideal-external/issuers').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').get('/ideal-external/issuers').reply(401);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const issuers = await cko.ideal.getIssuers();

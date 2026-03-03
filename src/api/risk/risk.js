@@ -3,6 +3,7 @@ import { post } from '../../services/http.js';
 
 /**
  * Class dealing with the /risk endpoint
+ * @deprecated v2.x.x - Use Risk Assessment API instead
  *
  * @export
  * @class Risk
@@ -30,8 +31,7 @@ export default class Risk {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -53,8 +53,7 @@ export default class Risk {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }

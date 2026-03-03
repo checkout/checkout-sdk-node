@@ -45,7 +45,7 @@ export default class EnvironmentSubdomain {
             const result = url.toString().trim();
             // Only remove trailing slash if the URL ends with just a slash
             return result.endsWith('/') ? result.slice(0, -1) : result;
-        } catch (error) {
+        } catch {
             return originalUrl;
         }
     }

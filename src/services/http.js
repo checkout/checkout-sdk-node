@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
     API_VERSION_HEADER,
+    ETAG_HEADER,
     LIVE_ACCESS_URL,
     REQUEST_ID_HEADER,
     SANDBOX_ACCESS_URL,
@@ -30,7 +31,18 @@ async function buildCsvResponse(response) {
 
 function buildJsonResponse(response) {
     return response.text().then((text) => {
-        const data = !text ? {} : JSON.parse(text);
+        let data = {};
+        
+        if (text) {
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                // If parsing fails, return the raw text (likely HTML error page)
+                // This preserves the error information for debugging
+                data = { _raw: text, _parseError: err.message };
+            }
+        }
+        
         const headers = getResponseHeaders(response);
 
         return {
@@ -68,9 +80,11 @@ function getRequestHeaders(config, request, authHeader, idempotencyKey) {
 function getResponseHeaders(response) {
     const requestId = response.headers.get(REQUEST_ID_HEADER) || response.headers.get('request-id');
     const version = response.headers.get(API_VERSION_HEADER) || response.headers.get('version');
+    const etag = response.headers.get(ETAG_HEADER);
     return {
         'cko-request-id': requestId || '',
         'cko-version': version || '',
+        'etag': etag || '',
     };
 }
 
@@ -80,9 +94,11 @@ function getResponseAxiosHeaders(response) {
     if (REQUEST_ID_HEADER in response.headers) {
         const requestId = response.headers[REQUEST_ID_HEADER] || response.headers['request-id'];
         const version = response.headers[API_VERSION_HEADER] || response.headers.version;
+        const etag = response.headers[ETAG_HEADER];
         return {
             'cko-request-id': requestId ? requestId[0] : '',
             'cko-version': version ? version[0] : '',
+            'etag': etag ? etag[0] : '',
         };
     }
 
@@ -104,7 +120,15 @@ function buildAxiosResponse(config, response) {
 }
 
 // For 'no body' response, replace with empty object
-const bodyParser = (rsp) => rsp.text().then((text) => (text ? JSON.parse(text) : {}));
+const bodyParser = (rsp) => rsp.text().then((text) => {
+    if (!text) return {};
+    try {
+        return JSON.parse(text);
+    } catch (err) {
+        // If parsing fails, return the raw text for debugging
+        return { _raw: text, _parseError: err.message };
+    }
+});
 
 const isTokenExpired = (tokenExpiry, currentTimestamp) => tokenExpiry < currentTimestamp;
 
@@ -178,7 +202,7 @@ export const createAccessToken = async (config, httpClient, body) => {
                 }
             );
             if (!access.ok) {
-                const json = bodyParser(access);
+                const json = await bodyParser(access);
                 throw { status: access.status, json };
             }
 
@@ -243,7 +267,7 @@ const httpRequest = async (httpClient, method, path, config, auth, request, idem
                 if (error.response) {
                     throw {
                         status: error.response.status,
-                        json: error.toJSON ? error.toJSON() : error.response.data,
+                        json: error.response.data,
                     };
                 }
                 if (error.request) {
@@ -272,7 +296,7 @@ const httpRequest = async (httpClient, method, path, config, auth, request, idem
             }
 
             if (!response.ok) {
-                const json = bodyParser(response);
+                const json = await bodyParser(response);
                 throw { status: response.status, json };
             }
 

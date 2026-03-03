@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Unit::Forward', () => {
     it('should forward an API request', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://forward.sandbox.checkout.com')
             .post('/forward', {
                 source: {
                     id: 'src_v5rgkf3gdtpuzjqesyxmyodnya',
@@ -50,7 +50,7 @@ describe('Unit::Forward', () => {
                             'application/json'
                         ]
                     },
-                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
                 }
             });
 
@@ -97,13 +97,13 @@ describe('Unit::Forward', () => {
                         'application/json'
                     ]
                 },
-                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
             }
         });
     });
 
     it('should get a forward request', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://forward.sandbox.checkout.com')
             .get('/forward/fwd_01HK153X00VZ1K15Z3HYC0QGPN')
             .reply(200, {
                 request_id: 'fwd_01HK153X00VZ1K15Z3HYC0QGPN',
@@ -129,7 +129,7 @@ describe('Unit::Forward', () => {
                             'application/json'
                         ]
                     },
-                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                    body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
                 },
                 created_on: '2024-01-02T15:04:05+00:00'
             });
@@ -160,18 +160,18 @@ describe('Unit::Forward', () => {
                         'application/json'
                     ]
                 },
-                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
+                body: '{"id": "pay_mbabizu24mvu3mela5njyhpit4", "action_id": "act_mbabizu24mvu3mela5njyhpit4", "amount": 6540, "currency": "USD", "approved": true, "status": "Authorized", "auth_code": "770687", "response_code": "10000", "response_summary": "Approved", "_links": {"self": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4"}, "action": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/actions"}, "void": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/voids"}, "capture": {"href": "https://123456789.api.sandbox.checkout.com/payments/pay_mbabizu24mvu3mela5njyhpit4/captures"}}}'
             },
             created_on: '2024-01-02T15:04:05+00:00'
         });
     });
 
     it('should throw an error for unauthorized (401)', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/forward')
             .reply(401, {});
 
-        const cko = new Checkout('sk_test_invalid');
+        const cko = new Checkout('sk_test_invalid', { subdomain: '123456789' });
         try {
             await cko.forward.forwardRequest({
                 source: { id: 'src_v5rgkf3gdtpuzjqesyxmyodnya', type: 'id' },
@@ -200,7 +200,7 @@ describe('Unit::Forward', () => {
     });
 
     it('should throw an error for validation error (422)', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://forward.sandbox.checkout.com')
             .post('/forward')
             .reply(422, {
                 request_id: 'fwd_01HK153X00VZ1K15Z3HYC0QGPN:00000001',
@@ -242,7 +242,7 @@ describe('Unit::Forward', () => {
     });
 
     it('should throw an error for not found (404)', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/forward/fwd_invalid_id')
             .reply(404, {
                 error_type: 'not_found',
@@ -258,5 +258,117 @@ describe('Unit::Forward', () => {
             expect(err).to.be.instanceOf(NotFoundError);
             expect(err.http_code).to.equal(404);
         }
+    });
+
+    it('should create a secret', async () => {
+        nock('https://forward.sandbox.checkout.com')
+            .post('/forward/secrets', {
+                name: 'secret_name',
+                value: 'plaintext',
+                entity_id: 'ent_12345'
+            })
+            .reply(201, {
+                name: 'secret_name',
+                created_at: '2025-10-14T00:00:00Z',
+                updated_at: '2025-10-14T00:00:00Z',
+                version: 1,
+                entity_id: 'ent_12345'
+            });
+
+        const cko = new Checkout(SK);
+        const result = await cko.forward.createSecret({
+            name: 'secret_name',
+            value: 'plaintext',
+            entity_id: 'ent_12345'
+        });
+        expect(result).to.deep.equal({
+            name: 'secret_name',
+            created_at: '2025-10-14T00:00:00Z',
+            updated_at: '2025-10-14T00:00:00Z',
+            version: 1,
+            entity_id: 'ent_12345'
+        });
+    });
+
+    it('should list secrets', async () => {
+        nock('https://forward.sandbox.checkout.com')
+            .get('/forward/secrets')
+            .reply(200, {
+                data: [
+                    {
+                        name: 'secret_name_1',
+                        created_at: '2025-10-14T00:00:00Z',
+                        updated_at: '2025-10-14T00:00:00Z',
+                        version: 1,
+                        entity_id: 'ent_123'
+                    },
+                    {
+                        name: 'secret_name_2',
+                        created_at: '2025-10-14T01:00:00Z',
+                        updated_at: '2025-10-14T01:00:00Z',
+                        version: 2,
+                        entity_id: 'ent_456'
+                    }
+                ]
+            });
+
+        const cko = new Checkout(SK);
+        const result = await cko.forward.listSecrets();
+        expect(result).to.deep.equal({
+            data: [
+                {
+                    name: 'secret_name_1',
+                    created_at: '2025-10-14T00:00:00Z',
+                    updated_at: '2025-10-14T00:00:00Z',
+                    version: 1,
+                    entity_id: 'ent_123'
+                },
+                {
+                    name: 'secret_name_2',
+                    created_at: '2025-10-14T01:00:00Z',
+                    updated_at: '2025-10-14T01:00:00Z',
+                    version: 2,
+                    entity_id: 'ent_456'
+                }
+            ]
+        });
+    });
+
+    it('should update a secret', async () => {
+        nock('https://forward.sandbox.checkout.com')
+            .patch('/forward/secrets/secret_name', {
+                value: 'new_plaintext',
+                entity_id: 'ent_67890'
+            })
+            .reply(200, {
+                name: 'secret_name',
+                created_at: '2025-10-14T00:00:00Z',
+                updated_at: '2025-10-14T02:00:00Z',
+                version: 2,
+                entity_id: 'ent_67890'
+            });
+
+        const cko = new Checkout(SK);
+        const result = await cko.forward.updateSecret('secret_name', {
+            value: 'new_plaintext',
+            entity_id: 'ent_67890'
+        });
+        expect(result).to.deep.equal({
+            name: 'secret_name',
+            created_at: '2025-10-14T00:00:00Z',
+            updated_at: '2025-10-14T02:00:00Z',
+            version: 2,
+            entity_id: 'ent_67890'
+        });
+    });
+
+    it('should delete a secret', async () => {
+        nock('https://forward.sandbox.checkout.com')
+            .delete('/forward/secrets/secret_name')
+            .reply(204);
+
+        const cko = new Checkout(SK);
+        const result = await cko.forward.deleteSecret('secret_name');
+        expect(result).to.be.undefined;
     });
 });

@@ -1,13 +1,10 @@
-documentation
-nyc_output
-coverage
-examples
 src
 test
 types
+examples
+coverage
 .DS_Store
-website
-documentation
+
 # System and IDE files
 Thumbs.db
 .vscode/
@@ -28,3 +25,6 @@ yarn.lock
 .prettierrc*
 .babelrc*
 .editorconfig
+eslint.config.js
+jsconfig.json
+.c8rc.json

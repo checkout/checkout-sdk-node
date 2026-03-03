@@ -6,7 +6,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Search payments', () => {
     it('should search payments with query', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/search')
             .reply(200, {
                 data: [
@@ -123,12 +123,12 @@ describe('Search payments', () => {
                 ],
                 _links: {
                     next: {
-                        href: 'https://api.checkout.com/payments/search/nGd7-altGkOfSl3fJptLxA?token=MTc0MDUwMjE2MjQxOCxlN2NiNTdmYy04MDA5LTQ3YmMtOTYzNi0zNDEyOWRmZTkwZTI'
+                        href: 'https://123456789.api.checkout.com/payments/search/nGd7-altGkOfSl3fJptLxA?token=MTc0MDUwMjE2MjQxOCxlN2NiNTdmYy04MDA5LTQ3YmMtOTYzNi0zNDEyOWRmZTkwZTI'
                     }
                 }
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const search = await cko.payments.search({
             query: "id:'pay_mbabizu24mvu3mela5njyhpit4'",
@@ -143,12 +143,12 @@ describe('Search payments', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/search')
             .reply(401);
 
         try {
-            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809');
+            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809', { subdomain: '123456789' });
             await cko.payments.search({
                 query: "id:'pay_mbabizu24mvu3mela5njyhpit4'",
                 limit: 10,

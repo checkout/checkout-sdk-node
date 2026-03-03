@@ -16,6 +16,7 @@ export default class Forex {
     /**
      * Request an exchange rate between a source and destination currency
      *
+     * @deprecated v2.x.x - Use the Forex rates API instead
      * @param {Object} body Forex object body.
      * @return {Promise<Object>} A promise to the Forex response.
      */

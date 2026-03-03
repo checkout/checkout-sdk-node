@@ -1,9 +1,5 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
-import {
-    TRANSFERS_LIVE_URL,
-    TRANSFERS_SANDBOX_URL
-} from '../../config.js';
 
 /**
  * Class dealing with the /transfers endpoint
@@ -26,10 +22,7 @@ export default class Transfers {
      */
     async initiate(body, idempotencyKey) {
         try {
-            const url = `${typeof this.config.host === 'string' &&
-                this.config.host.includes('sandbox')
-                ? TRANSFERS_SANDBOX_URL
-                : TRANSFERS_LIVE_URL}`;
+            const url = this.config.transfersUrl;
 
             const response = await post(
                 this.config.httpClient,
@@ -41,8 +34,7 @@ export default class Transfers {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
@@ -55,10 +47,7 @@ export default class Transfers {
      */
     async retrieve(id) {
         try {
-            const url = `${(typeof this.config.host === 'string' &&
-                this.config.host.includes('sandbox')
-                ? TRANSFERS_SANDBOX_URL
-                : TRANSFERS_LIVE_URL)}/${id}`;
+            const url = `${this.config.transfersUrl}/${id}`;
 
             const response = await get(
                 this.config.httpClient,
@@ -68,8 +57,7 @@ export default class Transfers {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }

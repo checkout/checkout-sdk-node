@@ -22,11 +22,12 @@ export class ApiTimeout extends Error {
  * @extends {Error}
  */
 export class AuthenticationError extends Error {
-    constructor(message) {
+    constructor(error, message = 'AuthenticationError') {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 401;
         this.name = 'AuthenticationError';
+        this.body = error;
     }
 }
 
@@ -38,11 +39,12 @@ export class AuthenticationError extends Error {
  * @extends {Error}
  */
 export class ActionNotAllowed extends Error {
-    constructor(message = 'ActionNotAllowed') {
+    constructor(error, message = 'ActionNotAllowed') {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 403;
         this.name = 'ActionNotAllowed';
+        this.body = error;
     }
 }
 
@@ -71,11 +73,12 @@ export class UrlAlreadyRegistered extends Error {
  * @extends {Error}
  */
 export class NotFoundError extends Error {
-    constructor(message = 'NotFoundError') {
+    constructor(error, message = 'NotFoundError') {
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
         this.http_code = 404;
         this.name = 'NotFoundError';
+        this.body = error;
     }
 }
 
@@ -197,13 +200,24 @@ export const determineError = async (err) => {
         errorJSON = err.message;
     }
 
-    switch (err.status) {
+    // Normalize status (number) from our throw format or raw axios/fetch error
+    const status = Number(err?.status ?? err?.response?.status ?? 0);
+
+    // Handle OAuth authentication errors (status 400 with error field)
+    if (status === 400 && errorJSON.error) {
+        const oauthErrors = ['invalid_client', 'invalid_grant', 'unauthorized_client', 'access_denied', 'invalid_context'];
+        if (oauthErrors.includes(errorJSON.error)) {
+            return new AuthenticationError(await errorJSON);
+        }
+    }
+
+    switch (status) {
         case 401:
-            return new AuthenticationError();
+            return new AuthenticationError(await errorJSON);
         case 404:
-            return new NotFoundError();
+            return new NotFoundError(await errorJSON);
         case 403:
-            return new ActionNotAllowed();
+            return new ActionNotAllowed(await errorJSON);
         case 409:
             return new UrlAlreadyRegistered(await errorJSON);
         case 422:
@@ -213,7 +227,7 @@ export const determineError = async (err) => {
         case 502:
             return new BadGateway();
         default: {
-            return new ApiError(err.status, await errorJSON);
+            return new ApiError(status || err?.status, await errorJSON);
         }
     }
 };

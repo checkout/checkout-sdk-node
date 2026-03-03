@@ -1,468 +1,236 @@
-import { _delete, get, patch, post, put } from '../../services/http.js';
-import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import Cardholders from './cardholders.js';
+import Cards from './cards.js';
+import Controls from './controls.js';
+import ControlGroups from './control-groups.js';
+import ControlProfiles from './control-profiles.js';
+import DigitalCards from './digital-cards.js';
+import Disputes from './disputes.js';
+import Transactions from './transactions.js';
+import Simulate from './simulate.js';
+import Access from './access.js';
 
+/**
+ * Main Issuing class that consolidates all issuing endpoints
+ *
+ * @export
+ * @class Issuing
+ */
 export default class Issuing {
     constructor(config) {
         this.config = config;
+        this.cardholders = new Cardholders(config);
+        this.cards = new Cards(config);
+        this.controls = new Controls(config);
+        this.controlGroups = new ControlGroups(config);
+        this.controlProfiles = new ControlProfiles(config);
+        this.digitalCards = new DigitalCards(config);
+        this.disputes = new Disputes(config);
+        this.transactions = new Transactions(config);
+        this.simulate = new Simulate(config);
+        this.access = new Access(config);
     }
 
-    /**
-     * Create a new cardholder that you can issue a card to at a later point.
-     *
-     * @memberof Issuing
-     * @param {Object} body Cardholder params.
-     * @return {Promise<Object>} A promise to the cardholder response.
-     */
+    // Backwards compatibility - delegate to submodules
+    
+    // Cardholders
     async createCardholder(body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cardholders`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cardholders.createCardholder(body);
     }
 
-    /**
-     * Retrieve the details for a cardholder you created previously.
-     *
-     * @memberof Issuing
-     * @param {string} id Cardholder id.
-     * @return {Promise<Object>} A promise to the cardholder details response.
-     */
     async getCardholder(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cardholders/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cardholders.getCardholder(id);
     }
 
-    /**
-     * Retrieves the cards issued to the specified cardholder.
-     *
-     * @memberof Issuing
-     * @param {string} id Cardholder id.
-     * @return {Promise<Object>} A promise to the cardholder details response.
-     */
+    async updateCardholder(id, body) {
+        return this.cardholders.updateCardholder(id, body);
+    }
+
     async getCardholderCards(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cardholders/${id}/cards`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cardholders.getCardholderCards(id);
     }
 
-    /**
-     * Creates a physical or virtual card and issues it to the specified cardholder.
-     *
-     * @memberof Issuing
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
-    async createCard(body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+    // Cards
+    async createCard(body, idempotencyKey) {
+        return this.cards.createCard(body, idempotencyKey);
     }
 
-    /**
-     * Retrieves the details for a card you issued previously.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @return {Promise<Object>} A promise to the card details response.
-     */
     async getCardDetails(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.getCardDetails(id);
     }
 
-    /**
-     * Enrolls a card in 3D Secure (3DS).
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @param {Object} body 3DS enrollment params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
+    async updateCard(id, body) {
+        return this.cards.updateCard(id, body);
+    }
+
     async enrollThreeDS(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.enrollThreeDS(id, body);
     }
 
-    /**
-     * Updates a card's 3DS enrollment details.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @param {Object} body 3DS enrollment params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async updateThreeDS(id, body) {
-        try {
-            const response = await patch(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.updateThreeDS(id, body);
     }
 
-    /**
-     * Retrieves the details for a card you issued previously.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async getThreeDSDetails(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.getThreeDSDetails(id);
     }
 
-    /**
-     * Activates an inactive or suspended card so that incoming authorizations can be approved.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async activateCard(id) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/activate`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.activateCard(id);
     }
 
-    /**
-     * Retrieves the credentials for a card you issued previously.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async getCardCredentials(id, body) {
-        try {
-            const url = buildQueryParams(
-                `${this.config.host}/issuing/cards/${id}/credentials`,
-                body
-            );
-
-            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.getCardCredentials(id, body);
     }
 
-    /**
-     * Revokes an inactive, active, or suspended card to permanently decline all incoming authorizations.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
+    async renewCard(id, body) {
+        return this.cards.renewCard(id, body);
+    }
+
     async revokeCard(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/revoke`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.revokeCard(id, body);
     }
 
-    /**
-     * Suspends an active or inactive card to temporarily decline all incoming authorizations.
-     *
-     * @memberof Issuing
-     * @param {string} id Card id.
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
+    async scheduleCardRevocation(id, body) {
+        return this.cards.scheduleCardRevocation(id, body);
+    }
+
+    async cancelScheduledCardRevocation(id) {
+        return this.cards.cancelScheduledCardRevocation(id);
+    }
+
     async suspendCard(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/suspend`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.cards.suspendCard(id, body);
     }
 
-    /**
-     * Creates a card control and applies it to the specified card.
-     *
-     * @memberof Issuing
-     * @param {Object} body Card control params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
+    // Controls
     async createCardControl(body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/controls`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.controls.createCardControl(body);
     }
 
-    /**
-     * Retrieves a list of spending controls applied to the specified card.
-     *
-     * @memberof Issuing
-     * @param {Object} params Card control params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async getCardControls(params) {
-        try {
-            const url = buildQueryParams(`${this.config.host}/issuing/controls`, params);
-
-            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.controls.getCardControls(params);
     }
 
-    /**
-     * Retrieves the details of a card control you created previously.
-     *
-     * @memberof Issuing
-     * @param {string} id Card control id.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async getCardControlDetails(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.controls.getCardControlDetails(id);
     }
 
-    /**
-     * Updates an existing card control.
-     *
-     * @memberof Issuing
-     * @param {string} id Card control id.
-     * @param {Object} body Card control params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async updateCardControl(id, body) {
-        try {
-            const response = await put(
-                this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.controls.updateCardControl(id, body);
     }
 
-    /**
-     * Removes an existing card control from the card it was applied to.
-     *
-     * @memberof Issuing
-     * @param {string} id Card control id.
-     * @return {Promise<Object>} A promise to the card response.
-     */
     async deleteCardControl(id) {
-        try {
-            const response = await _delete(
-                this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.controls.deleteCardControl(id);
     }
 
-    /**
-     * Simulate an authorization request with a card you issued previously.
-     *
-     * @memberof Issuing
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
-     */
+    // Control Groups
+    async createControlGroup(body) {
+        return this.controlGroups.createControlGroup(body);
+    }
+
+    async getControlGroupByTarget(params) {
+        return this.controlGroups.getControlGroupByTarget(params);
+    }
+
+    async getControlGroup(controlGroupId) {
+        return this.controlGroups.getControlGroup(controlGroupId);
+    }
+
+    async deleteControlGroup(controlGroupId) {
+        return this.controlGroups.deleteControlGroup(controlGroupId);
+    }
+
+    // Control Profiles
+    async createControlProfile(body) {
+        return this.controlProfiles.createControlProfile(body);
+    }
+
+    async getControlProfilesByTarget(params) {
+        return this.controlProfiles.getControlProfilesByTarget(params);
+    }
+
+    async getControlProfile(controlProfileId) {
+        return this.controlProfiles.getControlProfile(controlProfileId);
+    }
+
+    async updateControlProfile(controlProfileId, body) {
+        return this.controlProfiles.updateControlProfile(controlProfileId, body);
+    }
+
+    async deleteControlProfile(controlProfileId) {
+        return this.controlProfiles.deleteControlProfile(controlProfileId);
+    }
+
+    async addTargetToControlProfile(controlProfileId, targetId) {
+        return this.controlProfiles.addTargetToControlProfile(controlProfileId, targetId);
+    }
+
+    async removeTargetFromControlProfile(controlProfileId, targetId) {
+        return this.controlProfiles.removeTargetFromControlProfile(controlProfileId, targetId);
+    }
+
+    // Digital Cards
+    async getDigitalCard(digitalCardId) {
+        return this.digitalCards.getDigitalCard(digitalCardId);
+    }
+
+    // Disputes
+    async createDispute(body) {
+        return this.disputes.createDispute(body);
+    }
+
+    async getDispute(disputeId) {
+        return this.disputes.getDispute(disputeId);
+    }
+
+    async cancelDispute(disputeId) {
+        return this.disputes.cancelDispute(disputeId);
+    }
+
+    async escalateDispute(disputeId) {
+        return this.disputes.escalateDispute(disputeId);
+    }
+
+    async submitDispute(disputeId) {
+        return this.disputes.submitDispute(disputeId);
+    }
+
+    // Transactions
+    async getTransactions(params) {
+        return this.transactions.getTransactions(params);
+    }
+
+    async getTransactionById(transactionId) {
+        return this.transactions.getTransactionById(transactionId);
+    }
+
+    // Simulate
     async simulateAuthorization(body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.simulate.simulateAuthorization(body);
     }
 
-    /**
-     * Simulate an incremental authorization request for an existing approved transaction.
-     *
-     * @memberof Issuing
-     * @param {String} id transaction ID.
-     * @param {Object} body Amount.
-     * @return {Promise<Object>} A promise to the simulation response.
-     */
     async simulateIncrement(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/authorizations`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.simulate.simulateIncrement(id, body);
     }
 
-    /**
-     * Simulate the clearing of an existing approved authorization.
-     *
-     * @memberof Issuing
-     * @param {String} id transaction ID.
-     * @param {Object} body Amount.
-     * @return {Promise<Object>} A promise to the simulation response.
-     */
     async simulateClearing(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/presentments`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.simulate.simulateClearing(id, body);
     }
 
-    /**
-     * Simulate the reversal of an existing approved authorization.
-     *
-     * @memberof Issuing
-     * @param {String} id transaction ID.
-     * @param {Object} body Amount.
-     * @return {Promise<Object>} A promise to the simulation response.
-     */
+    async simulateRefund(id, body) {
+        return this.simulate.simulateRefund(id, body);
+    }
+
     async simulateReversal(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/reversals`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
+        return this.simulate.simulateReversal(id, body);
+    }
+
+    async simulateOobAuthentication(body) {
+        return this.simulate.simulateOobAuthentication(body);
+    }
+
+    // Access
+    async requestCardholderAccessToken(body) {
+        return this.access.requestCardholderAccessToken(body);
     }
 }

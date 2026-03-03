@@ -40,7 +40,7 @@ export const commonResponse = {
   risk: { enabled: true },
   _links: {
     self: {
-      href: 'https://api.sandbox.checkout.com/payment-sessions/ps_2aOig7knIeGNYPlyuxUEPQyOmxN'
+      href: 'https://123456789.api.sandbox.checkout.com/payment-sessions/ps_2aOig7knIeGNYPlyuxUEPQyOmxN'
     }
   }
 };

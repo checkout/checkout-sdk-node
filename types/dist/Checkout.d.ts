@@ -3,6 +3,7 @@ import * as http from 'http';
 
 import {
     Access,
+    AccountUpdater,
     ApplePay,
     Balances,
     Baloto,
@@ -19,13 +20,16 @@ import {
     Giropay,
     HostedPayments,
     Ideal,
+    Identities,
     Instruments,
     Issuing,
     Klarna,
+    NetworkTokens,
     Oxxo,
     PagoFacil,
     PaymentContexts,
     PaymentLinks,
+    PaymentMethods,
     PaymentSessions,
     PaymentSetups,
     Payments,
@@ -33,6 +37,7 @@ import {
     Rapipago,
     Reconciliation,
     Reports,
+    Risk,
     Sepa,
     Sessions,
     Sources,
@@ -127,6 +132,11 @@ export default class Checkout {
     paymentSessions: PaymentSessions;
     paymentSetups: PaymentSetups;
     forward: Forward;
+    paymentMethods: PaymentMethods;
+    networkTokens: NetworkTokens;
+    identities: Identities;
+    accountUpdater: AccountUpdater;
+    risk: Risk;
     config: config;
 
     constructor(key?: string, options?: options);

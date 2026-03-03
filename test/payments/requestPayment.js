@@ -8,7 +8,7 @@ const SK_NEW = 'sk_sbox_n2dvcqjweokrqm4q7hlfcfqtn4m';
 
 describe('Request a payment or payout', () => {
     it('should perform normal payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -50,16 +50,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -69,7 +69,7 @@ describe('Request a payment or payout', () => {
                 }
             );
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -90,7 +90,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform normal payment request with a Card Source with NAS oAuth and re-use the access token if not expired', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token:
                 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFybjphd3M6a21zOmV1LXdlc3QtMTo2ODY0OTY3NDc3MTU6a2V5LzAyYThmYWM5LWE5MjItNGNkNy05MDk1LTg0ZjA5YjllNTliZCIsInR5cCI6ImF0K2p3dCJ9.eyJuYmYiOjE2NDA1NTMzNDksImV4cCI6MTY0MDU1Njk0OSwiaXNzIjoiaHR0cHM6Ly9hY2Nlc3Muc2FuZGJveC5jaGVja291dC5jb20iLCJhdWQiOiJnYXRld2F5IiwiY2xpZW50X2lkIjoiYWNrX3Z2emhvYWk0NjZzdTNqM3ZieGI0N3RzNW9lIiwiY2tvX2NsaWVudF9pZCI6ImNsaV9nNnJvZ2IzaGhmZXUzZ2h0eGN2M2J3NHFweSIsImNrb19lbnRpdHlfaWQiOiJlbnRfZGppZ2NxeDRjbG11Zm8yc2FzZ29tZ3Bxc3EiLCJqdGkiOiI3RDRCQTRBNEJBQUYzQ0E5MjYwMzlDRTNGQTc1ODVEMCIsImlhdCI6MTY0MDU1MzM0OSwic2NvcGUiOlsiZ2F0ZXdheSJdfQ.U4S2YQDZtRb5WsKA6P8eiHyoqH_KN_1MabiNG5LAOeyYwRiIdyuzWJlYJg-wJlly84Eo68P1rcEB0Pac90PRiDBfSPNh0rIFJvFrA1fHE95EWjwER8UBvYT6yr-yI4JlrTnjeU6f5mJpxWbuN2ywE36x5eWPBdBs3w_j_x8FU62-UYwPOy5LIyZLR_JRxHMU81r7chOD9113CTGzJG9CGzKDMN53iciLdLPXUCFH2AlLHm9-YFh46WMIz85i4nVG0aKI_fIW9gjsLIvG0j-8shf-k4D1LLP0R3juX6twULVbrDuZqacC0TqGI6bAahVJ37Old74He7Ft6j3cx9Hi8A',
             expires_in: 3600,
@@ -98,7 +98,7 @@ describe('Request a payment or payout', () => {
             scope: 'gateway',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .times(2)
             .reply(201, {
@@ -156,16 +156,16 @@ describe('Request a payment or payout', () => {
                 expires_on: '2022-01-25T21:16:40.079866Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
                     },
                 },
             });
@@ -176,6 +176,7 @@ describe('Request a payment or payout', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['gateway'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -215,7 +216,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should request a new access token when doing a payment with Card Source, if the previous access token is expired', async () => {
-        nock('https://access.sandbox.checkout.com').post('/connect/token').times(2).reply(201, {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').times(2).reply(201, {
             access_token:
                 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFybjphd3M6a21zOmV1LXdlc3QtMTo2ODY0OTY3NDc3MTU6a2V5LzAyYThmYWM5LWE5MjItNGNkNy05MDk1LTg0ZjA5YjllNTliZCIsInR5cCI6ImF0K2p3dCJ9.eyJuYmYiOjE2NDA1NTMzNDksImV4cCI6MTY0MDU1Njk0OSwiaXNzIjoiaHR0cHM6Ly9hY2Nlc3Muc2FuZGJveC5jaGVja291dC5jb20iLCJhdWQiOiJnYXRld2F5IiwiY2xpZW50X2lkIjoiYWNrX3Z2emhvYWk0NjZzdTNqM3ZieGI0N3RzNW9lIiwiY2tvX2NsaWVudF9pZCI6ImNsaV9nNnJvZ2IzaGhmZXUzZ2h0eGN2M2J3NHFweSIsImNrb19lbnRpdHlfaWQiOiJlbnRfZGppZ2NxeDRjbG11Zm8yc2FzZ29tZ3Bxc3EiLCJqdGkiOiI3RDRCQTRBNEJBQUYzQ0E5MjYwMzlDRTNGQTc1ODVEMCIsImlhdCI6MTY0MDU1MzM0OSwic2NvcGUiOlsiZ2F0ZXdheSJdfQ.U4S2YQDZtRb5WsKA6P8eiHyoqH_KN_1MabiNG5LAOeyYwRiIdyuzWJlYJg-wJlly84Eo68P1rcEB0Pac90PRiDBfSPNh0rIFJvFrA1fHE95EWjwER8UBvYT6yr-yI4JlrTnjeU6f5mJpxWbuN2ywE36x5eWPBdBs3w_j_x8FU62-UYwPOy5LIyZLR_JRxHMU81r7chOD9113CTGzJG9CGzKDMN53iciLdLPXUCFH2AlLHm9-YFh46WMIz85i4nVG0aKI_fIW9gjsLIvG0j-8shf-k4D1LLP0R3juX6twULVbrDuZqacC0TqGI6bAahVJ37Old74He7Ft6j3cx9Hi8A',
             expires_in: 3600,
@@ -223,7 +224,7 @@ describe('Request a payment or payout', () => {
             scope: 'gateway',
         });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .times(2)
             .reply(201, {
@@ -281,16 +282,16 @@ describe('Request a payment or payout', () => {
                 expires_on: '2022-01-25T21:16:40.079866Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gjulv7byhhwerb3jyx2547xlme/voids',
                     },
                 },
             });
@@ -301,6 +302,7 @@ describe('Request a payment or payout', () => {
                 client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
                 scope: ['gateway'],
                 environment: 'sandbox',
+                subdomain: '123456789'
             }
         );
 
@@ -341,7 +343,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform normal payment request with a Card Source and idempotencyKey', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -383,16 +385,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -402,7 +404,7 @@ describe('Request a payment or payout', () => {
                 }
             );
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request(
             {
@@ -426,7 +428,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform an incremental auth with the idempotencyKey', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_6ndp5facelxurne7gloxkxm57u',
@@ -465,21 +467,21 @@ describe('Request a payment or payout', () => {
                 scheme_id: '638284745624527',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_6ndp5facelxurne7gloxkxm57u/authorizations')
             .times(2)
             .reply(201, {
@@ -511,24 +513,24 @@ describe('Request a payment or payout', () => {
                 expires_on: '2022-11-02T21:16:44.036567Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/voids',
                     },
                     authorizations: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/authorizations',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_4xwclelllavujdoxfopiuhygou/authorizations',
                     },
                 },
             });
 
-        const cko = new Checkout(SK_NEW);
+        const cko = new Checkout(SK_NEW, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -566,7 +568,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform 3DS payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_k72n4u433mierlthuim5oc5syu',
@@ -575,7 +577,7 @@ describe('Request a payment or payout', () => {
                 '3ds': { downgraded: false, enrolled: 'Y' },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_k72n4u433mierlthuim5oc5syu',
                     },
                     redirect: {
                         href: 'https://3ds2-sandbox.ckotech.co/interceptor/3ds_a25l6ocl6luebnvyed4s3xvxcu',
@@ -588,7 +590,7 @@ describe('Request a payment or payout', () => {
                 requiresRedirect: true,
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -611,7 +613,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform payout with type', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_3a3adlwxdlc43jdhetv3muzf7e',
@@ -646,15 +648,15 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             destination: {
@@ -674,7 +676,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform payout with mentioned type', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_3a3adlwxdlc43jdhetv3muzf7e',
@@ -709,15 +711,15 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T10:20:21Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3a3adlwxdlc43jdhetv3muzf7e/actions',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             destination: {
@@ -738,7 +740,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform payout with dynamically determined token type', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(422, {
                 request_id: '8daac099-b8e5-428c-8374-11c9c0f42d2f',
@@ -747,7 +749,7 @@ describe('Request a payment or payout', () => {
             });
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 destination: {
@@ -765,7 +767,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform payout with dynamically determined id type', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_7h44sudteoc4jdu7hjcto6bs6a',
@@ -799,15 +801,15 @@ describe('Request a payment or payout', () => {
                 processed_on: '2020-01-29T11:45:27Z',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_7h44sudteoc4jdu7hjcto6bs6a/actions',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             destination: {
@@ -824,7 +826,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform normal payment request with Sofort', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_lz7qli3tgjkeza44waf2kqljam',
@@ -832,7 +834,7 @@ describe('Request a payment or payout', () => {
                 customer: { id: 'cus_un2lucrpzhbutpq6mhmkwshlrm' },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_lz7qli3tgjkeza44waf2kqljam',
                     },
                     redirect: {
                         href: 'https://sandbox.checkout.com/LP.Core/api/payment/165412',
@@ -845,7 +847,7 @@ describe('Request a payment or payout', () => {
                 requiresRedirect: true,
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -859,7 +861,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should perform 3dS payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(202, {
                 id: 'pay_y3oqhf46pyzuxjbcn2giaqnb44',
@@ -880,7 +882,7 @@ describe('Request a payment or payout', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -902,7 +904,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should decline payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 isPending: [Function],
@@ -941,15 +943,15 @@ describe('Request a payment or payout', () => {
                 scheme_id: '638284745624527',
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_idt2rgacxglehoyhiu7fu3e4we/actions',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -972,11 +974,12 @@ describe('Request a payment or payout', () => {
     });
 
     it('should timeout payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com').post('/payments').delay(20).reply(201, {});
+        nock('https://123456789.api.sandbox.checkout.com').post('/payments').delay(20).reply(201, {});
 
         try {
             const cko = new Checkout(SK, {
                 timeout: 10,
+                subdomain: '123456789'
             });
 
             const transaction = await cko.payments.request({
@@ -997,11 +1000,11 @@ describe('Request a payment or payout', () => {
     });
 
     it('should error out with API Error for payment request with a Card Source', async () => {
-        nock('https://api.sandbox.checkout.com').post('/payments').reply(500, {
+        nock('https://123456789.api.sandbox.checkout.com').post('/payments').reply(500, {
             error: 'error',
         });
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1020,7 +1023,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com').post('/payments').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/payments').reply(401);
         try {
             const cko = new Checkout('sk_test_43ed9a7f-4799-461d-b201-a70507878000');
 
@@ -1041,7 +1044,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw ValidationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(422, {
                 request_id: '0HL80RJLS76I7',
@@ -1050,7 +1053,7 @@ describe('Request a payment or payout', () => {
             });
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1069,7 +1072,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw TooManyRequestsError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(429, {
                 request_id: '0HL80RJLS76I7',
@@ -1077,7 +1080,7 @@ describe('Request a payment or payout', () => {
                 error_codes: ['payment_source_required'],
             });
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1097,10 +1100,10 @@ describe('Request a payment or payout', () => {
     });
 
     it('should throw BadGateway', async () => {
-        nock('https://api.sandbox.checkout.com').post('/payments').reply(502);
+        nock('https://123456789.api.sandbox.checkout.com').post('/payments').reply(502);
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1121,7 +1124,7 @@ describe('Request a payment or payout', () => {
 
     it('should reject decimal value', async () => {
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1141,7 +1144,7 @@ describe('Request a payment or payout', () => {
 
     it('should reject invalid currency', async () => {
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1161,7 +1164,7 @@ describe('Request a payment or payout', () => {
 
     it('should reject invalid payment type', async () => {
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1182,7 +1185,7 @@ describe('Request a payment or payout', () => {
 
     it('should reject source type in non string format', async () => {
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1202,7 +1205,7 @@ describe('Request a payment or payout', () => {
 
     it('should reject reference in non string format', async () => {
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1222,7 +1225,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should dynamically determine source type for full cards', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -1264,16 +1267,16 @@ describe('Request a payment or payout', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -1283,7 +1286,7 @@ describe('Request a payment or payout', () => {
                 }
             );
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -1300,7 +1303,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should dynamically determine source type for token', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(422, {
                 request_id: '6b3300a8-fe99-4ab3-8332-43cd7ecb58a7',
@@ -1309,7 +1312,7 @@ describe('Request a payment or payout', () => {
             });
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transaction = await cko.payments.request({
                 source: {
@@ -1325,7 +1328,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should dynamically determine source type for customer', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_p3ikwzsojghe5i6zoilqjqi2nu',
@@ -1377,21 +1380,21 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_p3ikwzsojghe5i6zoilqjqi2nu/voids',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -1405,7 +1408,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should dynamically determine source type for id', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_hwdmkbyibmdezc37pw2ed5uhdi',
@@ -1457,21 +1460,21 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_hwdmkbyibmdezc37pw2ed5uhdi/voids',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -1485,7 +1488,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should dynamically determine source type for network token', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_pdnmk3wwzbsevhtndac624znii',
@@ -1533,20 +1536,20 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_pdnmk3wwzbsevhtndac624znii/voids',
                     },
                 },
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -1565,7 +1568,7 @@ describe('Request a payment or payout', () => {
     });
 
     it('should process a SEPA payment', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sources')
             .reply(201, {
                 id: 'src_ld2ft6czuayejcaxw2kmfk3cvu',
@@ -1588,7 +1591,7 @@ describe('Request a payment or payout', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_6thh5vhggyjudgzfznx2fkuede',
@@ -1600,12 +1603,12 @@ describe('Request a payment or payout', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.checkout.com/payments/pay_6thh5vhggyjudgzfznx2fkuede',
+                        href: 'https://123456789.api.checkout.com/payments/pay_6thh5vhggyjudgzfznx2fkuede',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const source = await cko.sources.add({
             type: 'sepa',

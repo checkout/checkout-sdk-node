@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Void a payment', () => {
     it('should void payment without a body', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -49,16 +49,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -68,19 +68,19 @@ describe('Void a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(202, {
                 action_id: 'act_hvue5c7klzmubkfmxfptldibdi',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_o5z2bssaelbehmhcyh42jvxfo4',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_o5z2bssaelbehmhcyh42jvxfo4',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -101,7 +101,7 @@ describe('Void a payment', () => {
     });
 
     it('should void payment with a body', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -143,16 +143,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -162,31 +162,31 @@ describe('Void a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(202, {
                 action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
                 reference: 'VOID',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_oac5nzmbcrcu5kfglj4dxwzu6y',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -209,12 +209,12 @@ describe('Void a payment', () => {
     });
 
     it('should throw AuthenticationError', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_7enxra4adw6evgalvfabl6nbqy/voids')
             .reply(401);
 
         try {
-            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809');
+            const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f809', { subdomain: '123456789' });
             const refund = await cko.payments.void('pay_7enxra4adw6evgalvfabl6nbqy');
         } catch (err) {
             expect(err.name).to.equal('AuthenticationError');
@@ -222,7 +222,7 @@ describe('Void a payment', () => {
     });
 
     it('should throw Void not allowed error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -264,16 +264,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z/voids',
                         },
                     },
                 },
@@ -283,23 +283,23 @@ describe('Void a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw5',
                 reference: 'ORD-5023-4E10',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57z',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(403);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -324,12 +324,12 @@ describe('Void a payment', () => {
     });
 
     it('should throw payment not found error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_7enxra4adw6evgalvfabl6nbaa/voids')
             .reply(404);
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
             const refund = await cko.payments.void('pay_7enxra4adw6evgalvfabl6nbaa');
         } catch (err) {
             expect(err.name).to.equal('NotFoundError');
@@ -337,7 +337,7 @@ describe('Void a payment', () => {
     });
 
     it('should throw Validation error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(
                 201,
@@ -379,16 +379,16 @@ describe('Void a payment', () => {
                     scheme_id: '638284745624527',
                     _links: {
                         self: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
                         },
                         actions: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/actions',
                         },
                         capture: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/captures',
                         },
                         void: {
-                            href: 'https://api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                            href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
                         },
                     },
                 },
@@ -398,19 +398,19 @@ describe('Void a payment', () => {
                 }
             );
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/captures$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'ORD-5023-4E89',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(422, {
                 request_id: '7867a675-deac-4270-a4dc-04fa2ba4fe8d',
@@ -418,7 +418,7 @@ describe('Void a payment', () => {
                 error_codes: ['amount_exceeds_balance'],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {
@@ -441,7 +441,7 @@ describe('Void a payment', () => {
     });
 
     it('should use the idempotency key', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments')
             .reply(201, {
                 id: 'pay_3ioomvvwvx2u3na4llqircyui4',
@@ -485,45 +485,45 @@ describe('Void a payment', () => {
                 },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4',
                     },
                     actions: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/actions',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/actions',
                     },
                     capture: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/captures',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/captures',
                     },
                     void: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/voids',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3ioomvvwvx2u3na4llqircyui4/voids',
                     },
                 },
                 requiresRedirect: false,
                 redirectLink: undefined,
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'my-idempotent-void',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post(/voids$/)
             .reply(202, {
                 action_id: 'act_sdsnnv4ehjeujmvgby6rldgmw4',
                 reference: 'my-idempotent-void',
                 _links: {
                     payment: {
-                        href: 'https://api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_gwqbb7qbjiee3edqmyk3dme64i',
                     },
                 },
             });
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transaction = await cko.payments.request({
             source: {

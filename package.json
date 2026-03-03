@@ -1,13 +1,37 @@
 {
   "name": "checkout-sdk-node",
   "version": "3.1.0",
-  "description": "Checkout NodeJS SDK API",
+  "description": "Official Node.js SDK for Checkout.com payment gateway - Full API coverage with TypeScript support",
   "type": "module",
   "engines": {
     "node": ">=18"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "keywords": [
+    "checkout",
+    "checkout.com",
+    "payment",
+    "payments",
+    "gateway",
+    "payment-gateway",
+    "api",
+    "sdk",
+    "nodejs",
+    "node",
+    "typescript",
+    "credit-card",
+    "ecommerce",
+    "e-commerce"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/checkout/checkout-sdk-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/checkout/checkout-sdk-node/issues"
+  },
+  "homepage": "https://github.com/checkout/checkout-sdk-node#readme",
   "scripts": {
     "start": "nodemon --exec babel-node ./src/index.js",
     "lint": "eslint --fix --ext .js src/",

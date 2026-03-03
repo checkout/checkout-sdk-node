@@ -1,14 +1,14 @@
-import { determineError } from '../../services/errors.js';
-import { get, patch, post, put } from '../../services/http.js';
-import {
-    PLATFORMS_FILES_LIVE_URL,
-    PLATFORMS_FILES_SANDBOX_URL
-} from '../../config.js';
-
-import FormData from 'form-data';
+import Subentity from './subentity.js';
+import PlatformFiles from './files.js';
+import PaymentInstruments from './payment-instruments.js';
+import PayoutSchedules from './payout-schedules.js';
+import ReserveRules from './reserve-rules.js';
 
 /**
- * Class dealing with the platforms api
+ * Class dealing with the Platforms API (tag "Platforms" in swagger-spec.json).
+ * Operations use paths under /accounts/entities; see API Reference and swagger-spec.json.
+ *
+ * Submodules: subentity, files, paymentInstruments, payoutSchedules, reserveRules.
  *
  * @export
  * @class Platforms
@@ -16,489 +16,91 @@ import FormData from 'form-data';
 export default class Platforms {
     constructor(config) {
         this.config = config;
+        this.subentity = new Subentity(config);
+        this.files = new PlatformFiles(config);
+        this.paymentInstruments = new PaymentInstruments(config);
+        this.payoutSchedules = new PayoutSchedules(config);
+        this.reserveRules = new ReserveRules(config);
     }
 
-    /**
-     * Our Platforms solution provides an easy way to upload identity documentation required for full due diligence.
-     *
-     * @memberof Platforms
-     * @param {string} purpose The purpose of the file upload.
-     * @param {Object} path The local path of the file to upload, and its type.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
+    // ——— Files (backwards compatibility) ———
     async uploadFile(purpose, path) {
-        try {
-            const form = new FormData();
-            form.append('path', path);
-            form.append('purpose', purpose);
-
-            const url = `${this.config.host.includes('sandbox')
-                    ? PLATFORMS_FILES_SANDBOX_URL
-                    : PLATFORMS_FILES_LIVE_URL
-                }`;
-
-            const response = await post(
-                this.config.httpClient,
-                url,
-                { ...this.config, formData: true },
-                this.config.sk,
-                form
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.files.uploadFile(purpose, path);
     }
 
-    /**
-     * Onboard a sub-entity so they can start receiving payments. Once created,
-     * Checkout.com will run due diligence checks. If the checks are successful,
-     * we'll enable payment capabilities for that sub-entity and they will start
-     * receiving payments.
-     *
-     * @memberof Platforms
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
-    async onboardSubEntity(body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
-    }
-
-    /**
-     * Our Platforms solution provides an easy way to upload documentation required for full due diligence.
-     * Use this endpoint to generate a file upload link, which you can then upload a file to using a data-binary type request.
-     * See the https://www.checkout.com/docs/platforms/onboard-sub-entities/full-sub-entity-onboarding/upload-a-file#Upload_a_file for more information.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The ID of the sub-entity.
-     * @param {Object} body The body
-     * @param {string} body.purpose The purpose of the file upload.
-     * @returns {Promise<Object>}
-     */
     async uploadAFile(entityId, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/files`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.files.uploadAFile(entityId, body);
     }
 
-    /**
-     * Retrieve information about a previously uploaded file.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The ID of the sub-entity.
-     * @param {string} fileId The ID of the file. The value is always prefixed with file_.
-     * @returns {Promise<Object>}
-     */
     async retrieveAFile(entityId, fileId) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/files/${fileId}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.files.retrieveAFile(entityId, fileId);
     }
 
-    /**
-     * Retrieve information on all users of a sub-entity that has been invited through Hosted Onboarding
-     * (https://www.checkout.com/docs/platforms/onboard-sub-entities/onboard-with-hosted-onboarding). Only
-     * one user can be invited to onboard the sub-entity through Hosted Onboarding.
-     *
-     * To enable the Hosted Onboarding feature, contact your Customer Success Manager.
-     *
-     * @memberof Platforms
-     * @param {string} entityId Sub-entity id.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
+    // ——— Sub-entity (backwards compatibility) ———
+    async onboardSubEntity(body, schemaVersion) {
+        return this.subentity.onboardSubEntity(body, schemaVersion);
+    }
+
+    async getSubEntityDetails(id, schemaVersion) {
+        return this.subentity.getSubEntityDetails(id, schemaVersion);
+    }
+
+    async updateSubEntityDetails(id, body, schemaVersion) {
+        return this.subentity.updateSubEntityDetails(id, body, schemaVersion);
+    }
+
     async getSubEntityMembers(entityId) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/members`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.subentity.getSubEntityMembers(entityId);
     }
 
-    /**
-     * Resend an invitation to the user of a sub-entity. The user will receive another email to continue their
-     * Hosted Onboarding (https://www.checkout.com/docs/platforms/onboard-sub-entities/onboard-with-hosted-onboarding)
-     * application. An invitation can only be resent to the user originally registered to the
-     * sub-entity.
-     *
-     * To enable the Hosted Onboarding feature, contact your Customer Success Manager.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The ID of the sub-entity.
-     * @param {string} userId The ID of the invited user.
-     * @param {Object} body The body (Reinvite sub-entity member)
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async reinviteSubEntityMember(entityId, userId, body) {
-        try {
-            const response = await put(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/members/${userId}`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.subentity.reinviteSubEntityMember(entityId, userId, body);
     }
 
-    /**
-     * Use this endpoint to retrieve a sub-entity and its full details.
-     *
-     * @memberof Platforms
-     * @param {string} id Sub-entity id.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
-    async getSubEntityDetails(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
-    }
-
-    /**
-     * You can update all fields under the Contact details, Profile, and Company objects.
-     * You can also add identification information to complete due diligence requirements.
-     *
-     * @memberof Platforms
-     * @param {string} id Sub-entity id.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
-    async updateSubEntityDetails(id, body) {
-        try {
-            const response = await put(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
-    }
-
-    /**
-     * Retrieve the details of a specific payment instrument used for sub-entity payouts.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The sub-entity's ID.
-     * @param {string} id The payment instrument's ID.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
+    // ——— Payment instruments (backwards compatibility) ———
     async getPaymentInstrumentDetails(entityId, id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.paymentInstruments.getPaymentInstrumentDetails(entityId, id);
     }
 
-    /**
-     * Update a session by providing information about the environment.
-     *
-     * @memberof Platforms
-     * @param {string} entityId Sub-entity id.
-     * @param {string} id Payment instrument's id.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async updatePaymentInstrumentDetails(entityId, id, body) {
-        try {
-            const response = await patch(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.paymentInstruments.updatePaymentInstrumentDetails(entityId, id, body);
     }
 
-    /**
-     * Update a session by providing information about the environment.
-     *
-     * @deprecated Use the payment instrument operations at /payment-instruments instead.
-     * @memberof Platforms
-     * @param {string} id Sub-entity id.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async createPaymentInstrument(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/instruments`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.paymentInstruments.createPaymentInstrument(id, body);
     }
 
-    /**
-     * Update a session by providing information about the environment.
-     *
-     * @memberof Platforms
-     * @param {string} id Sub-entity id.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async addPaymentInstrument(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payment-instruments`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.paymentInstruments.addPaymentInstrument(id, body);
     }
 
-    /**
-     * Fetch all of the payment instruments for a sub-entity. You can filter by status to
-     * identify verified instruments that are ready to be used for Payouts.
-     *
-     * @memberof Platforms
-     * @param {string} id The sub-entity's ID.
-     * @param {string} status The status of your sub-entity's payment instrument.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async queryPaymentInstruments(id, status) {
-        try {
-            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${status ? `?status=${status}` : ''
-                }`;
-
-            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.paymentInstruments.queryPaymentInstruments(id, status);
     }
 
-    /**
-     * You can schedule when your sub-entities receive their funds using our Platforms solution.
-     * Use this endpoint to retrieve information about a sub-entity's schedule.
-     *
-     * @memberof Platforms
-     * @param {string} id The sub-entity's ID.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
+    // ——— Payout schedules (backwards compatibility) ———
     async retrieveSubEntityPayoutSchedule(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.payoutSchedules.retrieveSubEntityPayoutSchedule(id);
     }
 
-    /**
-     * You can schedule when your sub-entities receive their funds using our Platforms solution.
-     * Use this endpoint to update a sub-entity's schedule.
-     *
-     * @memberof Platforms
-     * @param {string} id The sub-entity's ID.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async updateSubEntityPayoutSchedule(id, body) {
-        try {
-            const response = await put(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.payoutSchedules.updateSubEntityPayoutSchedule(id, body);
     }
 
-    /**
-     * Retrieve the details of a specific reserve rule.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The sub-entity's ID.
-     * @param {string} id The reserve rule ID.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
+    // ——— Reserve rules (backwards compatibility) ———
     async getReserveRuleDetails(entityId, id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.reserveRules.getReserveRuleDetails(entityId, id);
     }
 
-    /**
-     * Update an upcoming reserve rule. Only reserve rules that have never been active can be updated.
-     *
-     * @memberof Platforms
-     * @param {string} entityId The sub-entity's ID.
-     * @param {string} id The reserve rule ID.
-     * @param {Object} body The body to be sent.
-     * @param {string} ifMatch Identifies a specific version of a reserve rule to update. Example: Y3Y9MCZydj0w
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async updateReserveRule(entityId, id, body, ifMatch) {
-        try {
-
-            const config = {
-                ...this.config,
-                headers: {
-                    ...this.config.headers,
-                    'If-Match': ifMatch,
-                },
-            };
-
-            const response = await put(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
-                config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.reserveRules.updateReserveRule(entityId, id, body, ifMatch);
     }
 
-    /**
-     * Create a sub-entity reserve rule.
-     *
-     * @memberof Platforms
-     * @param {string} id The sub-entity's ID.
-     * @param {Object} body The body of the reserve rule to be added.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async addReserveRule(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.reserveRules.addReserveRule(id, body);
     }
 
-    /**
-     * Fetch all of the reserve rules for a sub-entity.
-     *
-     * @memberof Platforms
-     * @param {string} id The sub-entity's ID.
-     * @return {Promise<Object>} A promise to the Platforms response.
-     */
     async queryReserveRules(id) {
-        try {
-            const response = await get(
-                this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
-                this.config,
-                this.config.sk
-            );
-            return await response.json;
-        } catch (err) {
-            const error = await determineError(err);
-            throw error;
-        }
+        return this.reserveRules.queryReserveRules(id);
     }
-
 }

@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Get payment list', () => {
     it('should get a payment list with reference', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/payments?reference=1234')
             .reply(200, {
                 total_count: 1,
@@ -59,23 +59,23 @@ describe('Get payment list', () => {
                         scheme_id: '678355673241835',
                         _links: {
                             self: {
-                                href: 'https://api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e',
+                                href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e',
                             },
                             actions: {
-                                href: 'https://api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/actions',
+                                href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/actions',
                             },
                             capture: {
-                                href: 'https://api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/captures',
+                                href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/captures',
                             },
                             void: {
-                                href: 'https://api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/voids',
+                                href: 'https://123456789.api.sandbox.checkout.com/payments/pay_3lird6z63jpujguvaxnjyqsu4e/voids',
                             },
                         },
                     },
                 ],
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const list = await cko.payments.getPaymentList({
             reference: '1234',
@@ -85,10 +85,10 @@ describe('Get payment list', () => {
     });
 
     it('should throw authentication error', async () => {
-        nock('https://api.sandbox.checkout.com').get('/payments?reference=1234').reply(401, {});
+        nock('https://123456789.api.sandbox.checkout.com').get('/payments?reference=1234').reply(401, {});
 
         try {
-            const cko = new Checkout('test');
+            const cko = new Checkout('test', { subdomain: 'test' });
 
             const list = await cko.payments.getPaymentList({
                 reference: '1234',

@@ -7,7 +7,7 @@ const SK = "sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808";
 
 describe("Sources", () => {
   it("should create SEPA source", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(201, {
         id: "src_327s3pwdcx3upjqzu4uk66ecim",
@@ -30,7 +30,7 @@ describe("Sources", () => {
         }
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const transaction = await cko.sources.add({
       type: "sepa",
@@ -62,7 +62,7 @@ describe("Sources", () => {
   });
 
   it("should create ACH source", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(201, {
         id: "src_txjdrahbkglexgili6al2x2lk4",
@@ -72,7 +72,7 @@ describe("Sources", () => {
         customer: { id: "cus_x7eabeo2dlquzk2bmltz4bsr4q" }
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const transaction = await cko.sources.add({
       type: "ach",
@@ -98,7 +98,7 @@ describe("Sources", () => {
   });
 
   it("should dynamically determine ACH source", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(201, {
         id: "src_txjdrahbkglexgili6al2x2lk4",
@@ -108,7 +108,7 @@ describe("Sources", () => {
         customer: { id: "cus_x7eabeo2dlquzk2bmltz4bsr4q" }
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const transaction = await cko.sources.add({
       billing_address: {
@@ -133,7 +133,7 @@ describe("Sources", () => {
   });
 
   it("should throw AuthenticationError", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(201, {
         id: "src_327s3pwdcx3upjqzu4uk66ecim",
@@ -156,7 +156,7 @@ describe("Sources", () => {
         }
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     const transaction = await cko.sources.add({
       reference: "X-080957-N34",
@@ -187,11 +187,11 @@ describe("Sources", () => {
   });
 
   it("should create SEPA source", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(401);
 
-    const cko = new Checkout("sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f801");
+    const cko = new Checkout("sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f801", { subdomain: '123456789' });
 
     try {
       const transaction = await cko.sources.add({
@@ -225,7 +225,7 @@ describe("Sources", () => {
   });
 
   it("should throw ValidationError", async () => {
-    nock("https://api.sandbox.checkout.com")
+    nock("https://123456789.api.sandbox.checkout.com")
       .post("/sources")
       .reply(422, {
         request_id: "32f5a283-2bd0-4a5b-b548-d52b755dbbdb",
@@ -233,7 +233,7 @@ describe("Sources", () => {
         error_codes: ["request_data_required"]
       });
 
-    const cko = new Checkout(SK);
+    const cko = new Checkout(SK, { subdomain: '123456789' });
 
     try {
       const transaction = await cko.sources.add({

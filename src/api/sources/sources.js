@@ -4,6 +4,7 @@ import { setSourceType } from '../../services/validation.js';
 
 /**
  * Class dealing with the /sources endpoint
+ * @deprecated v2.x.x - Use Payment Sources API instead
  *
  * @export
  * @class Sources
@@ -33,8 +34,7 @@ export default class Sources {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }

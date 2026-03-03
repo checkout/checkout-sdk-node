@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Payment Links', () => {
     it('should create a payment link', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payment-links')
             .reply(201, {
                 id: 'cid_a8d1120d-db2d-4799-8216-49db594da0a4',
@@ -17,7 +17,7 @@ describe('Payment Links', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const linksResponse = await cko.paymentLinks.create({
             amount: 10359,
@@ -48,7 +48,7 @@ describe('Payment Links', () => {
     });
 
     it('should throw Authentication Error', async () => {
-        nock('https://api.sandbox.checkout.com').post('/payment-links').reply(401);
+        nock('https://123456789.api.sandbox.checkout.com').post('/payment-links').reply(401);
 
         try {
             const cko = new Checkout('sk_');
@@ -81,12 +81,12 @@ describe('Payment Links', () => {
     });
 
     it('should throw network error', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payment-links')
             .replyWithError('something happened');
 
         try {
-            const cko = new Checkout('sk_');
+            const cko = new Checkout('sk_', { subdomain: '123456789' });
 
             const linksResponse = await cko.paymentLinks.create({
                 amount: 10359,
@@ -112,13 +112,13 @@ describe('Payment Links', () => {
             });
         } catch (err) {
             expect(err.body).to.be.equal(
-                'request to https://api.sandbox.checkout.com/payment-links failed, reason: something happened'
+                'request to https://123456789.api.sandbox.checkout.com/payment-links failed, reason: something happened'
             );
         }
     });
 
     it('should throw when getting the payment link status', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payment-links')
             .reply(201, {
                 id: 'pl_irx_SMlY5RCA',
@@ -128,7 +128,7 @@ describe('Payment Links', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/payment-links/pl_irx_SMlY5RCA')
             .reply(200, {
                 id: 'pl_irx_SMlY5RCA',
@@ -157,13 +157,13 @@ describe('Payment Links', () => {
                 metadata: { correlationId: 'afa2d5d8-6e27-429e-a56a-e9c0a1ce10a9' },
                 _links: {
                     self: {
-                        href: 'https://api.sandbox.checkout.com/payment-links/pl_irx_SMlY5RCA',
+                        href: 'https://123456789.api.sandbox.checkout.com/payment-links/pl_irx_SMlY5RCA',
                     },
                     redirect: { href: 'https://pay.sandbox.checkout.com/link/pl_irx_SMlY5RCA' },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const linksResponse = await cko.paymentLinks.create({
             amount: 10359,
@@ -192,7 +192,7 @@ describe('Payment Links', () => {
     });
 
     it('should get the payment link status', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/payment-links')
             .reply(201, {
                 id: 'pl_irx_SMlY5RCA',
@@ -202,9 +202,9 @@ describe('Payment Links', () => {
                 },
             });
 
-        nock('https://api.sandbox.checkout.com').get('/payment-links/pl_irx_SMlY5RCA').reply(404);
+        nock('https://123456789.api.sandbox.checkout.com').get('/payment-links/pl_irx_SMlY5RCA').reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const linksResponse = await cko.paymentLinks.create({
             amount: 10359,

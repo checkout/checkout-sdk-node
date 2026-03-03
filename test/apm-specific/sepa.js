@@ -7,7 +7,7 @@ const SK = 'sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808';
 
 describe('Sepa', () => {
     it('should get mandate', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/sepa-external/mandates/src_juu42y3bte2ezfkymi7vmc7jcm')
             .reply(200, {
                 mandate_reference: 'Z10001205026454',
@@ -36,14 +36,14 @@ describe('Sepa', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const sepa = await cko.sepa.getMandate('src_juu42y3bte2ezfkymi7vmc7jcm');
         expect(sepa.mandate_reference).to.equal('Z10001205026454');
     });
 
     it('should get live mandate', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .get('/sepa/mandates/src_juu42y3bte2ezfkymi7vmc7jcm')
             .reply(200, {
                 mandate_reference: 'Z10001205026454',
@@ -72,18 +72,18 @@ describe('Sepa', () => {
                 },
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const sepa = await cko.sepa.getMandate('src_juu42y3bte2ezfkymi7vmc7jcm');
         expect(sepa.mandate_reference).to.equal('Z10001205026454');
     });
 
     it('should throw NotFFound error when trying to get mandate', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/sepa-external/mandates/src_juu42y3bte2ezfkymi7vmc7111')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const sepa = await cko.sepa.getMandate('src_juu42y3bte2ezfkymi7vmc7111');
@@ -93,53 +93,53 @@ describe('Sepa', () => {
     });
 
     it('should cancel mandate', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel')
             .reply(200, {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
                     },
                     'sepa:mandate-get': {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const sepa = await cko.sepa.cancelMandate('src_htc2tova4cauldk7r47czuudji');
     });
 
     it('should cancel live mandate', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .post('/sepa/mandates/src_htc2tova4cauldk7r47czuudji/cancel')
             .reply(200, {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
                     },
                     'sepa:mandate-get': {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
                     },
                 },
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const sepa = await cko.sepa.cancelMandate('src_htc2tova4cauldk7r47czuudji');
     });
 
     it('should throw NotFound error when trying to cancel mandate', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/sepa-external/mandates/src_htc2tova4cauldk7r47czuu111/cancel')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const sepa = await cko.sepa.cancelMandate('src_htc2tova4cauldk7r47czuu111');
@@ -149,7 +149,7 @@ describe('Sepa', () => {
     });
 
     it('should get mandate via PPRO', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/ppro/sepa-external/mandates/src_juu42y3bte2ezfkymi7vmc7jcm')
             .reply(200, {
                 mandate_reference: 'Z10001205026454',
@@ -178,14 +178,14 @@ describe('Sepa', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const sepa = await cko.sepa.getPPROMandate('src_juu42y3bte2ezfkymi7vmc7jcm');
         expect(sepa.mandate_reference).to.equal('Z10001205026454');
     });
 
     it('should get live mandate via PPRO', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .get('/ppro/sepa/mandates/src_juu42y3bte2ezfkymi7vmc7jcm')
             .reply(200, {
                 mandate_reference: 'Z10001205026454',
@@ -214,18 +214,18 @@ describe('Sepa', () => {
                 },
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const sepa = await cko.sepa.getPPROMandate('src_juu42y3bte2ezfkymi7vmc7jcm');
         expect(sepa.mandate_reference).to.equal('Z10001205026454');
     });
 
     it('should throw NotFound error when trying to get mandate via PPRO', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .get('/ppro/sepa-external/mandates/src_juu42y3bte2ezfkymi7vmc7111')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const sepa = await cko.sepa.getPPROMandate('src_juu42y3bte2ezfkymi7vmc7111');
@@ -235,53 +235,53 @@ describe('Sepa', () => {
     });
 
     it('should cancel mandate via PPRO', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/ppro/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel')
             .reply(200, {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
                     },
                     'sepa:mandate-get': {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
                     },
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const sepa = await cko.sepa.cancelPPROMandate('src_htc2tova4cauldk7r47czuudji');
     });
 
     it('should cancel live mandate via PPRO', async () => {
-        nock('https://api.checkout.com')
+        nock('https://123456789.api.checkout.com')
             .post('/ppro/sepa/mandates/src_htc2tova4cauldk7r47czuudji/cancel')
             .reply(200, {
                 _links: {
                     self: {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji/cancel',
                     },
                     'sepa:mandate-get': {
                         href:
-                            'https://api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
+                            'https://123456789.api.sandbox.checkout.com/sepa-external/mandates/src_htc2tova4cauldk7r47czuudji',
                     },
                 },
             });
 
-        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808');
+        const cko = new Checkout('sk_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789', environment: 'live' });
 
         const sepa = await cko.sepa.cancelPPROMandate('src_htc2tova4cauldk7r47czuudji');
     });
 
     it('should throw NotFound error when trying to cancel mandate via PPRO', async () => {
-        nock('https://api.sandbox.checkout.com')
+        nock('https://123456789.api.sandbox.checkout.com')
             .post('/ppro/sepa-external/mandates/src_htc2tova4cauldk7r47czuu111/cancel')
             .reply(404);
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         try {
             const sepa = await cko.sepa.cancelPPROMandate('src_htc2tova4cauldk7r47czuu111');

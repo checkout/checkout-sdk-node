@@ -13,10 +13,10 @@ export default class HostedPayments {
     }
 
     /**
-     * Update details of a customer
+     * Create a Hosted Payments Page session
      *
      * @memberof HostedPayments
-     * @param {Object} body
+     * @param {Object} body - Hosted Payments Page session request body
      * @return {Promise<Object>} A promise to the Hosted Payment response.
      */
     async create(body) {
@@ -30,16 +30,15 @@ export default class HostedPayments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 
     /**
-     * Returns details of an instrument
+     * Get Hosted Payments Page details
      *
      * @memberof HostedPayments
-     * @param {string} id Hosted payment id.
+     * @param {string} id - Hosted payment id
      * @return {Promise<Object>} A promise to the Hosted Payment response.
      */
     async get(id) {
@@ -52,8 +51,7 @@ export default class HostedPayments {
             );
             return await response.json;
         } catch (err) {
-            const error = await determineError(err);
-            throw error;
+            throw await determineError(err);
         }
     }
 }
