@@ -17,6 +17,7 @@ export default class Forex {
      * Request an exchange rate between a source and destination currency
      *
      * @deprecated v2.x.x - Use the Forex rates API instead
+     * @memberof Forex
      * @param {Object} body Forex object body.
      * @return {Promise<Object>} A promise to the Forex response.
      */
@@ -39,6 +40,7 @@ export default class Forex {
      * Use the Forex (FX) rates API to get the indicative foreign exchange rates that Checkout.com
      * uses to process payments for card payouts
      *
+     * @memberof Forex
      * @param {Object} body Forex params.
      * @return {Promise<Object>} A promise to the Forex response.
      */

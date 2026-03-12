@@ -6,7 +6,7 @@ import nock from 'nock';
 const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Balances', () => {
-    it('should retrive balance', async () => {
+    it('should retrieve balance', async () => {
         nock('https://balances.sandbox.checkout.com')
             .get('/balances/ent_djigcqx4clmufo2sasgomgpqsq?query=currency:EUR')
             .reply(200, {
@@ -34,7 +34,7 @@ describe('Balances', () => {
         expect(balance.data[0]).to.have.property('balances');
     });
 
-    it('should retrive balance in prod', async () => {
+    it('should retrieve balance in prod', async () => {
         nock('https://balances.checkout.com')
             .get('/balances/ent_djigcqx4clmufo2sasgomgpqsq?query=currency:EUR')
             .reply(200, {

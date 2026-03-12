@@ -154,7 +154,7 @@ describe('Transfers', () => {
         }
     });
 
-    it('should retrive transfer', async () => {
+    it('should retrieve transfer', async () => {
         nock('https://transfers.sandbox.checkout.com')
             .get('/transfers/tra_lx6isvi4lahkrkn462bj77xnki')
             .reply(200, {
@@ -180,7 +180,7 @@ describe('Transfers', () => {
         expect(transfer.id).to.equal('tra_lx6isvi4lahkrkn462bj77xnki');
     });
 
-    it('should retrive transfer in prod', async () => {
+    it('should retrieve transfer in prod', async () => {
         nock('https://transfers.checkout.com')
             .get('/transfers/tra_lx6isvi4lahkrkn462bj77xnki')
             .reply(200, {

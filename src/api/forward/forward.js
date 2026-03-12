@@ -17,7 +17,7 @@ export default class Forward {
      * Forwards an API request to a third-party endpoint.
      * For example, you can forward payment credentials you've stored in our Vault to a third-party payment processor.
      *
-     * Forward an API request
+     * @memberof Forward
      * @param {Object} body Forward request body
      * @return {Promise<Object>} A promise to the forward response
      */
@@ -40,7 +40,7 @@ export default class Forward {
      * Retrieve the details of a successfully forwarded API request.
      * The details can be retrieved for up to 14 days after the request was initiated.
      *
-     * Get forward request
+     * @memberof Forward
      * @param {string} id The unique identifier of the forward request
      * @return {Promise<Object>} A promise to the forward request details
      */
@@ -66,7 +66,7 @@ export default class Forward {
      * - value: max 8KB
      * - entity_id (optional): when provided, secret is scoped to this entity
      *
-     * Create secret
+     * @memberof Forward
      * @param {Object} body Secret creation body with name, value, and optional entity_id
      * @return {Promise<Object>} A promise to the secret metadata
      */
@@ -88,7 +88,7 @@ export default class Forward {
     /**
      * Returns metadata for secrets scoped for client_id.
      *
-     * List secrets
+     * @memberof Forward
      * @return {Promise<Object>} A promise to the list of secrets metadata
      */
     async listSecrets() {
@@ -112,7 +112,7 @@ export default class Forward {
      * - Only value and entity_id can be updated
      * - value: max 8KB
      *
-     * Update secret
+     * @memberof Forward
      * @param {string} name The secret name
      * @param {Object} body Update body with value and/or entity_id
      * @return {Promise<Object>} A promise to the updated secret metadata with incremented version
@@ -135,7 +135,7 @@ export default class Forward {
     /**
      * Permanently delete a secret by name.
      *
-     * Delete secret
+     * @memberof Forward
      * @param {string} name The secret name to delete
      * @return {Promise<Object>} A promise to the deletion response
      */

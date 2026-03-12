@@ -16,6 +16,7 @@ export default class ApplePay {
      * Upload a payment processing certificate.
      * This will allow you to start processing payments via Apple Pay.
      *
+     * @memberof ApplePay
      * @param {Object} body Apple Pay certificate request.
      * @param {string} body.content The payment processing certificate content.
      * @return {Promise<Object>} A promise to the Apple Pay certificate response.
@@ -39,6 +40,7 @@ export default class ApplePay {
      * Generate a certificate signing request.
      * You'll need to upload this to your Apple Developer account to download a payment processing certificate.
      *
+     * @memberof ApplePay
      * @param {Object} body Apple Pay signing request (optional).
      * @param {string} [body.protocol_version] The protocol version (ec_v1 or rsa_v1). Default: ec_v1.
      * @return {Promise<Object>} A promise to the Apple Pay signing request response.
@@ -62,6 +64,7 @@ export default class ApplePay {
      * Enroll a domain to the Apple Pay Service.
      * Requires OAuth authentication with scope: vault:apme-enrollment
      *
+     * @memberof ApplePay
      * @param {Object} body Apple Pay enrollment request.
      * @param {string} body.domain The domain to enroll (e.g., 'https://example.com').
      * @return {Promise<void>} A promise that resolves when enrollment is successful (204 No Content).

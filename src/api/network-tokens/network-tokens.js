@@ -16,7 +16,7 @@ export default class NetworkTokens {
      * Provision a Network Token
      * [BETA]
      * Provision a network token from a card source.
-     * @method provisionNetworkToken
+     * @memberof NetworkTokens
      * @param {Object} body - Request body containing the source details
      * @returns {Promise<Object>} A promise to the Provision a Network Token response
      */
@@ -40,7 +40,7 @@ export default class NetworkTokens {
      * Get Network Token
      * [BETA]
      * Given network token ID, this endpoint returns network token details: DPAN, expiry date, state, TRID and also card details like last four and expiry date.
-     * @method getNetworkToken
+     * @memberof NetworkTokens
      * @param {string} network_token_id - The network token ID
      * @returns {Promise<Object>} A promise to the Get Network Token response
      */
@@ -63,7 +63,7 @@ export default class NetworkTokens {
      * Request a cryptogram
      * [BETA]
      * Request a cryptogram for a network token for a specific transaction type.
-     * @method provisionCryptogram
+     * @memberof NetworkTokens
      * @param {string} network_token_id - The network token ID
      * @param {Object} body - Request body containing transaction_type
      * @returns {Promise<Object>} A promise to the Request a cryptogram response
@@ -89,7 +89,7 @@ export default class NetworkTokens {
      * [Beta] This endpoint is for permanently deleting a network token. A network token should be deleted when
      * a payment instrument it is associated with is removed from file or if the security of the token has been compromised.
      *
-     * @method deleteNetworkToken
+     * @memberof NetworkTokens
      * @param {string} network_token_id - Unique token ID assigned by Checkout.com for each token
      * @returns {Promise<Object>} A promise to the Delete Network Token response
      */

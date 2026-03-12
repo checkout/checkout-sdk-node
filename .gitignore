@@ -50,10 +50,8 @@ out
 /dist/
 .tmp.*
 
-.github/skills/
+.github/skills
 
 docs/
-*_REVIEW.md
 
-swagger-spec.json
 swagger.*

@@ -147,7 +147,7 @@ describe('Webhooks', () => {
         }
     });
 
-    it('should retrive webhook', async () => {
+    it('should retrieve webhook', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .get('/webhooks/wh_tdt72zlbe7cudogxdgit6nwk6i')
             .reply(200, {

@@ -16,8 +16,9 @@ export default class CardMetadata {
      * Returns a single metadata record for the card specified by the Primary Account Number (PAN),
      * Bank Identification Number (BIN), token, or instrument supplied.
      *
+     * @memberof CardMetadata
      * @param {Object} body Card Metadata request body.
-     * @return {Promise<Object>} A promise to the add Card Metadata response.
+     * @return {Promise<Object>} A promise to the Card Metadata response.
      */
     async get(body) {
         try {

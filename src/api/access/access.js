@@ -15,6 +15,7 @@ export default class Access {
     /**
      * Request an access token
      *
+     * @memberof Access
      * @param {Object} body Access object body.
      * @return {Promise<Object>} A promise to the Access response.
      */
@@ -30,6 +31,7 @@ export default class Access {
     /**
      * Update the access details in the config.
      *
+     * @memberof Access
      * @param {Object} body Access response body.
      * @return {void}
      */

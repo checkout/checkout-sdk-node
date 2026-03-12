@@ -31,7 +31,6 @@ describe('Unit::AccountUpdater', () => {
         const cko = new Checkout('test_client_secret', {
             client: 'ack_testclie123456',
             scope: ['vault:real-time-account-updater'],
-            subdomain: 'test',
             environment: 'sandbox',
             subdomain: '123456789'
         });
@@ -69,7 +68,6 @@ describe('Unit::AccountUpdater', () => {
         const cko = new Checkout('test_client_secret', {
             client: 'ack_testclie123456',
             scope: ['vault:real-time-account-updater'],
-            subdomain: 'test',
             environment: 'sandbox',
             subdomain: '123456789'
         });

@@ -61,7 +61,7 @@ describe('Integration::Customers', () => {
         expect(customer).to.have.property('name', 'Customer');
     });
 
-    it.skip('should update a customer)', async () => {
+    it.skip('should update a customer', async () => {
         const crypto = await import('crypto');
         const uuid1 = crypto.randomUUID();
         const uuid2 = crypto.randomUUID();
