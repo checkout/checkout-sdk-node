@@ -397,7 +397,7 @@ describe('Events', () => {
         expect(notification.content_type).to.equal('json');
     });
 
-    it('should throw Not Found when trying to retrive event notification', async () => {
+    it('should throw Not Found when trying to retrieve event notification', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .get(
                 '/events/evt_pwhgncrvd3julmuutcoz4deu2q/notifications/ntf_wqjkqpgjy33uxoywcej4fnw6qm'

@@ -19,7 +19,7 @@ export default class PaymentSetups {
      * Creates a Payment Setup.
      * To maximize the amount of information the payment setup can use, we recommend that you create a payment setup as early
      * as possible in the customer's journey. For example, the first time they land on the basket page.
-     * @method createAPaymentSetup
+     * @memberof PaymentSetups
      * @param {Object} body - Request body
      * @returns {Promise&lt;Object&gt;} A promise to the Create a Payment Setup response
      */
@@ -46,7 +46,7 @@ export default class PaymentSetups {
      * Updates a Payment Setup.
      * You should update the payment setup whenever there are significant changes in the data relevant to the customer's
      * transaction. For example, when the customer makes a change that impacts the total payment amount.
-     * @method updateAPaymentSetup
+     * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to update.
      * @param {Object} body - Request body
      * @returns {Promise&lt;Object&gt;} A promise to the Update a Payment Setup response
@@ -72,7 +72,7 @@ export default class PaymentSetups {
      * Get a Payment Setup
      * [BETA]
      * Retrieves a Payment Setup.
-     * @method getAPaymentSetup
+     * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
      * @returns {Promise&lt;Object&gt;} A promise to the Get a Payment Setup response
      */
@@ -95,7 +95,7 @@ export default class PaymentSetups {
      * Confirm a Payment Setup
      * [BETA]
      * Confirm a Payment Setup to begin processing the payment request with your chosen payment method option.
-     * @method confirmAPaymentSetup
+     * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
      * @param {string} payment_method_option_id - The unique identifier of the payment option to process the payment with.
      * @returns {Promise&lt;Object&gt;} A promise to the Confirm a Payment Setup response

@@ -1,6 +1,6 @@
 import { config } from '../../Checkout';
 
-export default class Instruments {
+export default class Events {
     constructor(config: config);
 
     retrieveEventTypes: (version: string) => Promise<Object>;

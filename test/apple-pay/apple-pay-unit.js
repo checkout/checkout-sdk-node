@@ -89,7 +89,6 @@ describe('Apple Pay', () => {
         let cko = new Checkout('test_client_secret', {
             client: 'ack_testclie123456',
             scope: ['vault:apme-enrollment'],
-            subdomain: '123456789',
             environment: 'sandbox',
             subdomain: '123456789'
         });

@@ -16,7 +16,7 @@ export default class PaymentMethods {
      * Get available payment methods
      * [BETA]
      * Get a list of all available payment methods for a specific Processing Channel ID.
-     * @method getPaymentMethods
+     * @memberof PaymentMethods
      * @param {string} processing_channel_id - The processing channel to be used for payment methods retrieval.
      * @returns {Promise<Object>} A promise to the Get available payment methods response
      */

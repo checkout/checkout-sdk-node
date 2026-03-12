@@ -34,7 +34,7 @@ describe('Access', () => {
         expect(tkn.token_type).to.equals('Bearer');
     });
 
-    it('should be able to updat the access token in the config from the access class', async () => {
+    it('should be able to update the access token in the config from the access class', async () => {
         nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
             expires_in: 3600,
