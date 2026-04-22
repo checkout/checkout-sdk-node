@@ -38,10 +38,11 @@
     "test": "c8 --all --src=src mocha --timeout 300000 'test/**/*.js'",
     "posttest": "c8 report --reporter=json",
     "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch",
-    "build": "babel src --out-dir ./dist --source-maps --no-babelrc --presets=@babel/preset-env --env-name=production"
+    "build": "babel src --out-dir ./dist --source-maps --env-name=production",
+    "postbuild": "node --input-type=module --eval \"import('./dist/index.js').catch(()=>{process.stderr.write('ESM smoke test failed\\n');process.exit(1)})\""
   },
   "dependencies": {
-    "axios": "^1.12.2",
+    "axios": "^1.14.0",
     "form-data": "^4.0.4"
   },
   "devDependencies": {
