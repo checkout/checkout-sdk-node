@@ -38,11 +38,14 @@
     "test": "c8 --all --src=src mocha --timeout 300000 'test/**/*.js'",
     "posttest": "c8 report --reporter=json",
     "test:watch": "mocha --timeout 300000  'test/**/*.js' --watch",
-    "build": "babel src --out-dir ./dist --source-maps --no-babelrc --presets=@babel/preset-env --env-name=production"
+    "build": "babel src --out-dir ./dist --source-maps --env-name=production"
   },
   "dependencies": {
     "axios": "^1.12.2",
     "form-data": "^4.0.4"
+  },
+  "overrides": {
+    "axios": "1.14.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.3",
