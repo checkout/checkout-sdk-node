@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Unit::Identity Verifications', () => {
     it('should create an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications', {
                 applicant_id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
                 declared_data: {
@@ -61,7 +61,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should create and start an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/create-and-open-idv', {
                 applicant_id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
                 configuration_id: 'cnf_tkoi5db4hryu5cei5vwoabr7we'
@@ -102,7 +102,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should get an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'idv_tkoi5db4hryu5cei5vwoabr7we',
@@ -160,7 +160,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should create an identity verification attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/attempts')
             .reply(201, {
                 id: 'iatp_tkoi5db4hryu5cei5vwoabrPoQ',
@@ -197,7 +197,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should list identity verification attempts', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/attempts')
             .reply(200, {
                 total_count: 2,
@@ -245,7 +245,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should get a specific identity verification attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/attempts/iatp_tkoi5db4hryu5cei5vwoabrPoQ')
             .reply(200, {
                 id: 'iatp_tkoi5db4hryu5cei5vwoabrPoQ',
@@ -288,7 +288,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should anonymize an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/anonymize')
             .reply(200, {
                 id: 'idv_tkoi5db4hryu5cei5vwoabr7we',
@@ -339,7 +339,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should get identity verification PDF report', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/pdf-report')
             .reply(200, Buffer.from('PDF content'), {
                 'content-type': 'application/pdf'
@@ -354,7 +354,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should throw AuthenticationError when creating identity verification with invalid credentials', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications')
             .reply(401);
 
@@ -373,7 +373,7 @@ describe('Unit::Identity Verifications', () => {
     });
 
     it('should throw NotFoundError when getting non-existent identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_invalid')
             .reply(404);
 

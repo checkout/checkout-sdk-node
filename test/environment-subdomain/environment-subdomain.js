@@ -125,11 +125,31 @@ describe('EnvironmentSubdomain', () => {
                 expect(result).to.equal(originalUrl);
             });
 
-            it('should return original URL for subdomain with special characters', () => {
+            it('should return original URL for subdomain with invalid special characters', () => {
                 const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test-123');
-                
-                expect(result).to.equal(originalUrl);
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test_123')).to.equal(originalUrl);
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test@123')).to.equal(originalUrl);
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test.123')).to.equal(originalUrl);
+            });
+
+            it('should return original URL for subdomain with trailing hyphen', () => {
+                const originalUrl = 'https://api.sandbox.checkout.com';
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'foo-')).to.equal(originalUrl);
+            });
+
+            it('should return original URL for subdomain with leading hyphen', () => {
+                const originalUrl = 'https://api.sandbox.checkout.com';
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, '-foo')).to.equal(originalUrl);
+            });
+
+            it('should create URL with hyphenated subdomain', () => {
+                const originalUrl = 'https://api.sandbox.checkout.com';
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test-123')).to.equal('https://test-123.api.sandbox.checkout.com');
+            });
+
+            it('should create URL with pl-abc123 subdomain', () => {
+                const originalUrl = 'https://api.sandbox.checkout.com';
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'pl-abc123')).to.equal('https://pl-abc123.api.sandbox.checkout.com');
             });
 
             it('should return original URL for subdomain with spaces', () => {
@@ -185,6 +205,14 @@ describe('EnvironmentSubdomain', () => {
             it('should validate 11-character subdomain', () => {
                 expect(EnvironmentSubdomain.isValidSubdomain('12345678901')).to.be.true;
             });
+
+            it('should validate hyphenated subdomain', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('test-123')).to.be.true;
+            });
+
+            it('should validate pl-abc123 subdomain', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('pl-abc123')).to.be.true;
+            });
         });
 
         describe('invalid subdomains', () => {
@@ -204,11 +232,18 @@ describe('EnvironmentSubdomain', () => {
                 expect(EnvironmentSubdomain.isValidSubdomain('ABC12345')).to.be.false;
             });
 
-            it('should reject subdomain with special characters', () => {
-                expect(EnvironmentSubdomain.isValidSubdomain('test-123')).to.be.false;
+            it('should reject subdomain with invalid special characters', () => {
                 expect(EnvironmentSubdomain.isValidSubdomain('test_123')).to.be.false;
                 expect(EnvironmentSubdomain.isValidSubdomain('test@123')).to.be.false;
                 expect(EnvironmentSubdomain.isValidSubdomain('test.123')).to.be.false;
+            });
+
+            it('should reject subdomain with trailing hyphen', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('foo-')).to.be.false;
+            });
+
+            it('should reject subdomain with leading hyphen', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('-foo')).to.be.false;
             });
 
             it('should reject subdomain with spaces', () => {

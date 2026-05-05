@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Identities - Applicants', () => {
     it('should create an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants')
             .reply(201, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -30,7 +30,7 @@ describe('Identities - Applicants', () => {
     });
 
     it('should get an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -51,7 +51,7 @@ describe('Identities - Applicants', () => {
     });
 
     it('should update an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .patch('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -76,7 +76,7 @@ describe('Identities - Applicants', () => {
     });
 
     it('should anonymize an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we/anonymize')
             .reply(200, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -95,7 +95,7 @@ describe('Identities - Applicants', () => {
     });
 
     it('should throw auth error creating applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants')
             .reply(401);
 
@@ -114,7 +114,7 @@ describe('Identities - Applicants', () => {
 
 describe('Identities - Identity Verifications', () => {
     it('should create an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications')
             .reply(201, {
                 id: 'idv_tkoi5db4hryu5cei5vwoabr7we',
@@ -141,7 +141,7 @@ describe('Identities - Identity Verifications', () => {
     });
 
     it('should get an identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'idv_tkoi5db4hryu5cei5vwoabr7we',
@@ -162,7 +162,7 @@ describe('Identities - Identity Verifications', () => {
     });
 
     it('should throw auth error creating identity verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications')
             .reply(401);
 

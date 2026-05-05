@@ -16,8 +16,8 @@ export const FORWARD_LIVE_URL = 'https://forward.checkout.com/forward';
 export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
 export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
 
-export const IDENTITY_VERIFICATION_SANDBOX_URL = 'https://identity-verification.api.sandbox.checkout.com';
-export const IDENTITY_VERIFICATION_LIVE_URL = 'https://identity-verification.api.checkout.com';
+export const IDENTITY_VERIFICATION_SANDBOX_URL = 'https://identity-verification.sandbox.checkout.com';
+export const IDENTITY_VERIFICATION_LIVE_URL = 'https://identity-verification.checkout.com';
 
 export const REQUEST_ID_HEADER = 'cko-request-id';
 export const API_VERSION_HEADER = 'cko-version';
