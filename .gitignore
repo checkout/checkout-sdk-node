@@ -55,3 +55,5 @@ out
 docs/
 
 swagger.*
+.claude/
+CLAUDE.md
