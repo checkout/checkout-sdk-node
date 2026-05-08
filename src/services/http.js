@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Writable } from 'stream';
 import {
     API_VERSION_HEADER,
     ETAG_HEADER,
@@ -68,6 +69,8 @@ function getRequestHeaders(config, request, authHeader, idempotencyKey) {
 
     if (!config.formData) {
         headers['Content-Type'] = config.csv ? 'text/csv' : 'application/json';
+    } else if (request && typeof request.getHeaders === 'function') {
+        headers = { ...headers, ...request.getHeaders() };
     }
 
     if (idempotencyKey !== undefined) {
@@ -75,6 +78,22 @@ function getRequestHeaders(config, request, authHeader, idempotencyKey) {
     }
 
     return headers;
+}
+
+function formDataToBuffer(form) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        const sink = new Writable({
+            write(chunk, _encoding, callback) {
+                chunks.push(chunk);
+                callback();
+            },
+        });
+        sink.on('finish', () => resolve(Buffer.concat(chunks)));
+        sink.on('error', reject);
+        form.on('error', reject);
+        form.pipe(sink);
+    });
 }
 
 function getResponseHeaders(response) {
@@ -277,9 +296,15 @@ const httpRequest = async (httpClient, method, path, config, auth, request, idem
             }
 
         default:
+            let body;
+            if (config.formData && request && typeof request.getHeaders === 'function') {
+                body = await formDataToBuffer(request);
+            } else {
+                body = config.formData ? request : JSON.stringify(request);
+            }
             const fetchOptions = {
                 method,
-                body: config.formData ? request : JSON.stringify(request),
+                body,
                 headers,
             };
             if (typeof config.agent !== 'undefined') {
