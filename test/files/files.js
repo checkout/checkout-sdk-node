@@ -149,12 +149,15 @@ describe('Files', () => {
                 purpose: purpose,
             });
 
+            // nock represents binary (Buffer) request bodies as a hex-encoded string
+            // when handed to the matcher callback. Decode before matching.
+            const bodyText = Buffer.from(capturedBody, 'hex').toString('utf8');
             expect(file.id).to.equal('file_test_' + purpose);
-            expect(capturedBody).to.match(
+            expect(bodyText).to.match(
                 new RegExp(`name="purpose"\\r\\n\\r\\n${purpose}\\r\\n`),
                 `purpose field "${purpose}" must appear in multipart body`
             );
-            expect(capturedBody).to.match(
+            expect(bodyText).to.match(
                 /name="file"; filename=/,
                 'file field must appear in multipart body'
             );
@@ -202,15 +205,17 @@ describe('Files', () => {
             'Content-Type must be multipart/form-data with a boundary'
         );
 
-        expect(capturedBody).to.not.include(
+        // nock hex-encodes binary (Buffer) request bodies in the matcher callback.
+        const bodyText = Buffer.from(capturedBody, 'hex').toString('utf8');
+        expect(bodyText).to.not.include(
             '[object FormData]',
             'body must not contain the string "[object FormData]" — that means the form-data instance was string-coerced instead of serialized'
         );
-        expect(capturedBody).to.match(
+        expect(bodyText).to.match(
             /name="purpose"\r\n\r\ndispute_evidence\r\n/,
             'purpose field must be present in the multipart body'
         );
-        expect(capturedBody).to.match(
+        expect(bodyText).to.match(
             /name="file"; filename=/,
             'file field must be present in the multipart body'
         );
