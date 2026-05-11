@@ -142,13 +142,14 @@ describe('EnvironmentSubdomain', () => {
                 expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, '-foo')).to.equal(originalUrl);
             });
 
-            it('should create URL with hyphenated subdomain', () => {
+            it('should return original URL for non-pl hyphenated subdomain', () => {
                 const originalUrl = 'https://api.sandbox.checkout.com';
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test-123')).to.equal('https://test-123.api.sandbox.checkout.com');
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test-123')).to.equal(originalUrl);
             });
 
-            it('should create URL with pl-abc123 subdomain', () => {
+            it('should create URL with PrivateLink pl-{prefix} subdomain', () => {
                 const originalUrl = 'https://api.sandbox.checkout.com';
+                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'pl-vkuhvk4v')).to.equal('https://pl-vkuhvk4v.api.sandbox.checkout.com');
                 expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'pl-abc123')).to.equal('https://pl-abc123.api.sandbox.checkout.com');
             });
 
@@ -206,11 +207,8 @@ describe('EnvironmentSubdomain', () => {
                 expect(EnvironmentSubdomain.isValidSubdomain('12345678901')).to.be.true;
             });
 
-            it('should validate hyphenated subdomain', () => {
-                expect(EnvironmentSubdomain.isValidSubdomain('test-123')).to.be.true;
-            });
-
-            it('should validate pl-abc123 subdomain', () => {
+            it('should validate PrivateLink pl-{prefix} subdomain', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('pl-vkuhvk4v')).to.be.true;
                 expect(EnvironmentSubdomain.isValidSubdomain('pl-abc123')).to.be.true;
             });
         });
@@ -244,6 +242,15 @@ describe('EnvironmentSubdomain', () => {
 
             it('should reject subdomain with leading hyphen', () => {
                 expect(EnvironmentSubdomain.isValidSubdomain('-foo')).to.be.false;
+            });
+
+            it('should reject non-pl hyphenated subdomain', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('test-123')).to.be.false;
+                expect(EnvironmentSubdomain.isValidSubdomain('foo-bar')).to.be.false;
+            });
+
+            it('should reject bare pl- with no prefix', () => {
+                expect(EnvironmentSubdomain.isValidSubdomain('pl-')).to.be.false;
             });
 
             it('should reject subdomain with spaces', () => {

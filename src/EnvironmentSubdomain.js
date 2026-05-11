@@ -61,7 +61,7 @@ export default class EnvironmentSubdomain {
         if (!subdomain || typeof subdomain !== 'string') {
             return false;
         }
-        const pattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+        const pattern = /^(?:pl-)?[a-z0-9]+$/;
         return pattern.test(subdomain);
     }
 
