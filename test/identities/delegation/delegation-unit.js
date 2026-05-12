@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import nock from 'nock';
 
 const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
-const BASE = 'https://identity-verification.api.sandbox.checkout.com';
+const BASE = 'https://identity-verification.sandbox.checkout.com';
 
 describe('Identities - Backwards Compatibility Delegation', () => {
     afterEach(() => {

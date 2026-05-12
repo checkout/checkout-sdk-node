@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Unit::Face Authentications', () => {
     it('should create a face authentication', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/face-authentications', {
                 applicant_id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
                 configuration_id: 'cnf_tkoi5db4hryu5cei5vwoabr7we'
@@ -42,7 +42,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should get a face authentication', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'fav_tkoi5db4hryu5cei5vwoabr7we',
@@ -84,7 +84,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should list face authentication attempts', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/attempts')
             .reply(200, {
                 total_count: 2,
@@ -132,7 +132,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should get a specific face authentication attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/attempts/fatp_nk1wbmmczqumwt95k3v39mhbh2w')
             .reply(200, {
                 id: 'fatp_nk1wbmmczqumwt95k3v39mhbh2w',
@@ -170,7 +170,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should create a face authentication attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/attempts', {
                 selfie: 'data:image/jpeg;base64,/9j/4AAQSkZJRg...'
             })
@@ -208,7 +208,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should anonymize a face authentication', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/anonymize')
             .reply(200, {
                 id: 'fav_tkoi5db4hryu5cei5vwoabr7we',
@@ -247,7 +247,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should throw AuthenticationError when creating face authentication with invalid credentials', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/face-authentications')
             .reply(401);
 
@@ -264,7 +264,7 @@ describe('Unit::Face Authentications', () => {
     });
 
     it('should throw NotFoundError when getting non-existent face authentication', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/face-authentications/fav_invalid')
             .reply(404);
 

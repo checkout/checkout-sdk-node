@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Unit::AML Screenings', () => {
     it('should create an AML screening', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/aml-verifications', {
                 applicant_id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
                 configuration_id: 'cnf_tkoi5db4hryu5cei5vwoabr7we'
@@ -43,7 +43,7 @@ describe('Unit::AML Screenings', () => {
     });
 
     it('should get an AML screening', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/aml-verifications/amlv_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'amlv_tkoi5db4hryu5cei5vwoabr7we',
@@ -76,7 +76,7 @@ describe('Unit::AML Screenings', () => {
     });
 
     it('should throw AuthenticationError when creating AML screening with invalid credentials', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/aml-verifications')
             .reply(401);
 
@@ -93,7 +93,7 @@ describe('Unit::AML Screenings', () => {
     });
 
     it('should throw NotFoundError when getting non-existent AML screening', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/aml-verifications/amlv_invalid')
             .reply(404);
 

@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Unit::Applicants', () => {
     it('should create an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants', {
                 external_applicant_id: 'ext_osdfdfdb4hryu5cei5vwoabrk5k',
                 email: 'hannah.bret@example.com',
@@ -39,7 +39,7 @@ describe('Unit::Applicants', () => {
     });
 
     it('should get an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -65,7 +65,7 @@ describe('Unit::Applicants', () => {
     });
 
     it('should update an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .patch('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we', {
                 email: 'hannah.updated@example.com',
                 external_applicant_name: 'Hannah Bret Updated'
@@ -98,7 +98,7 @@ describe('Unit::Applicants', () => {
     });
 
     it('should anonymize an applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants/aplt_tkoi5db4hryu5cei5vwoabr7we/anonymize')
             .reply(200, {
                 id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
@@ -122,7 +122,7 @@ describe('Unit::Applicants', () => {
     });
 
     it('should throw AuthenticationError when creating applicant with invalid credentials', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/applicants')
             .reply(401);
 
@@ -140,7 +140,7 @@ describe('Unit::Applicants', () => {
     });
 
     it('should throw NotFoundError when getting non-existent applicant', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/applicants/aplt_invalid')
             .reply(404);
 

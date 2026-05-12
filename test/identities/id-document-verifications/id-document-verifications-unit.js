@@ -7,7 +7,7 @@ const SK = 'sk_sbox_o2nulev2arguvyf6w7sc5fkznas';
 
 describe('Unit::ID Document Verifications', () => {
     it('should create an ID document verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/id-document-verifications', {
                 applicant_id: 'aplt_tkoi5db4hryu5cei5vwoabr7we',
                 configuration_id: 'cnf_tkoi5db4hryu5cei5vwoabr7we'
@@ -56,7 +56,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should get an ID document verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'iddv_tkoi5db4hryu5cei5vwoabr7we',
@@ -101,7 +101,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should list ID document verification attempts', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/attempts')
             .reply(200, {
                 total_count: 2,
@@ -145,7 +145,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should get a specific ID document verification attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/attempts/datp_tkoi5db4hryu5cei5vwoabr7we')
             .reply(200, {
                 id: 'datp_tkoi5db4hryu5cei5vwoabr7we',
@@ -171,7 +171,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should create an ID document verification attempt', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/attempts', {
                 document_front: 'data:image/jpeg;base64,/9j/4AAQSkZJRg...',
                 document_back: 'data:image/jpeg;base64,/9j/4AAQSkZJRg...'
@@ -203,7 +203,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should get ID document verification PDF report', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/pdf-report')
             .reply(200, {
                 pdf_report: 'https://www.example.com/pdf',
@@ -220,7 +220,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should anonymize an ID document verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/anonymize')
             .reply(200, {
                 id: 'iddv_tkoi5db4hryu5cei5vwoabr7we',
@@ -259,7 +259,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should throw AuthenticationError when creating ID document verification with invalid credentials', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .post('/id-document-verifications')
             .reply(401);
 
@@ -276,7 +276,7 @@ describe('Unit::ID Document Verifications', () => {
     });
 
     it('should throw NotFoundError when getting non-existent ID document verification', async () => {
-        nock('https://identity-verification.api.sandbox.checkout.com')
+        nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/idv_invalid')
             .reply(404);
 
