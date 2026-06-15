@@ -105,7 +105,11 @@ export default class Disputes {
 
     /**
      * Submit an Issuing dispute.
-     * [Beta] Submit an Issuing dispute to the card scheme for processing.
+     *
+     * @deprecated Removed from the Checkout.com API on 2026-04-15.
+     *   The submit step is now handled automatically when a dispute is created.
+     *   Retained on the client for backwards compatibility; the endpoint will
+     *   return 404 on the current API.
      *
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.

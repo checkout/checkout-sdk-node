@@ -19,13 +19,14 @@ export default class Balances {
      * @param {string} id The ID of the entity.
      * @param {string|Object} [options] Filter options. Can be:
      *   - string: currency code (e.g., 'EUR') - backward compatible
-     *   - object: { query: 'currency:EUR', withCurrencyAccountId: true }
+     *   - object: { query: 'currency:EUR', withCurrencyAccountId: true, balancesAt: 'ISO-8601' }
+     *     - balancesAt: ISO-8601 timestamp to retrieve historical balances at that point in time.
      * @return {Promise<Object>} A promise to the balances response.
      */
     async retrieve(id, options) {
         try {
             let queryParams = [];
-            
+
             // Backward compatibility: if options is a string, treat it as currency
             if (typeof options === 'string') {
                 queryParams.push(`query=currency:${options}`);
@@ -37,8 +38,11 @@ export default class Balances {
                 if (options.withCurrencyAccountId !== undefined) {
                     queryParams.push(`withCurrencyAccountId=${options.withCurrencyAccountId}`);
                 }
+                if (options.balancesAt) {
+                    queryParams.push(`balances_at=${encodeURIComponent(options.balancesAt)}`);
+                }
             }
-            
+
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
             const url = `${this.config.balancesUrl}/${id}${queryString}`;
             

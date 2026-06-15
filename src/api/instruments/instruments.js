@@ -107,6 +107,32 @@ export default class Instruments {
     }
 
     /**
+     * Revoke a payment instrument. The instrument status is set to INVALID with
+     * reason `revoked_by_merchant`. The instrument record is retained for audit
+     * purposes.
+     *
+     * @memberof Instruments
+     * @param {string} id Instrument id (pattern: ^(src_)[a-z0-9]{26}$).
+     * @return {Promise<Object>} A promise to the revoke response.
+     */
+    async revoke(id) {
+        try {
+            const response = await patch(
+                this.config.httpClient,
+                `${this.config.host}/instruments/${id}/revoke`,
+                this.config,
+                this.config.sk
+            );
+            if (response.status === 204) {
+                return {};
+            }
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
      * Delete a payment instrument.
      *
      * @memberof Instruments
