@@ -37,6 +37,7 @@ export default class Webhooks {
      * Register a new webhook endpoint that Checkout.com will post all or selected events to
      *
      * @memberof Webhooks
+     * @param {Object} body Webhook registration body.
      * @return {Promise<Object>} A promise to the register webhook response.
      */
     async registerWebhook(body) {
@@ -58,6 +59,7 @@ export default class Webhooks {
      * Retrieves the webhook with the specified identifier string
      *
      * @memberof Webhooks
+     * @param {string} id The webhook identifier.
      * @return {Promise<Object>} A promise to the retrieve webhook response.
      */
     async retrieveWebhook(id) {
@@ -78,6 +80,8 @@ export default class Webhooks {
      * Updates an existing webhook
      *
      * @memberof Webhooks
+     * @param {string} id The webhook identifier.
+     * @param {Object} body Webhook update body.
      * @return {Promise<Object>} A promise to the update webhook response.
      */
     async updateWebhook(id, body) {
@@ -99,6 +103,8 @@ export default class Webhooks {
      * Updates all or some of the registered webhook details
      *
      * @memberof Webhooks
+     * @param {string} id The webhook identifier.
+     * @param {Object} body Webhook partial-update body.
      * @return {Promise<Object>} A promise to the update webhook response.
      */
     async partiallyUpdateWebhook(id, body) {
@@ -120,6 +126,7 @@ export default class Webhooks {
      * Removes an existing webhook
      *
      * @memberof Webhooks
+     * @param {string} id The webhook identifier.
      * @return {Promise<Object>} A promise to the remove webhook response.
      */
     async removeWebhook(id) {

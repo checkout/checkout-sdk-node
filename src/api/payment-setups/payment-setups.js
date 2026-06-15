@@ -72,9 +72,16 @@ export default class PaymentSetups {
      * Get a Payment Setup
      * [BETA]
      * Retrieves a Payment Setup.
+     *
+     * Response (swagger `PaymentSetup`, 2026-05-26) may include:
+     *  - account_funding_transaction — Account Funding Transaction (AFT) details
+     *    when the setup was created with one. See
+     *    `PaymentSetupAccountFundingTransaction` in swagger for sender /
+     *    recipient / identification shapes.
+     *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
-     * @returns {Promise&lt;Object&gt;} A promise to the Get a Payment Setup response
+     * @returns {Promise<Object>} A promise to the Get a Payment Setup response
      */
     async getAPaymentSetup(id) {
         try {

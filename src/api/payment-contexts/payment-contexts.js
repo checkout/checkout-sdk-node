@@ -42,9 +42,11 @@ export default class PaymentContexts {
     /**
      * Get Payment Context details.
      *
+     * Response now carries an `id` field on `PaymentContextDetails` (swagger 2026-05-26)
+     * — the payment-context identifier echoed back in the response.
+     *
      * @memberof PaymentContexts
-     * @param {string} id /^(pay|sid)_(
-{26})$/ The payment or payment session identifier.
+     * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<object>} A promise to the get payment context response.
      */
     async get(id) {

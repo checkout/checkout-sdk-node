@@ -13,7 +13,12 @@ export default class HostedPayments {
     }
 
     /**
-     * Create a Hosted Payments Page session
+     * Create a Hosted Payments Page session.
+     *
+     * Notable optional fields (swagger HostedPaymentsRequest, 2026-06-08):
+     *  - body.authorization_type — e.g. `Estimated`, `Final`.
+     *  - body.payment_plan — installment / recurring schedule
+     *    (`amount`, `name`, `start_date` added 2026-05-08).
      *
      * @memberof HostedPayments
      * @param {Object} body - Hosted Payments Page session request body

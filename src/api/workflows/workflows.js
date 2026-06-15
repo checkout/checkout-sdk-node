@@ -123,9 +123,14 @@ export default class Workflows {
     /**
      * Adds a workflow action. Actions determine what the workflow will do when it is triggered.
      *
+     * Notable field on webhook-action bodies (swagger RetryRequest, 2026-05-26):
+     *  - body.retry.enabled — boolean toggle for the retry policy. When omitted,
+     *    the API default applies. Returned on read endpoints as
+     *    `retry.enabled` in `RetryGetResponse` / `RetryPostResponse`.
+     *
      * @memberof Workflows
      * @param {string} id Workflow Id.
-     * @param {Object} body Workflows request body.
+     * @param {Object} body Workflows action request body.
      * @return {Promise<Object>} A promise to the Workflows response.
      */
     async addAction(id, body) {

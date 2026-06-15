@@ -15,6 +15,13 @@ export default class Balances {
     /**
      * Use this endpoint to retrieve balances for each currency account belonging to an entity.
      *
+     * Response fields added in 2026-05-08:
+     *  - `Balance.collateral_breakdown` — collateral split by reserve rule.
+     *  - `CurrencyAccountBalance.balances_as_of` — ISO-8601 timestamp the
+     *    balance was computed against (server-populated).
+     *  - `CurrencyAccountBalance.currency_account_id` — the id of the currency
+     *    account, when `withCurrencyAccountId` is set on the query.
+     *
      * @memberof Balances
      * @param {string} id The ID of the entity.
      * @param {string|Object} [options] Filter options. Can be:

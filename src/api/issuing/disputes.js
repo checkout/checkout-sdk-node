@@ -17,6 +17,10 @@ export default class Disputes {
      * [Beta] Create a dispute for an Issuing transaction. The transaction must already be cleared and not refunded.
      * For full guidance, see https://www.checkout.com/docs/card-issuing/manage-cardholder-transactions/manage-issuing-disputes
      *
+     * Note: `is_ready_for_submission` was removed from the request body on
+     * 2026-04-15 — the submission step is now handled automatically when a
+     * dispute is created. Passing the field is silently ignored by the API.
+     *
      * @memberof Disputes
      * @param {Object} body Dispute request params.
      * @return {Promise<Object>} A promise to the dispute response.
