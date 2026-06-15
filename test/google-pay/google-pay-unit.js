@@ -21,14 +21,16 @@ describe('GooglePay', () => {
         expect(res.status).to.equal('enrolled');
     });
 
-    it('registerDomain POSTs to /googlepay/enrollments/{id}/domain', async () => {
+    it('registerDomain POSTs to /googlepay/enrollments/{id}/domain and accepts the contract 204 no-body response', async () => {
+        // Per swagger, success is 204 with no content. buildJsonResponse in
+        // services/http.js returns `{}` when the response body is empty.
         nock('https://123456789.api.sandbox.checkout.com')
             .post('/googlepay/enrollments/ent_1/domain')
-            .reply(201, { ok: true });
+            .reply(204);
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
         const res = await cko.googlePay.registerDomain('ent_1', { web_domain: 'example.com' });
-        expect(res.ok).to.equal(true);
+        expect(res).to.deep.equal({});
     });
 
     it('getRegisteredDomains GETs /googlepay/enrollments/{id}/domains', async () => {

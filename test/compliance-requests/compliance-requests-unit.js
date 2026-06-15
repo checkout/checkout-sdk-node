@@ -17,10 +17,12 @@ describe('ComplianceRequests', () => {
         expect(res.id).to.equal('cr_1');
     });
 
-    it('respondToComplianceRequest POSTs to /compliance-requests/{paymentId}', async () => {
+    it('respondToComplianceRequest POSTs to /compliance-requests/{paymentId} and accepts the contract 202 no-body response', async () => {
+        // Per swagger, success is 202 with no content. buildJsonResponse in
+        // services/http.js returns `{}` when the response body is empty.
         nock('https://123456789.api.sandbox.checkout.com')
             .post('/compliance-requests/pay_abc')
-            .reply(200, { status: 'submitted' });
+            .reply(202);
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
         const res = await cko.complianceRequests.respondToComplianceRequest('pay_abc', {
@@ -29,6 +31,6 @@ describe('ComplianceRequests', () => {
             },
             comments: 'note',
         });
-        expect(res.status).to.equal('submitted');
+        expect(res).to.deep.equal({});
     });
 });

@@ -24,7 +24,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/simulate/requirements-due`,
                 this.config,
-                this.config.access
+                null
             );
             return await response.json;
         } catch (err) {
@@ -44,7 +44,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/simulate/scenarios`,
                 this.config,
-                this.config.access
+                null
             );
             return await response.json;
         } catch (err) {
@@ -66,7 +66,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/simulate/entities/${entityId}/requirements-due`,
                 this.config,
-                this.config.access,
+                null,
                 body
             );
             return await response.json;
@@ -89,7 +89,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/simulate/entities/${entityId}/scenarios/${scenarioId}`,
                 this.config,
-                this.config.access
+                null
             );
             return await response.json;
         } catch (err) {
@@ -111,7 +111,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/simulate/entities/${entityId}/status`,
                 this.config,
-                this.config.access,
+                null,
                 body
             );
             return await response.json;

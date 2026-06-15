@@ -27,7 +27,9 @@ export default class Balances {
      * @param {string|Object} [options] Filter options. Can be:
      *   - string: currency code (e.g., 'EUR') - backward compatible
      *   - object: { query: 'currency:EUR', withCurrencyAccountId: true, balancesAt: 'ISO-8601' }
-     *     - balancesAt: ISO-8601 timestamp to retrieve historical balances at that point in time.
+     *     - balancesAt: ISO-8601 timestamp to retrieve historical balances at
+     *       that point in time. Forwarded verbatim as the `balancesAt` (camelCase)
+     *       query parameter, as defined in swagger.
      * @return {Promise<Object>} A promise to the balances response.
      */
     async retrieve(id, options) {
@@ -46,7 +48,9 @@ export default class Balances {
                     queryParams.push(`withCurrencyAccountId=${options.withCurrencyAccountId}`);
                 }
                 if (options.balancesAt) {
-                    queryParams.push(`balances_at=${encodeURIComponent(options.balancesAt)}`);
+                    // Swagger defines the query parameter as `balancesAt` (camelCase),
+                    // not snake_case. Keep this exact name or the API silently ignores it.
+                    queryParams.push(`balancesAt=${encodeURIComponent(options.balancesAt)}`);
                 }
             }
 

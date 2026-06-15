@@ -123,9 +123,6 @@ export default class Instruments {
                 this.config,
                 this.config.sk
             );
-            if (response.status === 204) {
-                return {};
-            }
             return await response.json;
         } catch (err) {
             throw await determineError(err);

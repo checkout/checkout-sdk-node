@@ -30,7 +30,7 @@ export default class GooglePay {
                 this.config.httpClient,
                 `${this.config.host}/googlepay/enrollments`,
                 this.config,
-                this.config.access,
+                null,
                 body
             );
             return await response.json;
@@ -53,7 +53,7 @@ export default class GooglePay {
                 this.config.httpClient,
                 `${this.config.host}/googlepay/enrollments/${entityId}/domain`,
                 this.config,
-                this.config.access,
+                null,
                 body
             );
             return await response.json;
@@ -75,7 +75,7 @@ export default class GooglePay {
                 this.config.httpClient,
                 `${this.config.host}/googlepay/enrollments/${entityId}/domains`,
                 this.config,
-                this.config.access
+                null
             );
             return await response.json;
         } catch (err) {
@@ -96,7 +96,7 @@ export default class GooglePay {
                 this.config.httpClient,
                 `${this.config.host}/googlepay/enrollments/${entityId}/state`,
                 this.config,
-                this.config.access
+                null
             );
             return await response.json;
         } catch (err) {
