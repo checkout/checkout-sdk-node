@@ -65,7 +65,10 @@ describe('Access', () => {
     });
 
     it('should throw AuthenticationError in pre-capture', async () => {
-        nock('https://access.checkout.com').post('/connect/token').reply(401);
+        // Mock host must match the subdomain-prepended URL the SDK builds:
+        // EnvironmentSubdomain.createUrlWithSubdomain('https://access.checkout.com/...', 'test')
+        // → https://test.access.checkout.com/connect/token
+        nock('https://test.access.checkout.com').post('/connect/token').reply(401);
         let cko = new Checkout(
             '2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-J_Gho7wDy0HY9951RfdUr0vSaQCzRKP0-o5Xg',
             {
