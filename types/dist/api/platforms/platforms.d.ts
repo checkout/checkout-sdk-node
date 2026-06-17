@@ -4,6 +4,7 @@ import PlatformFiles from './files';
 import PaymentInstruments from './payment-instruments';
 import PayoutSchedules from './payout-schedules';
 import ReserveRules from './reserve-rules';
+import EntityRequirements from './entity-requirements';
 
 export default class Platforms {
     constructor(config: config);
@@ -13,6 +14,7 @@ export default class Platforms {
     paymentInstruments: PaymentInstruments;
     payoutSchedules: PayoutSchedules;
     reserveRules: ReserveRules;
+    entityRequirements: EntityRequirements;
 
     uploadFile: (purpose: string, path: string) => Promise<Object>;
     onboardSubEntity: (body: Object, schemaVersion?: string) => Promise<Object>;
@@ -33,4 +35,7 @@ export default class Platforms {
     updateReserveRule: (entityId: string, id: string, body: Object, ifMatch: string) => Promise<Object>;
     addReserveRule: (id: string, body: Object) => Promise<Object>;
     queryReserveRules: (id: string) => Promise<Object>;
+    getEntityRequirements: (entityId: string) => Promise<Object>;
+    getEntityRequirementDetails: (entityId: string, requirementId: string) => Promise<Object>;
+    updateEntityRequirement: (entityId: string, requirementId: string, body: Object) => Promise<Object>;
 }
