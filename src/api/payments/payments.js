@@ -39,7 +39,22 @@ export default class Payments {
     }
 
     /**
-     * Sends payment or a payout requests.
+     * Sends payment or a payout request.
+     *
+     * Notable optional fields (swagger PaymentRequest, 2026-04 → 2026-06):
+     *  - body.source — supports BLIK via `{ type: 'blik', ... }` per
+     *    `PaymentRequestBlikSource` (2026-05-08).
+     *  - body.fallback_source — alternate source attempted if the primary source
+     *    fails (2026-04-23).
+     *  - body.processing.affiliate_id / processing.affiliate_url — affiliate
+     *    tracking, surfaced under `processing` (2026-05-07).
+     *  - body.payment_plan, body.authorization_type — present on
+     *    HostedPayments/PaymentLinks/PaymentSessions variants (2026-06-08).
+     *
+     * Response fields newly available under `processing` (pass-through):
+     *  - scheme_transaction_link_id (Mastercard Transaction Link Identifier, 2026-06-08)
+     *  - scheme (2026-06-02), failure_code, partner_code, partner_response_code (2026-05-08)
+     *  - fallback_source_used (2026-04-23)
      *
      * @memberof Payments
      * @param {Object} body Payment Request body.
@@ -238,11 +253,14 @@ export default class Payments {
     /**
      * Reverse a payment if supported by the payment method.
      *
+     * Response (PaymentReversalAcceptedResponse) carries `action_type` since
+     * swagger 2026-05-26 — exposed verbatim in the resolved JSON.
+     *
      * @memberof Payments
      * @param {string} paymentId /^(pay)_(\w{26})$/ The unique identifier for the payment.
      * @param {Object} [body] Reverse request body.
      * @param {string} [idempotencyKey] Idempotency Key.
-     * @return {Promise<Object>} A promise to the refund response.
+     * @return {Promise<Object>} A promise to the reverse response.
      */
     async reverse(paymentId, body, idempotencyKey) {
         try {

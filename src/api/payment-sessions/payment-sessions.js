@@ -16,6 +16,12 @@ export default class PaymentSessions {
     /**
      * Creates a payment session.
      *
+     * Notable optional fields (swagger CreatePaymentSessionsBaseRequest, 2026-06-08):
+     *  - body.authorization_type — e.g. `Estimated`, `Final`.
+     *  - body.payment_plan — installment / recurring schedule. See swagger
+     *    `PaymentSessionPaymentPlanRecurring` for the recurring variant
+     *    (fields: amount, name, start_date — added 2026-05-08).
+     *
      * @memberof PaymentSessions
      * @param {object} body PaymentSessions Request body.
      * @return {Promise<object>} A promise to payment context response.

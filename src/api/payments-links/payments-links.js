@@ -13,10 +13,16 @@ export default class PaymentLinks {
     }
 
     /**
-     * Create a Payment Link and pass through all the payment information, like the amount, currency, country and reference.
+     * Create a Payment Link and pass through all the payment information,
+     * like the amount, currency, country and reference.
+     *
+     * Notable optional fields (swagger PaymentLinksRequest, 2026-06-08):
+     *  - body.authorization_type — e.g. `Estimated`, `Final`.
+     *  - body.payment_plan — installment / recurring schedule
+     *    (`amount`, `name`, `start_date` added 2026-05-08).
      *
      * @memberof PaymentLinks
-     * @param {Object} body
+     * @param {Object} body Payment Link request body.
      * @return {Promise<Object>} A promise to the Payment Link response.
      */
     async create(body) {

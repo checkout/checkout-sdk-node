@@ -1,5 +1,5 @@
 import { determineError } from '../../services/errors.js';
-import { post } from '../../services/http.js';
+import { get, post } from '../../services/http.js';
 import { setTokenType } from '../../services/validation.js';
 
 /**
@@ -30,6 +30,28 @@ export default class Tokens {
                 this.config,
                 this.config.pk,
                 body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Retrieve metadata for a token (e.g., billing address captured at tokenisation).
+     *
+     * @memberof Tokens
+     * @param {string} tokenId The token id (e.g., "tok_...").
+     * @return {Promise<Object>} A promise to the token metadata response.
+     */
+    async getTokenMetadata(tokenId) {
+        try {
+            const access = this.config.access ? this.config.access : this.config.sk;
+            const response = await get(
+                this.config.httpClient,
+                `${this.config.host}/tokens/${tokenId}/metadata`,
+                this.config,
+                access
             );
             return await response.json;
         } catch (err) {

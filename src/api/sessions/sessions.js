@@ -15,6 +15,10 @@ export default class Sessions {
     /**
      * Create a payment session to authenticate a cardholder before requesting a payment.
      *
+     * Notable optional fields (swagger SessionRequest, 2026-05-07):
+     *  - body.device_information — device-fingerprint block. See swagger
+     *    `DeviceInformation` for shape (browser, ip, screen, timezone, etc.).
+     *
      * @memberof Sessions
      * @param {Object} body Sessions request body.
      * @return {Promise<Object>} A promise to the sessions response.

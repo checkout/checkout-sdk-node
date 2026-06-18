@@ -191,6 +191,7 @@ export default class Issuing {
         return this.disputes.escalateDispute(disputeId);
     }
 
+    /** @deprecated Endpoint removed from the API on 2026-04-15. */
     async submitDispute(disputeId) {
         return this.disputes.submitDispute(disputeId);
     }

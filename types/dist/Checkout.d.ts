@@ -4,11 +4,13 @@ import * as http from 'http';
 import {
     Access,
     AccountUpdater,
+    AgenticCommerce,
     ApplePay,
     Balances,
     Baloto,
     Boleto,
     CardMetadata,
+    ComplianceRequests,
     Customers,
     Disputes,
     Events,
@@ -18,6 +20,7 @@ import {
     Forex,
     Forward,
     Giropay,
+    GooglePay,
     HostedPayments,
     Ideal,
     Identities,
@@ -25,6 +28,7 @@ import {
     Issuing,
     Klarna,
     NetworkTokens,
+    OnboardingSimulator,
     Oxxo,
     PagoFacil,
     PaymentContexts,
@@ -137,6 +141,10 @@ export default class Checkout {
     identities: Identities;
     accountUpdater: AccountUpdater;
     risk: Risk;
+    agenticCommerce: AgenticCommerce;
+    complianceRequests: ComplianceRequests;
+    googlePay: GooglePay;
+    onboardingSimulator: OnboardingSimulator;
     config: config;
 
     constructor(key?: string, options?: options);

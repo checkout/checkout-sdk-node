@@ -3,6 +3,7 @@ import PlatformFiles from './files.js';
 import PaymentInstruments from './payment-instruments.js';
 import PayoutSchedules from './payout-schedules.js';
 import ReserveRules from './reserve-rules.js';
+import EntityRequirements from './entity-requirements.js';
 
 /**
  * Class dealing with the Platforms API (tag "Platforms" in swagger-spec.json).
@@ -21,6 +22,7 @@ export default class Platforms {
         this.paymentInstruments = new PaymentInstruments(config);
         this.payoutSchedules = new PayoutSchedules(config);
         this.reserveRules = new ReserveRules(config);
+        this.entityRequirements = new EntityRequirements(config);
     }
 
     // ——— Files (backwards compatibility) ———
@@ -102,5 +104,18 @@ export default class Platforms {
 
     async queryReserveRules(id) {
         return this.reserveRules.queryReserveRules(id);
+    }
+
+    // ——— Entity requirements (backwards compatibility) ———
+    async getEntityRequirements(entityId) {
+        return this.entityRequirements.getEntityRequirements(entityId);
+    }
+
+    async getEntityRequirementDetails(entityId, requirementId) {
+        return this.entityRequirements.getEntityRequirementDetails(entityId, requirementId);
+    }
+
+    async updateEntityRequirement(entityId, requirementId, body) {
+        return this.entityRequirements.updateEntityRequirement(entityId, requirementId, body);
     }
 }
