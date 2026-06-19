@@ -43,6 +43,48 @@ describe('Hosted Payments', () => {
         );
     });
 
+    it('should create a hosted payment with authorization_type and payment_plan', async () => {
+        let capturedBody;
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/hosted-payments', (body) => {
+                capturedBody = body;
+                return true;
+            })
+            .reply(201, {
+                id: 'hpp_kQhs_fI9b8oQ',
+                reference: 'ORD-5023-4E89',
+                _links: {
+                    redirect: {
+                        href: 'https://pay.checkout.com/page/hpp_kQhs_fI9b8oQ',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+
+        await cko.hostedPayments.create({
+            amount: 1000,
+            currency: 'USD',
+            authorization_type: 'Estimated',
+            payment_plan: {
+                amount_variability: 'Variable',
+                days_between_payments: 28,
+                total_number_of_payments: 5,
+                current_payment_number: 3,
+                expiry: '20251031',
+                name: 'Subscription 1234',
+            },
+            success_url: 'https://example.com/success',
+            cancel_url: 'https://example.com/cancel',
+            failure_url: 'https://example.com/failure',
+        });
+
+        expect(capturedBody.authorization_type).to.equal('Estimated');
+        expect(capturedBody.payment_plan.amount_variability).to.equal('Variable');
+        expect(capturedBody.payment_plan.days_between_payments).to.equal(28);
+        expect(capturedBody.payment_plan.total_number_of_payments).to.equal(5);
+    });
+
     it('should throw Authentication Error', async () => {
         nock('https://123456789.api.sandbox.checkout.com').post('/hosted-payments').reply(401);
 

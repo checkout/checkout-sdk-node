@@ -47,6 +47,50 @@ describe('Payment Links', () => {
         );
     });
 
+    it('should create a payment link with authorization_type and payment_plan', async () => {
+        let capturedBody;
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/payment-links', (body) => {
+                capturedBody = body;
+                return true;
+            })
+            .reply(201, {
+                id: 'pl_irx_SMlY5RCA',
+                expires_on: '2021-02-19T16:54:41.501Z',
+                _links: {
+                    redirect: { href: 'https://pay.sandbox.checkout.com/link/IT1-wLhj_wM8' },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+
+        await cko.paymentLinks.create({
+            amount: 10359,
+            currency: 'EUR',
+            authorization_type: 'Estimated',
+            payment_plan: {
+                amount_variability: 'Fixed',
+                days_between_payments: 30,
+                total_number_of_payments: 12,
+                current_payment_number: 1,
+                expiry: '20251031',
+                name: 'Subscription 1234',
+                amount: 1234,
+            },
+            billing: {
+                address: {
+                    country: 'DE',
+                },
+            },
+            return_url: 'https://pay.sandbox.checkout.com/link/examples/docs',
+        });
+
+        expect(capturedBody.authorization_type).to.equal('Estimated');
+        expect(capturedBody.payment_plan.amount_variability).to.equal('Fixed');
+        expect(capturedBody.payment_plan.total_number_of_payments).to.equal(12);
+        expect(capturedBody.payment_plan.amount).to.equal(1234);
+    });
+
     it('should throw Authentication Error', async () => {
         nock('https://123456789.api.sandbox.checkout.com').post('/payment-links').reply(401);
 
