@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 /**
  * Class dealing with the /face-authentications endpoint
@@ -118,14 +119,10 @@ export default class FaceAuthentications {
      */
     async getAttemptAssets(face_authentication_id, attempt_id, params) {
         try {
-            let url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}/assets`;
-
-            if (params) {
-                const queryString = Object.keys(params)
-                    .map((key) => `${key}=${params[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}/assets`,
+                params
+            );
 
             const response = await get(
                 this.config.httpClient,
