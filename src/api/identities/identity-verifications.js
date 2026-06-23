@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 /**
  * Class dealing with the /identity-verifications endpoint
@@ -166,6 +167,36 @@ export default class IdentityVerifications {
     async getAttempt(identity_verification_id, attempt_id) {
         try {
             const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}`;
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
+
+    /**
+     * Get identity verification attempt assets
+     * [BETA]
+     * Get the assets (face images, videos, and document images) captured during an
+     * identity verification attempt.
+     * @method getAttemptAssets
+     * @param {string} identity_verification_id - The identity verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @returns {Promise<Object>} A promise to the Get identity verification attempt assets response
+     */
+    async getAttemptAssets(identity_verification_id, attempt_id, params) {
+        try {
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}/assets`,
+                params
+            );
+
             const response = await get(
                 this.config.httpClient,
                 url,

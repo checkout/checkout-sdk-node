@@ -29,6 +29,7 @@ export default class Identities {
     getFaceAuthentication(faceAuthenticationId: string): Promise<object>;
     listFaceAuthenticationAttempts(faceAuthenticationId: string): Promise<object>;
     getFaceAuthenticationAttempt(faceAuthenticationId: string, attemptId: string): Promise<object>;
+    getFaceAuthenticationAttemptAssets(faceAuthenticationId: string, attemptId: string, params?: object): Promise<object>;
     createFaceAuthenticationAttempt(faceAuthenticationId: string, body: object): Promise<object>;
     anonymizeFaceAuthentication(faceAuthenticationId: string): Promise<object>;
 
@@ -48,6 +49,7 @@ export default class Identities {
     createIdentityVerificationAttempt(identityVerificationId: string, body: object): Promise<object>;
     listIdentityVerificationAttempts(identityVerificationId: string): Promise<object>;
     getIdentityVerificationAttempt(identityVerificationId: string, attemptId: string): Promise<object>;
+    getIdentityVerificationAttemptAssets(identityVerificationId: string, attemptId: string, params?: object): Promise<object>;
     anonymizeIdentityVerification(identityVerificationId: string): Promise<object>;
     getIdentityVerificationPDFReport(identityVerificationId: string): Promise<Buffer>;
 }

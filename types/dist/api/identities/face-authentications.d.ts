@@ -7,6 +7,7 @@ export default class FaceAuthentications {
     getFaceAuthentication(faceAuthenticationId: string): Promise<object>;
     listAttempts(faceAuthenticationId: string): Promise<object>;
     getAttempt(faceAuthenticationId: string, attemptId: string): Promise<object>;
+    getAttemptAssets(faceAuthenticationId: string, attemptId: string, params?: object): Promise<object>;
     createAttempt(faceAuthenticationId: string, body: object): Promise<object>;
     anonymizeFaceAuthentication(faceAuthenticationId: string): Promise<object>;
 }

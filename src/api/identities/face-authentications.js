@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 /**
  * Class dealing with the /face-authentications endpoint
@@ -94,6 +95,35 @@ export default class FaceAuthentications {
     async getAttempt(face_authentication_id, attempt_id) {
         try {
             const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}`;
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
+
+    /**
+     * Get face authentication attempt assets
+     * [BETA]
+     * Get the assets (face images and videos) captured during a face authentication attempt.
+     * @method getAttemptAssets
+     * @param {string} face_authentication_id - The face authentication's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
+     */
+    async getAttemptAssets(face_authentication_id, attempt_id, params) {
+        try {
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}/assets`,
+                params
+            );
+
             const response = await get(
                 this.config.httpClient,
                 url,

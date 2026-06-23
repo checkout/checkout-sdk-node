@@ -9,6 +9,7 @@ export default class IdentityVerifications {
     createAttempt(identityVerificationId: string, body: object): Promise<object>;
     listAttempts(identityVerificationId: string): Promise<object>;
     getAttempt(identityVerificationId: string, attemptId: string): Promise<object>;
+    getAttemptAssets(identityVerificationId: string, attemptId: string, params?: object): Promise<object>;
     anonymizeIdentityVerification(identityVerificationId: string): Promise<object>;
     getPDFReport(identityVerificationId: string): Promise<Buffer>;
 }
