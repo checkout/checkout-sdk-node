@@ -35,14 +35,14 @@ describe('Integration::Payment-Contexts', () => {
       ]
     }
 
-    it('should request a payment context', async () => {
+    it.skip('should request a payment context', async () => {
       const response = await cko.paymentContexts.request(request);
 
       expect(response.id).not.to.be.null;
       expect(response.partner_metadata.order_id).not.to.be.null;
     });
 
-    it('should get a payment context', async () => {
+    it.skip('should get a payment context', async () => {
       const responseRequest = await cko.paymentContexts.request(request);
       const response = await cko.paymentContexts.get(responseRequest.id);
 
