@@ -32,4 +32,23 @@ describe.skip('Integration::Identities::FaceAuthentications', () => {
             expect(err).to.be.instanceOf(NotFoundError);
         }
     });
+
+    it('should get face authentication attempt assets', async () => {
+        const applicant = await cko.identities.createApplicant({
+            external_applicant_id: `ext_${Date.now()}`,
+            email: 'test.face@example.com',
+            external_applicant_name: 'Test Face',
+        });
+        const faceAuth = await cko.identities.createFaceAuthentication({
+            applicant_id: applicant.id,
+        });
+        const attempt = await cko.identities.createFaceAuthenticationAttempt(faceAuth.id, {});
+        const assets = await cko.identities.getFaceAuthenticationAttemptAssets(
+            faceAuth.id,
+            attempt.id,
+            { skip: 0, limit: 10 }
+        );
+        expect(assets).to.not.be.null;
+        expect(assets.data).to.be.an('array');
+    });
 });

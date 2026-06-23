@@ -353,6 +353,44 @@ describe('Unit::Identity Verifications', () => {
         expect(result).to.be.an.instanceOf(Buffer);
     });
 
+    it('should get identity verification attempt assets', async () => {
+        nock('https://identity-verification.sandbox.checkout.com')
+            .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/attempts/iatp_nk1wbmmczqumwt95k3v39mhbh2w/assets')
+            .query({ skip: 0, limit: 10 })
+            .reply(200, {
+                total_count: 1,
+                skip: 0,
+                limit: 10,
+                data: [
+                    {
+                        type: 'document_front_image',
+                        _links: {
+                            asset_url: {
+                                href: 'https://storage.example.com/document-front.jpg'
+                            }
+                        }
+                    }
+                ],
+                _links: {
+                    self: {
+                        href: 'https://identity-verification.sandbox.checkout.com/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/attempts/iatp_nk1wbmmczqumwt95k3v39mhbh2w/assets'
+                    }
+                }
+            });
+
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.identityVerifications.getAttemptAssets(
+            'idv_tkoi5db4hryu5cei5vwoabr7we',
+            'iatp_nk1wbmmczqumwt95k3v39mhbh2w',
+            { skip: 0, limit: 10 }
+        );
+
+        expect(result.total_count).to.equal(1);
+        expect(result.data).to.be.an('array');
+        expect(result.data[0].type).to.equal('document_front_image');
+        expect(result.data[0]._links.asset_url.href).to.equal('https://storage.example.com/document-front.jpg');
+    });
+
     it('should throw AuthenticationError when creating identity verification with invalid credentials', async () => {
         nock('https://identity-verification.sandbox.checkout.com')
             .post('/identity-verifications')

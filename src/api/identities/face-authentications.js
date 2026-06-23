@@ -107,6 +107,39 @@ export default class FaceAuthentications {
     }
 
     /**
+     * Get face authentication attempt assets
+     * [BETA]
+     * Get the assets (face images and videos) captured during a face authentication attempt.
+     * @method getAttemptAssets
+     * @param {string} face_authentication_id - The face authentication's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
+     */
+    async getAttemptAssets(face_authentication_id, attempt_id, params) {
+        try {
+            let url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}/assets`;
+
+            if (params) {
+                const queryString = Object.keys(params)
+                    .map((key) => `${key}=${params[key]}`)
+                    .join('&');
+                url += `?${queryString}`;
+            }
+
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
+
+    /**
      * Create a face authentication attempt
      * [BETA]
      * Create an attempt for a face authentication.

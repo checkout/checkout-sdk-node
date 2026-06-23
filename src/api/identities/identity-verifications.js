@@ -179,6 +179,40 @@ export default class IdentityVerifications {
     }
 
     /**
+     * Get identity verification attempt assets
+     * [BETA]
+     * Get the assets (face images, videos, and document images) captured during an
+     * identity verification attempt.
+     * @method getAttemptAssets
+     * @param {string} identity_verification_id - The identity verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @returns {Promise<Object>} A promise to the Get identity verification attempt assets response
+     */
+    async getAttemptAssets(identity_verification_id, attempt_id, params) {
+        try {
+            let url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}/assets`;
+
+            if (params) {
+                const queryString = Object.keys(params)
+                    .map((key) => `${key}=${params[key]}`)
+                    .join('&');
+                url += `?${queryString}`;
+            }
+
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
+
+    /**
      * Get identity verification report
      * [BETA]
      * Get the report with the full details of an identity verification in PDF format.

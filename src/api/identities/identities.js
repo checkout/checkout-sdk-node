@@ -65,6 +65,10 @@ export default class Identities {
         return this.faceAuthentications.getAttempt(face_authentication_id, attempt_id);
     }
 
+    async getFaceAuthenticationAttemptAssets(face_authentication_id, attempt_id, params) {
+        return this.faceAuthentications.getAttemptAssets(face_authentication_id, attempt_id, params);
+    }
+
     async createFaceAuthenticationAttempt(face_authentication_id, body) {
         return this.faceAuthentications.createAttempt(face_authentication_id, body);
     }
@@ -129,6 +133,10 @@ export default class Identities {
 
     async getIdentityVerificationAttempt(identity_verification_id, attempt_id) {
         return this.identityVerifications.getAttempt(identity_verification_id, attempt_id);
+    }
+
+    async getIdentityVerificationAttemptAssets(identity_verification_id, attempt_id, params) {
+        return this.identityVerifications.getAttemptAssets(identity_verification_id, attempt_id, params);
     }
 
     async getIdentityVerificationPDFReport(identity_verification_id) {

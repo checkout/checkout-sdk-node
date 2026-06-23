@@ -49,4 +49,24 @@ describe.skip('Integration::Identities::IdentityVerifications', () => {
             expect(err).to.be.instanceOf(NotFoundError);
         }
     });
+
+    it('should get identity verification attempt assets', async () => {
+        const applicant = await cko.identities.createApplicant({
+            external_applicant_id: `ext_${Date.now()}`,
+            email: 'test.verification.assets@example.com',
+            external_applicant_name: 'Test Verification Assets',
+        });
+        const created = await cko.identities.createIdentityVerification({
+            applicant_id: applicant.id,
+            declared_data: { name: 'Test Verification Assets' },
+        });
+        const attempt = await cko.identities.createIdentityVerificationAttempt(created.id, {});
+        const assets = await cko.identities.getIdentityVerificationAttemptAssets(
+            created.id,
+            attempt.id,
+            { skip: 0, limit: 10 }
+        );
+        expect(assets).to.not.be.null;
+        expect(assets.data).to.be.an('array');
+    });
 });

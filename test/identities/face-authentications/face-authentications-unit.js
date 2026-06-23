@@ -246,6 +246,44 @@ describe('Unit::Face Authentications', () => {
         expect(result.applicant_id).to.equal('aplt_tkoi5db4hryu5cei5vwoabr7we');
     });
 
+    it('should get face authentication attempt assets', async () => {
+        nock('https://identity-verification.sandbox.checkout.com')
+            .get('/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/attempts/fatp_nk1wbmmczqumwt95k3v39mhbh2w/assets')
+            .query({ skip: 0, limit: 10 })
+            .reply(200, {
+                total_count: 1,
+                skip: 0,
+                limit: 10,
+                data: [
+                    {
+                        type: 'face_image',
+                        _links: {
+                            asset_url: {
+                                href: 'https://storage.example.com/face-image.jpg'
+                            }
+                        }
+                    }
+                ],
+                _links: {
+                    self: {
+                        href: 'https://identity-verification.sandbox.checkout.com/face-authentications/fav_tkoi5db4hryu5cei5vwoabr7we/attempts/fatp_nk1wbmmczqumwt95k3v39mhbh2w/assets'
+                    }
+                }
+            });
+
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.faceAuthentications.getAttemptAssets(
+            'fav_tkoi5db4hryu5cei5vwoabr7we',
+            'fatp_nk1wbmmczqumwt95k3v39mhbh2w',
+            { skip: 0, limit: 10 }
+        );
+
+        expect(result.total_count).to.equal(1);
+        expect(result.data).to.be.an('array');
+        expect(result.data[0].type).to.equal('face_image');
+        expect(result.data[0]._links.asset_url.href).to.equal('https://storage.example.com/face-image.jpg');
+    });
+
     it('should throw AuthenticationError when creating face authentication with invalid credentials', async () => {
         nock('https://identity-verification.sandbox.checkout.com')
             .post('/face-authentications')
