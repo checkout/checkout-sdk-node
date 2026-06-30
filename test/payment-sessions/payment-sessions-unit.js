@@ -169,4 +169,34 @@ describe('Unit::Payment-Sessions', () => {
     }
   });
 
+  it('should request a payment session with authorization_type and payment_plan', async () => {
+    let capturedBody;
+    nock('https://123456789.api.sandbox.checkout.com')
+      .post('/payment-sessions', (body) => {
+        capturedBody = body;
+        return true;
+      })
+      .reply(201, commonResponse);
+
+    const cko = new Checkout(SK, { subdomain: '123456789' });
+
+    await cko.paymentSessions.request({
+      ...commonRequest,
+      authorization_type: 'Estimated',
+      payment_plan: {
+        amount_variability: 'Variable',
+        days_between_payments: 28,
+        total_number_of_payments: 5,
+        current_payment_number: 3,
+        expiry: '20251031',
+        name: 'Subscription 1234',
+      },
+    });
+
+    expect(capturedBody.authorization_type).to.equal('Estimated');
+    expect(capturedBody.payment_plan.amount_variability).to.equal('Variable');
+    expect(capturedBody.payment_plan.days_between_payments).to.equal(28);
+    expect(capturedBody.payment_plan.total_number_of_payments).to.equal(5);
+  });
+
 });
