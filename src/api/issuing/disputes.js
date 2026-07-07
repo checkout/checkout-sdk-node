@@ -91,15 +91,46 @@ export default class Disputes {
      *
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
+     * @param {Object} [body] Escalation request params. Provide `fraud_details`
+     *   when the dispute reason code is fraud-related.
      * @return {Promise<Object>} A promise to the escalation response.
      */
-    async escalateDispute(disputeId) {
+    async escalateDispute(disputeId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
                 `${this.config.host}/issuing/disputes/${disputeId}/escalate`,
                 this.config,
-                this.config.sk
+                this.config.sk,
+                body
+            );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Amend an Issuing dispute.
+     * [Beta] Amend an Issuing dispute when its status is `action_required`, to
+     * respond to requested changes (for example, updating the reason, amount,
+     * evidence, or fraud details).
+     *
+     * @memberof Disputes
+     * @param {string} disputeId The dispute ID.
+     * @param {Object} [body] Amend request params (`reason`, `amount`,
+     *   `evidence`, `fraud_details`, `reason_change_justification`,
+     *   `action_response`).
+     * @return {Promise<Object>} A promise to the dispute response.
+     */
+    async amendDispute(disputeId, body) {
+        try {
+            const response = await post(
+                this.config.httpClient,
+                `${this.config.host}/issuing/disputes/${disputeId}/amend`,
+                this.config,
+                this.config.sk,
+                body
             );
             return await response.json;
         } catch (err) {
@@ -110,22 +141,23 @@ export default class Disputes {
     /**
      * Submit an Issuing dispute.
      *
-     * @deprecated Removed from the Checkout.com API on 2026-04-15.
-     *   The submit step is now handled automatically when a dispute is created.
-     *   Retained on the client for backwards compatibility; the endpoint will
-     *   return 404 on the current API.
+     * @deprecated Deprecated by the Checkout.com API. Create an Issuing dispute
+     *   (which creates and submits it in one step) instead, or use `amendDispute`
+     *   when the dispute status is `action_required`.
      *
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
+     * @param {Object} [body] Submission request params.
      * @return {Promise<Object>} A promise to the submission response.
      */
-    async submitDispute(disputeId) {
+    async submitDispute(disputeId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
                 `${this.config.host}/issuing/disputes/${disputeId}/submit`,
                 this.config,
-                this.config.sk
+                this.config.sk,
+                body
             );
             return await response.json;
         } catch (err) {
