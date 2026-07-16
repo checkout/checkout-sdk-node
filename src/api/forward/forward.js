@@ -74,7 +74,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/secrets`,
+                this.config.forwardSecretsUrl,
                 this.config,
                 this.config.sk,
                 body
@@ -95,7 +95,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/secrets`,
+                this.config.forwardSecretsUrl,
                 this.config,
                 this.config.sk
             );

@@ -262,7 +262,7 @@ describe('Unit::Forward', () => {
 
     it('should create a secret', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .post('/forward/secrets', {
+            .post('/secrets', {
                 name: 'secret_name',
                 value: 'plaintext',
                 entity_id: 'ent_12345'
@@ -292,7 +292,7 @@ describe('Unit::Forward', () => {
 
     it('should list secrets', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .get('/forward/secrets')
+            .get('/secrets')
             .reply(200, {
                 data: [
                     {
