@@ -75,4 +75,17 @@ describe('Platforms — Accounts schema_version Accept header', () => {
         expect((await client.updateSubEntityDetails('ent_1', { reference: 'r' }, '2.0')).id).to.equal('ent_1');
         expect((await client.getEntityRequirements('ent_1', '2.0')).data).to.deep.equal([]);
     });
+
+    it('rejects an unsupported schema version', async () => {
+        // No nock interceptor: the request must never be sent for an invalid version.
+        let error;
+        try {
+            await cko().onboardSubEntity({ reference: 'r' }, '4.0');
+        } catch (err) {
+            error = err;
+        }
+        expect(error).to.exist;
+        expect(error.name).to.equal('ValueError');
+        expect(error.message).to.contain('Unsupported Accounts schema version');
+    });
 });
