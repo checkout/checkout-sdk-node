@@ -42,8 +42,6 @@ export default class Issuing {
     getCardCredentials(id: string, body: object): Promise<object>;
     renewCard(id: string, body: object): Promise<object>;
     revokeCard(id: string, body: object): Promise<object>;
-    scheduleCardRevocation(id: string, body: object): Promise<object>;
-    cancelScheduledCardRevocation(id: string): Promise<object>;
     suspendCard(id: string, body: object): Promise<object>;
 
     // Backwards compatibility - Controls
@@ -75,8 +73,13 @@ export default class Issuing {
     createDispute(body: object): Promise<object>;
     getDispute(disputeId: string): Promise<object>;
     cancelDispute(disputeId: string): Promise<object>;
-    escalateDispute(disputeId: string): Promise<object>;
-    submitDispute(disputeId: string): Promise<object>;
+    escalateDispute(disputeId: string, body?: object): Promise<object>;
+    amendDispute(disputeId: string, body?: object): Promise<object>;
+    /**
+     * @deprecated Deprecated by the Checkout.com API. Create an Issuing dispute
+     *   instead, or use `amendDispute` when the dispute status is `action_required`.
+     */
+    submitDispute(disputeId: string, body?: object): Promise<object>;
 
     // Backwards compatibility - Transactions
     getTransactions(params: object): Promise<object>;

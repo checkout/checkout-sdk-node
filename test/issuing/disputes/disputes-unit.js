@@ -112,10 +112,52 @@ describe('Unit::Issuing::Disputes', () => {
             subdomain: 'test',
             subdomain: '123456789'
         });
-        const response = await cko.issuing.escalateDispute("dis_abc123");
+        const response = await cko.issuing.escalateDispute("dis_abc123", {
+            fraud_details: {
+                fraud_type: "card_stolen",
+                description: "Card reported stolen"
+            }
+        });
 
         expect(response).to.not.be.null;
         expect(response.status).to.equal("escalated");
+    });
+
+    it('should amend a dispute', async () => {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(200, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: ['issuing:disputes-write']
+        });
+
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post('/issuing/disputes/dis_abc123/amend')
+            .reply(200, {
+                id: "dis_abc123",
+                status: "pending"
+            });
+
+        const cko = new Checkout('test_sk', {
+            client: 'ack_test',
+            scope: ['issuing:disputes-write'],
+            environment: 'sandbox',
+            subdomain: 'test',
+            subdomain: '123456789'
+        });
+        const response = await cko.issuing.amendDispute("dis_abc123", {
+            reason: "fraudulent",
+            amount: 1000,
+            fraud_details: {
+                fraud_type: "counterfeit_card",
+                description: "Counterfeit card used"
+            },
+            reason_change_justification: "New evidence received",
+            action_response: "Updated the reason per the requested changes"
+        });
+
+        expect(response).to.not.be.null;
+        expect(response.id).to.equal("dis_abc123");
     });
 
     it('should submit a dispute', async () => {

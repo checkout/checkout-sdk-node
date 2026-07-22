@@ -13,7 +13,5 @@ export default class Cards {
     getCardCredentials(id: string, body: object): Promise<object>;
     renewCard(id: string, body: object): Promise<object>;
     revokeCard(id: string, body: object): Promise<object>;
-    scheduleCardRevocation(id: string, body: object): Promise<object>;
-    cancelScheduledCardRevocation(id: string): Promise<object>;
     suspendCard(id: string, body: object): Promise<object>;
 }
