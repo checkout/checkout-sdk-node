@@ -107,8 +107,8 @@ export default class Platforms {
     }
 
     // ——— Entity requirements (backwards compatibility) ———
-    async getEntityRequirements(entityId) {
-        return this.entityRequirements.getEntityRequirements(entityId);
+    async getEntityRequirements(entityId, schemaVersion) {
+        return this.entityRequirements.getEntityRequirements(entityId, schemaVersion);
     }
 
     async getEntityRequirementDetails(entityId, requirementId) {

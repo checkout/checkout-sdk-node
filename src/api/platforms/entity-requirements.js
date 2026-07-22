@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, put } from '../../services/http.js';
+import { getConfigWithAcceptHeader } from './accept-header.js';
 
 /**
  * Class dealing with entity-requirement endpoints under /accounts/entities.
@@ -17,14 +18,15 @@ export default class EntityRequirements {
      *
      * @memberof EntityRequirements
      * @param {string} entityId The sub-entity id.
+     * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the requirements list response.
      */
-    async getEntityRequirements(entityId) {
+    async getEntityRequirements(entityId, schemaVersion) {
         try {
             const response = await get(
                 this.config.httpClient,
                 `${this.config.host}/accounts/entities/${entityId}/requirements`,
-                this.config,
+                getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk
             );
             return await response.json;
