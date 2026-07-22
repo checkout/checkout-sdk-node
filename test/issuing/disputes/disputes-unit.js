@@ -148,6 +148,13 @@ describe('Unit::Issuing::Disputes', () => {
         const response = await cko.issuing.amendDispute("dis_abc123", {
             reason: "fraudulent",
             amount: 1000,
+            evidence: [
+                {
+                    name: "receipt.pdf",
+                    content: "file_abc123",
+                    description: "Transaction receipt"
+                }
+            ],
             fraud_details: {
                 fraud_type: "counterfeit_card",
                 description: "Counterfeit card used"
