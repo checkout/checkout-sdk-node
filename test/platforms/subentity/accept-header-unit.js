@@ -13,7 +13,7 @@ describe('Platforms — Accounts schema_version Accept header', () => {
     afterEach(() => nock.cleanAll());
 
     const host = 'https://123456789.api.sandbox.checkout.com';
-    const cko = () => new Checkout(SK, { subdomain: '123456789' });
+    const cko = () => new Checkout(SK, { subdomain: '123456789' }).platforms;
 
     it('onboardSubEntity sends schema_version=3.0 by default', async () => {
         nock(host)
