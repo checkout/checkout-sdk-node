@@ -1,19 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
-
-/**
- * Config with Accept header required for /accounts/entities endpoints.
- * @private
- */
-function getConfigWithAcceptHeader(config, schemaVersion = '3.0') {
-    return {
-        ...config,
-        headers: {
-            ...(config.headers || {}),
-            Accept: `application/json;schema_version=${schemaVersion}`
-        }
-    };
-}
+import { getConfigWithAcceptHeader } from './accept-header.js';
 
 /**
  * Sub-entity (accounts/entities) operations for the Platforms API.

@@ -6,12 +6,12 @@ export default class Disputes {
     createDispute(body: object): Promise<object>;
     getDispute(disputeId: string): Promise<object>;
     cancelDispute(disputeId: string): Promise<object>;
-    escalateDispute(disputeId: string): Promise<object>;
+    escalateDispute(disputeId: string, body?: object): Promise<object>;
+    amendDispute(disputeId: string, body?: object): Promise<object>;
     /**
-     * @deprecated Removed from the Checkout.com API on 2026-04-15.
-     *   The submit step is now handled automatically when a dispute is created.
-     *   Retained on the client for backwards compatibility; the endpoint will
-     *   return 404 on the current API.
+     * @deprecated Deprecated by the Checkout.com API. Create an Issuing dispute
+     *   (which creates and submits it in one step) instead, or use `amendDispute`
+     *   when the dispute status is `action_required`.
      */
-    submitDispute(disputeId: string): Promise<object>;
+    submitDispute(disputeId: string, body?: object): Promise<object>;
 }

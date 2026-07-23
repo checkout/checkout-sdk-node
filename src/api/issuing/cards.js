@@ -1,4 +1,4 @@
-import { _delete, get, patch, post } from '../../services/http.js';
+import { get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
@@ -230,50 +230,6 @@ export default class Cards {
                 this.config,
                 this.config.sk,
                 body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
-    }
-
-    /**
-     * Schedules the revocation of a card at a specified future date and time.
-     *
-     * @memberof Cards
-     * @param {string} id Card id.
-     * @param {Object} body Card revocation schedule params.
-     * @return {Promise<Object>} A promise to the card revocation schedule response.
-     */
-    async scheduleCardRevocation(id, body) {
-        try {
-            const response = await post(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/schedule-revocation`,
-                this.config,
-                this.config.sk,
-                body
-            );
-            return await response.json;
-        } catch (err) {
-            throw await determineError(err);
-        }
-    }
-
-    /**
-     * Cancels a scheduled card revocation.
-     *
-     * @memberof Cards
-     * @param {string} id Card id.
-     * @return {Promise<Object>} A promise to the cancellation response.
-     */
-    async cancelScheduledCardRevocation(id) {
-        try {
-            const response = await _delete(
-                this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/schedule-revocation`,
-                this.config,
-                this.config.sk
             );
             return await response.json;
         } catch (err) {

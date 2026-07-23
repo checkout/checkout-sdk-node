@@ -35,7 +35,7 @@ export default class Platforms {
     updateReserveRule: (entityId: string, id: string, body: Object, ifMatch: string) => Promise<Object>;
     addReserveRule: (id: string, body: Object) => Promise<Object>;
     queryReserveRules: (id: string) => Promise<Object>;
-    getEntityRequirements: (entityId: string) => Promise<Object>;
+    getEntityRequirements: (entityId: string, schemaVersion?: string) => Promise<Object>;
     getEntityRequirementDetails: (entityId: string, requirementId: string) => Promise<Object>;
     updateEntityRequirement: (entityId: string, requirementId: string, body: Object) => Promise<Object>;
 }

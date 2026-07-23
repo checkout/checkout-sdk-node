@@ -90,14 +90,6 @@ export default class Issuing {
         return this.cards.revokeCard(id, body);
     }
 
-    async scheduleCardRevocation(id, body) {
-        return this.cards.scheduleCardRevocation(id, body);
-    }
-
-    async cancelScheduledCardRevocation(id) {
-        return this.cards.cancelScheduledCardRevocation(id);
-    }
-
     async suspendCard(id, body) {
         return this.cards.suspendCard(id, body);
     }
@@ -187,13 +179,20 @@ export default class Issuing {
         return this.disputes.cancelDispute(disputeId);
     }
 
-    async escalateDispute(disputeId) {
-        return this.disputes.escalateDispute(disputeId);
+    async escalateDispute(disputeId, body) {
+        return this.disputes.escalateDispute(disputeId, body);
     }
 
-    /** @deprecated Endpoint removed from the API on 2026-04-15. */
-    async submitDispute(disputeId) {
-        return this.disputes.submitDispute(disputeId);
+    async amendDispute(disputeId, body) {
+        return this.disputes.amendDispute(disputeId, body);
+    }
+
+    /**
+     * @deprecated Deprecated by the Checkout.com API. Create an Issuing dispute
+     *   instead, or use `amendDispute` when the dispute status is `action_required`.
+     */
+    async submitDispute(disputeId, body) {
+        return this.disputes.submitDispute(disputeId, body);
     }
 
     // Transactions

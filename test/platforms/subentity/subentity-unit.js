@@ -50,16 +50,29 @@ describe('Platforms - SubEntity', () => {
             reference: 'superhero123444',
             contact_details: {
                 phone: {
+                    country_code: 'GB',
                     number: '2345678910',
+                },
+                email_addresses: {
+                    primary: 'john.doe@example.com',
                 },
             },
             profile: {
                 urls: ['https://www.ljnkjnnjjknk.com'],
                 mccs: ['0742'],
+                default_holding_currency: 'USD',
+                holding_currencies: ['USD'],
             },
             company: {
                 legal_name: 'Super Hero Masks Inc.',
                 trading_name: 'Super Hero Masks',
+                business_registration_number: '01234567',
+                business_type: 'limited_company',
+                date_of_incorporation: {
+                    day: 1,
+                    month: 6,
+                    year: 2010,
+                },
                 principal_address: {
                     address_line1: '90 Tottenham Court Road',
                     city: 'London',
@@ -74,27 +87,45 @@ describe('Platforms - SubEntity', () => {
                 },
                 representatives: [
                     {
-                        first_name: 'John',
-                        last_name: 'Doe',
-                        address: {
-                            address_line1: '90 Tottenham Court Road',
-                            city: 'London',
-                            zip: 'W1T4TJ',
-                            country: 'GB',
+                        // v3.0: person details are nested under `individual`, plus `roles`.
+                        individual: {
+                            first_name: 'John',
+                            last_name: 'Doe',
+                            date_of_birth: {
+                                day: 5,
+                                month: 6,
+                                year: 1995,
+                            },
+                            place_of_birth: {
+                                country: 'GB',
+                            },
+                            address: {
+                                address_line1: '90 Tottenham Court Road',
+                                city: 'London',
+                                zip: 'W1T4TJ',
+                                country: 'GB',
+                            },
                         },
-                        identification: {
-                            national_id_number: 'AB123456C',
-                        },
-                        phone: {
-                            number: '2345678910',
-                        },
-                        date_of_birth: {
-                            day: 5,
-                            month: 6,
-                            year: 1995,
-                        },
+                        roles: ['ubo', 'authorised_signatory', 'director', 'control_person'],
                     },
                 ],
+            },
+            processing_details: {
+                annual_processing_volume: 1000000,
+                average_transaction_value: 5000,
+                average_order_fulfillment_time: 3,
+                highest_transaction_value: 25000,
+                currency: 'GBP',
+                settlement_country: 'GB',
+                target_countries: ['GB'],
+                payments: {
+                    ach: {
+                        annual_ach_volume: 1000000,
+                        average_ach_transaction_size: 5000,
+                        estimated_monthly_credit_volume: 100000,
+                        average_credit_amount: 5000,
+                    },
+                },
             },
         });
         expect(platform.reference).to.equal('superhero123444');
@@ -129,16 +160,29 @@ describe('Platforms - SubEntity', () => {
                 reference: 'superhero123444',
                 contact_details: {
                     phone: {
+                        country_code: 'GB',
                         number: '2345678910',
+                    },
+                    email_addresses: {
+                        primary: 'john.doe@example.com',
                     },
                 },
                 profile: {
                     urls: ['https://www.ljnkjnnjjknk.com'],
                     mccs: ['0742'],
+                    default_holding_currency: 'USD',
+                    holding_currencies: ['USD'],
                 },
                 company: {
                     legal_name: 'Super Hero Masks Inc.',
                     trading_name: 'Super Hero Masks',
+                    business_registration_number: '01234567',
+                    business_type: 'limited_company',
+                    date_of_incorporation: {
+                        day: 1,
+                        month: 6,
+                        year: 2010,
+                    },
                     principal_address: {
                         address_line1: '90 Tottenham Court Road',
                         city: 'London',
@@ -153,27 +197,44 @@ describe('Platforms - SubEntity', () => {
                     },
                     representatives: [
                         {
-                            first_name: 'John',
-                            last_name: 'Doe',
-                            address: {
-                                address_line1: '90 Tottenham Court Road',
-                                city: 'London',
-                                zip: 'W1T4TJ',
-                                country: 'GB',
+                            individual: {
+                                first_name: 'John',
+                                last_name: 'Doe',
+                                date_of_birth: {
+                                    day: 5,
+                                    month: 6,
+                                    year: 1995,
+                                },
+                                place_of_birth: {
+                                    country: 'GB',
+                                },
+                                address: {
+                                    address_line1: '90 Tottenham Court Road',
+                                    city: 'London',
+                                    zip: 'W1T4TJ',
+                                    country: 'GB',
+                                },
                             },
-                            identification: {
-                                national_id_number: 'AB123456C',
-                            },
-                            phone: {
-                                number: '2345678910',
-                            },
-                            date_of_birth: {
-                                day: 5,
-                                month: 6,
-                                year: 1995,
-                            },
+                            roles: ['ubo', 'authorised_signatory', 'director', 'control_person'],
                         },
                     ],
+                },
+                processing_details: {
+                    annual_processing_volume: 1000000,
+                    average_transaction_value: 5000,
+                    average_order_fulfillment_time: 3,
+                    highest_transaction_value: 25000,
+                    currency: 'GBP',
+                    settlement_country: 'GB',
+                    target_countries: ['GB'],
+                    payments: {
+                        ach: {
+                            annual_ach_volume: 1000000,
+                            average_ach_transaction_size: 5000,
+                            estimated_monthly_credit_volume: 100000,
+                            average_credit_amount: 5000,
+                        },
+                    },
                 },
             });
         } catch (err) {
@@ -202,16 +263,29 @@ describe('Platforms - SubEntity', () => {
                 reference: 'superhero123444',
                 contact_details: {
                     phone: {
+                        country_code: 'GB',
                         number: '2345678910',
+                    },
+                    email_addresses: {
+                        primary: 'john.doe@example.com',
                     },
                 },
                 profile: {
                     urls: ['https://www.ljnkjnnjjknk.com'],
                     mccs: ['0742'],
+                    default_holding_currency: 'USD',
+                    holding_currencies: ['USD'],
                 },
                 company: {
                     legal_name: 'Super Hero Masks Inc.',
                     trading_name: 'Super Hero Masks',
+                    business_registration_number: '01234567',
+                    business_type: 'limited_company',
+                    date_of_incorporation: {
+                        day: 1,
+                        month: 6,
+                        year: 2010,
+                    },
                     principal_address: {
                         address_line1: '90 Tottenham Court Road',
                         city: 'London',
@@ -226,27 +300,44 @@ describe('Platforms - SubEntity', () => {
                     },
                     representatives: [
                         {
-                            first_name: 'John',
-                            last_name: 'Doe',
-                            address: {
-                                address_line1: '90 Tottenham Court Road',
-                                city: 'London',
-                                zip: 'W1T4TJ',
-                                country: 'GB',
+                            individual: {
+                                first_name: 'John',
+                                last_name: 'Doe',
+                                date_of_birth: {
+                                    day: 5,
+                                    month: 6,
+                                    year: 1995,
+                                },
+                                place_of_birth: {
+                                    country: 'GB',
+                                },
+                                address: {
+                                    address_line1: '90 Tottenham Court Road',
+                                    city: 'London',
+                                    zip: 'W1T4TJ',
+                                    country: 'GB',
+                                },
                             },
-                            identification: {
-                                national_id_number: 'AB123456C',
-                            },
-                            phone: {
-                                number: '2345678910',
-                            },
-                            date_of_birth: {
-                                day: 5,
-                                month: 6,
-                                year: 1995,
-                            },
+                            roles: ['ubo', 'authorised_signatory', 'director', 'control_person'],
                         },
                     ],
+                },
+                processing_details: {
+                    annual_processing_volume: 1000000,
+                    average_transaction_value: 5000,
+                    average_order_fulfillment_time: 3,
+                    highest_transaction_value: 25000,
+                    currency: 'GBP',
+                    settlement_country: 'GB',
+                    target_countries: ['GB'],
+                    payments: {
+                        ach: {
+                            annual_ach_volume: 1000000,
+                            average_ach_transaction_size: 5000,
+                            estimated_monthly_credit_volume: 100000,
+                            average_credit_amount: 5000,
+                        },
+                    },
                 },
             });
         } catch (err) {
@@ -432,17 +523,29 @@ describe('Platforms - SubEntity', () => {
             reference: 'superhero12349',
             contact_details: {
                 phone: {
+                    country_code: 'GB',
                     number: '2345678910',
+                },
+                email_addresses: {
+                    primary: 'john.doe@example.com',
                 },
             },
             profile: {
                 urls: ['https://www.superheroexample.com'],
                 mccs: ['0742'],
+                default_holding_currency: 'USD',
+                holding_currencies: ['USD'],
             },
             company: {
                 business_registration_number: '45234960',
+                business_type: 'limited_company',
                 legal_name: 'Super Hero Masks Inc.',
                 trading_name: 'Super Hero Masks',
+                date_of_incorporation: {
+                    day: 1,
+                    month: 6,
+                    year: 2010,
+                },
                 principal_address: {
                     address_line1: '90 Tottenham Court Road',
                     city: 'London',
@@ -457,27 +560,44 @@ describe('Platforms - SubEntity', () => {
                 },
                 representatives: [
                     {
-                        first_name: 'John',
-                        last_name: 'Doe',
-                        address: {
-                            address_line1: '90 Tottenham Court Road',
-                            city: 'London',
-                            zip: 'W1T4TJ',
-                            country: 'GB',
+                        individual: {
+                            first_name: 'John',
+                            last_name: 'Doe',
+                            date_of_birth: {
+                                day: 5,
+                                month: 6,
+                                year: 1995,
+                            },
+                            place_of_birth: {
+                                country: 'GB',
+                            },
+                            address: {
+                                address_line1: '90 Tottenham Court Road',
+                                city: 'London',
+                                zip: 'W1T4TJ',
+                                country: 'GB',
+                            },
                         },
-                        identification: {
-                            national_id_number: 'AB123456C',
-                        },
-                        phone: {
-                            number: '2345678910',
-                        },
-                        date_of_birth: {
-                            day: 5,
-                            month: 6,
-                            year: 1995,
-                        },
+                        roles: ['ubo', 'authorised_signatory', 'director', 'control_person'],
                     },
                 ],
+            },
+            processing_details: {
+                annual_processing_volume: 1000000,
+                average_transaction_value: 5000,
+                average_order_fulfillment_time: 3,
+                highest_transaction_value: 25000,
+                currency: 'GBP',
+                settlement_country: 'GB',
+                target_countries: ['GB'],
+                payments: {
+                    ach: {
+                        annual_ach_volume: 1000000,
+                        average_ach_transaction_size: 5000,
+                        estimated_monthly_credit_volume: 100000,
+                        average_credit_amount: 5000,
+                    },
+                },
             },
         });
         expect(entity.id).to.equal('ent_aneh5mtyobxzazriwuevngrz6y');
@@ -507,17 +627,29 @@ describe('Platforms - SubEntity', () => {
                     reference: 'superhero12349',
                     contact_details: {
                         phone: {
+                            country_code: 'GB',
                             number: '2345678910',
+                        },
+                        email_addresses: {
+                            primary: 'john.doe@example.com',
                         },
                     },
                     profile: {
                         urls: ['https://www.superheroexample.com'],
                         mccs: ['0742'],
+                        default_holding_currency: 'USD',
+                        holding_currencies: ['USD'],
                     },
                     company: {
                         business_registration_number: '45234960',
+                        business_type: 'limited_company',
                         legal_name: 'Super Hero Masks Inc.',
                         trading_name: 'Super Hero Masks',
+                        date_of_incorporation: {
+                            day: 1,
+                            month: 6,
+                            year: 2010,
+                        },
                         principal_address: {
                             address_line1: '90 Tottenham Court Road',
                             city: 'London',
@@ -532,27 +664,44 @@ describe('Platforms - SubEntity', () => {
                         },
                         representatives: [
                             {
-                                first_name: 'John',
-                                last_name: 'Doe',
-                                address: {
-                                    address_line1: '90 Tottenham Court Road',
-                                    city: 'London',
-                                    zip: 'W1T4TJ',
-                                    country: 'GB',
+                                individual: {
+                                    first_name: 'John',
+                                    last_name: 'Doe',
+                                    date_of_birth: {
+                                        day: 5,
+                                        month: 6,
+                                        year: 1995,
+                                    },
+                                    place_of_birth: {
+                                        country: 'GB',
+                                    },
+                                    address: {
+                                        address_line1: '90 Tottenham Court Road',
+                                        city: 'London',
+                                        zip: 'W1T4TJ',
+                                        country: 'GB',
+                                    },
                                 },
-                                identification: {
-                                    national_id_number: 'AB123456C',
-                                },
-                                phone: {
-                                    number: '2345678910',
-                                },
-                                date_of_birth: {
-                                    day: 5,
-                                    month: 6,
-                                    year: 1995,
-                                },
+                                roles: ['ubo', 'authorised_signatory', 'director', 'control_person'],
                             },
                         ],
+                    },
+                    processing_details: {
+                        annual_processing_volume: 1000000,
+                        average_transaction_value: 5000,
+                        average_order_fulfillment_time: 3,
+                        highest_transaction_value: 25000,
+                        currency: 'GBP',
+                        settlement_country: 'GB',
+                        target_countries: ['GB'],
+                        payments: {
+                            ach: {
+                                annual_ach_volume: 1000000,
+                                average_ach_transaction_size: 5000,
+                                estimated_monthly_credit_volume: 100000,
+                                average_credit_amount: 5000,
+                            },
+                        },
                     },
                 }
             );
