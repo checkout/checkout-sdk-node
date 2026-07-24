@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
 
+// Path segments appended to the forward host root (config.forwardUrl).
+const FORWARD_PATH = 'forward';
+const SECRETS_PATH = 'secrets';
+
 /**
  * Class dealing with the /forward endpoint
  *
@@ -25,7 +29,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                this.config.forwardUrl,
+                `${this.config.forwardUrl}${FORWARD_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -48,7 +52,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/${id}`,
+                `${this.config.forwardUrl}${FORWARD_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -74,7 +78,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                this.config.forwardSecretsUrl,
+                `${this.config.forwardUrl}${SECRETS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -95,7 +99,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                this.config.forwardSecretsUrl,
+                `${this.config.forwardUrl}${SECRETS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -121,7 +125,7 @@ export default class Forward {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.forwardSecretsUrl}/${name}`,
+                `${this.config.forwardUrl}${SECRETS_PATH}/${name}`,
                 this.config,
                 this.config.sk,
                 body
@@ -143,7 +147,7 @@ export default class Forward {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.forwardSecretsUrl}/${name}`,
+                `${this.config.forwardUrl}${SECRETS_PATH}/${name}`,
                 this.config,
                 this.config.sk
             );

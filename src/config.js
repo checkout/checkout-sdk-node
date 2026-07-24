@@ -10,12 +10,10 @@ export const PLATFORMS_FILES_SANDBOX_URL = 'https://files.sandbox.checkout.com/f
 export const TRANSFERS_SANDBOX_URL = 'https://transfers.sandbox.checkout.com/transfers';
 export const TRANSFERS_LIVE_URL = 'https://transfers.checkout.com/transfers';
 
-export const FORWARD_SANDBOX_URL = 'https://forward.sandbox.checkout.com/forward';
-export const FORWARD_LIVE_URL = 'https://forward.checkout.com/forward';
-
-// Forward secrets endpoints live at the forward host root (no /forward segment).
-export const FORWARD_SECRETS_SANDBOX_URL = 'https://forward.sandbox.checkout.com/secrets';
-export const FORWARD_SECRETS_LIVE_URL = 'https://forward.checkout.com/secrets';
+// Forward host root. The `forward` and `secrets` path segments are appended by
+// the ForwardClient methods (matching every other SDK).
+export const FORWARD_SANDBOX_URL = 'https://forward.sandbox.checkout.com/';
+export const FORWARD_LIVE_URL = 'https://forward.checkout.com/';
 
 export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
 export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
