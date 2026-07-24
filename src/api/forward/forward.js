@@ -29,7 +29,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${FORWARD_PATH}`,
+                `${this.config.forwardUrl}/${FORWARD_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -52,7 +52,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${FORWARD_PATH}/${id}`,
+                `${this.config.forwardUrl}/${FORWARD_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -78,7 +78,7 @@ export default class Forward {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${SECRETS_PATH}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -99,7 +99,7 @@ export default class Forward {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${SECRETS_PATH}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -125,7 +125,7 @@ export default class Forward {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${SECRETS_PATH}/${name}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}/${name}`,
                 this.config,
                 this.config.sk,
                 body
@@ -147,7 +147,7 @@ export default class Forward {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.forwardUrl}${SECRETS_PATH}/${name}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}/${name}`,
                 this.config,
                 this.config.sk
             );
