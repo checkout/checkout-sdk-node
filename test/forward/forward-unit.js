@@ -262,7 +262,7 @@ describe('Unit::Forward', () => {
 
     it('should create a secret', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .post('/forward/secrets', {
+            .post('/secrets', {
                 name: 'secret_name',
                 value: 'plaintext',
                 entity_id: 'ent_12345'
@@ -292,7 +292,7 @@ describe('Unit::Forward', () => {
 
     it('should list secrets', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .get('/forward/secrets')
+            .get('/secrets')
             .reply(200, {
                 data: [
                     {
@@ -336,7 +336,7 @@ describe('Unit::Forward', () => {
 
     it('should update a secret', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .patch('/forward/secrets/secret_name', {
+            .patch('/secrets/secret_name', {
                 value: 'new_plaintext',
                 entity_id: 'ent_67890'
             })
@@ -364,7 +364,7 @@ describe('Unit::Forward', () => {
 
     it('should delete a secret', async () => {
         nock('https://forward.sandbox.checkout.com')
-            .delete('/forward/secrets/secret_name')
+            .delete('/secrets/secret_name')
             .reply(204);
 
         const cko = new Checkout(SK);
