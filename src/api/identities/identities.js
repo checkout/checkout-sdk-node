@@ -3,6 +3,7 @@ import IdentityVerifications from './identity-verifications.js';
 import AMLScreenings from './aml-screenings.js';
 import FaceAuthentications from './face-authentications.js';
 import IDDocumentVerifications from './id-document-verifications.js';
+import AddressDocumentVerifications from './address-document-verifications.js';
 
 /**
  * Main Identities class that consolidates all identity verification endpoints
@@ -18,6 +19,7 @@ export default class Identities {
         this.amlScreenings = new AMLScreenings(config);
         this.faceAuthentications = new FaceAuthentications(config);
         this.idDocumentVerifications = new IDDocumentVerifications(config);
+        this.addressDocumentVerifications = new AddressDocumentVerifications(config);
     }
 
     // Backwards compatibility - delegate to submodules
@@ -104,6 +106,35 @@ export default class Identities {
 
     async getIDDocumentVerificationPDFReport(id_document_verification_id) {
         return this.idDocumentVerifications.getPDFReport(id_document_verification_id);
+    }
+
+    // Address Document Verifications
+    async createAddressDocumentVerification(body) {
+        return this.addressDocumentVerifications.createAddressDocumentVerification(body);
+    }
+
+    async getAddressDocumentVerification(address_document_verification_id) {
+        return this.addressDocumentVerifications.getAddressDocumentVerification(address_document_verification_id);
+    }
+
+    async listAddressDocumentVerificationAttempts(address_document_verification_id) {
+        return this.addressDocumentVerifications.listAttempts(address_document_verification_id);
+    }
+
+    async getAddressDocumentVerificationAttempt(address_document_verification_id, attempt_id) {
+        return this.addressDocumentVerifications.getAttempt(address_document_verification_id, attempt_id);
+    }
+
+    async anonymizeAddressDocumentVerification(address_document_verification_id) {
+        return this.addressDocumentVerifications.anonymizeAddressDocumentVerification(address_document_verification_id);
+    }
+
+    async createAddressDocumentVerificationAttempt(address_document_verification_id, body) {
+        return this.addressDocumentVerifications.createAttempt(address_document_verification_id, body);
+    }
+
+    async getAddressDocumentVerificationPDFReport(address_document_verification_id) {
+        return this.addressDocumentVerifications.getPDFReport(address_document_verification_id);
     }
 
     // Identity Verifications
