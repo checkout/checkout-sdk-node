@@ -4,6 +4,7 @@ import IdentityVerifications from './identity-verifications';
 import AMLScreenings from './aml-screenings';
 import FaceAuthentications from './face-authentications';
 import IDDocumentVerifications from './id-document-verifications';
+import AddressDocumentVerifications from './address-document-verifications';
 
 export default class Identities {
     constructor(config: config);
@@ -13,6 +14,7 @@ export default class Identities {
     amlScreenings: AMLScreenings;
     faceAuthentications: FaceAuthentications;
     idDocumentVerifications: IDDocumentVerifications;
+    addressDocumentVerifications: AddressDocumentVerifications;
 
     // Backwards compatibility - Applicants
     createApplicant(body: object): Promise<object>;
@@ -41,6 +43,15 @@ export default class Identities {
     createIDDocumentVerificationAttempt(idDocumentVerificationId: string, body: object): Promise<object>;
     anonymizeIDDocumentVerification(idDocumentVerificationId: string): Promise<object>;
     getIDDocumentVerificationPDFReport(idDocumentVerificationId: string): Promise<Buffer>;
+
+    // Backwards compatibility - Address Document Verifications
+    createAddressDocumentVerification(body: object): Promise<object>;
+    getAddressDocumentVerification(addressDocumentVerificationId: string): Promise<object>;
+    listAddressDocumentVerificationAttempts(addressDocumentVerificationId: string): Promise<object>;
+    getAddressDocumentVerificationAttempt(addressDocumentVerificationId: string, attemptId: string): Promise<object>;
+    createAddressDocumentVerificationAttempt(addressDocumentVerificationId: string, body: object): Promise<object>;
+    anonymizeAddressDocumentVerification(addressDocumentVerificationId: string): Promise<object>;
+    getAddressDocumentVerificationPDFReport(addressDocumentVerificationId: string): Promise<Buffer>;
 
     // Backwards compatibility - Identity Verifications
     createIdentityVerification(body: object): Promise<object>;
