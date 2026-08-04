@@ -17,6 +17,12 @@ export default class HostedPayments {
      *
      * Notable optional fields (swagger HostedPaymentsRequest, 2026-06-08):
      *  - body.authorization_type — e.g. `Estimated`, `Final`.
+     *  - body.3ds.challenge_indicator — four values only (default
+     *    `no_preference`): `no_preference`, `no_challenge_requested`,
+     *    `challenge_requested`, `challenge_requested_mandate`. The exemption
+     *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
+     *    `transaction_risk_assessment`, `data_share`) are accepted only by
+     *    `cko.sessions.request` and are rejected here.
      *  - body.payment_plan — installment / recurring schedule
      *    (`amount`, `name`, `start_date` added 2026-05-08).
      *

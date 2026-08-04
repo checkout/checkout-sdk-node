@@ -18,6 +18,16 @@ export default class Sessions {
      * Notable optional fields (swagger SessionRequest, 2026-05-07):
      *  - body.device_information — device-fingerprint block. See swagger
      *    `DeviceInformation` for shape (browser, ip, screen, timezone, etc.).
+     *  - body.challenge_indicator — this endpoint is the only one that accepts the
+     *    exemption values. Nine values (swagger `ChallengeIndicator`, default
+     *    `no_preference`, max 50 characters): `no_preference`,
+     *    `no_challenge_requested`, `challenge_requested`,
+     *    `challenge_requested_mandate`, plus the exemption requests `low_value`,
+     *    `trusted_listing`, `trusted_listing_prompt`,
+     *    `transaction_risk_assessment`, and `data_share`. If an exemption cannot
+     *    be applied, `no_challenge_requested` is used instead. The
+     *    `3ds.challenge_indicator` field on payments, hosted payments, payment
+     *    links and payment sessions accepts only the first four.
      *
      * @memberof Sessions
      * @param {Object} body Sessions request body.
