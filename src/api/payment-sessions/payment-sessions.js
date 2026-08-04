@@ -52,6 +52,14 @@ export default class PaymentSessions {
     /**
      * Submit a payment attempt for a payment session.
      *
+     * Notable optional fields (swagger SubmitPaymentSessionsRequest, 2026-06-08):
+     *  - body.3ds.challenge_indicator — four values only (default
+     *    `no_preference`): `no_preference`, `no_challenge_requested`,
+     *    `challenge_requested`, `challenge_requested_mandate`. The exemption
+     *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
+     *    `transaction_risk_assessment`, `data_share`) are accepted only by
+     *    `cko.sessions.request` and are rejected here.
+     *
      * @memberof PaymentSessions
      * @param {string} id The payment session ID.
      * @param {object} body PaymentSessions Request body.
@@ -75,6 +83,14 @@ export default class PaymentSessions {
     /**
      * Request a Payment Session with Payment.
      * Create a payment session and submit a payment attempt for it.
+     *
+     * Notable optional fields (swagger CreateAndSubmitPaymentSessionsRequest, 2026-06-08):
+     *  - body.3ds.challenge_indicator — four values only (default
+     *    `no_preference`): `no_preference`, `no_challenge_requested`,
+     *    `challenge_requested`, `challenge_requested_mandate`. The exemption
+     *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
+     *    `transaction_risk_assessment`, `data_share`) are accepted only by
+     *    `cko.sessions.request` and are rejected here.
      *
      * @memberof PaymentSessions
      * @param {object} body PaymentSessions Request body.
