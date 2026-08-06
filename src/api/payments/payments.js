@@ -114,6 +114,17 @@ export default class Payments {
     /**
      * Returns the details of the payment with the specified identifier string.
      *
+     * Response fields available under `processing` (pass-through, swagger ProcessingData):
+     *  - scheme — the scheme on which the payment was authorized, which may differ from the
+     *    card's scheme if the card is co-badged (2026-06-02)
+     *  - partner_fraud_status — partner fraud status; if `Pending` and the merchant captures
+     *    before it changes to `Accepted`, the transaction risk is solely on the merchant
+     *  - partner_merchant_advice_code — Mastercard Merchant Advice Code (MAC), with retry
+     *    guidance for declined transactions
+     *  - scheme_transaction_link_id (Mastercard Transaction Link Identifier, 2026-06-08)
+     *  - failure_code, partner_code, partner_response_code (2026-05-08)
+     *  - fallback_source_used (2026-04-23)
+     *
      * @memberof Payments
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<Object>} A promise to the get payment response.
