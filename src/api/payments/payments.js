@@ -50,6 +50,12 @@ export default class Payments {
      *    tracking, surfaced under `processing` (2026-05-07).
      *  - body.payment_plan, body.authorization_type — present on
      *    HostedPayments/PaymentLinks/PaymentSessions variants (2026-06-08).
+     *  - body.3ds.challenge_indicator — four values only (default
+     *    `no_preference`): `no_preference`, `no_challenge_requested`,
+     *    `challenge_requested`, `challenge_requested_mandate`. The exemption
+     *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
+     *    `transaction_risk_assessment`, `data_share`) are accepted only by
+     *    `cko.sessions.request` and are rejected here.
      *
      * Response fields newly available under `processing` (pass-through):
      *  - scheme_transaction_link_id (Mastercard Transaction Link Identifier, 2026-06-08)
