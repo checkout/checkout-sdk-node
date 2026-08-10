@@ -74,6 +74,8 @@ export type config = {
     access?: access;
     httpClient?: string;
     subdomain?: string;
+    /** @deprecated emergency fallback only, see the README. Use `subdomain` instead. */
+    useLegacyDomain?: boolean;
     environment?: Environment;
     environmentSubdomain?: EnvironmentSubdomain;
 };
@@ -84,7 +86,19 @@ type options = {
     agent?: http.Agent;
     headers?: Record<string, string>;
     httpClient?: string;
+    /**
+     * Your merchant-specific subdomain (MSSD): the first 8 characters of your client ID.
+     * Required, unless you explicitly opt out with `useLegacyDomain`.
+     */
     subdomain?: string;
+    /**
+     * Sends every request to the shared hosts instead of your merchant-specific subdomain.
+     *
+     * @deprecated this is an emergency fallback for the rare case where the subdomain cannot
+     * be used, and will be removed in a future release. Set `subdomain` instead.
+     * See https://api-reference.checkout.com/#section/Base-URLs
+     */
+    useLegacyDomain?: boolean;
 } & (staticKeyOptions | oauthOptions);
 
 type staticKeyOptions = {

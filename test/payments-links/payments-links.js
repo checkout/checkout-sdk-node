@@ -95,7 +95,7 @@ describe('Payment Links', () => {
         nock('https://123456789.api.sandbox.checkout.com').post('/payment-links').reply(401);
 
         try {
-            const cko = new Checkout('sk_');
+            const cko = new Checkout('sk_', { subdomain: '123456789' });
 
             const linksResponse = await cko.paymentLinks.create({
                 amount: 10359,

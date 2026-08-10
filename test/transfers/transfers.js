@@ -19,7 +19,7 @@ describe('Transfers', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transfer = await cko.transfers.initiate({
             reference: 'superhero1234',
@@ -50,7 +50,7 @@ describe('Transfers', () => {
             });
 
         // fake key
-        const cko = new Checkout('sk_o2nulev2arguvyf6w7sc5fkznas');
+        const cko = new Checkout('sk_o2nulev2arguvyf6w7sc5fkznas', { subdomain: '123456789' });
 
         const transfer = await cko.transfers.initiate(
             {
@@ -121,7 +121,7 @@ describe('Transfers', () => {
         nock('https://transfers.sandbox.checkout.com').post('/transfers').reply(401);
 
         try {
-            const cko = new Checkout('test');
+            const cko = new Checkout('test', { subdomain: '123456789' });
 
             const transfer = await cko.transfers.initiate({
                 reference: 'superhero1234',
@@ -144,7 +144,7 @@ describe('Transfers', () => {
         nock('https://transfers.sandbox.checkout.com').post('/transfers').reply(422, {});
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transfer = await cko.transfers.initiate({
                 transfer_type: 'test',
@@ -173,7 +173,7 @@ describe('Transfers', () => {
                 },
             });
 
-        const cko = new Checkout(SK);
+        const cko = new Checkout(SK, { subdomain: '123456789' });
 
         const transfer = await cko.transfers.retrieve('tra_lx6isvi4lahkrkn462bj77xnki');
 
@@ -200,7 +200,7 @@ describe('Transfers', () => {
             });
 
         // fake key
-        const cko = new Checkout('sk_o2nulev2arguvyf6w7sc5fkznas');
+        const cko = new Checkout('sk_o2nulev2arguvyf6w7sc5fkznas', { subdomain: '123456789' });
 
         const transfer = await cko.transfers.retrieve('tra_lx6isvi4lahkrkn462bj77xnki');
 
@@ -213,7 +213,7 @@ describe('Transfers', () => {
             .reply(401);
 
         try {
-            const cko = new Checkout('test');
+            const cko = new Checkout('test', { subdomain: '123456789' });
 
             const transfer = await cko.transfers.retrieve('tra_lx6isvi4lahkrkn462bj77xnki');
         } catch (err) {
@@ -231,7 +231,7 @@ describe('Transfers', () => {
             });
 
         try {
-            const cko = new Checkout(SK);
+            const cko = new Checkout(SK, { subdomain: '123456789' });
 
             const transfer = await cko.transfers.retrieve('123');
         } catch (err) {

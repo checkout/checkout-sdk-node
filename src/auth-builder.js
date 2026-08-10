@@ -1,6 +1,7 @@
 import * as CONFIG from './config.js';
 import Environment from './Environment.js';
 import EnvironmentSubdomain from './EnvironmentSubdomain.js';
+import { ValueError } from './services/errors.js';
 
 /**
  * Builds authentication configuration based on keys and options
@@ -102,21 +103,11 @@ export class AuthBuilder {
         const isLive = this.determineEnvironment(key, options);
         const environment = isLive ? Environment.live() : Environment.sandbox();
 
-        // Create EnvironmentSubdomain if subdomain provided and valid
-        const environmentSubdomain =
-            options?.subdomain && EnvironmentSubdomain.isValidSubdomain(options.subdomain)
-                ? new EnvironmentSubdomain(environment, options.subdomain)
-                : null;
+        this.validateDomainOptions(key, options);
 
-        // Emit deprecation warning if subdomain is not provided
-        if (!environmentSubdomain) {
-            console.warn(
-                '[DEPRECATION WARNING] Initializing Checkout SDK without a subdomain is deprecated and will be removed in a future version. ' +
-                'Please provide your account-specific subdomain using the "subdomain" option. ' +
-                'You can find your subdomain in Dashboard → Developers → Overview. ' +
-                'Example: new Checkout(key, { subdomain: "your-prefix" })'
-            );
-        }
+        const environmentSubdomain = options?.subdomain
+            ? new EnvironmentSubdomain(environment, options.subdomain)
+            : null;
 
         // Determine host URL
         const host = environmentSubdomain
@@ -132,26 +123,77 @@ export class AuthBuilder {
     static setupCustomHost(options) {
         const isLive = !options.host.includes('sandbox');
         const environment = isLive ? Environment.live() : Environment.sandbox();
-        const environmentSubdomain =
-            options?.subdomain && EnvironmentSubdomain.isValidSubdomain(options.subdomain)
-                ? new EnvironmentSubdomain(environment, options.subdomain)
-                : null;
 
-        // Emit deprecation warning if subdomain is not provided with custom host
-        if (!environmentSubdomain) {
-            console.warn(
-                '[DEPRECATION WARNING] Initializing Checkout SDK without a subdomain is deprecated and will be removed in a future version. ' +
-                'Please provide your account-specific subdomain using the "subdomain" option. ' +
-                'You can find your subdomain in Dashboard → Developers → Overview. ' +
-                'Example: new Checkout(key, { host: "your-host", subdomain: "your-prefix" })'
-            );
-        }
+        // A custom host replaces the base URL outright, so the merchant has already said
+        // where requests go and neither option is required here.
+        const environmentSubdomain = options?.subdomain
+            ? new EnvironmentSubdomain(environment, options.subdomain)
+            : null;
 
         return {
             host: options.host,
             environment,
             environmentSubdomain,
         };
+    }
+
+    /**
+     * The merchant-specific subdomain is mandatory. Callers must either set `subdomain`, or
+     * opt out explicitly with `useLegacyDomain: true`, which keeps requests on the shared
+     * hosts (api.checkout.com and access.checkout.com, or their sandbox equivalents).
+     *
+     * `useLegacyDomain` is deprecated from its first release: it exists for the rare case
+     * where the subdomain cannot be used, and will be removed.
+     *
+     * The Previous (ABC) platform predates merchant-specific subdomains, so keys of that
+     * shape are exempt.
+     *
+     * @throws {ValueError} if both options are set, if neither is set, or if the subdomain is
+     * not a valid merchant-specific subdomain
+     */
+    static validateDomainOptions(key, options) {
+        const subdomain = options?.subdomain;
+        const useLegacyDomain = options?.useLegacyDomain === true;
+
+        if (subdomain && useLegacyDomain) {
+            throw new ValueError(
+                'subdomain and useLegacyDomain cannot both be set - provide only your ' +
+                    'merchant-specific subdomain'
+            );
+        }
+
+        if (subdomain && !EnvironmentSubdomain.isValidSubdomain(subdomain)) {
+            throw new ValueError(
+                'invalid environment subdomain - provide your merchant-specific subdomain, the ' +
+                    'first 8 characters of your client ID (see ' +
+                    'https://api-reference.checkout.com/#section/Base-URLs)'
+            );
+        }
+
+        if (!subdomain && !useLegacyDomain && !this.isPreviousPlatform(key, options)) {
+            throw new ValueError(
+                'subdomain is required - provide your merchant-specific subdomain (the first 8 ' +
+                    'characters of your client ID, see ' +
+                    'https://api-reference.checkout.com/#section/Base-URLs), or set ' +
+                    'useLegacyDomain: true to opt out only if merchant specific sub domains are ' +
+                    'causing issues'
+            );
+        }
+    }
+
+    /**
+     * Whether these credentials belong to the Previous (ABC) platform, which predates
+     * merchant-specific subdomains and is therefore exempt from requiring one.
+     */
+    static isPreviousPlatform(key, options) {
+        if (options?.client || process.env.CKO_SECRET) {
+            return false;
+        }
+        const authKey = key || process.env.CKO_SECRET_KEY || '';
+        const cleanKey = authKey.startsWith('Bearer')
+            ? authKey.replace('Bearer', '').trim()
+            : authKey;
+        return CONFIG.PREVIOUS_SECRET_KEY_REGEX.test(cleanKey);
     }
 
     /**

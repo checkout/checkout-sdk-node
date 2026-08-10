@@ -89,7 +89,7 @@ describe('Hosted Payments', () => {
         nock('https://123456789.api.sandbox.checkout.com').post('/hosted-payments').reply(401);
 
         try {
-            const cko = new Checkout('sk_');
+            const cko = new Checkout('sk_', { subdomain: '123456789' });
 
             const hostedResponse = await cko.hostedPayments.create({
                 amount: 10,

@@ -28,6 +28,9 @@ export const ETAG_HEADER = 'etag';
 export const DEFAULT_TIMEOUT = 15000;
 
 export const MBC_LIVE_SECRET_KEY_REGEX = /^sk_?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
+// Previous (ABC) secret keys, live and sandbox. Used to exempt that platform from the
+// mandatory merchant-specific subdomain, which it predates.
+export const PREVIOUS_SECRET_KEY_REGEX = /^sk_(test_)?(\w{8})-(\w{4})-(\w{4})-(\w{4})-(\w{12})$/;
 export const NAS_LIVE_SECRET_KEY_REGEX = /^sk_?[a-z2-7]{26}[a-z2-7*#$=]$/;
 export const NAS_SANDBOX_SECRET_KEY_REGEX = /^sk_sbox_?[a-z2-7]{26}[a-z2-7*#$=]$/;
 export const NAS_LIVE_PUBLIC_KEY_REGEX = /^pk_?[a-z2-7]{26}[a-z2-7*#$=]$/;

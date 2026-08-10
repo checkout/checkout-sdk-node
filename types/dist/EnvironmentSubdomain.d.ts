@@ -17,7 +17,7 @@ export default class EnvironmentSubdomain {
 
     /**
      * Applies subdomain transformation to any given URL.
-     * If the subdomain is valid (alphanumeric pattern), prepends it to the host.
+     * Prepends the subdomain to the host when it matches the required pattern.
      * Otherwise, returns the original URL unchanged.
      */
     static createUrlWithSubdomain(originalUrl: string, subdomain: string): string;
