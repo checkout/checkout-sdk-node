@@ -532,3 +532,16 @@ MIT License - see [LICENSE](LICENSE) for details.
 - 📧 Email: [support@checkout.com](mailto:support@checkout.com)
 - 📚 Documentation: [https://api-reference.checkout.com/](https://api-reference.checkout.com/)
 - 💬 Community: [GitHub Discussions](https://github.com/checkout/checkout-sdk-node/discussions)
+
+## Running the tests against your subdomain
+
+The test suite builds every client through `test/domain-options.js`, which has two modes. By default it uses the shared hosts, because the sandbox OAuth clients are not provisioned for merchant-specific subdomains and the token request would come back `invalid_client`. To run against a subdomain instead:
+
+```bash
+export CHECKOUT_MERCHANT_SUBDOMAIN="your_subdomain"
+export CHECKOUT_TEST_USE_SUBDOMAIN=true
+npm test
+```
+
+The switch is separate from `CHECKOUT_MERCHANT_SUBDOMAIN` on purpose: CI already exports that secret, so provisioning is what should flip the behaviour, not the presence of a value. Once sandbox is provisioned like production, set `CHECKOUT_TEST_USE_SUBDOMAIN: 'true'` in the workflows and CI exercises the subdomain path end to end.
+

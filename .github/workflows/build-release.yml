@@ -23,6 +23,11 @@ jobs:
           CHECKOUT_PREVIOUS_SECRET_KEY: ${{ secrets.IT_CHECKOUT_PREVIOUS_SECRET_KEY }}
           CHECKOUT_PREVIOUS_PUBLIC_KEY: ${{ secrets.IT_CHECKOUT_PREVIOUS_PUBLIC_KEY }}
           CHECKOUT_DEFAULT_SECRET_KEY: ${{ secrets.IT_CHECKOUT_DEFAULT_SECRET_KEY }}
+          CHECKOUT_MERCHANT_SUBDOMAIN: ${{ secrets.IT_CHECKOUT_MERCHANT_SUBDOMAIN }}
+          # Flip to 'true' once the sandbox OAuth clients are provisioned for the
+          # merchant-specific subdomain, and the suite will run against it instead of
+          # the shared hosts. See test/domain-options.js.
+          CHECKOUT_TEST_USE_SUBDOMAIN: 'false'
           CHECKOUT_DEFAULT_PUBLIC_KEY: ${{ secrets.IT_CHECKOUT_DEFAULT_PUBLIC_KEY }}
           CHECKOUT_DEFAULT_OAUTH_CLIENT_ID: ${{ secrets.IT_CHECKOUT_DEFAULT_OAUTH_CLIENT_ID }}
           CHECKOUT_DEFAULT_OAUTH_CLIENT_SECRET: ${{ secrets.IT_CHECKOUT_DEFAULT_OAUTH_CLIENT_SECRET }}
