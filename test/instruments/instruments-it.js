@@ -1,3 +1,4 @@
+import { domainOptions } from '../domain-options.js';
 import { expect } from "chai";
 import nock from "nock";
 import Checkout from '../../src/Checkout.js'
@@ -11,7 +12,7 @@ afterEach(() => {
 const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
   pk: process.env.CHECKOUT_PREVIOUS_PUBLIC_KEY,
   environment: 'sandbox',
-  subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+  ...domainOptions(),
 });
 
 const sepaRequest = {

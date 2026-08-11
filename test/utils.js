@@ -1,3 +1,4 @@
+import { domainOptions } from './domain-options.js';
 import Checkout from '../src/Checkout.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -5,7 +6,7 @@ const cko_platforms = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_SEC
   client: process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_ID,
   scope: ['accounts'],
   environment: 'sandbox',
-  subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+  ...domainOptions(),
 });
 
 /**

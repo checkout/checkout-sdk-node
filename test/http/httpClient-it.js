@@ -1,3 +1,4 @@
+import { domainOptions } from '../domain-options.js';
 import { expect } from "chai";
 import nock from "nock";
 import https from 'https';
@@ -19,7 +20,7 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
             httpClient: 'axios',
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
         const token = await checkout.tokens.request(
@@ -50,7 +51,7 @@ describe('Integration::HttpClient', () => {
             timeout: 3000,
             httpClient: 'axios',
             agent: new https.Agent({ keepAlive: true }),
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
         const token = await checkout.tokens.request(
@@ -79,7 +80,7 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 100,
             httpClient: 'axios',
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
         try {
@@ -107,7 +108,7 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
         const token = await checkout.tokens.request(
@@ -137,7 +138,7 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
             agent: new https.Agent({ keepAlive: true }),
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
 
@@ -167,7 +168,7 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 200,
-            subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+            ...domainOptions(),
           }
         );
         try {

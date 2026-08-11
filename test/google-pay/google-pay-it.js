@@ -1,10 +1,11 @@
+import { domainOptions } from '../domain-options.js';
 import { expect } from 'chai';
 import Checkout from '../../src/Checkout.js';
 
 const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
     pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
     environment: 'sandbox',
-    subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+    ...domainOptions(),
 });
 
 describe.skip('Integration::GooglePay', () => {
