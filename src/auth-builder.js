@@ -125,7 +125,10 @@ export class AuthBuilder {
         const environment = isLive ? Environment.live() : Environment.sandbox();
 
         // A custom host replaces the base URL outright, so the merchant has already said
-        // where requests go and neither option is required here.
+        // where requests go and neither option is required here. A subdomain that is provided
+        // anyway still has to be well formed, rather than being silently dropped.
+        this.validateSubdomainFormat(options?.subdomain);
+
         const environmentSubdomain = options?.subdomain
             ? new EnvironmentSubdomain(environment, options.subdomain)
             : null;
@@ -162,13 +165,7 @@ export class AuthBuilder {
             );
         }
 
-        if (subdomain && !EnvironmentSubdomain.isValidSubdomain(subdomain)) {
-            throw new ValueError(
-                'invalid environment subdomain - provide your merchant-specific subdomain, the ' +
-                    'first 8 characters of your client ID (see ' +
-                    'https://api-reference.checkout.com/#section/Base-URLs)'
-            );
-        }
+        this.validateSubdomainFormat(subdomain);
 
         if (!subdomain && !useLegacyDomain && !this.isPreviousPlatform(key, options)) {
             throw new ValueError(
@@ -177,6 +174,22 @@ export class AuthBuilder {
                     'https://api-reference.checkout.com/#section/Base-URLs), or set ' +
                     'useLegacyDomain: true to opt out only if merchant specific sub domains are ' +
                     'causing issues'
+            );
+        }
+    }
+
+    /**
+     * A subdomain that is set at all must be a valid merchant-specific subdomain. Invalid values
+     * used to be dropped back to the shared host without a word.
+     *
+     * @throws {ValueError} if the subdomain is set and malformed
+     */
+    static validateSubdomainFormat(subdomain) {
+        if (subdomain && !EnvironmentSubdomain.isValidSubdomain(subdomain)) {
+            throw new ValueError(
+                'invalid environment subdomain - provide your merchant-specific subdomain, the ' +
+                    'first 8 characters of your client ID (see ' +
+                    'https://api-reference.checkout.com/#section/Base-URLs)'
             );
         }
     }

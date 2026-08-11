@@ -214,6 +214,16 @@ describe('SDK Subdomain Integration', () => {
             expect(cko.config.environmentSubdomain.subdomain).to.equal('customlive');
         });
 
+        it('should still reject a malformed subdomain with a custom host', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        host: 'https://custom.example.com',
+                        subdomain: 'INVALID!'
+                    })
+            ).to.throw('invalid environment subdomain');
+        });
+
         it('should not require a subdomain with a custom host', () => {
             const customHost = 'https://custom.example.com';
             const cko = new Checkout(SECRET_KEY, {
