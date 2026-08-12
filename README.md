@@ -55,7 +55,7 @@ The official Node.js SDK for [Checkout.com](https://www.checkout.com) payment ga
 
 > **⚠️ Important:** Each Checkout.com account has its own unique base URL prefix. You must configure this prefix when initializing the SDK to connect to your specific account. Find your unique prefix in the [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers). See [Base URL Configuration](#base-url-configuration-account-specific) for details.
 
-> **⚠️ Breaking change in 5.0.0:** Initializing the SDK without the `subdomain` parameter used to emit a deprecation warning. It now throws. You must either set `subdomain`, or explicitly opt out with `useLegacyDomain: true`, which is itself deprecated and exists only for emergencies. See [Legacy domain (emergency use only)](#legacy-domain-emergency-use-only).
+> **⚠️ Breaking change in the next major release:** Initializing the SDK without the `subdomain` parameter used to emit a deprecation warning. It now throws. You must either set `subdomain`, or explicitly opt out with `useLegacyDomain: true`, which is itself deprecated and exists only for emergencies. See [Legacy domain (emergency use only)](#legacy-domain-emergency-use-only).
 
 ### Subdomain value
 
