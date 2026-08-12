@@ -1,4 +1,3 @@
-import { domainOptions } from '../../domain-options.js';
 import { expect } from "chai";
 import { createEntity, generateFutureDate } from '../../utils.js';
 import Checkout from '../../../src/Checkout.js';
@@ -9,7 +8,10 @@ describe('Integration::Platforms::Reserve Rules', () => {
         client: process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_ID,
         scope: ['accounts'],
         environment: 'sandbox',
-        ...domainOptions(),
+        // The sandbox OAuth clients are not provisioned for the merchant-specific
+        // subdomain, so the token request would come back invalid_client. Opting out
+        // explicitly until they are.
+        useLegacyDomain: true,
     });
 
     let entityId;

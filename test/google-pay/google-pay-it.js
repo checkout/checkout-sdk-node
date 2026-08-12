@@ -1,11 +1,13 @@
-import { domainOptions } from '../domain-options.js';
 import { expect } from 'chai';
 import Checkout from '../../src/Checkout.js';
 
 const cko = new Checkout(process.env.CHECKOUT_DEFAULT_SECRET_KEY, {
     pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
     environment: 'sandbox',
-    ...domainOptions(),
+    // The sandbox OAuth clients are not provisioned for the merchant-specific
+    // subdomain, so the token request would come back invalid_client. Opting out
+    // explicitly until they are.
+    useLegacyDomain: true,
 });
 
 describe.skip('Integration::GooglePay', () => {

@@ -1,4 +1,3 @@
-import { domainOptions } from '../domain-options.js';
 import { expect } from 'chai';
 import nock from 'nock';
 import Checkout from '../../src/Checkout.js';
@@ -13,7 +12,10 @@ const cko = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_SECRET, {
     client: process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_ID,
     scope: ['vault:real-time-account-updater'],
     environment: 'sandbox',
-    ...domainOptions(),
+    // The sandbox OAuth clients are not provisioned for the merchant-specific
+    // subdomain, so the token request would come back invalid_client. Opting out
+    // explicitly until they are.
+    useLegacyDomain: true,
 });
 
 describe('Integration::AccountUpdater', () => {

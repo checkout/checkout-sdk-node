@@ -1,4 +1,3 @@
-import { domainOptions } from '../domain-options.js';
 import { expect } from "chai";
 import nock from "nock";
 import https from 'https';
@@ -20,7 +19,10 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
             httpClient: 'axios',
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
         const token = await checkout.tokens.request(
@@ -51,7 +53,10 @@ describe('Integration::HttpClient', () => {
             timeout: 3000,
             httpClient: 'axios',
             agent: new https.Agent({ keepAlive: true }),
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
         const token = await checkout.tokens.request(
@@ -80,7 +85,10 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 100,
             httpClient: 'axios',
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
         try {
@@ -108,7 +116,10 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
         const token = await checkout.tokens.request(
@@ -138,7 +149,10 @@ describe('Integration::HttpClient', () => {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 3000,
             agent: new https.Agent({ keepAlive: true }),
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
 
@@ -168,7 +182,10 @@ describe('Integration::HttpClient', () => {
           {
             pk: process.env.CHECKOUT_DEFAULT_PUBLIC_KEY,
             timeout: 200,
-            ...domainOptions(),
+            // The sandbox OAuth clients are not provisioned for the merchant-specific
+            // subdomain, so the token request would come back invalid_client. Opting out
+            // explicitly until they are.
+            useLegacyDomain: true,
           }
         );
         try {
