@@ -208,6 +208,58 @@ describe('Void a payment', () => {
         expect(refund.reference).to.equal('VOID');
     });
 
+    it('should void payment partially with an amount in the body', async () => {
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post(
+                '/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                (requestBody) =>
+                    requestBody.amount === 50 &&
+                    requestBody.reference === 'PARTIAL-VOID'
+            )
+            .reply(202, {
+                action_id: 'act_3cxabwfq4ieu3mn3cuzv7ct6dy',
+                reference: 'PARTIAL-VOID',
+                _links: {
+                    payment: {
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+
+        const voids = await cko.payments.void('pay_6ndp5facelxurne7gloxkxm57u', {
+            amount: 50,
+            reference: 'PARTIAL-VOID',
+        });
+
+        expect(voids.reference).to.equal('PARTIAL-VOID');
+    });
+
+    it('should not send an amount when void is called without a body', async () => {
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post(
+                '/payments/pay_6ndp5facelxurne7gloxkxm57u/voids',
+                (requestBody) =>
+                    !requestBody || requestBody.amount === undefined
+            )
+            .reply(202, {
+                action_id: 'act_hvue5c7klzmubkfmxfptldibdi',
+                reference: 'FULL-VOID',
+                _links: {
+                    payment: {
+                        href: 'https://123456789.api.sandbox.checkout.com/payments/pay_6ndp5facelxurne7gloxkxm57u',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+
+        const voids = await cko.payments.void('pay_6ndp5facelxurne7gloxkxm57u');
+
+        expect(voids.reference).to.equal('FULL-VOID');
+    });
+
     it('should throw AuthenticationError', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .post('/payments/pay_7enxra4adw6evgalvfabl6nbqy/voids')
