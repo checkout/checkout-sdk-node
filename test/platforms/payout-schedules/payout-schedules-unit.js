@@ -183,4 +183,74 @@ describe('Platforms - Payout Schedules', () => {
         expect(response).to.not.be.null;
         expect(response.frequency).to.equal("weekly");
     });
+
+    it('should pass through ISV fields when updating a payout schedule', async () => {
+        let capturedBody;
+        nock('https://123456789.api.sandbox.checkout.com')
+            .put('/accounts/entities/ent_123/payout-schedules', (body) => {
+                capturedBody = body;
+                return true;
+            })
+            .reply(200, {
+                _links: {
+                    self: {
+                        href: 'https://123456789.api.checkout.com/accounts/entities/ent_123',
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+        await cko.platforms.updateSubEntityPayoutSchedule('ent_123', {
+            GBP: {
+                enabled: true,
+                threshold: 100,
+                balance_minimum: 500,
+                carry_forward_enabled: true,
+                payment_instrument_id: 'ppi_w4jelhppmfiufdnatam37wrfc4',
+                recurrence: {
+                    frequency: 'weekly',
+                    by_day: ['monday'],
+                },
+            },
+        });
+
+        expect(capturedBody.GBP.balance_minimum).to.equal(500);
+        expect(capturedBody.GBP.carry_forward_enabled).to.equal(true);
+        expect(capturedBody.GBP.payment_instrument_id).to.equal(
+            'ppi_w4jelhppmfiufdnatam37wrfc4'
+        );
+    });
+
+    it('should surface ISV fields when retrieving a payout schedule', async () => {
+        nock('https://123456789.api.sandbox.checkout.com')
+            .get('/accounts/entities/ent_123/payout-schedules')
+            .reply(200, {
+                GBP: {
+                    enabled: true,
+                    payment_instrument_id: 'ppi_w4jelhppmfiufdnatam37wrfc4',
+                    recurrence: {
+                        frequency: 'weekly',
+                        by_day: ['monday'],
+                        threshold: 100,
+                        balance_minimum: 500,
+                        carry_forward_enabled: true,
+                    },
+                    _links: {
+                        self: {
+                            href: 'https://123456789.api.checkout.com/accounts/entities/ent_123',
+                        },
+                    },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+        const response = await cko.platforms.retrieveSubEntityPayoutSchedule('ent_123');
+
+        expect(response.GBP.payment_instrument_id).to.equal(
+            'ppi_w4jelhppmfiufdnatam37wrfc4'
+        );
+        expect(response.GBP.recurrence.balance_minimum).to.equal(500);
+        expect(response.GBP.recurrence.carry_forward_enabled).to.equal(true);
+        expect(response.GBP._links.self.href).to.be.a('string');
+    });
 });

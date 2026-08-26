@@ -82,6 +82,16 @@ export default class PaymentInstruments {
     /**
      * Add a payment instrument to a sub-entity.
      *
+     * Request body (swagger PlatformsPaymentInstrumentCreate, 2026-08-05),
+     * all fields required:
+     *  - type - the type of instrument, for example `bank_account`.
+     *  - label - a reference that you can use to identify the payment
+     *    instrument.
+     *  - currency - the three-letter ISO currency code of the account's
+     *    currency.
+     *  - instrument_details - details of the payment instrument being
+     *    created.
+     *
      * @param {string} id Sub-entity id.
      * @param {Object} body Platforms request body.
      * @return {Promise<Object>} A promise to the Platforms response.

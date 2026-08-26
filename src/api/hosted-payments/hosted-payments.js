@@ -48,6 +48,10 @@ export default class HostedPayments {
     /**
      * Get Hosted Payments Page details
      *
+     * The response (swagger GetHostedPaymentsResponse) includes a `_links`
+     * object with `self` and `redirect` links, plus `payment` and
+     * `payment_actions` once a payment is in progress or completed.
+     *
      * @memberof HostedPayments
      * @param {string} id - Hosted payment id
      * @return {Promise<Object>} A promise to the Hosted Payment response.
