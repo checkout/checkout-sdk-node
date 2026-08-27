@@ -301,6 +301,7 @@ export default class Payments {
      * @memberof Payments
      * @param {string} paymentId /^(pay)_(\w{26})$/ The payment or payment session identifier.
      * @param {Object} [body] Void request body.
+     * @param {number} [body.amount] The amount to void, in the minor currency unit (min 0, max 9999999999). If not specified, the full payment amount is voided.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the void response.
      */
