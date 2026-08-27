@@ -235,6 +235,31 @@ describe('Payment Links', () => {
         let getResponse = await cko.paymentLinks.get(linksResponse.id);
     });
 
+    it('should surface _links when getting a payment link', async () => {
+        nock('https://123456789.api.sandbox.checkout.com')
+            .get('/payment-links/pl_irx_SMlY5RCA')
+            .reply(200, {
+                id: 'pl_irx_SMlY5RCA',
+                status: 'Active',
+                _links: {
+                    self: {
+                        href: 'https://123456789.api.sandbox.checkout.com/payment-links/pl_irx_SMlY5RCA',
+                    },
+                    redirect: { href: 'https://pay.sandbox.checkout.com/link/pl_irx_SMlY5RCA' },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+        const linkDetails = await cko.paymentLinks.get('pl_irx_SMlY5RCA');
+
+        expect(linkDetails._links.self.href).to.equal(
+            'https://123456789.api.sandbox.checkout.com/payment-links/pl_irx_SMlY5RCA'
+        );
+        expect(linkDetails._links.redirect.href).to.equal(
+            'https://pay.sandbox.checkout.com/link/pl_irx_SMlY5RCA'
+        );
+    });
+
     it('should get the payment link status', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .post('/payment-links')

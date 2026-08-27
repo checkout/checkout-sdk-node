@@ -49,6 +49,10 @@ export default class PaymentLinks {
     /**
      * Retrieve details about a specific Payment Link using its ID returned when the link was created. In the response, you will see the status of the Payment Link.
      *
+     * The response (swagger GetPaymentLinkResponse) includes a `_links`
+     * object with `self` and `redirect` links, plus `payment` and
+     * `payment_actions` once a payment is in progress or completed.
+     *
      * @memberof PaymentLinks
      * @param {string} id
      * @return {Promise<Object>} A promise to the Payment Link response.

@@ -246,6 +246,49 @@ describe('Platforms - Payment Instruments', () => {
         expect(instrument.id).to.equal('ppi_goaxfhavh5ztwdf662mnii6zem');
     });
 
+    it('should pass through label, currency and instrument_details when adding a payment instrument', async () => {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'flow',
+        });
+        let capturedBody;
+        nock('https://123456789.api.sandbox.checkout.com')
+            .post(
+                '/accounts/entities/ent_aneh5mtyobxzazriwuevngrz6y/payment-instruments',
+                (body) => {
+                    capturedBody = body;
+                    return true;
+                }
+            )
+            .reply(201, {
+                id: 'ppi_goaxfhavh5ztwdf662mnii6zem',
+            });
+
+        let cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+            subdomain: '123456789',
+        });
+
+        await cko.platforms.addPaymentInstrument('ent_aneh5mtyobxzazriwuevngrz6y', {
+            label: "Peter's Personal Account",
+            type: 'bank_account',
+            currency: 'GBP',
+            instrument_details: {
+                account_number: '12345678',
+                bank_code: '050389',
+            },
+        });
+
+        expect(capturedBody.label).to.equal("Peter's Personal Account");
+        expect(capturedBody.currency).to.equal('GBP');
+        expect(capturedBody.instrument_details.account_number).to.equal('12345678');
+        expect(capturedBody.instrument_details.bank_code).to.equal('050389');
+    });
+
     it('should throw AuthenticationError when creating a payment instrument [deprecated]', async () => {
         nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',

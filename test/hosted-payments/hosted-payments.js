@@ -212,6 +212,31 @@ describe('Hosted Payments', () => {
         expect(hp.id).to.equal(id);
     });
 
+    it('should surface _links when getting a hosted payment', async () => {
+        nock('https://123456789.api.sandbox.checkout.com')
+            .get('/hosted-payments/hpp_kQhs_fI9b8oQ')
+            .reply(200, {
+                id: 'hpp_kQhs_fI9b8oQ',
+                status: 'Payment Pending',
+                _links: {
+                    self: {
+                        href: 'https://123456789.api.sandbox.checkout.com/hosted-payments/hpp_kQhs_fI9b8oQ',
+                    },
+                    redirect: { href: 'https://pay.sandbox.checkout.com/page/hpp_kQhs_fI9b8oQ' },
+                },
+            });
+
+        const cko = new Checkout(SK, { subdomain: '123456789' });
+        const hp = await cko.hostedPayments.get('hpp_kQhs_fI9b8oQ');
+
+        expect(hp._links.self.href).to.equal(
+            'https://123456789.api.sandbox.checkout.com/hosted-payments/hpp_kQhs_fI9b8oQ'
+        );
+        expect(hp._links.redirect.href).to.equal(
+            'https://pay.sandbox.checkout.com/page/hpp_kQhs_fI9b8oQ'
+        );
+    });
+
     it('should throw Authentication Error', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .get('/hosted-payments/hpp_kQhs_fI9b8oQ')
