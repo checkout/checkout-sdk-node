@@ -167,6 +167,8 @@ export class AuthBuilder {
 
         this.validateSubdomainFormat(subdomain);
 
+        // The Previous (ABC) exemption is inferred from the secret-key shape: only keys
+        // matching PREVIOUS_SECRET_KEY_REGEX are exempt; NAS keys and OAuth are not.
         if (!subdomain && !useLegacyDomain && !this.isPreviousPlatform(key, options)) {
             throw new ValueError(
                 'subdomain is required - provide your merchant-specific subdomain (the first 8 ' +
