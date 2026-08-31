@@ -16,7 +16,7 @@ afterEach(() => {
     nock.enableNetConnect();
 });
 
-describe.skip('Integration::Issuing::Controls - AuthenticationError: Requires CHECKOUT_DEFAULT_OAUTH_CLIENT_ID and CHECKOUT_DEFAULT_OAUTH_CLIENT_SECRET with Issuing enabled', function () {
+describe.skip('Integration::Issuing::Controls - AuthenticationError: Requires CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_ID and CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_SECRET with Issuing enabled', function () {
     let cardholder;
     let card;
     let control;
