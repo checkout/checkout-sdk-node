@@ -11,7 +11,10 @@ export const cko_issuing = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_ISSUI
     client: process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_ID,
     scope: ['issuing:card-mgmt', 'issuing:client', 'issuing:controls-read', 'issuing:controls-write', 'issuing:transactions-read', 'vault'],
     environment: 'sandbox',
-    subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+    // The sandbox OAuth clients are not provisioned for the merchant-specific
+    // subdomain, so the token request would come back invalid_client. Opting out
+    // explicitly until they are.
+    useLegacyDomain: true,
 });
 
 export const ISSUING_ENTITY_ID = process.env.CHECKOUT_ISSUING_ENTITY_ID || 'ent_mujh2nia2ypezmw5fo2fofk7ka';

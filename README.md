@@ -55,7 +55,11 @@ The official Node.js SDK for [Checkout.com](https://www.checkout.com) payment ga
 
 > **⚠️ Important:** Each Checkout.com account has its own unique base URL prefix. You must configure this prefix when initializing the SDK to connect to your specific account. Find your unique prefix in the [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers). See [Base URL Configuration](#base-url-configuration-account-specific) for details.
 
-> **⚠️ Deprecation Notice:** Initializing the SDK without the `subdomain` parameter is **deprecated** and will be removed in a future major version. Please ensure you provide your account-specific subdomain to avoid disruption when upgrading.
+> **⚠️ Breaking change in the next major release:** Initializing the SDK without the `subdomain` parameter used to emit a deprecation warning. It now throws. You must either set `subdomain`, or explicitly opt out with `useLegacyDomain: true`, which is itself deprecated and exists only for emergencies. See [Legacy domain (emergency use only)](#legacy-domain-emergency-use-only).
+
+### Subdomain value
+
+Requests must be made through your merchant-specific subdomain (MSSD): the first 8 characters of your client ID (excluding `cli_`). For example, if your client ID is `cli_vkuhvk4vjn2edkps7dfsq6emqm`, your subdomain is `vkuhvk4v`, and the SDK sends requests to `https://vkuhvk4v.api.checkout.com`. Private Link merchants use their `pl-` prefixed subdomain (for example `pl-vkuhvk4v`), which the SDK also accepts. See [Base URLs](https://api-reference.checkout.com/#section/Base-URLs) and [API endpoints](https://www.checkout.com/docs/developer-resources/api/api-endpoints) for further details, and for where to find your unique client ID.
 
 # :rocket: Install
 
@@ -166,7 +170,9 @@ const cko = new Checkout(null, {
 
 ### Important Notes
 
-> **⚠️ Subdomain is always required:** The `subdomain` option must be passed explicitly when initializing the SDK. It cannot be set via environment variables. Find your unique prefix in [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers).
+> **⚠️ Subdomain is always required:** The `subdomain` option must be passed explicitly when initializing the SDK. It cannot be set via environment variables. Find your unique prefix in [Dashboard → Developers → Overview](https://dashboard.checkout.com/developers). Initialization throws a `ValueError` if neither `subdomain` nor `useLegacyDomain` is set, or if both are.
+
+> A custom `host` replaces the base URL outright, so neither option is required when you pass one. Previous (ABC) keys predate merchant-specific subdomains and are exempt.
 
 ## Set custom config
 Besides the authentication, you also have the option to configure some extra elements about the SDK 
@@ -499,6 +505,20 @@ You can see examples of how to use the SDK for every endpoint documented in our 
 
 ---
 
+## Legacy domain (emergency use only)
+
+> :warning: **Only use if merchant specific sub domains are causing issues.** Connecting through your merchant-specific subdomain (see [Subdomain value](#subdomain-value)) is the supported way of using the Checkout.com API, and non-subdomain usage will be deprecated.
+
+If, in exceptional circumstances, you cannot use your merchant-specific subdomain, you can explicitly opt out with `useLegacyDomain`:
+
+```js
+const cko = new Checkout('sk_...', {
+    useLegacyDomain: true // deprecated, emergency fallback only
+});
+```
+
+This routes requests to `api.checkout.com` (or `api.sandbox.checkout.com`) and `access.checkout.com` (or `access.sandbox.checkout.com`). The option is marked `@deprecated` in the type definitions, so editors and `tsc` will flag it. Exactly one of `subdomain` or `useLegacyDomain` must be set: initialization throws a `ValueError` if both, or neither, are. Passing a custom `host` is a third route that bypasses this requirement entirely, since it replaces the base URL outright.
+
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
@@ -512,3 +532,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 - 📧 Email: [support@checkout.com](mailto:support@checkout.com)
 - 📚 Documentation: [https://api-reference.checkout.com/](https://api-reference.checkout.com/)
 - 💬 Community: [GitHub Discussions](https://github.com/checkout/checkout-sdk-node/discussions)
+

@@ -5,7 +5,10 @@ const cko_platforms = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_SEC
   client: process.env.CHECKOUT_DEFAULT_OAUTH_CLIENT_ID,
   scope: ['accounts'],
   environment: 'sandbox',
-  subdomain: process.env.CHECKOUT_MERCHANT_SUBDOMAIN,
+  // The sandbox OAuth clients are not provisioned for the merchant-specific
+  // subdomain, so the token request would come back invalid_client. Opting out
+  // explicitly until they are.
+  useLegacyDomain: true,
 });
 
 /**

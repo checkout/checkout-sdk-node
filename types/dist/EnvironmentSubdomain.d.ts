@@ -16,9 +16,8 @@ export default class EnvironmentSubdomain {
     getOAuthAuthorizationApi(): string;
 
     /**
-     * Applies subdomain transformation to any given URL.
-     * If the subdomain is valid (alphanumeric pattern), prepends it to the host.
-     * Otherwise, returns the original URL unchanged.
+     * Applies subdomain transformation to any given URL by prepending the subdomain to the host.
+     * Throws a ValueError if the subdomain is not a valid merchant-specific subdomain.
      */
     static createUrlWithSubdomain(originalUrl: string, subdomain: string): string;
 

@@ -173,27 +173,43 @@ describe('NAS oAuth', () => {
         expect(cko.config.agent).to.be.undefined;
     });
 
-    it('should initialize with oAuth credentials with bad subdomain', () => {
-        const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
-            client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
-            scope: ['gateway'],
-            environment: 'sandbox',
-            subdomain: '  '
-        });
-        expect(cko).to.be.instanceOf(Checkout);
-        expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');
-        expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-        expect(cko.config.scope[0]).to.equal('gateway');
-        expect(cko.config.secret).to.equal('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-');
-        expect(cko.config.agent).to.be.undefined;
+    it('should fail with a bad subdomain', () => {
+        expect(
+            () =>
+                new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+                    client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                    scope: ['gateway'],
+                    environment: 'sandbox',
+                    subdomain: '  '
+                })
+        ).to.throw('invalid environment subdomain');
     });
 
-    it('should initialize with oAuth credentials with subdomain empty', () => {
+    it('should fail with an empty subdomain and no legacy-domain opt-out', () => {
+        expect(
+            () =>
+                new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
+                    client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
+                    scope: ['gateway'],
+                    environment: 'sandbox',
+                    subdomain: ''
+                })
+        ).to.throw('subdomain is required');
+    });
+
+    it('should not exempt a NAS-shaped secret key from the subdomain requirement', () => {
+        // Only Previous (ABC) keys are exempt; NAS keys still require subdomain or opt-out
+        expect(() => new Checkout('sk_sbox_fghjovernsi764jybiuogokg7xz')).to.throw(
+            'subdomain is required'
+        );
+    });
+
+    it('should initialize with oAuth credentials and the legacy domain opt-out', () => {
         const cko = new Checkout('2p7YQ37fHiRr8O6lQAikl8enICesB1dvAJrpmE2nZfEOpxzE-', {
             client: 'ack_vvzhoai466su3j3vbxb47ts5oe',
             scope: ['gateway'],
             environment: 'sandbox',
-            subdomain: ''
+            useLegacyDomain: true
         });
         expect(cko).to.be.instanceOf(Checkout);
         expect(cko.config.client).to.equal('ack_vvzhoai466su3j3vbxb47ts5oe');

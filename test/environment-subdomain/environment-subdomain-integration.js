@@ -54,17 +54,16 @@ describe('SDK Subdomain Integration', () => {
             expect(cko.config.environmentSubdomain.getOAuthAuthorizationApi()).to.equal('https://prodmerch1.access.checkout.com/connect/token');
         });
 
-        it('should initialize without subdomain when subdomain is invalid', () => {
-            const cko = new Checkout(SECRET_KEY, {
-                client: CLIENT_ID,
-                scope: ['gateway'],
-                environment: 'sandbox',
-                subdomain: 'INVALID'  // uppercase, should be rejected
-            });
-
-            expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-            expect(cko.config.environment).to.be.instanceOf(Environment);
-            expect(cko.config.environmentSubdomain).to.be.null;
+        it('should fail when the subdomain is invalid', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        client: CLIENT_ID,
+                        scope: ['gateway'],
+                        environment: 'sandbox',
+                        subdomain: 'INVALID' // uppercase, rejected
+                    })
+            ).to.throw('invalid environment subdomain');
         });
 
         it('should initialize with short subdomain', () => {
@@ -79,16 +78,42 @@ describe('SDK Subdomain Integration', () => {
             expect(cko.config.environmentSubdomain.subdomain).to.equal('ab');
         });
 
-        it('should initialize without subdomain when subdomain is empty', () => {
+        it('should fail when the subdomain is empty and the legacy domain is not requested', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        client: CLIENT_ID,
+                        scope: ['gateway'],
+                        environment: 'sandbox',
+                        subdomain: ''
+                    })
+            ).to.throw('subdomain is required');
+        });
+
+        it('should use the shared hosts with the legacy domain opt-out', () => {
             const cko = new Checkout(SECRET_KEY, {
                 client: CLIENT_ID,
                 scope: ['gateway'],
                 environment: 'sandbox',
-                subdomain: ''
+                useLegacyDomain: true
             });
 
             expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
+            expect(cko.config.environment).to.be.instanceOf(Environment);
             expect(cko.config.environmentSubdomain).to.be.null;
+        });
+
+        it('should fail when both the subdomain and the legacy domain are set', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        client: CLIENT_ID,
+                        scope: ['gateway'],
+                        environment: 'sandbox',
+                        subdomain: 'configtest',
+                        useLegacyDomain: true
+                    })
+            ).to.throw('cannot both be set');
         });
     });
 
@@ -189,11 +214,20 @@ describe('SDK Subdomain Integration', () => {
             expect(cko.config.environmentSubdomain.subdomain).to.equal('customlive');
         });
 
-        it('should ignore subdomain if invalid even with custom host', () => {
+        it('should still reject a malformed subdomain with a custom host', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        host: 'https://custom.example.com',
+                        subdomain: 'INVALID!'
+                    })
+            ).to.throw('invalid environment subdomain');
+        });
+
+        it('should not require a subdomain with a custom host', () => {
             const customHost = 'https://custom.example.com';
             const cko = new Checkout(SECRET_KEY, {
-                host: customHost,
-                subdomain: 'INVALID!'
+                host: customHost
             });
 
             expect(cko.config.host).to.equal(customHost);
@@ -224,28 +258,39 @@ describe('SDK Subdomain Integration', () => {
             expect(typeof cko.config.subdomain).to.equal('string');
         });
 
-        it('should have correct config structure without subdomain', () => {
+        it('should have correct config structure with the legacy domain opt-out', () => {
             const cko = new Checkout(SECRET_KEY, {
                 client: CLIENT_ID,
-                environment: 'sandbox'
+                environment: 'sandbox',
+                useLegacyDomain: true
             });
 
             expect(cko.config).to.have.property('environment');
             expect(cko.config.environmentSubdomain).to.be.null;
             expect(cko.config.environment).to.be.instanceOf(Environment);
         });
+
+        it('should fail without a subdomain and without the legacy domain opt-out', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        client: CLIENT_ID,
+                        environment: 'sandbox'
+                    })
+            ).to.throw('subdomain is required');
+        });
     });
 
     describe('Subdomain validation edge cases', () => {
-        it('should handle whitespace-only subdomain', () => {
-            const cko = new Checkout(SECRET_KEY, {
-                client: CLIENT_ID,
-                environment: 'sandbox',
-                subdomain: '   '
-            });
-
-            expect(cko.config.host).to.equal('https://api.sandbox.checkout.com');
-            expect(cko.config.environmentSubdomain).to.be.null;
+        it('should reject a whitespace-only subdomain', () => {
+            expect(
+                () =>
+                    new Checkout(SECRET_KEY, {
+                        client: CLIENT_ID,
+                        environment: 'sandbox',
+                        subdomain: '   '
+                    })
+            ).to.throw('invalid environment subdomain');
         });
 
         it('should handle numeric-only subdomain', () => {

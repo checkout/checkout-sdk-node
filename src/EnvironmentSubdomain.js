@@ -5,6 +5,7 @@
  */
 
 import Environment from './Environment.js';
+import { ValueError } from './services/errors.js';
 
 export default class EnvironmentSubdomain {
     constructor(environment, subdomain) {
@@ -25,29 +26,28 @@ export default class EnvironmentSubdomain {
     }
 
     /**
-     * Applies subdomain transformation to any given URL.
-     * If the subdomain is valid (alphanumeric pattern), prepends it to the host.
-     * Otherwise, returns the original URL unchanged.
-     * 
+     * Applies subdomain transformation to any given URL by prepending the subdomain to the host.
+     *
      * @param {string} originalUrl - the original URL to transform
-     * @param {string} subdomain - the subdomain to prepend  
-     * @return {string} the transformed URL with subdomain, or original URL if subdomain is invalid
+     * @param {string} subdomain - the subdomain to prepend
+     * @return {string} the transformed URL with subdomain
+     * @throws {ValueError} if the subdomain is not a valid merchant-specific subdomain
      */
     static createUrlWithSubdomain(originalUrl, subdomain) {
         if (!EnvironmentSubdomain.isValidSubdomain(subdomain)) {
-            return originalUrl;
+            throw new ValueError(
+                'invalid environment subdomain - provide your merchant-specific subdomain, ' +
+                    'typically your client ID excluding the cli_ prefix, see ' +
+                    'https://api-reference.checkout.com/#section/Base-URLs'
+            );
         }
 
-        try {
-            const url = new URL(originalUrl);
-            const newHost = subdomain + '.' + url.host;
-            url.host = newHost;
-            const result = url.toString().trim();
-            // Only remove trailing slash if the URL ends with just a slash
-            return result.endsWith('/') ? result.slice(0, -1) : result;
-        } catch {
-            return originalUrl;
-        }
+        const url = new URL(originalUrl);
+        const newHost = subdomain + '.' + url.host;
+        url.host = newHost;
+        const result = url.toString().trim();
+        // Only remove trailing slash if the URL ends with just a slash
+        return result.endsWith('/') ? result.slice(0, -1) : result;
     }
 
     /**

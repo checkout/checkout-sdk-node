@@ -1,6 +1,7 @@
 import Environment from '../../src/Environment.js';
 import EnvironmentSubdomain from '../../src/EnvironmentSubdomain.js';
 import { expect } from 'chai';
+import { ValueError } from '../../src/services/errors.js';
 
 describe('EnvironmentSubdomain', () => {
     let sandboxEnvironment;
@@ -97,67 +98,53 @@ describe('EnvironmentSubdomain', () => {
         });
 
         describe('invalid subdomains', () => {
-            it('should return original URL for null subdomain', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, null);
-                
-                expect(result).to.equal(originalUrl);
+            const originalUrl = 'https://api.sandbox.checkout.com';
+            const expectThrow = (subdomain) => {
+                expect(() => EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, subdomain))
+                    .to.throw(ValueError, /invalid environment subdomain/);
+            };
+
+            it('should throw for null subdomain', () => {
+                expectThrow(null);
             });
 
-            it('should return original URL for undefined subdomain', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, undefined);
-                
-                expect(result).to.equal(originalUrl);
+            it('should throw for undefined subdomain', () => {
+                expectThrow(undefined);
             });
 
-            it('should return original URL for empty subdomain', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, '');
-                
-                expect(result).to.equal(originalUrl);
+            it('should throw for empty subdomain', () => {
+                expectThrow('');
             });
 
-            it('should return original URL for subdomain with uppercase letters', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'ABC123');
-                
-                expect(result).to.equal(originalUrl);
+            it('should throw for subdomain with uppercase letters', () => {
+                expectThrow('ABC123');
             });
 
-            it('should return original URL for subdomain with invalid special characters', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test_123')).to.equal(originalUrl);
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test@123')).to.equal(originalUrl);
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test.123')).to.equal(originalUrl);
+            it('should throw for subdomain with invalid special characters', () => {
+                expectThrow('test_123');
+                expectThrow('test@123');
+                expectThrow('test.123');
             });
 
-            it('should return original URL for subdomain with trailing hyphen', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'foo-')).to.equal(originalUrl);
+            it('should throw for subdomain with trailing hyphen', () => {
+                expectThrow('foo-');
             });
 
-            it('should return original URL for subdomain with leading hyphen', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, '-foo')).to.equal(originalUrl);
+            it('should throw for subdomain with leading hyphen', () => {
+                expectThrow('-foo');
             });
 
-            it('should return original URL for non-pl hyphenated subdomain', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test-123')).to.equal(originalUrl);
+            it('should throw for non-pl hyphenated subdomain', () => {
+                expectThrow('test-123');
             });
 
             it('should create URL with PrivateLink pl-{prefix} subdomain', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
                 expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'pl-vkuhvk4v')).to.equal('https://pl-vkuhvk4v.api.sandbox.checkout.com');
                 expect(EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'pl-abc123')).to.equal('https://pl-abc123.api.sandbox.checkout.com');
             });
 
-            it('should return original URL for subdomain with spaces', () => {
-                const originalUrl = 'https://api.sandbox.checkout.com';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test 123');
-                
-                expect(result).to.equal(originalUrl);
+            it('should throw for subdomain with spaces', () => {
+                expectThrow('test 123');
             });
 
             it('should create URL with short subdomain (2 chars)', () => {
@@ -176,11 +163,10 @@ describe('EnvironmentSubdomain', () => {
         });
 
         describe('error handling', () => {
-            it('should return original URL for malformed URLs', () => {
-                const originalUrl = 'not-a-valid-url';
-                const result = EnvironmentSubdomain.createUrlWithSubdomain(originalUrl, 'test1234');
-                
-                expect(result).to.equal(originalUrl);
+            it('should throw for malformed URLs', () => {
+                expect(() =>
+                    EnvironmentSubdomain.createUrlWithSubdomain('not-a-valid-url', 'test1234')
+                ).to.throw();
             });
         });
     });
