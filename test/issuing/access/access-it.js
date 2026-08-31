@@ -12,7 +12,7 @@ afterEach(() => {
     nock.enableNetConnect();
 });
 
-describe.skip('Integration::Issuing::Access - AuthenticationError: Requires CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_ID and CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_SECRET with Issuing enabled', function () {
+describe.skip('Integration::Issuing::Access - AuthenticationError: Requires CHECKOUT_DEFAULT_OAUTH_CLIENT_ID and CHECKOUT_DEFAULT_OAUTH_CLIENT_SECRET with Issuing enabled', function () {
     it('should request cardholder access token', async function () {
         const cardholder = await createCardholder();
         const response = await cko_issuing.issuing.requestCardholderAccessToken({
