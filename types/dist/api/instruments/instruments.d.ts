@@ -8,5 +8,5 @@ export default class Instruments {
     update: (id: string, body: Object) => Promise<Object>;
     delete: (id: string) => Promise<Object>;
     revoke: (id: string) => Promise<Object>;
-    getBankAccountFieldFormatting: (country: string, currency: string) => Promise<Object>;
+    getBankAccountFieldFormatting: (country: string, currency: string, query?: Object) => Promise<Object>;
 }

@@ -21,6 +21,7 @@ export { default as Baloto } from './api/apm-specific/baloto.js';
 export { default as Oxxo } from './api/apm-specific/oxxo.js';
 export { default as Klarna } from './api/apm-specific/klarna.js';
 export { default as Sepa } from './api/apm-specific/sepa.js';
+export { default as Bacs } from './api/apm-specific/bacs.js';
 export { default as Access } from './api/access/access.js';
 export { default as Forex } from './api/forex/forex.js';
 export { default as ApplePay } from './api/apple-pay/apple-pay.js';

@@ -400,6 +400,7 @@ The SDK provides access to all Checkout.com API endpoints:
 | **Access** | OAuth token management | `cko.access` |
 | **Account Updater** | Real-time account updater | `cko.accountUpdater` |
 | **Apple Pay** | Apple Pay certificate management | `cko.applePay` |
+| **Bacs Direct Debit** | Send Bacs Direct Debit pre-notifications | `cko.bacs` |
 | **Balances** | Query entity balances | `cko.balances` |
 | **~~Baloto~~** | ⚠️ **Deprecated** - Use `cko.payments` instead | ~~`cko.baloto`~~ |
 | **~~Boleto~~** | ⚠️ **Deprecated** - Use `cko.payments` instead | ~~`cko.boleto`~~ |
