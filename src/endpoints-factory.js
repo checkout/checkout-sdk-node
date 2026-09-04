@@ -10,6 +10,7 @@ export function createEndpoints(config) {
         accountUpdater: new ENDPOINTS.AccountUpdater(config),
         agenticCommerce: new ENDPOINTS.AgenticCommerce(config),
         applePay: new ENDPOINTS.ApplePay(config),
+        bacs: new ENDPOINTS.Bacs(config),
         balances: new ENDPOINTS.Balances(config),
         baloto: new ENDPOINTS.Baloto(config),
         boleto: new ENDPOINTS.Boleto(config),

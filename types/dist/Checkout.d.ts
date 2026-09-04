@@ -6,6 +6,7 @@ import {
     AccountUpdater,
     AgenticCommerce,
     ApplePay,
+    Bacs,
     Balances,
     Baloto,
     Boleto,
@@ -129,6 +130,7 @@ export default class Checkout {
     pagoFacil: PagoFacil;
     rapipago: Rapipago;
     boleto: Boleto;
+    bacs: Bacs;
     baloto: Baloto;
     oxxo: Oxxo;
     klarna: Klarna;

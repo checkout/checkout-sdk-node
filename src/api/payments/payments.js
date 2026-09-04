@@ -43,7 +43,26 @@ export default class Payments {
      *
      * Notable optional fields (swagger PaymentRequest, 2026-04 → 2026-06):
      *  - body.source — supports BLIK via `{ type: 'blik', ... }` per
-     *    `PaymentRequestBlikSource` (2026-05-08).
+     *    `PaymentRequestBlikSource` (2026-05-08), and Bacs Direct Debit via
+     *    `{ type: 'bacs', id: 'src_...' }` per `PaymentRequestBacsSource`
+     *    (2026-07-30) — both fields required. Pass `type` explicitly: with `type`
+     *    omitted, `setSourceOrDestinationType` infers `id` (not `bacs`) from a
+     *    `src_`-prefixed id. The `bacs` source echoes back as
+     *    `PaymentGetResponseBacsSource` (`type` + `id`) on retrieval.
+     *  - body.source — SEPA Direct Debit via `{ type: 'sepa', ... }` per
+     *    `PaymentRequestSEPAV4Source` (2026-07-30). Required: `type`, `country`,
+     *    `account_number` (the IBAN), `currency` and `account_holder`, whose
+     *    `billing_address` is itself required with all five of `address_line1`,
+     *    `address_line2`, `city`, `zip` and `country`. Optional: `mandate_id`,
+     *    `date_of_signature` (`yyyy-MM-dd`) and `mandate_type` — `Core` or `B2B`,
+     *    capitalised. `account_holder` also takes optional `first_name`, `last_name`,
+     *    `company_name` and `type`. **Send `account_holder.type` lowercase**
+     *    (`individual` / `corporate`). The swagger declares it capitalised
+     *    (`Individual` / `Corporate`) at this one site, but that looks like a spec
+     *    defect: the other 23 account-holder-type sites in the specification are all
+     *    lowercase - including the sibling `PaymentRequestAchSource` - and every other
+     *    Checkout.com SDK sends lowercase here. Pending confirmation from the API
+     *    owners, lowercase is the safe value. Note this source carries no `bank_code`.
      *  - body.fallback_source — alternate source attempted if the primary source
      *    fails (2026-04-23).
      *  - body.processing.affiliate_id / processing.affiliate_url — affiliate
