@@ -17,6 +17,12 @@ export const FORWARD_LIVE_URL = 'https://forward.checkout.com';
 
 export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
 export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
+// Host-level balances base, without the /balances path segment. Needed by endpoints on the
+// balances host whose path does not start with /balances, such as
+// GET /entities/{entityId}/currency-accounts/{currencyAccountId}/top-up-instructions.
+// BALANCES_*_URL above keeps its /balances suffix so existing callers are unaffected.
+export const BALANCES_HOST_SANDBOX_URL = 'https://balances.sandbox.checkout.com';
+export const BALANCES_HOST_LIVE_URL = 'https://balances.checkout.com';
 
 export const IDENTITY_VERIFICATION_SANDBOX_URL = 'https://identity-verification.sandbox.checkout.com';
 export const IDENTITY_VERIFICATION_LIVE_URL = 'https://identity-verification.checkout.com';

@@ -59,6 +59,11 @@ export default class PaymentSessions {
      *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
      *    `transaction_risk_assessment`, `data_share`) are accepted only by
      *    `cko.sessions.request` and are rejected here.
+     *  - body.amount_allocations — added 2026-08-21. The sub-entities the payment
+     *    is being processed on behalf of; min 1, max 50 items. Each entry takes
+     *    `id` and `amount` ([Required]), plus optional `reference` (max 50
+     *    characters) and `commission` (`{ amount, percentage }`, percentage min 0
+     *    max 100). The sum of all split amounts must equal the payment amount.
      *
      * @memberof PaymentSessions
      * @param {string} id The payment session ID.
