@@ -55,7 +55,7 @@ export default class Balances {
             }
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-            const url = `${this.config.balancesUrl}/${id}${queryString}`;
+            const url = `${this.config.balancesUrl}/balances/${id}${queryString}`;
             
             const response = await get(
                 this.config.httpClient,
@@ -74,9 +74,9 @@ export default class Balances {
      *
      * Note: The sub-account is referred to as `currency account` in the API.
      *
-     * Uses `config.balancesHostUrl`, not `config.balancesUrl`: the latter already ends in
-     * `/balances`, and this endpoint's path starts with `/entities`. Reusing it would produce
-     * `.../balances/entities/...` and 404.
+     * `config.balancesUrl` is the balances host root, so this endpoint's `/entities/...` path
+     * is appended directly. Do not prefix it with `/balances`: that segment belongs to
+     * `retrieve`'s path, not to the base, and adding it here would 404.
      *
      * The resolved response has this shape (keys are the wire names):
      *  - `currency_account_id` (string, [Required]) the sub-account the instructions apply to.
@@ -105,7 +105,7 @@ export default class Balances {
      */
     async retrieveTopUpInstructions(entityId, currencyAccountId) {
         try {
-            const url = `${this.config.balancesHostUrl}/entities/${entityId}/currency-accounts/${currencyAccountId}/top-up-instructions`;
+            const url = `${this.config.balancesUrl}/entities/${entityId}/currency-accounts/${currencyAccountId}/top-up-instructions`;
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;

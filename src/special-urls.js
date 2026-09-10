@@ -14,9 +14,6 @@ export function calculateSpecialUrls(environment) {
         transfersUrl: isSandbox ? CONFIG.TRANSFERS_SANDBOX_URL : CONFIG.TRANSFERS_LIVE_URL,
         forwardUrl: isSandbox ? CONFIG.FORWARD_SANDBOX_URL : CONFIG.FORWARD_LIVE_URL,
         balancesUrl: isSandbox ? CONFIG.BALANCES_SANDBOX_URL : CONFIG.BALANCES_LIVE_URL,
-        balancesHostUrl: isSandbox
-            ? CONFIG.BALANCES_HOST_SANDBOX_URL
-            : CONFIG.BALANCES_HOST_LIVE_URL,
         identityVerificationUrl: isSandbox
             ? CONFIG.IDENTITY_VERIFICATION_SANDBOX_URL
             : CONFIG.IDENTITY_VERIFICATION_LIVE_URL,
