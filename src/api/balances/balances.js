@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the balances host root (config.balancesUrl).
+const BALANCES_PATH = 'balances';
+const ENTITIES_PATH = 'entities';
+const CURRENCY_ACCOUNTS_PATH = 'currency-accounts';
+const TOP_UP_INSTRUCTIONS_PATH = 'top-up-instructions';
+
 /**
  * Class dealing with the /balances endpoint
  *
@@ -34,7 +40,7 @@ export default class Balances {
      */
     async retrieve(id, options) {
         try {
-            let queryParams = [];
+            const queryParams = [];
 
             // Backward compatibility: if options is a string, treat it as currency
             if (typeof options === 'string') {
@@ -55,7 +61,7 @@ export default class Balances {
             }
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-            const url = `${this.config.balancesUrl}/${id}${queryString}`;
+            const url = `${this.config.balancesUrl}/${BALANCES_PATH}/${id}${queryString}`;
             
             const response = await get(
                 this.config.httpClient,
@@ -63,6 +69,54 @@ export default class Balances {
                 this.config,
                 this.config.sk
             );
+            return await response.json;
+        } catch (err) {
+            throw await determineError(err);
+        }
+    }
+
+    /**
+     * Retrieves the bank details required to top up a sub-account, along with the payment
+     * reference that attributes an incoming payment to that sub-account.
+     *
+     * Note: The sub-account is referred to as `currency account` in the API.
+     *
+     * `config.balancesUrl` is the balances host root, so this endpoint's `/entities/...` path
+     * is appended directly. Do not prefix it with `/balances`: that segment belongs to
+     * `retrieve`'s path, not to the base, and adding it here would 404.
+     *
+     * The resolved response has this shape (keys are the wire names):
+     *  - `currency_account_id` (string, [Required]) the sub-account the instructions apply to.
+     *  - `currency` (string, [Required]) the currency funds must be sent in, as a three-letter
+     *    ISO 4217 code. This is the sub-account's holding currency, returned as
+     *    `holding_currency` by `cko.balances.retrieve`.
+     *  - `payment_reference` (string, [Required]) the reference that must be quoted on the
+     *    payment; it is how an incoming payment is attributed to the sub-account.
+     *  - `bank_details` (object, [Required]) with optional `domestic` and `international`
+     *    entries. **Both rails are optional** and availability depends on the sub-account's
+     *    holding currency, jurisdiction and banking partner. Do not assume both are present;
+     *    `bank_details` may contain neither.
+     *
+     * Each rail, when present, carries `beneficiary_account_name` and `bank_name` ([Required]),
+     * plus any of `beneficiary_address`, `bank_address`, `account_number`, `sort_code`
+     * (United Kingdom domestic), `routing_number` (United States domestic), `iban` and
+     * `swift_code` (international), which are omitted when they do not apply.
+     *
+     * @memberof Balances
+     * @param {string} entityId The ID of the entity that owns the sub-account, or of an entity
+     *   above it in your hierarchy. A platform can use its own entity ID to reach the
+     *   sub-accounts of any entity beneath it.
+     * @param {string} currencyAccountId The ID of the sub-account to retrieve top-up
+     *   instructions for.
+     * @return {Promise<Object>} A promise to the top-up instructions response.
+     */
+    async retrieveTopUpInstructions(entityId, currencyAccountId) {
+        try {
+            const url =
+                `${this.config.balancesUrl}/${ENTITIES_PATH}/${entityId}` +
+                `/${CURRENCY_ACCOUNTS_PATH}/${currencyAccountId}/${TOP_UP_INSTRUCTIONS_PATH}`;
+
+            const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
             throw await determineError(err);

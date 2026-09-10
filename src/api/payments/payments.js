@@ -3,6 +3,17 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { setSourceOrDestinationType, validatePayment } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const ACTIONS_PATH = 'actions';
+const AUTHORIZATIONS_PATH = 'authorizations';
+const CANCELLATIONS_PATH = 'cancellations';
+const CAPTURES_PATH = 'captures';
+const PAYMENTS_PATH = 'payments';
+const REFUNDS_PATH = 'refunds';
+const REVERSALS_PATH = 'reversals';
+const SEARCH_PATH = 'search';
+const VOIDS_PATH = 'voids';
+
 const addUtilityParams = (json) => {
     if (!json || typeof json !== 'object') return json;
     let requiresRedirect = false;
@@ -93,7 +104,7 @@ export default class Payments {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments`,
+                `${this.config.host}/${PAYMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -113,7 +124,7 @@ export default class Payments {
      * @return {Promise<Object>} A promise to the get payment response.
      */
     async getPaymentList(body) {
-        let url = `${this.config.host}/payments`;
+        let url = `${this.config.host}/${PAYMENTS_PATH}`;
 
         if (body) {
             const queryString = Object.keys(body)
@@ -152,7 +163,7 @@ export default class Payments {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/payments/${id}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -174,7 +185,7 @@ export default class Payments {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/payments/${id}/actions`,
+                `${this.config.host}/${PAYMENTS_PATH}/${id}/${ACTIONS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -198,7 +209,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${id}/authorizations`,
+                `${this.config.host}/${PAYMENTS_PATH}/${id}/${AUTHORIZATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -224,7 +235,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${id}/cancellations`,
+                `${this.config.host}/${PAYMENTS_PATH}/${id}/${CANCELLATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -249,7 +260,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${paymentId}/captures`,
+                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${CAPTURES_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -274,7 +285,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${paymentId}/refunds`,
+                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${REFUNDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -302,7 +313,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${paymentId}/reversals`,
+                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${REVERSALS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -328,7 +339,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/${paymentId}/voids`,
+                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${VOIDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -351,7 +362,7 @@ export default class Payments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payments/search`,
+                `${this.config.host}/${PAYMENTS_PATH}/${SEARCH_PATH}`,
                 this.config,
                 this.config.sk,
                 body

@@ -1,6 +1,17 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACTIONS_PATH = 'actions';
+const CONDITIONS_PATH = 'conditions';
+const EVENTS_PATH = 'events';
+const EVENT_TYPES_PATH = 'event-types';
+const REFLOW_PATH = 'reflow';
+const SUBJECT_PATH = 'subject';
+const TEST_PATH = 'test';
+const WORKFLOWS_PATH = 'workflows';
+const WORKFLOW_PATH = 'workflow';
+
 /**
  * Class dealing with the /workflows endpoint
  *
@@ -22,7 +33,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows`,
+                `${this.config.host}/${WORKFLOWS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -43,7 +54,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows`,
+                `${this.config.host}/${WORKFLOWS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -65,7 +76,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -87,7 +98,7 @@ export default class Workflows {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -109,7 +120,7 @@ export default class Workflows {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -137,7 +148,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}/actions`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${ACTIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -161,7 +172,7 @@ export default class Workflows {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${ACTIONS_PATH}/${workflowActionId}`,
                 this.config,
                 this.config.sk,
                 body
@@ -184,7 +195,7 @@ export default class Workflows {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${workflowId}/actions/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${ACTIONS_PATH}/${workflowActionId}`,
                 this.config,
                 this.config.sk
             );
@@ -206,7 +217,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}/conditions`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${CONDITIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -230,7 +241,7 @@ export default class Workflows {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${CONDITIONS_PATH}/${workflowConditionId}`,
                 this.config,
                 this.config.sk,
                 body
@@ -253,7 +264,7 @@ export default class Workflows {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${workflowId}/conditions/${workflowConditionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${CONDITIONS_PATH}/${workflowConditionId}`,
                 this.config,
                 this.config.sk
             );
@@ -275,7 +286,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/${id}/test`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${TEST_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -296,7 +307,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows/event-types`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENT_TYPES_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -317,7 +328,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -339,7 +350,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/${eventId}/actions/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${eventId}/${ACTIONS_PATH}/${workflowActionId}`,
                 this.config,
                 this.config.sk
             );
@@ -360,7 +371,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/${id}/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${id}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -384,7 +395,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/${eventId}/workflow/${workflowId}/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${eventId}/${WORKFLOW_PATH}/${workflowId}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -406,7 +417,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk,
                 {
@@ -432,7 +443,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk,
                 {
@@ -457,7 +468,7 @@ export default class Workflows {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/subject/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -478,7 +489,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/subject/${id}/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${id}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -500,7 +511,7 @@ export default class Workflows {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/workflows/events/subject/${subjectId}/workflow/${workflowId}/reflow`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${subjectId}/${WORKFLOW_PATH}/${workflowId}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );

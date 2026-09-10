@@ -1,6 +1,10 @@
 import { get } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const DIGITAL_CARDS_PATH = 'digital-cards';
+const ISSUING_PATH = 'issuing';
+
 /**
  * DigitalCards class for managing digital card operations
  *
@@ -24,7 +28,7 @@ export default class DigitalCards {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/digital-cards/${digitalCardId}`,
+                `${this.config.host}/${ISSUING_PATH}/${DIGITAL_CARDS_PATH}/${digitalCardId}`,
                 this.config,
                 this.config.sk
             );

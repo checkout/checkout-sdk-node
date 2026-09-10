@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ENTITIES_PATH = 'entities';
+const REQUIREMENTS_DUE_PATH = 'requirements-due';
+const SCENARIOS_PATH = 'scenarios';
+const SIMULATE_PATH = 'simulate';
+const STATUS_PATH = 'status';
+
 /**
  * Class dealing with the /simulate endpoints (Onboarding Simulator, sandbox only).
  *
@@ -22,7 +29,7 @@ export default class OnboardingSimulator {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/simulate/requirements-due`,
+                `${this.config.host}/${SIMULATE_PATH}/${REQUIREMENTS_DUE_PATH}`,
                 this.config,
                 this.config.access
             );
@@ -42,7 +49,7 @@ export default class OnboardingSimulator {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/simulate/scenarios`,
+                `${this.config.host}/${SIMULATE_PATH}/${SCENARIOS_PATH}`,
                 this.config,
                 this.config.access
             );
@@ -64,7 +71,7 @@ export default class OnboardingSimulator {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/simulate/entities/${entityId}/requirements-due`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_DUE_PATH}`,
                 this.config,
                 this.config.access,
                 body
@@ -87,7 +94,7 @@ export default class OnboardingSimulator {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/simulate/entities/${entityId}/scenarios/${scenarioId}`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${SCENARIOS_PATH}/${scenarioId}`,
                 this.config,
                 this.config.access
             );
@@ -109,7 +116,7 @@ export default class OnboardingSimulator {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/simulate/entities/${entityId}/status`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${STATUS_PATH}`,
                 this.config,
                 this.config.access,
                 body

@@ -2,6 +2,9 @@ import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 import { setSourceType } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const SOURCES_PATH = 'sources';
+
 /**
  * Class dealing with the /sources endpoint
  * @deprecated v2.x.x - Use Payment Sources API instead
@@ -27,7 +30,7 @@ export default class Sources {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/sources`,
+                `${this.config.host}/${SOURCES_PATH}`,
                 this.config,
                 this.config.sk,
                 body

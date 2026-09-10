@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, patch } from '../../services/http.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const ANONYMIZE_PATH = 'anonymize';
+const APPLICANTS_PATH = 'applicants';
+
 /**
  * Class dealing with the /applicants endpoint (Identity Verification)
  *
@@ -21,7 +25,7 @@ export default class Applicants {
      */
     async createApplicant(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/applicants`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -44,7 +48,7 @@ export default class Applicants {
      */
     async getApplicant(applicantId) {
         try {
-            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -67,7 +71,7 @@ export default class Applicants {
      */
     async updateApplicant(applicantId, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}`;
             const response = await patch(
                 this.config.httpClient,
                 url,
@@ -90,7 +94,7 @@ export default class Applicants {
      */
     async anonymizeApplicant(applicantId) {
         try {
-            const url = `${this.config.identityVerificationUrl}/applicants/${applicantId}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,

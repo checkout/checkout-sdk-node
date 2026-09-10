@@ -2,6 +2,11 @@ import { _delete, get, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const CONTROLS_PATH = 'controls';
+const CONTROL_GROUPS_PATH = 'control-groups';
+const ISSUING_PATH = 'issuing';
+
 /**
  * ControlGroups class for managing control group operations
  *
@@ -25,7 +30,7 @@ export default class ControlGroups {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-groups`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -46,7 +51,7 @@ export default class ControlGroups {
      */
     async getControlGroupByTarget(params) {
         try {
-            const url = buildQueryParams(`${this.config.host}/issuing/controls/control-groups`, params);
+            const url = buildQueryParams(`${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}`, params);
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -66,7 +71,7 @@ export default class ControlGroups {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-groups/${controlGroupId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${controlGroupId}`,
                 this.config,
                 this.config.sk
             );
@@ -89,7 +94,7 @@ export default class ControlGroups {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-groups/${controlGroupId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${controlGroupId}`,
                 this.config,
                 this.config.sk
             );

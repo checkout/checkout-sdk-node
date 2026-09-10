@@ -1,6 +1,14 @@
 import { get, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const AMEND_PATH = 'amend';
+const CANCEL_PATH = 'cancel';
+const DISPUTES_PATH = 'disputes';
+const ESCALATE_PATH = 'escalate';
+const ISSUING_PATH = 'issuing';
+const SUBMIT_PATH = 'submit';
+
 /**
  * Disputes class for managing dispute operations
  *
@@ -29,7 +37,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -52,7 +60,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes/${disputeId}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}`,
                 this.config,
                 this.config.sk
             );
@@ -75,7 +83,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes/${disputeId}/cancel`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${CANCEL_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -99,7 +107,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes/${disputeId}/escalate`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${ESCALATE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -127,7 +135,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes/${disputeId}/amend`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${AMEND_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -154,7 +162,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/disputes/${disputeId}/submit`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${SUBMIT_PATH}`,
                 this.config,
                 this.config.sk,
                 body

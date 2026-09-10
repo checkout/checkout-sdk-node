@@ -2,6 +2,10 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { setTokenType } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const METADATA_PATH = 'metadata';
+const TOKENS_PATH = 'tokens';
+
 /**
  * Class dealing with the /tokens endpoint
  *
@@ -26,7 +30,7 @@ export default class Tokens {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/tokens`,
+                `${this.config.host}/${TOKENS_PATH}`,
                 this.config,
                 this.config.pk,
                 body
@@ -49,7 +53,7 @@ export default class Tokens {
             const access = this.config.access ? this.config.access : this.config.sk;
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/tokens/${tokenId}/metadata`,
+                `${this.config.host}/${TOKENS_PATH}/${tokenId}/${METADATA_PATH}`,
                 this.config,
                 access
             );

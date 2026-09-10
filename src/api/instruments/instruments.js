@@ -2,6 +2,12 @@ import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
 import { setInstrumentType } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const BANK_ACCOUNTS_PATH = 'bank-accounts';
+const INSTRUMENTS_PATH = 'instruments';
+const REVOKE_PATH = 'revoke';
+const VALIDATION_PATH = 'validation';
+
 /**
  * Class dealing with the /instruments endpoint
  *
@@ -81,7 +87,7 @@ export default class Instruments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/instruments`,
+                `${this.config.host}/${INSTRUMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -127,7 +133,7 @@ export default class Instruments {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/instruments/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -176,7 +182,7 @@ export default class Instruments {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/instruments/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -198,7 +204,7 @@ export default class Instruments {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/instruments/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -225,7 +231,7 @@ export default class Instruments {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/instruments/${id}/revoke`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${id}/${REVOKE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -281,7 +287,7 @@ export default class Instruments {
 
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/validation/bank-accounts/${country}/${currency}${queryString}`,
+                `${this.config.host}/${VALIDATION_PATH}/${BANK_ACCOUNTS_PATH}/${country}/${currency}${queryString}`,
                 this.config,
                 this.config.sk
             );

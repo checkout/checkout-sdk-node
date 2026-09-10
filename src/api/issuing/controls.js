@@ -2,6 +2,10 @@ import { _delete, get, post, put } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const CONTROLS_PATH = 'controls';
+const ISSUING_PATH = 'issuing';
+
 /**
  * Controls class for managing card control operations
  *
@@ -24,7 +28,7 @@ export default class Controls {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -44,7 +48,7 @@ export default class Controls {
      */
     async getCardControls(params) {
         try {
-            const url = buildQueryParams(`${this.config.host}/issuing/controls`, params);
+            const url = buildQueryParams(`${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}`, params);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -64,7 +68,7 @@ export default class Controls {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -86,7 +90,7 @@ export default class Controls {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -108,7 +112,7 @@ export default class Controls {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );

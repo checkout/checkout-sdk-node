@@ -1,6 +1,12 @@
 import { post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const ACCESS_PATH = 'access';
+const CONNECT_PATH = 'connect';
+const ISSUING_PATH = 'issuing';
+const TOKEN_PATH = 'token';
+
 /**
  * Access class for managing cardholder access token operations
  *
@@ -24,7 +30,7 @@ export default class Access {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/access/connect/token`,
+                `${this.config.host}/${ISSUING_PATH}/${ACCESS_PATH}/${CONNECT_PATH}/${TOKEN_PATH}`,
                 this.config,
                 this.config.sk,
                 body

@@ -1,6 +1,11 @@
 import { get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const CARDHOLDERS_PATH = 'cardholders';
+const CARDS_PATH = 'cards';
+const ISSUING_PATH = 'issuing';
+
 /**
  * Cardholders class for managing cardholder operations
  *
@@ -23,7 +28,7 @@ export default class Cardholders {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cardholders`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -45,7 +50,7 @@ export default class Cardholders {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cardholders/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -67,7 +72,7 @@ export default class Cardholders {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cardholders/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -89,7 +94,7 @@ export default class Cardholders {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cardholders/${id}/cards`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}/${CARDS_PATH}`,
                 this.config,
                 this.config.sk
             );

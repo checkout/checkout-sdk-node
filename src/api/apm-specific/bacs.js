@@ -1,6 +1,11 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const APMS_PATH = 'apms';
+const BACS_PATH = 'bacs';
+const NOTIFICATIONS_PATH = 'notifications';
+
 /**
  * Class dealing with the /apms/bacs endpoints
  *
@@ -49,7 +54,7 @@ export default class Bacs {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/apms/bacs/notifications`,
+                `${this.config.host}/${APMS_PATH}/${BACS_PATH}/${NOTIFICATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body

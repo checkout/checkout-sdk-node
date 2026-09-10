@@ -2,6 +2,12 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const ANONYMIZE_PATH = 'anonymize';
+const ASSETS_PATH = 'assets';
+const ATTEMPTS_PATH = 'attempts';
+const FACE_AUTHENTICATIONS_PATH = 'face-authentications';
+
 /**
  * Class dealing with the /face-authentications endpoint
  *
@@ -23,7 +29,7 @@ export default class FaceAuthentications {
      */
     async createFaceAuthentication(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -47,7 +53,7 @@ export default class FaceAuthentications {
      */
     async getFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -70,7 +76,7 @@ export default class FaceAuthentications {
      */
     async listAttempts(face_authentication_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -94,7 +100,7 @@ export default class FaceAuthentications {
      */
     async getAttempt(face_authentication_id, attempt_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -120,7 +126,7 @@ export default class FaceAuthentications {
     async getAttemptAssets(face_authentication_id, attempt_id, params) {
         try {
             const url = buildQueryParams(
-                `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts/${attempt_id}/assets`,
+                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}/${attempt_id}/${ASSETS_PATH}`,
                 params
             );
 
@@ -147,7 +153,7 @@ export default class FaceAuthentications {
      */
     async createAttempt(face_authentication_id, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -171,7 +177,7 @@ export default class FaceAuthentications {
      */
     async anonymizeFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/face-authentications/${face_authentication_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,

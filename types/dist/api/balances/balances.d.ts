@@ -10,4 +10,6 @@ export default class Balances {
     constructor(config: config);
 
     retrieve: (id: string, options?: string | BalancesRetrieveOptions) => Promise<any>;
+
+    retrieveTopUpInstructions: (entityId: string, currencyAccountId: string) => Promise<any>;
 }

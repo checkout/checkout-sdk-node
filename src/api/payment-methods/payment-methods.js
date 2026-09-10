@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const PAYMENT_METHODS_PATH = 'payment-methods';
+
 /**
  * Class dealing with the /payment-methods endpoint
  *
@@ -22,7 +25,7 @@ export default class PaymentMethods {
      */
     async getPaymentMethods(processing_channel_id) {
         try {
-            const url = `${this.config.host}/payment-methods?processing_channel_id=${processing_channel_id}`;
+            const url = `${this.config.host}/${PAYMENT_METHODS_PATH}?processing_channel_id=${processing_channel_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,

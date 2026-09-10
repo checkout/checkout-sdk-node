@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const FILES_PATH = 'files';
+const REPORTS_PATH = 'reports';
+
 /**
  * Class dealing with the /reports api endpoint
  *
@@ -21,7 +25,7 @@ export default class Reports {
      */
     async getAllReports(parameters) {
         try {
-            let url = `${this.config.host}/reports`;
+            let url = `${this.config.host}/${REPORTS_PATH}`;
 
             if (parameters) {
                 const queryString = Object.keys(parameters)
@@ -48,7 +52,7 @@ export default class Reports {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reports/${id}`,
+                `${this.config.host}/${REPORTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -70,7 +74,7 @@ export default class Reports {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reports/${id}/files/${fileId}`,
+                `${this.config.host}/${REPORTS_PATH}/${id}/${FILES_PATH}/${fileId}`,
                 { ...this.config, csv: true },
                 this.config.sk
             );

@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const CARD_PATH = 'card';
+const METADATA_PATH = 'metadata';
+
 /**
  * Class dealing with the /metadata/card endpoint
  *
@@ -24,7 +28,7 @@ export default class CardMetadata {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/metadata/card`,
+                `${this.config.host}/${METADATA_PATH}/${CARD_PATH}`,
                 this.config,
                 this.config.sk,
                 body

@@ -15,8 +15,13 @@ export const TRANSFERS_LIVE_URL = 'https://transfers.checkout.com/transfers';
 export const FORWARD_SANDBOX_URL = 'https://forward.sandbox.checkout.com';
 export const FORWARD_LIVE_URL = 'https://forward.checkout.com';
 
-export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com/balances';
-export const BALANCES_LIVE_URL = 'https://balances.checkout.com/balances';
+// Balances host root (no trailing slash). The `balances` path segment is appended by the
+// Balances client methods (matching every other SDK). The swagger declares both balances
+// operations under path-level servers of https://balances(.sandbox).checkout.com, with
+// /balances/{id} and /entities/{entityId}/... as the operation paths -- so the host, not
+// the host plus a first segment, is the base.
+export const BALANCES_SANDBOX_URL = 'https://balances.sandbox.checkout.com';
+export const BALANCES_LIVE_URL = 'https://balances.checkout.com';
 
 export const IDENTITY_VERIFICATION_SANDBOX_URL = 'https://identity-verification.sandbox.checkout.com';
 export const IDENTITY_VERIFICATION_LIVE_URL = 'https://identity-verification.checkout.com';

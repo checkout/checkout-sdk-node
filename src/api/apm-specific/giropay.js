@@ -1,6 +1,11 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const BANKS_PATH = 'banks';
+const EPS_PATH = 'eps';
+const GIROPAY_PATH = 'giropay';
+
 /**
  * Class dealing with the /giropay endpoint
  *
@@ -24,7 +29,7 @@ export default class Giropay {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/giropay/eps/banks`,
+                `${this.config.host}/${GIROPAY_PATH}/${EPS_PATH}/${BANKS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -45,7 +50,7 @@ export default class Giropay {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/giropay/banks`,
+                `${this.config.host}/${GIROPAY_PATH}/${BANKS_PATH}`,
                 this.config,
                 this.config.sk
             );

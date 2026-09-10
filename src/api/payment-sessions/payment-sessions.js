@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const COMPLETE_PATH = 'complete';
+const PAYMENT_SESSIONS_PATH = 'payment-sessions';
+const SUBMIT_PATH = 'submit';
+
 /**
  * Class dealing with the /payment-sessions endpoint
  *
@@ -38,7 +43,7 @@ export default class PaymentSessions {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -59,6 +64,11 @@ export default class PaymentSessions {
      *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
      *    `transaction_risk_assessment`, `data_share`) are accepted only by
      *    `cko.sessions.request` and are rejected here.
+     *  - body.amount_allocations — added 2026-08-21. The sub-entities the payment
+     *    is being processed on behalf of; min 1, max 50 items. Each entry takes
+     *    `id` and `amount` ([Required]), plus optional `reference` (max 50
+     *    characters) and `commission` (`{ amount, percentage }`, percentage min 0
+     *    max 100). The sum of all split amounts must equal the payment amount.
      *
      * @memberof PaymentSessions
      * @param {string} id The payment session ID.
@@ -69,7 +79,7 @@ export default class PaymentSessions {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions/${id}/submit`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${id}/${SUBMIT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -102,7 +112,7 @@ export default class PaymentSessions {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions/complete`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${COMPLETE_PATH}`,
                 this.config,
                 this.config.sk,
                 body

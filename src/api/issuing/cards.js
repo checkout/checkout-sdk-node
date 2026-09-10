@@ -2,6 +2,16 @@ import { get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const ACTIVATE_PATH = 'activate';
+const CARDS_PATH = 'cards';
+const CREDENTIALS_PATH = 'credentials';
+const ISSUING_PATH = 'issuing';
+const RENEW_PATH = 'renew';
+const REVOKE_PATH = 'revoke';
+const SUSPEND_PATH = 'suspend';
+const THREE_DS_ENROLLMENT_PATH = '3ds-enrollment';
+
 /**
  * Cards class for managing card operations
  *
@@ -25,7 +35,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -48,7 +58,7 @@ export default class Cards {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -70,7 +80,7 @@ export default class Cards {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -93,7 +103,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -116,7 +126,7 @@ export default class Cards {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -138,7 +148,7 @@ export default class Cards {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/3ds-enrollment`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -159,7 +169,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/activate`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${ACTIVATE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -180,7 +190,7 @@ export default class Cards {
     async getCardCredentials(id, body) {
         try {
             const url = buildQueryParams(
-                `${this.config.host}/issuing/cards/${id}/credentials`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${CREDENTIALS_PATH}`,
                 body
             );
 
@@ -203,7 +213,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/renew`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${RENEW_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -226,7 +236,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/revoke`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${REVOKE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -249,7 +259,7 @@ export default class Cards {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/cards/${id}/suspend`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${SUSPEND_PATH}`,
                 this.config,
                 this.config.sk,
                 body

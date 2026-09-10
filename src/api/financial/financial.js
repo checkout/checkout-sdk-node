@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const FINANCIAL_ACTIONS_PATH = 'financial-actions';
+
 /**
  * Class dealing with the /financial-actions api endpoint
  *
@@ -21,7 +24,7 @@ export default class Financial {
      */
     async query(parameters) {
         try {
-            let url = `${this.config.host}/financial-actions`;
+            let url = `${this.config.host}/${FINANCIAL_ACTIONS_PATH}`;
 
             if (parameters) {
                 const queryString = Object.keys(parameters)

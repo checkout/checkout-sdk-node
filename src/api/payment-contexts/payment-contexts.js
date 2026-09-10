@@ -2,6 +2,9 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const PAYMENT_CONTEXTS_PATH = 'payment-contexts';
+
 /*
  * Class dealing with the /payment-contexts endpoint
  *
@@ -27,7 +30,7 @@ export default class PaymentContexts {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-contexts`,
+                `${this.config.host}/${PAYMENT_CONTEXTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -53,7 +56,7 @@ export default class PaymentContexts {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/payment-contexts/${id}`,
+                `${this.config.host}/${PAYMENT_CONTEXTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );

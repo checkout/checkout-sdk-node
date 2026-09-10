@@ -1,6 +1,11 @@
 import { determineError } from '../../services/errors.js';
 import { get, patch, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const CRYPTOGRAMS_PATH = 'cryptograms';
+const DELETE_PATH = 'delete';
+const NETWORK_TOKENS_PATH = 'network-tokens';
+
 /**
  * Class dealing with the /network-tokens endpoint
  *
@@ -22,7 +27,7 @@ export default class NetworkTokens {
      */
     async provisionNetworkToken(body) {
         try {
-            const url = `${this.config.host}/network-tokens`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -46,7 +51,7 @@ export default class NetworkTokens {
      */
     async getNetworkToken(network_token_id) {
         try {
-            const url = `${this.config.host}/network-tokens/${network_token_id}`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -70,7 +75,7 @@ export default class NetworkTokens {
      */
     async provisionCryptogram(network_token_id, body) {
         try {
-            const url = `${this.config.host}/network-tokens/${network_token_id}/cryptograms`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}/${CRYPTOGRAMS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -95,7 +100,7 @@ export default class NetworkTokens {
      */
     async deleteNetworkToken(network_token_id) {
         try {
-            const url = `${this.config.host}/network-tokens/${network_token_id}/delete`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}/${DELETE_PATH}`;
             const response = await patch(
                 this.config.httpClient,
                 url,

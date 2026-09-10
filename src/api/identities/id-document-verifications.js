@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const ANONYMIZE_PATH = 'anonymize';
+const ATTEMPTS_PATH = 'attempts';
+const ID_DOCUMENT_VERIFICATIONS_PATH = 'id-document-verifications';
+const PDF_REPORT_PATH = 'pdf-report';
+
 /**
  * Class dealing with the /id-document-verifications endpoint
  *
@@ -22,7 +28,7 @@ export default class IDDocumentVerifications {
      */
     async createIDDocumentVerification(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -46,7 +52,7 @@ export default class IDDocumentVerifications {
      */
     async getIDDocumentVerification(id_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -69,7 +75,7 @@ export default class IDDocumentVerifications {
      */
     async listAttempts(id_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}/${ATTEMPTS_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -93,7 +99,7 @@ export default class IDDocumentVerifications {
      */
     async getAttempt(id_document_verification_id, attempt_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}/${ATTEMPTS_PATH}/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -116,7 +122,7 @@ export default class IDDocumentVerifications {
      */
     async anonymizeIDDocumentVerification(id_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -141,7 +147,7 @@ export default class IDDocumentVerifications {
      */
     async createAttempt(id_document_verification_id, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}/${ATTEMPTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -166,7 +172,7 @@ export default class IDDocumentVerifications {
      */
     async getPDFReport(id_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/id-document-verifications/${id_document_verification_id}/pdf-report`;
+            const url = `${this.config.identityVerificationUrl}/${ID_DOCUMENT_VERIFICATIONS_PATH}/${id_document_verification_id}/${PDF_REPORT_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,

@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 import { getConfigWithAcceptHeader } from './accept-header.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNTS_PATH = 'accounts';
+const ENTITIES_PATH = 'entities';
+const MEMBERS_PATH = 'members';
+
 /**
  * Sub-entity (accounts/entities) operations for the Platforms API.
  *
@@ -24,7 +29,7 @@ export default class Subentity {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk,
                 body
@@ -46,7 +51,7 @@ export default class Subentity {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk
             );
@@ -68,7 +73,7 @@ export default class Subentity {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk,
                 body
@@ -89,7 +94,7 @@ export default class Subentity {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/members`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${MEMBERS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -111,7 +116,7 @@ export default class Subentity {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/members/${userId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${MEMBERS_PATH}/${userId}`,
                 this.config,
                 this.config.sk,
                 body

@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const CUSTOMERS_PATH = 'customers';
+
 /**
  * Class dealing with the /customers endpoint
  *
@@ -23,7 +26,7 @@ export default class Customers {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/customers`,
+                `${this.config.host}/${CUSTOMERS_PATH}`,
                 this.config,
                 this.config.sk,
                 customer
@@ -45,7 +48,7 @@ export default class Customers {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/customers/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -67,7 +70,7 @@ export default class Customers {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/customers/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -93,7 +96,7 @@ export default class Customers {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/customers/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
