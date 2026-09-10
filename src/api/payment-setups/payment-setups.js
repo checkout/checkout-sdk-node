@@ -24,6 +24,15 @@ export default class PaymentSetups {
      * Creates a Payment Setup.
      * To maximize the amount of information the payment setup can use, we recommend that you create a payment setup as early
      * as possible in the customer's journey. For example, the first time they land on the basket page.
+     *
+     * Request/response (swagger `PaymentSetup`, 2026-05-26) may also include:
+     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *    city (string, max 13 characters), reference (string, max 50 characters).
+     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *    currency (string).
+     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *    local_date_time (string, date-time format).
+     *
      * @memberof PaymentSetups
      * @param {Object} body - Request body
      * @returns {Promise&lt;Object&gt;} A promise to the Create a Payment Setup response
@@ -51,6 +60,15 @@ export default class PaymentSetups {
      * Updates a Payment Setup.
      * You should update the payment setup whenever there are significant changes in the data relevant to the customer's
      * transaction. For example, when the customer makes a change that impacts the total payment amount.
+     *
+     * Request/response (swagger `PaymentSetup`, 2026-05-26) may also include:
+     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *    city (string, max 13 characters), reference (string, max 50 characters).
+     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *    currency (string).
+     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *    local_date_time (string, date-time format).
+     *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to update.
      * @param {Object} body - Request body
@@ -83,6 +101,12 @@ export default class PaymentSetups {
      *    when the setup was created with one. See
      *    `PaymentSetupAccountFundingTransaction` in swagger for sender /
      *    recipient / identification shapes.
+     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *    city (string, max 13 characters), reference (string, max 50 characters).
+     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *    currency (string).
+     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *    local_date_time (string, date-time format).
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
@@ -106,15 +130,15 @@ export default class PaymentSetups {
      /**
      * Confirm a Payment Setup
      * [BETA]
-     * Confirm a Payment Setup to begin processing the payment request with your chosen payment method option.
+     * Confirm a Payment Setup to begin processing the payment request with your chosen payment method.
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
-     * @param {string} payment_method_option_id - The unique identifier of the payment option to process the payment with.
+     * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card").
      * @returns {Promise&lt;Object&gt;} A promise to the Confirm a Payment Setup response
      */
-    async confirmAPaymentSetup(id, payment_method_option_id) {
+    async confirmAPaymentSetup(id, payment_method_name) {
         try {
-            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}/${CONFIRM_PATH}/${payment_method_option_id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}/${CONFIRM_PATH}/${payment_method_name}`;
             const response = await post(
                 this.config.httpClient,
                 url,

@@ -88,18 +88,18 @@ describe('Unit::Payment-Setups', () => {
             };
 
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/pay_setup_123/confirm/pmo_456')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
                 .reply(201, response
             );
 
             // Act
             const id = "pay_setup_123";
-            const payment_method_option_id = "pmo_456";
+            const payment_method_name = "tabby";
 
             const SK = 'sk_test_xxx';
             const cko = new Checkout(SK, { subdomain: '123456789' });
 
-            const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id);
+            const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name);
 
             // Assert
             expect(result).to.deep.equal(response);
@@ -113,20 +113,20 @@ describe('Unit::Payment-Setups', () => {
             const response = {};
 
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/pay_setup_123/confirm/pmo_456')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
                 .reply(400
             );
 
             // Act
             const id = "pay_setup_123";
-            const payment_method_option_id = "pmo_456";
+            const payment_method_name = "tabby";
 
             const SK = 'sk_test_xxx';
             const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
-              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id);
+              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name);
             } catch (error) {
               err = error;
             }
@@ -143,13 +143,13 @@ describe('Unit::Payment-Setups', () => {
             const response = {};
 
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/pay_setup_123/confirm/pmo_456')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
                 .reply(401
             );
 
             // Act
             const id = "pay_setup_123";
-            const payment_method_option_id = "pmo_456";
+            const payment_method_name = "tabby";
 
             const SK = 'sk_test_xxx';
             const cko = new Checkout(SK, { subdomain: '123456789' });
@@ -157,8 +157,8 @@ describe('Unit::Payment-Setups', () => {
             try
             {
               const id = "pay_setup_123";
-              const payment_method_option_id = "pmo_456";
-              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id); 
+              const payment_method_name = "tabby";
+              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name); 
             } catch (error) {
               err = error;
             }
@@ -175,20 +175,20 @@ describe('Unit::Payment-Setups', () => {
             const response = {};
 
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/pay_setup_123/confirm/pmo_456')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
                 .reply(403
             );
 
             // Act
             const id = "pay_setup_123";
-            const payment_method_option_id = "pmo_456";
+            const payment_method_name = "tabby";
 
             const SK = 'sk_test_xxx';
             const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
-              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id);
+              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name);
             } catch (error) {
               err = error;
             }
@@ -211,20 +211,20 @@ describe('Unit::Payment-Setups', () => {
             };
 
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/pay_setup_123/confirm/pmo_456')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
                 .reply(422
             );
 
             // Act
             const id = "pay_setup_123";
-            const payment_method_option_id = "pmo_456";
+            const payment_method_name = "tabby";
 
             const SK = 'sk_test_xxx';
             const cko = new Checkout(SK, { subdomain: '123456789' });
 
             try
             {
-              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_option_id);
+              const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name);
             } catch (error) {
               err = error;
             }
@@ -233,6 +233,101 @@ describe('Unit::Payment-Setups', () => {
             expect(err).to.be.instanceOf(ValidationError);
         });
 
+    });
+
+    describe('Create payment setup - Success (200) with billing_descriptor, presentment_details and terminal', () => {
+        it('should send and receive billing_descriptor, presentment_details and terminal', async () => {
+            // Arrange
+            const request = {
+              processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
+              amount: 10000,
+              currency: 'GBP',
+              payment_type: 'Regular',
+              reference: 'REF-0987-475',
+              description: 'Set of three t-shirts.',
+              billing_descriptor: {
+                name: 'Checkout.com',
+                city: 'London',
+                reference: 'Payment for order 123456'
+              },
+              presentment_details: {
+                amount: 110,
+                currency: 'EUR'
+              },
+              terminal: {
+                id: '12345678',
+                local_date_time: '2026-05-26T13:05:14+01:00'
+              }
+            };
+
+            const response = {
+              id: 'psu_mbabizu24mvu3mela5njyhpit4',
+              processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
+              amount: 10000,
+              currency: 'GBP',
+              payment_type: 'Regular',
+              reference: 'REF-0987-475',
+              description: 'Set of three t-shirts.',
+              billing_descriptor: {
+                name: 'Checkout.com',
+                city: 'London',
+                reference: 'Payment for order 123456'
+              },
+              presentment_details: {
+                amount: 110,
+                currency: 'EUR'
+              },
+              terminal: {
+                id: '12345678',
+                local_date_time: '2026-05-26T13:05:14+01:00'
+              }
+            };
+
+            nock('https://123456789.api.sandbox.checkout.com')
+                .post('/payments/setups', request)
+                .reply(200, response
+            );
+
+            // Act
+            const SK = 'sk_test_xxx';
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+
+            const result = await cko.paymentSetups.createAPaymentSetup(request);
+
+            // Assert
+            expect(result).to.deep.equal(response);
+            expect(result.billing_descriptor).to.deep.equal(request.billing_descriptor);
+            expect(result.presentment_details).to.deep.equal(request.presentment_details);
+            expect(result.terminal).to.deep.equal(request.terminal);
+        });
+    });
+
+    describe('Confirm payment setup - uses payment_method_name path segment', () => {
+        it('should build the confirm URL with the payment_method_name value, not payment_method_option_id', async () => {
+            // Arrange
+            const response = {
+              id: 'pay_mbabizu24mvu3mela5njyhpit4',
+              status: 'Authorized',
+              approved: true
+            };
+
+            nock('https://123456789.api.sandbox.checkout.com')
+                .post('/payments/setups/pay_setup_123/confirm/klarna')
+                .reply(201, response
+            );
+
+            // Act
+            const id = "pay_setup_123";
+            const payment_method_name = "klarna";
+
+            const SK = 'sk_test_xxx';
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+
+            const result = await cko.paymentSetups.confirmAPaymentSetup(id, payment_method_name);
+
+            // Assert
+            expect(result).to.deep.equal(response);
+        });
     });
 
     describe('Create payment setup - Success (200)', () => {
@@ -3044,19 +3139,96 @@ describe('Unit::Payment-Setups', () => {
     });
 
     describe('Confirm payment setup - End-to-end flow', () => {
-        it('should successfully confirm payment setup with payment method option', async () => {
+        it('should successfully confirm payment setup with payment method name', async () => {
             nock('https://123456789.api.sandbox.checkout.com')
-                .post('/payments/setups/psu_abc123/confirm/pmo_abc123')
+                .post('/payments/setups/psu_abc123/confirm/tabby')
                 .reply(200, {
                     id: "psu_abc123",
                     status: "confirmed"
                 });
 
             const cko = new Checkout('sk_test_0b9b5db6-f223-49d0-b68f-f6643dd4f808', { subdomain: '123456789' });
-            const response = await cko.paymentSetups.confirmAPaymentSetup("psu_abc123", "pmo_abc123");
+            const response = await cko.paymentSetups.confirmAPaymentSetup("psu_abc123", "tabby");
 
             expect(response).to.not.be.null;
             expect(response.status).to.equal("confirmed");
+        });
+
+        it('should build the confirm URL from id and payment_method_name (not payment_method_option_id)', async () => {
+            // Arrange: the path param is `payment_method_name` in swagger, e.g. "tabby"
+            const scope = nock('https://123456789.api.sandbox.checkout.com')
+                .post('/payments/setups/pay_setup_123/confirm/tabby')
+                .reply(200, { id: 'pay_setup_123', status: 'confirmed' });
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.confirmAPaymentSetup('pay_setup_123', 'tabby');
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(result).to.deep.equal({ id: 'pay_setup_123', status: 'confirmed' });
+        });
+    });
+
+    describe('Create payment setup - billing_descriptor, presentment_details and terminal', () => {
+        it('should send and receive billing_descriptor, presentment_details and terminal', async () => {
+            // Arrange
+            const request = {
+                processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
+                amount: 10000,
+                currency: 'GBP',
+                payment_type: 'Regular',
+                billing_descriptor: {
+                    name: 'Checkout.com',
+                    city: 'London',
+                    reference: 'REF-0987-475'
+                },
+                presentment_details: {
+                    amount: 10000,
+                    currency: 'GBP'
+                },
+                terminal: {
+                    id: 'TID12345',
+                    local_date_time: '2026-01-01T10:00:00Z'
+                }
+            };
+
+            const response = {
+                id: 'psu_wmakpe4nrza3rv2vhtwzoszja',
+                processing_channel_id: 'pc_q4dbxom5jbgudnjzjpz7j2z6uq',
+                amount: 10000,
+                currency: 'GBP',
+                payment_type: 'Regular',
+                billing_descriptor: {
+                    name: 'Checkout.com',
+                    city: 'London',
+                    reference: 'REF-0987-475'
+                },
+                presentment_details: {
+                    amount: 10000,
+                    currency: 'GBP'
+                },
+                terminal: {
+                    id: 'TID12345',
+                    local_date_time: '2026-01-01T10:00:00Z'
+                }
+            };
+
+            nock('https://123456789.api.sandbox.checkout.com')
+                .post('/payments/setups', request)
+                .reply(200, response);
+
+            // Act
+            const SK = 'sk_test_xxx';
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            const result = await cko.paymentSetups.createAPaymentSetup(request);
+
+            // Assert
+            expect(result).to.deep.equal(response);
+            expect(result.billing_descriptor).to.deep.equal(request.billing_descriptor);
+            expect(result.presentment_details).to.deep.equal(request.presentment_details);
+            expect(result.terminal).to.deep.equal(request.terminal);
         });
     });
 });
