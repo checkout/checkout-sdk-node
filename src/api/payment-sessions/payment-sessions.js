@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const COMPLETE_PATH = 'complete';
+const PAYMENT_SESSIONS_PATH = 'payment-sessions';
+const SUBMIT_PATH = 'submit';
+
 /**
  * Class dealing with the /payment-sessions endpoint
  *
@@ -38,7 +43,7 @@ export default class PaymentSessions {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -74,7 +79,7 @@ export default class PaymentSessions {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions/${id}/submit`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${id}/${SUBMIT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -107,7 +112,7 @@ export default class PaymentSessions {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-sessions/complete`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${COMPLETE_PATH}`,
                 this.config,
                 this.config.sk,
                 body

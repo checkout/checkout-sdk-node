@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const IDEAL_EXTERNAL_PATH = 'ideal-external';
+const ISSUERS_PATH = 'issuers';
+
 /**
  * Class dealing with the /ideal-external endpoint
  *
@@ -22,7 +26,7 @@ export default class Ideal {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/ideal-external`,
+                `${this.config.host}/${IDEAL_EXTERNAL_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -42,7 +46,7 @@ export default class Ideal {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/ideal-external/issuers`,
+                `${this.config.host}/${IDEAL_EXTERNAL_PATH}/${ISSUERS_PATH}`,
                 this.config,
                 this.config.sk
             );

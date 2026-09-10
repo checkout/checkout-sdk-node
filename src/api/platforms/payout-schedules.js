@@ -1,6 +1,11 @@
 import { determineError } from '../../services/errors.js';
 import { get, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNTS_PATH = 'accounts';
+const ENTITIES_PATH = 'entities';
+const PAYOUT_SCHEDULES_PATH = 'payout-schedules';
+
 /**
  * Payout schedules for sub-entities.
  *
@@ -33,7 +38,7 @@ export default class PayoutSchedules {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYOUT_SCHEDULES_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -67,7 +72,7 @@ export default class PayoutSchedules {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payout-schedules`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYOUT_SCHEDULES_PATH}`,
                 this.config,
                 this.config.sk,
                 body

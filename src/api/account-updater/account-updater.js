@@ -1,6 +1,10 @@
 import { post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNT_UPDATER_PATH = 'account-updater';
+const CARDS_PATH = 'cards';
+
 /**
  * Class dealing with the /account-updater API
  *
@@ -26,7 +30,7 @@ export default class AccountUpdater {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/account-updater/cards`,
+                `${this.config.host}/${ACCOUNT_UPDATER_PATH}/${CARDS_PATH}`,
                 this.config,
                 null,
                 body

@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const CANCEL_PATH = 'cancel';
+const MANDATES_PATH = 'mandates';
+const PPRO_PATH = 'ppro';
+const SEPA_EXTERNAL_PATH = 'sepa-external';
+const SEPA_PATH = 'sepa';
+
 /**
  * Class dealing with the /sepa and /ppro/sepa endpoint
  *
@@ -20,8 +27,8 @@ export default class Sepa {
      */
     async getMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/sepa-external/mandates/${id}`
-            : `${this.config.host}/sepa/mandates/${id}`;
+            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}`
+            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${id}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -38,8 +45,8 @@ export default class Sepa {
      */
     async cancelMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/sepa-external/mandates/${id}/cancel`
-            : `${this.config.host}/sepa/mandates/${id}/cancel`;
+            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`
+            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`;
 
         try {
             const response = await post(this.config.httpClient, url, this.config, this.config.sk);
@@ -57,8 +64,8 @@ export default class Sepa {
      */
     async getPPROMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/ppro/sepa-external/mandates/${id}`
-            : `${this.config.host}/ppro/sepa/mandates/${id}`;
+            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}`
+            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${id}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -75,8 +82,8 @@ export default class Sepa {
      */
     async cancelPPROMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/ppro/sepa-external/mandates/${id}/cancel`
-            : `${this.config.host}/ppro/sepa/mandates/${id}/cancel`;
+            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`
+            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`;
 
         try {
             const response = await post(this.config.httpClient, url, this.config, this.config.sk);

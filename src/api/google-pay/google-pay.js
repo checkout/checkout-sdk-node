@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const DOMAINS_PATH = 'domains';
+const DOMAIN_PATH = 'domain';
+const ENROLLMENTS_PATH = 'enrollments';
+const GOOGLEPAY_PATH = 'googlepay';
+const STATE_PATH = 'state';
+
 /**
  * Class dealing with the /googlepay endpoints.
  *
@@ -28,7 +35,7 @@ export default class GooglePay {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/googlepay/enrollments`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}`,
                 this.config,
                 this.config.access,
                 body
@@ -51,7 +58,7 @@ export default class GooglePay {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/googlepay/enrollments/${entityId}/domain`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${DOMAIN_PATH}`,
                 this.config,
                 this.config.access,
                 body
@@ -73,7 +80,7 @@ export default class GooglePay {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/googlepay/enrollments/${entityId}/domains`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${DOMAINS_PATH}`,
                 this.config,
                 this.config.access
             );
@@ -94,7 +101,7 @@ export default class GooglePay {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/googlepay/enrollments/${entityId}/state`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${STATE_PATH}`,
                 this.config,
                 this.config.access
             );

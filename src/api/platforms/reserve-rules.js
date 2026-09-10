@@ -1,6 +1,11 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNTS_PATH = 'accounts';
+const ENTITIES_PATH = 'entities';
+const RESERVE_RULES_PATH = 'reserve-rules';
+
 /**
  * Reserve rules for sub-entities.
  *
@@ -23,7 +28,7 @@ export default class ReserveRules {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${RESERVE_RULES_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -58,7 +63,7 @@ export default class ReserveRules {
 
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/reserve-rules/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${RESERVE_RULES_PATH}/${id}`,
                 config,
                 this.config.sk,
                 body
@@ -84,7 +89,7 @@ export default class ReserveRules {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${RESERVE_RULES_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -105,7 +110,7 @@ export default class ReserveRules {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/reserve-rules`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${RESERVE_RULES_PATH}`,
                 this.config,
                 this.config.sk
             );

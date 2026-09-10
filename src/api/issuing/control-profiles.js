@@ -2,6 +2,13 @@ import { _delete, get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const ADD_PATH = 'add';
+const CONTROLS_PATH = 'controls';
+const CONTROL_PROFILES_PATH = 'control-profiles';
+const ISSUING_PATH = 'issuing';
+const REMOVE_PATH = 'remove';
+
 /**
  * ControlProfiles class for managing control profile operations
  *
@@ -25,7 +32,7 @@ export default class ControlProfiles {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -46,7 +53,7 @@ export default class ControlProfiles {
      */
     async getControlProfilesByTarget(params) {
         try {
-            const url = buildQueryParams(`${this.config.host}/issuing/controls/control-profiles`, params);
+            const url = buildQueryParams(`${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}`, params);
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -66,7 +73,7 @@ export default class ControlProfiles {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
                 this.config,
                 this.config.sk
             );
@@ -89,7 +96,7 @@ export default class ControlProfiles {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
                 this.config,
                 this.config.sk,
                 body
@@ -112,7 +119,7 @@ export default class ControlProfiles {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
                 this.config,
                 this.config.sk
             );
@@ -135,7 +142,7 @@ export default class ControlProfiles {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles/${controlProfileId}/add/${targetId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}/${ADD_PATH}/${targetId}`,
                 this.config,
                 this.config.sk
             );
@@ -158,7 +165,7 @@ export default class ControlProfiles {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/controls/control-profiles/${controlProfileId}/remove/${targetId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}/${REMOVE_PATH}/${targetId}`,
                 this.config,
                 this.config.sk
             );

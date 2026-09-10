@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const COMPLIANCE_REQUESTS_PATH = 'compliance-requests';
+
 /**
  * Class dealing with the /compliance-requests endpoints.
  *
@@ -23,7 +26,7 @@ export default class ComplianceRequests {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/compliance-requests/${paymentId}`,
+                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${paymentId}`,
                 this.config,
                 this.config.sk
             );
@@ -49,7 +52,7 @@ export default class ComplianceRequests {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/compliance-requests/${paymentId}`,
+                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${paymentId}`,
                 this.config,
                 this.config.sk,
                 body

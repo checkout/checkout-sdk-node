@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const WEBHOOKS_PATH = 'webhooks';
+
 /**
  * Create and manage the webhook notifications you receive to keep up to date with
  * the status of your transactions.
@@ -23,7 +26,7 @@ export default class Webhooks {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/webhooks`,
+                `${this.config.host}/${WEBHOOKS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -44,7 +47,7 @@ export default class Webhooks {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/webhooks`,
+                `${this.config.host}/${WEBHOOKS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -66,7 +69,7 @@ export default class Webhooks {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/webhooks/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -88,7 +91,7 @@ export default class Webhooks {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/webhooks/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -111,7 +114,7 @@ export default class Webhooks {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/webhooks/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -133,7 +136,7 @@ export default class Webhooks {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/webhooks/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );

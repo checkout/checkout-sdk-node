@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const PAYMENT_LINKS_PATH = 'payment-links';
+
 /**
  * Class dealing with the /payment-links endpoint
  *
@@ -35,7 +38,7 @@ export default class PaymentLinks {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/payment-links`,
+                `${this.config.host}/${PAYMENT_LINKS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -61,7 +64,7 @@ export default class PaymentLinks {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/payment-links/${id}`,
+                `${this.config.host}/${PAYMENT_LINKS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );

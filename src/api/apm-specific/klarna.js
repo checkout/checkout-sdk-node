@@ -1,6 +1,14 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const CAPTURES_PATH = 'captures';
+const CREDIT_SESSIONS_PATH = 'credit-sessions';
+const KLARNA_EXTERNAL_PATH = 'klarna-external';
+const KLARNA_PATH = 'klarna';
+const ORDERS_PATH = 'orders';
+const VOIDS_PATH = 'voids';
+
 /**
  * Class dealing with the /klarna and /klarna-external endpoint
  *
@@ -20,8 +28,8 @@ export default class Klarna {
      */
     async createSession(body) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/credit-sessions`
-            : `${this.config.host}/klarna/credit-sessions`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${CREDIT_SESSIONS_PATH}`
+            : `${this.config.host}/${KLARNA_PATH}/${CREDIT_SESSIONS_PATH}`;
         try {
             const response = await post(
                 this.config.httpClient,
@@ -44,8 +52,8 @@ export default class Klarna {
      */
     async getSession(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/credit-sessions/${id}`
-            : `${this.config.host}/klarna/credit-sessions/${id}`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${CREDIT_SESSIONS_PATH}/${id}`
+            : `${this.config.host}/${KLARNA_PATH}/${CREDIT_SESSIONS_PATH}/${id}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -63,8 +71,8 @@ export default class Klarna {
      */
     async capture(id, body) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/orders/${id}/captures`
-            : `${this.config.host}/klarna/orders/${id}/captures`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${id}/${CAPTURES_PATH}`
+            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${id}/${CAPTURES_PATH}`;
         try {
             const response = await post(
                 this.config.httpClient,
@@ -88,8 +96,8 @@ export default class Klarna {
      */
     async void(id, body) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/klarna-external/orders/${id}/voids`
-            : `${this.config.host}/klarna/orders/${id}/voids`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${id}/${VOIDS_PATH}`
+            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${id}/${VOIDS_PATH}`;
         try {
             const response = await post(
                 this.config.httpClient,

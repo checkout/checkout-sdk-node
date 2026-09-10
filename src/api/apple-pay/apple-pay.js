@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const APPLEPAY_PATH = 'applepay';
+const CERTIFICATES_PATH = 'certificates';
+const ENROLLMENTS_PATH = 'enrollments';
+const SIGNING_REQUESTS_PATH = 'signing-requests';
+
 /**
  * Class dealing with the Apple Pay api
  *
@@ -25,7 +31,7 @@ export default class ApplePay {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/applepay/certificates`,
+                `${this.config.host}/${APPLEPAY_PATH}/${CERTIFICATES_PATH}`,
                 this.config,
                 this.config.pk,
                 body
@@ -49,7 +55,7 @@ export default class ApplePay {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/applepay/signing-requests`,
+                `${this.config.host}/${APPLEPAY_PATH}/${SIGNING_REQUESTS_PATH}`,
                 this.config,
                 this.config.pk,
                 body
@@ -73,7 +79,7 @@ export default class ApplePay {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/applepay/enrollments`,
+                `${this.config.host}/${APPLEPAY_PATH}/${ENROLLMENTS_PATH}`,
                 this.config,
                 null,
                 body

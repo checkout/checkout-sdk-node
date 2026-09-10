@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACTIONS_PATH = 'actions';
+const DOWNLOAD_PATH = 'download';
+const PAYMENTS_PATH = 'payments';
+const REPORTING_PATH = 'reporting';
+const STATEMENTS_PATH = 'statements';
+
 /**
  * Class dealing with the /reporting endpoint
  * @deprecated v2.x.x - Use Reports API instead
@@ -22,7 +29,7 @@ export default class Reconciliation {
      */
     async getPayments(body) {
         try {
-            let url = `${this.config.host}/reporting/payments`;
+            let url = `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -57,7 +64,7 @@ export default class Reconciliation {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reporting/payments/${paymentId}`,
+                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${paymentId}`,
                 this.config,
                 this.config.sk
             );
@@ -76,7 +83,7 @@ export default class Reconciliation {
      */
     async getPaymentsCsv(body) {
         try {
-            let url = `${this.config.host}/reporting/payments/download`;
+            let url = `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -106,7 +113,7 @@ export default class Reconciliation {
      */
     async getStatements(body) {
         try {
-            let url = `${this.config.host}/reporting/statements`;
+            let url = `${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -133,7 +140,7 @@ export default class Reconciliation {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reporting/statements/${statementId}/payments/download`,
+                `${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}/${statementId}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`,
                 { ...this.config, csv: true },
                 this.config.sk
             );
@@ -152,7 +159,7 @@ export default class Reconciliation {
      */
     async getPaymentsActions(body) {
         try {
-            let url = `${this.config.host}/reporting/actions`;
+            let url = `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -179,7 +186,7 @@ export default class Reconciliation {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reporting/payments/actions/${actionsId}`,
+                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${ACTIONS_PATH}/${actionsId}`,
                 this.config,
                 this.config.sk
             );
@@ -198,7 +205,7 @@ export default class Reconciliation {
      */
     async getPaymentsActionsCsv(body) {
         try {
-            let url = `${this.config.host}/reporting/actions/download`;
+            let url = `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${DOWNLOAD_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -229,7 +236,7 @@ export default class Reconciliation {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/reporting/actions/${actionId}`,
+                `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${actionId}`,
                 this.config,
                 this.config.sk
             );

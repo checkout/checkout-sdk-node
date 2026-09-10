@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
 
+// Path segments appended to the balances host root (config.balancesUrl).
+const BALANCES_PATH = 'balances';
+const ENTITIES_PATH = 'entities';
+const CURRENCY_ACCOUNTS_PATH = 'currency-accounts';
+const TOP_UP_INSTRUCTIONS_PATH = 'top-up-instructions';
+
 /**
  * Class dealing with the /balances endpoint
  *
@@ -55,7 +61,7 @@ export default class Balances {
             }
 
             const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-            const url = `${this.config.balancesUrl}/balances/${id}${queryString}`;
+            const url = `${this.config.balancesUrl}/${BALANCES_PATH}/${id}${queryString}`;
             
             const response = await get(
                 this.config.httpClient,
@@ -67,7 +73,8 @@ export default class Balances {
         } catch (err) {
             throw await determineError(err);
         }
-    }
+    }
+
     /**
      * Retrieves the bank details required to top up a sub-account, along with the payment
      * reference that attributes an incoming payment to that sub-account.
@@ -105,7 +112,9 @@ export default class Balances {
      */
     async retrieveTopUpInstructions(entityId, currencyAccountId) {
         try {
-            const url = `${this.config.balancesUrl}/entities/${entityId}/currency-accounts/${currencyAccountId}/top-up-instructions`;
+            const url =
+                `${this.config.balancesUrl}/${ENTITIES_PATH}/${entityId}` +
+                `/${CURRENCY_ACCOUNTS_PATH}/${currencyAccountId}/${TOP_UP_INSTRUCTIONS_PATH}`;
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;

@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const APPROVAL_PATH = 'approval';
+const CANCELLATION_PATH = 'cancellation';
+const FAWRY_PATH = 'fawry';
+const PAYMENTS_PATH = 'payments';
+
 /**
  * Class dealing with the /fawry endpoint
  *
@@ -26,7 +32,7 @@ export default class Fawry {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/fawry/payments/${reference}/approval`,
+                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${reference}/${APPROVAL_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -48,7 +54,7 @@ export default class Fawry {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/fawry/payments/${reference}/cancellation`,
+                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${reference}/${CANCELLATION_PATH}`,
                 this.config,
                 this.config.sk
             );

@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const APMS_PATH = 'apms';
+const BALOTO_PATH = 'baloto';
+const EXPIRE_PATH = 'expire';
+const PAYMENTS_PATH = 'payments';
+const SUCCEED_PATH = 'succeed';
+
 /**
  * Class dealing with the /apms/baloto endpoint
  *
@@ -25,7 +32,7 @@ export default class Baloto {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/apms/baloto/payments/${id}/succeed`,
+                `${this.config.host}/${APMS_PATH}/${BALOTO_PATH}/${PAYMENTS_PATH}/${id}/${SUCCEED_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -47,7 +54,7 @@ export default class Baloto {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/apms/baloto/payments/${id}/expire`,
+                `${this.config.host}/${APMS_PATH}/${BALOTO_PATH}/${PAYMENTS_PATH}/${id}/${EXPIRE_PATH}`,
                 this.config,
                 this.config.sk
             );

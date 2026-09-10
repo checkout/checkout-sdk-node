@@ -2,6 +2,10 @@ import { get } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const ISSUING_PATH = 'issuing';
+const TRANSACTIONS_PATH = 'transactions';
+
 /**
  * Transactions class for managing transaction operations
  *
@@ -24,7 +28,7 @@ export default class Transactions {
      */
     async getTransactions(params = {}) {
         try {
-            const url = buildQueryParams(`${this.config.host}/issuing/transactions`, params);
+            const url = buildQueryParams(`${this.config.host}/${ISSUING_PATH}/${TRANSACTIONS_PATH}`, params);
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -44,7 +48,7 @@ export default class Transactions {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/issuing/transactions/${transactionId}`,
+                `${this.config.host}/${ISSUING_PATH}/${TRANSACTIONS_PATH}/${transactionId}`,
                 this.config,
                 this.config.sk
             );

@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const ADDRESS_DOCUMENT_VERIFICATIONS_PATH = 'address-document-verifications';
+const ANONYMIZE_PATH = 'anonymize';
+const ATTEMPTS_PATH = 'attempts';
+const PDF_REPORT_PATH = 'pdf-report';
+
 /**
  * Class dealing with the /address-document-verifications endpoint
  *
@@ -22,7 +28,7 @@ export default class AddressDocumentVerifications {
      */
     async createAddressDocumentVerification(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -46,7 +52,7 @@ export default class AddressDocumentVerifications {
      */
     async getAddressDocumentVerification(address_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -69,7 +75,7 @@ export default class AddressDocumentVerifications {
      */
     async listAttempts(address_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -93,7 +99,7 @@ export default class AddressDocumentVerifications {
      */
     async getAttempt(address_document_verification_id, attempt_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -116,7 +122,7 @@ export default class AddressDocumentVerifications {
      */
     async anonymizeAddressDocumentVerification(address_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -140,7 +146,7 @@ export default class AddressDocumentVerifications {
      */
     async createAttempt(address_document_verification_id, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -164,7 +170,7 @@ export default class AddressDocumentVerifications {
      */
     async getPDFReport(address_document_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/address-document-verifications/${address_document_verification_id}/pdf-report`;
+            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${PDF_REPORT_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,

@@ -1,6 +1,14 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACCEPT_PATH = 'accept';
+const ARBITRATION_PATH = 'arbitration';
+const DISPUTES_PATH = 'disputes';
+const EVIDENCE_PATH = 'evidence';
+const SCHEMEFILES_PATH = 'schemefiles';
+const SUBMITTED_PATH = 'submitted';
+
 /**
  * Class dealing with the /disputes endpoint
  *
@@ -24,7 +32,7 @@ export default class Disputes {
      */
     async get(body) {
         try {
-            let url = `${this.config.host}/disputes`;
+            let url = `${this.config.host}/${DISPUTES_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -50,7 +58,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}`,
                 this.config,
                 this.config.sk
             );
@@ -71,7 +79,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/accept`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${ACCEPT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -99,7 +107,7 @@ export default class Disputes {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -121,7 +129,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -144,7 +152,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -167,7 +175,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence/submitted`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${SUBMITTED_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -189,7 +197,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/schemefiles`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${SCHEMEFILES_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -212,7 +220,7 @@ export default class Disputes {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence/arbitration`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${ARBITRATION_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -239,7 +247,7 @@ export default class Disputes {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/disputes/${disputeId}/evidence/arbitration/submitted`,
+                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${ARBITRATION_PATH}/${SUBMITTED_PATH}`,
                 this.config,
                 this.config.sk
             );

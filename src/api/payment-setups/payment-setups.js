@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
 
+// Path segments appended to the API base (config.host).
+const CONFIRM_PATH = 'confirm';
+const PAYMENTS_PATH = 'payments';
+const SETUPS_PATH = 'setups';
+
 /**
  * Class dealing with the /payment-setups endpoint
  *
@@ -26,7 +31,7 @@ export default class PaymentSetups {
     async createAPaymentSetup(body) {
         try {
             validatePayment(body);
-            const url = `${this.config.host}/payments/setups`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -54,7 +59,7 @@ export default class PaymentSetups {
     async updateAPaymentSetup(id, body) {
         try {
             validatePayment(body);
-            const url = `${this.config.host}/payments/setups/${id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}`;
             const response = await put(
                 this.config.httpClient,
                 url,
@@ -85,7 +90,7 @@ export default class PaymentSetups {
      */
     async getAPaymentSetup(id) {
         try {
-            const url = `${this.config.host}/payments/setups/${id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -109,7 +114,7 @@ export default class PaymentSetups {
      */
     async confirmAPaymentSetup(id, payment_method_option_id) {
         try {
-            const url = `${this.config.host}/payments/setups/${id}/confirm/${payment_method_option_id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}/${CONFIRM_PATH}/${payment_method_option_id}`;
             const response = await post(
                 this.config.httpClient,
                 url,

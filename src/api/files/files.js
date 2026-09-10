@@ -3,6 +3,9 @@ import { get, post } from '../../services/http.js';
 
 import FormData from 'form-data';
 
+// Path segments appended to the API base (config.host).
+const FILES_PATH = 'files';
+
 /**
  * Class dealing with the /files endpoint
  *
@@ -43,7 +46,7 @@ export default class Files {
 
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/files`,
+                `${this.config.host}/${FILES_PATH}`,
                 { ...this.config, formData: true },
                 this.config.sk,
                 form
@@ -65,7 +68,7 @@ export default class Files {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/files/${fileId}`,
+                `${this.config.host}/${FILES_PATH}/${fileId}`,
                 this.config,
                 this.config.sk
             );

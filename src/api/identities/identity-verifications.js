@@ -2,6 +2,14 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const ANONYMIZE_PATH = 'anonymize';
+const ASSETS_PATH = 'assets';
+const ATTEMPTS_PATH = 'attempts';
+const CREATE_AND_OPEN_IDV_PATH = 'create-and-open-idv';
+const IDENTITY_VERIFICATIONS_PATH = 'identity-verifications';
+const PDF_REPORT_PATH = 'pdf-report';
+
 /**
  * Class dealing with the /identity-verifications endpoint
  *
@@ -23,7 +31,7 @@ export default class IdentityVerifications {
      */
     async createAndStartIdentityVerification(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/create-and-open-idv`;
+            const url = `${this.config.identityVerificationUrl}/${CREATE_AND_OPEN_IDV_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -47,7 +55,7 @@ export default class IdentityVerifications {
      */
     async createIdentityVerification(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -71,7 +79,7 @@ export default class IdentityVerifications {
      */
     async getIdentityVerification(identity_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -94,7 +102,7 @@ export default class IdentityVerifications {
      */
     async anonymizeIdentityVerification(identity_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/anonymize`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -118,7 +126,7 @@ export default class IdentityVerifications {
      */
     async createAttempt(identity_verification_id, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -142,7 +150,7 @@ export default class IdentityVerifications {
      */
     async listAttempts(identity_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -166,7 +174,7 @@ export default class IdentityVerifications {
      */
     async getAttempt(identity_verification_id, attempt_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}/${attempt_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -193,7 +201,7 @@ export default class IdentityVerifications {
     async getAttemptAssets(identity_verification_id, attempt_id, params) {
         try {
             const url = buildQueryParams(
-                `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/attempts/${attempt_id}/assets`,
+                `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}/${attempt_id}/${ASSETS_PATH}`,
                 params
             );
 
@@ -220,7 +228,7 @@ export default class IdentityVerifications {
      */
     async getPDFReport(identity_verification_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/identity-verifications/${identity_verification_id}/pdf-report`;
+            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${PDF_REPORT_PATH}`;
             const response = await get(
                 this.config.httpClient,
                 url,

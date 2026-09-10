@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get, patch, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNTS_PATH = 'accounts';
+const ENTITIES_PATH = 'entities';
+const INSTRUMENTS_PATH = 'instruments';
+const PAYMENT_INSTRUMENTS_PATH = 'payment-instruments';
+
 /**
  * Payment instruments for sub-entities (payouts).
  *
@@ -23,7 +29,7 @@ export default class PaymentInstruments {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${PAYMENT_INSTRUMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -45,7 +51,7 @@ export default class PaymentInstruments {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/payment-instruments/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${PAYMENT_INSTRUMENTS_PATH}/${id}`,
                 this.config,
                 this.config.sk,
                 body
@@ -68,7 +74,7 @@ export default class PaymentInstruments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/instruments`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${INSTRUMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -100,7 +106,7 @@ export default class PaymentInstruments {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${id}/payment-instruments`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYMENT_INSTRUMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -120,7 +126,7 @@ export default class PaymentInstruments {
      */
     async queryPaymentInstruments(id, status) {
         try {
-            const url = `${this.config.host}/accounts/entities/${id}/payment-instruments${status ? `?status=${status}` : ''}`;
+            const url = `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYMENT_INSTRUMENTS_PATH}${status ? `?status=${status}` : ''}`;
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {

@@ -1,6 +1,12 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const COLLECT_DATA_PATH = 'collect-data';
+const COMPLETE_PATH = 'complete';
+const ISSUER_FINGERPRINT_PATH = 'issuer-fingerprint';
+const SESSIONS_PATH = 'sessions';
+
 /**
  * Class dealing with the /sessions endpoint
  *
@@ -37,7 +43,7 @@ export default class Sessions {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/sessions`,
+                `${this.config.host}/${SESSIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -62,7 +68,7 @@ export default class Sessions {
 
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/sessions/${id}`,
+                `${this.config.host}/${SESSIONS_PATH}/${id}`,
                 this.config,
                 this.config.sk
             );
@@ -84,7 +90,7 @@ export default class Sessions {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/sessions/${id}/collect-data`,
+                `${this.config.host}/${SESSIONS_PATH}/${id}/${COLLECT_DATA_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -107,7 +113,7 @@ export default class Sessions {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/sessions/${id}/complete`,
+                `${this.config.host}/${SESSIONS_PATH}/${id}/${COMPLETE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -134,7 +140,7 @@ export default class Sessions {
 
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/sessions/${id}/issuer-fingerprint`,
+                `${this.config.host}/${SESSIONS_PATH}/${id}/${ISSUER_FINGERPRINT_PATH}`,
                 this.config,
                 this.config.sk,
                 body

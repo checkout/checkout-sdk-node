@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { get, put } from '../../services/http.js';
 import { getConfigWithAcceptHeader } from './accept-header.js';
 
+// Path segments appended to the API base (config.host).
+const ACCOUNTS_PATH = 'accounts';
+const ENTITIES_PATH = 'entities';
+const REQUIREMENTS_PATH = 'requirements';
+
 /**
  * Class dealing with entity-requirement endpoints under /accounts/entities.
  *
@@ -25,7 +30,7 @@ export default class EntityRequirements {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/requirements`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk
             );
@@ -47,7 +52,7 @@ export default class EntityRequirements {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/requirements/${requirementId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}/${requirementId}`,
                 this.config,
                 this.config.sk
             );
@@ -71,7 +76,7 @@ export default class EntityRequirements {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/accounts/entities/${entityId}/requirements/${requirementId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}/${requirementId}`,
                 this.config,
                 this.config.sk,
                 body

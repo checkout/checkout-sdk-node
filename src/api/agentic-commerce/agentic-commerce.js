@@ -1,6 +1,10 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const AGENTIC_COMMERCE_PATH = 'agentic_commerce';
+const DELEGATE_PAYMENT_PATH = 'delegate_payment';
+
 /**
  * Class dealing with the /agentic_commerce endpoints (Beta).
  *
@@ -34,7 +38,7 @@ export default class AgenticCommerce {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/agentic_commerce/delegate_payment`,
+                `${this.config.host}/${AGENTIC_COMMERCE_PATH}/${DELEGATE_PAYMENT_PATH}`,
                 this.config,
                 this.config.sk,
                 body,

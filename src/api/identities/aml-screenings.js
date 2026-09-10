@@ -1,6 +1,9 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.identityVerificationUrl).
+const AML_VERIFICATIONS_PATH = 'aml-verifications';
+
 /**
  * Class dealing with the /aml-screenings endpoint (AML Screening)
  *
@@ -22,7 +25,7 @@ export default class AMLScreenings {
      */
     async createAMLVerification(body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/aml-verifications`;
+            const url = `${this.config.identityVerificationUrl}/${AML_VERIFICATIONS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -45,7 +48,7 @@ export default class AMLScreenings {
      */
     async getAMLScreening(aml_screening_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/aml-verifications/${aml_screening_id}`;
+            const url = `${this.config.identityVerificationUrl}/${AML_VERIFICATIONS_PATH}/${aml_screening_id}`;
             const response = await get(
                 this.config.httpClient,
                 url,

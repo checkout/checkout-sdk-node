@@ -1,6 +1,16 @@
 import { post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
 
+// Path segments appended to the API base (config.host).
+const AUTHENTICATION_PATH = 'authentication';
+const AUTHORIZATIONS_PATH = 'authorizations';
+const ISSUING_PATH = 'issuing';
+const OOB_PATH = 'oob';
+const PRESENTMENTS_PATH = 'presentments';
+const REFUNDS_PATH = 'refunds';
+const REVERSALS_PATH = 'reversals';
+const SIMULATE_PATH = 'simulate';
+
 /**
  * Simulate class for managing simulation operations
  *
@@ -23,7 +33,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -46,7 +56,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/authorizations`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${AUTHORIZATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -69,7 +79,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/presentments`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${PRESENTMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -92,7 +102,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/refunds`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${REFUNDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -115,7 +125,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/authorizations/${id}/reversals`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${REVERSALS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -138,7 +148,7 @@ export default class Simulate {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/issuing/simulate/oob/authentication`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${OOB_PATH}/${AUTHENTICATION_PATH}`,
                 this.config,
                 this.config.sk,
                 body

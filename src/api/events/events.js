@@ -1,6 +1,13 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
+// Path segments appended to the API base (config.host).
+const EVENTS_PATH = 'events';
+const EVENT_TYPES_PATH = 'event-types';
+const NOTIFICATIONS_PATH = 'notifications';
+const RETRY_PATH = 'retry';
+const WEBHOOKS_PATH = 'webhooks';
+
 /**
  * Class dealing with the /events endpoint
  * @deprecated v2.x.x - Use Workflows API instead
@@ -25,7 +32,7 @@ export default class Events {
      */
     async retrieveEventTypes(version) {
         try {
-            let url = `${this.config.host}/event-types`;
+            let url = `${this.config.host}/${EVENT_TYPES_PATH}`;
             if (version) {
                 url += `?version=${version}`;
             }
@@ -47,7 +54,7 @@ export default class Events {
      */
     async retrieveEvents(body) {
         try {
-            let url = `${this.config.host}/events`;
+            let url = `${this.config.host}/${EVENTS_PATH}`;
 
             if (body) {
                 const queryString = Object.keys(body)
@@ -76,7 +83,7 @@ export default class Events {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/events/${eventId}`,
+                `${this.config.host}/${EVENTS_PATH}/${eventId}`,
                 this.config,
                 this.config.sk
             );
@@ -98,7 +105,7 @@ export default class Events {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/events/${body.eventId}/notifications/${body.notificationId}`,
+                `${this.config.host}/${EVENTS_PATH}/${body.eventId}/${NOTIFICATIONS_PATH}/${body.notificationId}`,
                 this.config,
                 this.config.sk
             );
@@ -120,7 +127,7 @@ export default class Events {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/events/${body.eventId}/webhooks/${body.webhookId}/retry`,
+                `${this.config.host}/${EVENTS_PATH}/${body.eventId}/${WEBHOOKS_PATH}/${body.webhookId}/${RETRY_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -142,7 +149,7 @@ export default class Events {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/events/${eventId}/webhooks/retry`,
+                `${this.config.host}/${EVENTS_PATH}/${eventId}/${WEBHOOKS_PATH}/${RETRY_PATH}`,
                 this.config,
                 this.config.sk
             );

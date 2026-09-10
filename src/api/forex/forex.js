@@ -2,6 +2,11 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { buildQueryParams } from '../../services/utils.js';
 
+// Path segments appended to the API base (config.host).
+const FOREX_PATH = 'forex';
+const QUOTES_PATH = 'quotes';
+const RATES_PATH = 'rates';
+
 /**
  * Class dealing with the forex api
  *
@@ -25,7 +30,7 @@ export default class Forex {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/forex/quotes`,
+                `${this.config.host}/${FOREX_PATH}/${QUOTES_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -46,7 +51,7 @@ export default class Forex {
      */
     async getRates(body) {
         try {
-            const url = buildQueryParams(`${this.config.host}/forex/rates`, body);
+            const url = buildQueryParams(`${this.config.host}/${FOREX_PATH}/${RATES_PATH}`, body);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
