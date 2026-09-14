@@ -122,6 +122,34 @@ const cko = new Checkout('your_api_secret', {
 - `environment`: 'sandbox' or 'production' - Required
 - `subdomain`: Account prefix - Required
 
+#### Scope constants
+
+`OAuthScopes` exposes every scope the Checkout.com API documents, so you don't have to hardcode the
+wire strings. Plain strings still work exactly as before — this is optional:
+
+```js
+import { Checkout, OAuthScopes } from 'checkout-sdk-node';
+
+const cko = new Checkout('your_api_secret', {
+    client: 'ack_XXXXXXXX',
+    pk: 'pk_sbox_...',
+    scope: [OAuthScopes.GATEWAY, OAuthScopes.VAULT, OAuthScopes.FX],
+    environment: 'sandbox',
+    subdomain: 'YOUR_PREFIX'
+});
+```
+
+TypeScript users can import the `OAuthScope` union to type their own scope lists:
+
+```ts
+import { OAuthScopes, type OAuthScope } from 'checkout-sdk-node';
+
+const scopes: OAuthScope[] = [OAuthScopes.DISPUTES_VIEW, OAuthScopes.FILES_RETRIEVE];
+```
+
+> The token endpoint rejects the **entire** request if any one requested scope is undefined, so a
+> single typo costs you every other scope you asked for. That is what these constants are for.
+
 ### 3. Static Keys (API Keys) - Environment Variables
 
 Use when you have `sk_XXX` and `pk_XXX` in environment variables and want zero-config:

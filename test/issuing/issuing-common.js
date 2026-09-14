@@ -6,10 +6,21 @@
  * Optional: CHECKOUT_MERCHANT_SUBDOMAIN, CHECKOUT_ISSUING_ENTITY_ID, CHECKOUT_ISSUING_CARD_PRODUCT_ID
  */
 import Checkout from '../../src/Checkout.js';
+import OAuthScopes from '../../src/oauth-scopes.js';
 
 export const cko_issuing = new Checkout(process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_SECRET, {
     client: process.env.CHECKOUT_DEFAULT_OAUTH_ISSUING_CLIENT_ID,
-    scope: ['issuing:card-mgmt', 'issuing:client', 'issuing:controls-read', 'issuing:controls-write', 'issuing:transactions-read', 'vault'],
+    // issuing:card-mgmt and issuing:client were retired: neither is declared in the spec's scope
+    // map nor requested by any operation. The card-management pair replaces the former; the latter
+    // has no documented equivalent.
+    scope: [
+        OAuthScopes.ISSUING_CARD_MANAGEMENT_READ,
+        OAuthScopes.ISSUING_CARD_MANAGEMENT_WRITE,
+        OAuthScopes.ISSUING_CONTROLS_READ,
+        OAuthScopes.ISSUING_CONTROLS_WRITE,
+        OAuthScopes.ISSUING_TRANSACTIONS_READ,
+        OAuthScopes.VAULT,
+    ],
     environment: 'sandbox',
     // The sandbox OAuth clients are not provisioned for the merchant-specific
     // subdomain, so the token request would come back invalid_client. Opting out

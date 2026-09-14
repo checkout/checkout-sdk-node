@@ -54,6 +54,7 @@ import {
 
 import Environment from './Environment';
 import EnvironmentSubdomain from './EnvironmentSubdomain';
+import type { OAuthScope } from './oauth-scopes';
 
 export type access = {
     token: string;
@@ -68,7 +69,8 @@ export type config = {
     pk?: string;
     secret?: string;
     client?: string;
-    scope?: string | Array<string>;
+    /** Accepts the OAuthScopes constants or any string; see OAuthScope for the documented values. */
+    scope?: OAuthScope | Array<OAuthScope> | string | Array<string>;
     timeout: number;
     agent?: http.Agent;
     headers?: Record<string, string>;
@@ -108,7 +110,8 @@ type staticKeyOptions = {
 
 type oauthOptions = {
     client: string;
-    scope?: string | Array<string>;
+    /** Accepts the OAuthScopes constants or any string; see OAuthScope for the documented values. */
+    scope?: OAuthScope | Array<OAuthScope> | string | Array<string>;
     environment?: string;
 };
 
