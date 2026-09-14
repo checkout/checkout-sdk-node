@@ -47,6 +47,8 @@ declare const OAuthScopes: {
     readonly IDENTITY_VERIFICATION: 'identity-verification';
     readonly ISSUING_CARD_MANAGEMENT_READ: 'issuing:card-management-read';
     readonly ISSUING_CARD_MANAGEMENT_WRITE: 'issuing:card-management-write';
+    readonly ISSUING_CARD_MGMT: 'issuing:card-mgmt'; // not in spec; kept for backward compat
+    readonly ISSUING_CLIENT: 'issuing:client'; // not in spec; kept for backward compat
     readonly ISSUING_CONTROLS_READ: 'issuing:controls-read';
     readonly ISSUING_CONTROLS_WRITE: 'issuing:controls-write';
     readonly ISSUING_DISPUTES: 'issuing-disputes';
@@ -54,9 +56,12 @@ declare const OAuthScopes: {
     readonly ISSUING_DISPUTES_WRITE: 'issuing:disputes-write';
     readonly ISSUING_TRANSACTIONS_READ: 'issuing:transactions-read';
     readonly ISSUING_TRANSACTIONS_WRITE: 'issuing:transactions-write';
+    readonly MARKETPLACE: 'marketplace'; // not in spec; kept for backward compat
     readonly MIDDLEWARE: 'middleware';
+    readonly MIDDLEWARE_GATEWAY: 'middleware:gateway'; // not in spec; kept for backward compat
     readonly MIDDLEWARE_MERCHANTS_PUBLIC: 'middleware:merchants-public';
     readonly MIDDLEWARE_MERCHANTS_SECRET: 'middleware:merchants-secret';
+    readonly MIDDLEWARE_PAYMENT_CONTEXT: 'middleware:payment-context'; // not in spec; kept for backward compat
     readonly PAYMENT_CONTEXT: 'Payment Context';
     readonly PAYMENT_SESSIONS: 'payment-sessions';
     readonly PAYMENTS_SEARCH: 'payments:search';

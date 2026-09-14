@@ -39,14 +39,17 @@ describe('OAuthScopes', () => {
         expect(OAuthScopes.GATEWAY_PAYMENT_CONTEXTS).to.equal('gateway:payment-contexts');
     });
 
-    it('should not expose the retired scopes', () => {
-        // issuing:card-mgmt, issuing:client and marketplace are declared by no part of the spec.
-        // They were requested by the issuing and accounts fixtures across every Checkout SDK, so
-        // this guards against one being reintroduced by a copy-paste from older sample code.
-        const values = Object.values(OAuthScopes);
-        expect(values).to.not.include('issuing:card-mgmt');
-        expect(values).to.not.include('issuing:client');
-        expect(values).to.not.include('marketplace');
+    it('should retain the legacy scopes the spec omits', () => {
+        // These five appear nowhere in the spec -- not in the scope map and not in any operation's
+        // security requirement -- so a sweep driven by the spec alone would drop them. They are
+        // kept deliberately: the authorization server still grants them and callers still request
+        // them. marketplace is the proof: the sandbox payouts client is provisioned for it and
+        // answers a request for accounts with {"error":"invalid_scope"}.
+        expect(OAuthScopes.ISSUING_CARD_MGMT).to.equal('issuing:card-mgmt');
+        expect(OAuthScopes.ISSUING_CLIENT).to.equal('issuing:client');
+        expect(OAuthScopes.MARKETPLACE).to.equal('marketplace');
+        expect(OAuthScopes.MIDDLEWARE_GATEWAY).to.equal('middleware:gateway');
+        expect(OAuthScopes.MIDDLEWARE_PAYMENT_CONTEXT).to.equal('middleware:payment-context');
     });
 
     it('should give every constant a non-blank wire value', () => {
