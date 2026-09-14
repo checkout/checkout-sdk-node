@@ -46,5 +46,6 @@ export { default as AgenticCommerce } from './api/agentic-commerce/agentic-comme
 export { default as ComplianceRequests } from './api/compliance-requests/compliance-requests.js';
 export { default as GooglePay } from './api/google-pay/google-pay.js';
 export { default as OnboardingSimulator } from './api/onboarding-simulator/onboarding-simulator.js';
+export { default as OAuthScopes } from './oauth-scopes.js';
 export { default as Checkout } from './Checkout.js';
 export { default } from './Checkout.js';
