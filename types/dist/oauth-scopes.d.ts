@@ -10,6 +10,7 @@
  */
 declare const OAuthScopes: {
     readonly ACCOUNTS: 'accounts';
+    readonly AGENTIC_INVENTORY: 'agentic:inventory';
     readonly BALANCES: 'balances';
     readonly BALANCES_TOP_UP_INSTRUCTIONS: 'balances:top-up-instructions';
     readonly BALANCES_VIEW: 'balances:view';

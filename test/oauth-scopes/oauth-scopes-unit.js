@@ -39,6 +39,13 @@ describe('OAuthScopes', () => {
         expect(OAuthScopes.GATEWAY_PAYMENT_CONTEXTS).to.equal('gateway:payment-contexts');
     });
 
+    it('should expose the agentic commerce inventory scope', () => {
+        // agentic:inventory was added in clientCredentials.scopes ("Manage agentic commerce inventory and
+        // reservations"), and it is the OAuth requirement of the ten /inventory/* operations behind
+        // the beta agentic-commerce inventory and reservations endpoints.
+        expect(OAuthScopes.AGENTIC_INVENTORY).to.equal('agentic:inventory');
+    });
+
     it('should retain the legacy scopes the spec omits', () => {
         // These five appear nowhere in the spec -- not in the scope map and not in any operation's
         // security requirement -- so a sweep driven by the spec alone would drop them. They are
