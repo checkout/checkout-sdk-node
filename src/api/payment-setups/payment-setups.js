@@ -32,6 +32,26 @@ export default class PaymentSetups {
      *    currency (string).
      *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
+     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *    airline (array of PaymentSetupAirline).
+     *    PaymentSetupAccommodation (all fields optional): name (string), booking_reference (string),
+     *    check_in_date (string, date format), check_out_date (string, date format),
+     *    address (object: address_line1, city, state, country [ISO 3166-1 alpha-2], zip, all optional strings),
+     *    number_of_rooms (integer), guests (array of { first_name, last_name, date_of_birth [date] }),
+     *    room (array of { rate [number], number_of_nights [integer], type [string] }),
+     *    total_number_of_guests (integer, added 2026-09-08), refundable (boolean, added 2026-09-08),
+     *    delivery_recipient (string, added 2026-09-08; plain string, not a validated email format),
+     *    host (object, added 2026-09-08: registration_date [string, date format], total_reservation_count [integer]).
+     *    PaymentSetupAirline (all fields optional): ticket (object: number, issue_date [date],
+     *    issuing_carrier_code, travel_package_indicator [free-form string], travel_agency_name, travel_agency_code),
+     *    passengers (array of { first_name, last_name, date_of_birth [date], address: { country [ISO 3166-1 alpha-2] } }),
+     *    flight_leg_details (array of PaymentSetupFlightLegDetails),
+     *    total_number_of_passengers (integer, added 2026-09-08), travel_type (string, added 2026-09-08; free-form,
+     *    not a typed enum), trip_type (string, added 2026-09-08; free-form, not a typed enum),
+     *    refundable (boolean, added 2026-09-08), delivery_recipient (string, added 2026-09-08; plain string,
+     *    not a validated email format), ancillaries (string, added 2026-09-08; singular string per swagger,
+     *    not an array despite the plural name), insurance (object, added 2026-09-08: type [string], company [string],
+     *    price [{ amount: number, currency: string (3-letter ISO) }]).
      *
      * @memberof PaymentSetups
      * @param {Object} body - Request body
@@ -68,6 +88,11 @@ export default class PaymentSetups {
      *    currency (string).
      *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
+     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *    airline (array of PaymentSetupAirline). See `createAPaymentSetup` JSDoc for the full field list,
+     *    including the fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests,
+     *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
+     *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to update.
@@ -107,6 +132,11 @@ export default class PaymentSetups {
      *    currency (string).
      *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
+     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *    airline (array of PaymentSetupAirline). See `createAPaymentSetup` JSDoc for the full field list,
+     *    including the fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests,
+     *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
+     *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
@@ -131,6 +161,14 @@ export default class PaymentSetups {
      * Confirm a Payment Setup
      * [BETA]
      * Confirm a Payment Setup to begin processing the payment request with your chosen payment method.
+     *
+     * Response (swagger `PaymentSetup`, 2026-05-26) may include the same `industry` shape as
+     * `createAPaymentSetup` (accommodation array of PaymentSetupAccommodation, airline array of
+     * PaymentSetupAirline) — see `createAPaymentSetup` JSDoc for the full field list, including the
+     * fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests, refundable,
+     * delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient, insurance,
+     * refundable, total_number_of_passengers, travel_type, trip_type.
+     *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
      * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card").
