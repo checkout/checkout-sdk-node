@@ -26,6 +26,7 @@ import {
     Ideal,
     Identities,
     Instruments,
+    Inventory,
     Issuing,
     Klarna,
     NetworkTokens,
@@ -164,6 +165,7 @@ export default class Checkout {
     complianceRequests: ComplianceRequests;
     googlePay: GooglePay;
     onboardingSimulator: OnboardingSimulator;
+    inventory: Inventory;
     config: config;
 
     constructor(key?: string, options?: options);

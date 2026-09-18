@@ -30,6 +30,7 @@ export function createEndpoints(config) {
         ideal: new ENDPOINTS.Ideal(config),
         identities: new ENDPOINTS.Identities(config),
         instruments: new ENDPOINTS.Instruments(config),
+        inventory: new ENDPOINTS.Inventory(config),
         issuing: new ENDPOINTS.Issuing(config),
         klarna: new ENDPOINTS.Klarna(config),
         networkTokens: new ENDPOINTS.NetworkTokens(config),

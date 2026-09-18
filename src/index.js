@@ -43,6 +43,7 @@ export { default as NetworkTokens } from './api/network-tokens/network-tokens.js
 export { default as Identities } from './api/identities/identities.js';
 export { default as AccountUpdater } from './api/account-updater/account-updater.js';
 export { default as AgenticCommerce } from './api/agentic-commerce/agentic-commerce.js';
+export { default as Inventory } from './api/inventory/inventory.js';
 export { default as ComplianceRequests } from './api/compliance-requests/compliance-requests.js';
 export { default as GooglePay } from './api/google-pay/google-pay.js';
 export { default as OnboardingSimulator } from './api/onboarding-simulator/onboarding-simulator.js';
