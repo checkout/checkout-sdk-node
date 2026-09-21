@@ -71,17 +71,32 @@ export default class Cards {
     /**
      * Updates a card you issued previously.
      *
+     * Pass headers to request the card's encrypted credentials in the response. Set
+     * `return-encrypted-cvv` to "true" together with an `Encryption-Key`; supplying the flag
+     * without the key returns a 422 with error code `encryption_key_required`.
+     *
+     * The headers travel on a copy of the config rather than on the body, which is how
+     * getRequestHeaders picks them up for every verb. Putting them on the body would also send
+     * them as JSON fields.
+     *
      * @memberof Cards
      * @param {string} id Card id.
      * @param {Object} body Card params to update.
-     * @return {Promise<Object>} A promise to the card update response.
+     * @param {Object} [headers] Optional HTTP headers. Supports `return-encrypted-cvv` and
+     *   `Encryption-Key`.
+     * @return {Promise<Object>} A promise to the card update response, carrying `encrypted_cvv`
+     *   when requested.
      */
-    async updateCard(id, body) {
+    async updateCard(id, body, headers) {
         try {
+            const config = headers
+                ? { ...this.config, headers: { ...(this.config.headers || {}), ...headers } }
+                : this.config;
+
             const response = await patch(
                 this.config.httpClient,
                 `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}`,
-                this.config,
+                config,
                 this.config.sk,
                 body
             );

@@ -341,16 +341,18 @@ describe('Unit::Identity Verifications', () => {
     it('should get identity verification PDF report', async () => {
         nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/pdf-report')
-            .reply(200, Buffer.from('PDF content'), {
-                'content-type': 'application/pdf'
-            });
+            .reply(200, { pdf_report: 'https://www.example.com/reports/idv.pdf' });
 
         const cko = new Checkout(SK, { subdomain: 'test' });
         const result = await cko.identities.identityVerifications.getPDFReport(
             'idv_tkoi5db4hryu5cei5vwoabr7we'
         );
 
-        expect(result).to.be.an.instanceOf(Buffer);
+        // The endpoint answers application/json with IdvPdf, so the report arrives as a URL in
+        // pdf_report, not as PDF bytes. This previously asserted a Buffer, which was asserting
+        // the csv: true defect rather than the documented contract.
+        expect(result.pdf_report).to.equal('https://www.example.com/reports/idv.pdf');
+        expect(result.signed_url).to.be.undefined;
     });
 
     it('should get identity verification attempt assets', async () => {

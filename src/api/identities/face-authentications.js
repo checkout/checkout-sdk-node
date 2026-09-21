@@ -72,11 +72,15 @@ export default class FaceAuthentications {
      * Get the details of all attempts for a specific face authentication.
      * @method listAttempts
      * @param {string} face_authentication_id - The face authentication's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
      * @returns {Promise<Object>} A promise to the Get face authentication attempts response
      */
-    async listAttempts(face_authentication_id) {
+    async listAttempts(face_authentication_id, params) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`;
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`,
+                params
+            );
             const response = await get(
                 this.config.httpClient,
                 url,

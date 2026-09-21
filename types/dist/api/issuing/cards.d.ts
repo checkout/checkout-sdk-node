@@ -5,7 +5,11 @@ export default class Cards {
 
     createCard(body: object, idempotencyKey?: string): Promise<object>;
     getCardDetails(id: string): Promise<object>;
-    updateCard(id: string, body: object): Promise<object>;
+    /**
+     * Update a card. Pass `headers` to request the encrypted credentials: set
+     * `return-encrypted-cvv` to "true" together with an `Encryption-Key`.
+     */
+    updateCard(id: string, body: object, headers?: object): Promise<object>;
     enrollThreeDS(id: string, body: object): Promise<object>;
     updateThreeDS(id: string, body: object): Promise<object>;
     getThreeDSDetails(id: string): Promise<object>;

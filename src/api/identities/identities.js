@@ -59,8 +59,8 @@ export default class Identities {
         return this.faceAuthentications.getFaceAuthentication(face_authentication_id);
     }
 
-    async listFaceAuthenticationAttempts(face_authentication_id) {
-        return this.faceAuthentications.listAttempts(face_authentication_id);
+    async listFaceAuthenticationAttempts(face_authentication_id, params) {
+        return this.faceAuthentications.listAttempts(face_authentication_id, params);
     }
 
     async getFaceAuthenticationAttempt(face_authentication_id, attempt_id) {
@@ -88,8 +88,12 @@ export default class Identities {
         return this.idDocumentVerifications.getIDDocumentVerification(id_document_verification_id);
     }
 
-    async listIDDocumentVerificationAttempts(id_document_verification_id) {
-        return this.idDocumentVerifications.listAttempts(id_document_verification_id);
+    async listIDDocumentVerificationAttempts(id_document_verification_id, params) {
+        return this.idDocumentVerifications.listAttempts(id_document_verification_id, params);
+    }
+
+    async getIDDocumentVerificationAttemptAssets(id_document_verification_id, attempt_id, params) {
+        return this.idDocumentVerifications.getAttemptAssets(id_document_verification_id, attempt_id, params);
     }
 
     async getIDDocumentVerificationAttempt(id_document_verification_id, attempt_id) {
@@ -117,8 +121,16 @@ export default class Identities {
         return this.addressDocumentVerifications.getAddressDocumentVerification(address_document_verification_id);
     }
 
-    async listAddressDocumentVerificationAttempts(address_document_verification_id) {
-        return this.addressDocumentVerifications.listAttempts(address_document_verification_id);
+    async listAddressDocumentVerificationAttempts(address_document_verification_id, params) {
+        return this.addressDocumentVerifications.listAttempts(address_document_verification_id, params);
+    }
+
+    async getAddressDocumentVerificationAttemptAssets(address_document_verification_id, attempt_id, params) {
+        return this.addressDocumentVerifications.getAttemptAssets(
+            address_document_verification_id,
+            attempt_id,
+            params
+        );
     }
 
     async getAddressDocumentVerificationAttempt(address_document_verification_id, attempt_id) {
@@ -158,8 +170,8 @@ export default class Identities {
         return this.identityVerifications.createAttempt(identity_verification_id, body);
     }
 
-    async listIdentityVerificationAttempts(identity_verification_id) {
-        return this.identityVerifications.listAttempts(identity_verification_id);
+    async listIdentityVerificationAttempts(identity_verification_id, params) {
+        return this.identityVerifications.listAttempts(identity_verification_id, params);
     }
 
     async getIdentityVerificationAttempt(identity_verification_id, attempt_id) {

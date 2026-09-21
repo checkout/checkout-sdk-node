@@ -29,7 +29,7 @@ export default class Identities {
     // Backwards compatibility - Face Authentications
     createFaceAuthentication(body: object): Promise<object>;
     getFaceAuthentication(faceAuthenticationId: string): Promise<object>;
-    listFaceAuthenticationAttempts(faceAuthenticationId: string): Promise<object>;
+    listFaceAuthenticationAttempts(faceAuthenticationId: string, params?: object): Promise<object>;
     getFaceAuthenticationAttempt(faceAuthenticationId: string, attemptId: string): Promise<object>;
     getFaceAuthenticationAttemptAssets(faceAuthenticationId: string, attemptId: string, params?: object): Promise<object>;
     createFaceAuthenticationAttempt(faceAuthenticationId: string, body: object): Promise<object>;
@@ -38,29 +38,31 @@ export default class Identities {
     // Backwards compatibility - ID Document Verifications
     createIDDocumentVerification(body: object): Promise<object>;
     getIDDocumentVerification(idDocumentVerificationId: string): Promise<object>;
-    listIDDocumentVerificationAttempts(idDocumentVerificationId: string): Promise<object>;
+    listIDDocumentVerificationAttempts(idDocumentVerificationId: string, params?: object): Promise<object>;
     getIDDocumentVerificationAttempt(idDocumentVerificationId: string, attemptId: string): Promise<object>;
+    getIDDocumentVerificationAttemptAssets(idDocumentVerificationId: string, attemptId: string, params?: object): Promise<object>;
     createIDDocumentVerificationAttempt(idDocumentVerificationId: string, body: object): Promise<object>;
     anonymizeIDDocumentVerification(idDocumentVerificationId: string): Promise<object>;
-    getIDDocumentVerificationPDFReport(idDocumentVerificationId: string): Promise<Buffer>;
+    getIDDocumentVerificationPDFReport(idDocumentVerificationId: string): Promise<object>;
 
     // Backwards compatibility - Address Document Verifications
     createAddressDocumentVerification(body: object): Promise<object>;
     getAddressDocumentVerification(addressDocumentVerificationId: string): Promise<object>;
-    listAddressDocumentVerificationAttempts(addressDocumentVerificationId: string): Promise<object>;
+    listAddressDocumentVerificationAttempts(addressDocumentVerificationId: string, params?: object): Promise<object>;
     getAddressDocumentVerificationAttempt(addressDocumentVerificationId: string, attemptId: string): Promise<object>;
+    getAddressDocumentVerificationAttemptAssets(addressDocumentVerificationId: string, attemptId: string, params?: object): Promise<object>;
     createAddressDocumentVerificationAttempt(addressDocumentVerificationId: string, body: object): Promise<object>;
     anonymizeAddressDocumentVerification(addressDocumentVerificationId: string): Promise<object>;
-    getAddressDocumentVerificationPDFReport(addressDocumentVerificationId: string): Promise<Buffer>;
+    getAddressDocumentVerificationPDFReport(addressDocumentVerificationId: string): Promise<object>;
 
     // Backwards compatibility - Identity Verifications
     createIdentityVerification(body: object): Promise<object>;
     createAndStartIdentityVerification(body: object): Promise<object>;
     getIdentityVerification(identityVerificationId: string): Promise<object>;
     createIdentityVerificationAttempt(identityVerificationId: string, body: object): Promise<object>;
-    listIdentityVerificationAttempts(identityVerificationId: string): Promise<object>;
+    listIdentityVerificationAttempts(identityVerificationId: string, params?: object): Promise<object>;
     getIdentityVerificationAttempt(identityVerificationId: string, attemptId: string): Promise<object>;
     getIdentityVerificationAttemptAssets(identityVerificationId: string, attemptId: string, params?: object): Promise<object>;
     anonymizeIdentityVerification(identityVerificationId: string): Promise<object>;
-    getIdentityVerificationPDFReport(identityVerificationId: string): Promise<Buffer>;
+    getIdentityVerificationPDFReport(identityVerificationId: string): Promise<object>;
 }

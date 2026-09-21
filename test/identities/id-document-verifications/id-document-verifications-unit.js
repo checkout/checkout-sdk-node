@@ -206,8 +206,7 @@ describe('Unit::ID Document Verifications', () => {
         nock('https://identity-verification.sandbox.checkout.com')
             .get('/id-document-verifications/iddv_tkoi5db4hryu5cei5vwoabr7we/pdf-report')
             .reply(200, {
-                pdf_report: 'https://www.example.com/pdf',
-                signed_url: 'https://www.example.com/signed/pdf'
+                pdf_report: 'https://www.example.com/pdf'
             });
 
         const cko = new Checkout(SK, { subdomain: 'test' });
@@ -216,7 +215,9 @@ describe('Unit::ID Document Verifications', () => {
         );
 
         expect(result.pdf_report).to.equal('https://www.example.com/pdf');
-        expect(result.signed_url).to.be.a('string');
+        // Part C: IdvPdf declares pdf_report only. signed_url does not appear anywhere in the
+        // 2026-09-02 spec, so the fixture no longer returns it and nothing should read it.
+        expect(result.signed_url).to.be.undefined;
     });
 
     it('should anonymize an ID document verification', async () => {

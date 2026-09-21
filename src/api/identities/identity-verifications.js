@@ -146,11 +146,15 @@ export default class IdentityVerifications {
      * Get all the attempts for a specific identity verification.
      * @method listAttempts
      * @param {string} identity_verification_id - The identity verification's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
      * @returns {Promise<Object>} A promise to the Get identity verification attempts response
      */
-    async listAttempts(identity_verification_id) {
+    async listAttempts(identity_verification_id, params) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}`;
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/${IDENTITY_VERIFICATIONS_PATH}/${identity_verification_id}/${ATTEMPTS_PATH}`,
+                params
+            );
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -224,7 +228,8 @@ export default class IdentityVerifications {
      * The report is only available when the verification status is approved or declined.
      * @method getPDFReport
      * @param {string} identity_verification_id - The identity verification's unique identifier
-     * @returns {Promise<Buffer>} A promise to the PDF report as a Buffer
+     * @returns {Promise<Object>} A promise to the Get identity verification report response,
+     *   carrying `pdf_report`, the pre-signed URL to the PDF
      */
     async getPDFReport(identity_verification_id) {
         try {
@@ -232,10 +237,10 @@ export default class IdentityVerifications {
             const response = await get(
                 this.config.httpClient,
                 url,
-                { ...this.config, csv: true },
+                this.config,
                 this.config.sk
             );
-            return await response.csv;
+            return await response.json;
         } catch (error) {
             throw await determineError(error);
         }
