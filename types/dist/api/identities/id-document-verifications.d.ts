@@ -6,13 +6,14 @@ export default class IDDocumentVerifications {
     createIDDocumentVerification(body: object): Promise<object>;
     getIDDocumentVerification(idDocumentVerificationId: string): Promise<object>;
     /**
-     * List the verification attempts. Results are paginated: pass `skip` and `limit` on `params`.
+     * List the verification attempts. Results are paginated: pass `skip` (default 0) and
+     * `limit` (default 10) on `params`.
      */
     listAttempts(idDocumentVerificationId: string, params?: object): Promise<object>;
     getAttempt(idDocumentVerificationId: string, attemptId: string): Promise<object>;
     /**
-     * Get the assets (the front and back images of the document) uploaded for an attempt. Results
-     * are paginated: pass `skip` and `limit` on `params`.
+     * Get the assets (the front and back images of the document) uploaded for an attempt.
+     * Results are paginated: pass `skip` (default 0) and `limit` (default 10) on `params`.
      */
     getAttemptAssets(idDocumentVerificationId: string, attemptId: string, params?: object): Promise<object>;
     createAttempt(idDocumentVerificationId: string, body: object): Promise<object>;

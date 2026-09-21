@@ -51,4 +51,22 @@ describe.skip('Integration::Identities::FaceAuthentications', () => {
         expect(assets).to.not.be.null;
         expect(assets.data).to.be.an('array');
     });
+
+    // list-attempts became paginated in the 2026-09-02 row.
+    it('should list face authentication attempts with skip and limit', async () => {
+        const applicant = await cko.identities.createApplicant({
+            external_applicant_id: `ext_${Date.now()}`,
+            email: 'test.face.paging@example.com',
+            external_applicant_name: 'Test Face Paging',
+        });
+        const faceAuth = await cko.identities.createFaceAuthentication({
+            applicant_id: applicant.id,
+        });
+        const attempts = await cko.identities.listFaceAuthenticationAttempts(faceAuth.id, {
+            skip: 0,
+            limit: 5,
+        });
+        expect(attempts.data).to.be.an('array');
+        expect(attempts.limit).to.equal(5);
+    });
 });

@@ -8,7 +8,8 @@ export default class IdentityVerifications {
     getIdentityVerification(identityVerificationId: string): Promise<object>;
     createAttempt(identityVerificationId: string, body: object): Promise<object>;
     /**
-     * List the verification attempts. Results are paginated: pass `skip` and `limit` on `params`.
+     * List the verification attempts. Results are paginated: pass `skip` (default 0) and
+     * `limit` (default 10) on `params`.
      */
     listAttempts(identityVerificationId: string, params?: object): Promise<object>;
     getAttempt(identityVerificationId: string, attemptId: string): Promise<object>;

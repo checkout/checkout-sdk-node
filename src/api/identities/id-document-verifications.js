@@ -73,7 +73,9 @@ export default class IDDocumentVerifications {
      * Get the details of all attempts for a specific ID document verification.
      * @method listAttempts
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get ID document verification attempts response
      */
     async listAttempts(id_document_verification_id, params) {
@@ -199,7 +201,9 @@ export default class IDDocumentVerifications {
      * @method getAttemptAssets
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get ID document verification attempt assets response
      */
     async getAttemptAssets(id_document_verification_id, attempt_id, params) {

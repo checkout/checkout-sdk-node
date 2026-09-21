@@ -6,13 +6,14 @@ export default class AddressDocumentVerifications {
     createAddressDocumentVerification(body: object): Promise<object>;
     getAddressDocumentVerification(addressDocumentVerificationId: string): Promise<object>;
     /**
-     * List the verification attempts. Results are paginated: pass `skip` and `limit` on `params`.
+     * List the verification attempts. Results are paginated: pass `skip` (default 0) and
+     * `limit` (default 10) on `params`.
      */
     listAttempts(addressDocumentVerificationId: string, params?: object): Promise<object>;
     getAttempt(addressDocumentVerificationId: string, attemptId: string): Promise<object>;
     /**
      * Get the assets (the document image) uploaded for an attempt. Results are paginated: pass
-     * `skip` and `limit` on `params`.
+     * `skip` (default 0) and `limit` (default 10) on `params`.
      */
     getAttemptAssets(addressDocumentVerificationId: string, attemptId: string, params?: object): Promise<object>;
     createAttempt(addressDocumentVerificationId: string, body: object): Promise<object>;

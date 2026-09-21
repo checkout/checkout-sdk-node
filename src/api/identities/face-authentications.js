@@ -72,7 +72,9 @@ export default class FaceAuthentications {
      * Get the details of all attempts for a specific face authentication.
      * @method listAttempts
      * @param {string} face_authentication_id - The face authentication's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempts response
      */
     async listAttempts(face_authentication_id, params) {
@@ -124,7 +126,9 @@ export default class FaceAuthentications {
      * @method getAttemptAssets
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
      */
     async getAttemptAssets(face_authentication_id, attempt_id, params) {

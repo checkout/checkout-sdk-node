@@ -71,8 +71,11 @@ export default class Cards {
     /**
      * Updates a card you issued previously.
      *
+     * Only the fields you provide values for are updated. Passing `null` for a field **removes**
+     * its existing value, so omit a field to leave it untouched rather than sending null.
+     *
      * Pass headers to request the card's encrypted credentials in the response. Set
-     * `return-encrypted-cvv` to "true" together with an `Encryption-Key`; supplying the flag
+     * `return-encrypted-cvv` to `true` together with an `Encryption-Key`; supplying the flag
      * without the key returns a 422 with error code `encryption_key_required`.
      *
      * The headers travel on a copy of the config rather than on the body, which is how
@@ -81,11 +84,17 @@ export default class Cards {
      *
      * @memberof Cards
      * @param {string} id Card id.
-     * @param {Object} body Card params to update.
-     * @param {Object} [headers] Optional HTTP headers. Supports `return-encrypted-cvv` and
-     *   `Encryption-Key`.
-     * @return {Promise<Object>} A promise to the card update response, carrying `encrypted_cvv`
-     *   when requested.
+     * @param {Object} body Card params to update: `reference`, `metadata`, `expiry_month`,
+     *   `expiry_year`, `revocation_date` and `scheduled_activation_date`.
+     * @param {Object} [headers] Optional HTTP headers.
+     * @param {boolean} [headers.return-encrypted-cvv] Set to `true` to retrieve the card's
+     *   encrypted credentials in the response. Requires `Encryption-Key`.
+     * @param {string} [headers.Encryption-Key] The RSA public key used to encrypt the returned
+     *   credentials. Required when `return-encrypted-cvv` is `true`. Provide the key with the
+     *   `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----` markers and every newline
+     *   removed, encoded as Base64.
+     * @return {Promise<Object>} A promise to the card update response, carrying
+     *   `last_modified_date`, `_links` and, when the headers requested it, `encrypted_cvv`.
      */
     async updateCard(id, body, headers) {
         try {

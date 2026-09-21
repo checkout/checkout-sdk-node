@@ -425,4 +425,36 @@ describe('Unit::Identity Verifications', () => {
             expect(err).to.be.instanceOf(NotFoundError);
         }
     });
+
+    // skip and limit on list-attempts, which took no query parameters before this row.
+    describe('attempts pagination', () => {
+        const RESOURCE_ID = 'idv_tkoi5db4hryu5cei5vwoabr7we';
+        const ATTEMPTS = { total_count: 25, skip: 5, limit: 25, data: [], _links: { self: { href: 'x' } } };
+
+        it('should send skip and limit', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/identity-verifications/${RESOURCE_ID}/attempts`)
+                .query({ skip: 5, limit: 25 })
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.identityVerifications.listAttempts(RESOURCE_ID, {
+                skip: 5,
+                limit: 25
+            });
+
+            expect(result.total_count).to.equal(25);
+        });
+
+        it('should send no query string when no params are passed', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/identity-verifications/${RESOURCE_ID}/attempts`)
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.identityVerifications.listAttempts(RESOURCE_ID);
+
+            expect(result.total_count).to.equal(25);
+        });
+    });
 });

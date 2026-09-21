@@ -73,7 +73,9 @@ export default class AddressDocumentVerifications {
      * Get the details of all attempts for a specific address document verification.
      * @method listAttempts
      * @param {string} address_document_verification_id - The address document verification's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get address document verification attempts response
      */
     async listAttempts(address_document_verification_id, params) {
@@ -197,7 +199,9 @@ export default class AddressDocumentVerifications {
      * @method getAttemptAssets
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
-     * @param {Object} [params] - Optional pagination query parameters (skip and limit)
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get address document verification attempt assets response
      */
     async getAttemptAssets(address_document_verification_id, attempt_id, params) {

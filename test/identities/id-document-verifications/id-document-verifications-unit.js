@@ -289,4 +289,133 @@ describe('Unit::ID Document Verifications', () => {
             expect(err).to.be.instanceOf(NotFoundError);
         }
     });
+
+    // The new attempt-assets endpoint.
+    //
+    // The payload is the swagger example verbatim (components.examples
+    // iddv_attempt_assets_response_body), apart from shortened hrefs. asset_url is the only link
+    // IddvAttemptAsset declares, and it is required, so using the spec's own example rather than a
+    // hand-written fixture is the point.
+    describe('attempt assets', () => {
+        const IDDV_ID = 'iddv_tkoi5db4hryu5cei5vwoabr7we';
+        const ATTEMPT_ID = 'datp_tkoi5db4hryu5cei5vwoabraio';
+        const ASSETS = {
+            total_count: 2,
+            skip: 0,
+            limit: 10,
+            data: [
+                {
+                    type: 'document_front_image',
+                    _links: {
+                        asset_url: { href: 'https://storage-b.env.ubble.ai/ubble-ai/NDY/document_front.png' }
+                    }
+                },
+                {
+                    type: 'document_back_image',
+                    _links: {
+                        asset_url: { href: 'https://storage-b.env.ubble.ai/ubble-ai/NDY/document_back.png' }
+                    }
+                }
+            ],
+            _links: {
+                self: { href: `https://identity-verification.sandbox.checkout.com/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets` },
+                next: {
+                    href: `https://identity-verification.sandbox.checkout.com/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets?skip=10`
+                },
+                previous: {
+                    href: `https://identity-verification.sandbox.checkout.com/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets?skip=0`
+                }
+            }
+        };
+
+        it('should get the attempt assets, both document types', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets`)
+                .query({ limit: 10 })
+                .reply(200, ASSETS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.idDocumentVerifications.getAttemptAssets(
+                IDDV_ID,
+                ATTEMPT_ID,
+                { limit: 10 }
+            );
+
+            expect(result.total_count).to.equal(2);
+            expect(result.data.map((asset) => asset.type)).to.deep.equal([
+                'document_front_image',
+                'document_back_image'
+            ]);
+            expect(result.data[0]._links.asset_url.href).to.contain('document_front.png');
+            expect(result.data[1]._links.asset_url.href).to.contain('document_back.png');
+            expect(result.data[0]._links.download).to.be.undefined;
+        });
+
+        // The schema types _links as IdvSelfLink, which declares self only, but the endpoint's own
+        // example returns next and previous too. Reported internally; the example is what a caller
+        // actually has to page through, so that is what this asserts.
+        it('should expose the pagination links from the example', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets`)
+                .reply(200, ASSETS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.idDocumentVerifications.getAttemptAssets(
+                IDDV_ID,
+                ATTEMPT_ID
+            );
+
+            expect(result._links.self.href).to.contain('/assets');
+            expect(result._links.next.href).to.contain('skip=10');
+            expect(result._links.previous.href).to.contain('skip=0');
+        });
+
+        // data declares minItems 0, so an attempt with no assets yet is a legal page.
+        it('should handle an empty assets page', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/id-document-verifications/${IDDV_ID}/attempts/${ATTEMPT_ID}/assets`)
+                .reply(200, { total_count: 0, skip: 0, limit: 10, data: [], _links: { self: { href: 'x' } } });
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.idDocumentVerifications.getAttemptAssets(
+                IDDV_ID,
+                ATTEMPT_ID
+            );
+
+            expect(result.total_count).to.equal(0);
+            expect(result.data).to.deep.equal([]);
+        });
+    });
+
+    // Part F M1: skip and limit on list-attempts, which took no query parameters before this row.
+    describe('attempts pagination', () => {
+        const IDDV_ID = 'iddv_tkoi5db4hryu5cei5vwoabr7we';
+        const ATTEMPTS = { total_count: 25, skip: 5, limit: 25, data: [], _links: { self: { href: 'x' } } };
+
+        it('should send skip and limit', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/id-document-verifications/${IDDV_ID}/attempts`)
+                .query({ skip: 5, limit: 25 })
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.idDocumentVerifications.listAttempts(IDDV_ID, {
+                skip: 5,
+                limit: 25
+            });
+
+            expect(result.total_count).to.equal(25);
+        });
+
+        it('should send no query string when no params are passed', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/id-document-verifications/${IDDV_ID}/attempts`)
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.idDocumentVerifications.listAttempts(IDDV_ID);
+
+            expect(result.total_count).to.equal(25);
+        });
+    });
 });
