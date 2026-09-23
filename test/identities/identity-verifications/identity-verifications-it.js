@@ -69,4 +69,23 @@ describe.skip('Integration::Identities::IdentityVerifications', () => {
         expect(assets).to.not.be.null;
         expect(assets.data).to.be.an('array');
     });
+
+    // list-attempts became paginated in the 2026-09-02 row.
+    it('should list identity verification attempts with skip and limit', async () => {
+        const applicant = await cko.identities.createApplicant({
+            external_applicant_id: `ext_${Date.now()}`,
+            email: 'test.verification.paging@example.com',
+            external_applicant_name: 'Test Verification Paging',
+        });
+        const created = await cko.identities.createIdentityVerification({
+            applicant_id: applicant.id,
+            declared_data: { name: 'Test Verification Paging' },
+        });
+        const attempts = await cko.identities.listIdentityVerificationAttempts(created.id, {
+            skip: 0,
+            limit: 5,
+        });
+        expect(attempts.data).to.be.an('array');
+        expect(attempts.limit).to.equal(5);
+    });
 });

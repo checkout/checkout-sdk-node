@@ -58,8 +58,8 @@ export default class Issuing {
         return this.cards.getCardDetails(id);
     }
 
-    async updateCard(id, body) {
-        return this.cards.updateCard(id, body);
+    async updateCard(id, body, headers) {
+        return this.cards.updateCard(id, body, headers);
     }
 
     async enrollThreeDS(id, body) {

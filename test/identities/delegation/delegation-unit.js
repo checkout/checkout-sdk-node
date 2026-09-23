@@ -211,4 +211,122 @@ describe('Identities - Backwards Compatibility Delegation', () => {
         const result = await cko.identities.getIdentityVerificationPDFReport('idv_123');
         expect(result).to.not.be.null;
     });
+
+    // Attempt-assets delegation. The two document-verification delegates are new in the
+    // 2026-09-02 row; the face-authentication and identity-verification ones predate it and had no
+    // delegate coverage either.
+    const ASSETS = (type) => ({
+        total_count: 1,
+        skip: 0,
+        limit: 10,
+        data: [{ type, _links: { asset_url: { href: `https://storage.example.com/${type}.png` } } }],
+        _links: { self: { href: 'https://identity-verification.sandbox.checkout.com/assets' } },
+    });
+
+    it('should delegate getAddressDocumentVerificationAttemptAssets to addressDocumentVerifications submodule', async () => {
+        nock(BASE)
+            .get('/address-document-verifications/adv_123/attempts/adva_123/assets')
+            .reply(200, ASSETS('document'));
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.getAddressDocumentVerificationAttemptAssets('adv_123', 'adva_123');
+        expect(result.data[0].type).to.equal('document');
+        expect(result.data[0]._links.asset_url.href).to.contain('document.png');
+    });
+
+    it('should delegate getIDDocumentVerificationAttemptAssets to idDocumentVerifications submodule', async () => {
+        nock(BASE)
+            .get('/id-document-verifications/iddv_123/attempts/datp_123/assets')
+            .reply(200, ASSETS('document_front_image'));
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.getIDDocumentVerificationAttemptAssets('iddv_123', 'datp_123');
+        expect(result.data[0].type).to.equal('document_front_image');
+    });
+
+    it('should delegate getFaceAuthenticationAttemptAssets to faceAuthentications submodule', async () => {
+        nock(BASE)
+            .get('/face-authentications/fav_123/attempts/fatp_123/assets')
+            .reply(200, ASSETS('face_image'));
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.getFaceAuthenticationAttemptAssets('fav_123', 'fatp_123');
+        expect(result.data[0].type).to.equal('face_image');
+    });
+
+    it('should delegate getIdentityVerificationAttemptAssets to identityVerifications submodule', async () => {
+        nock(BASE)
+            .get('/identity-verifications/idv_123/attempts/iatp_123/assets')
+            .reply(200, ASSETS('face_video'));
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.getIdentityVerificationAttemptAssets('idv_123', 'iatp_123');
+        expect(result.data[0].type).to.equal('face_video');
+    });
+
+    it('should forward skip and limit through the attempt-assets delegates', async () => {
+        nock(BASE)
+            .get('/address-document-verifications/adv_123/attempts/adva_123/assets')
+            .query({ skip: 10, limit: 5 })
+            .reply(200, ASSETS('document'));
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.getAddressDocumentVerificationAttemptAssets(
+            'adv_123',
+            'adva_123',
+            { skip: 10, limit: 5 }
+        );
+        expect(result.total_count).to.equal(1);
+    });
+
+    // The four list-attempts delegates gained a params argument, so each one has to
+    // pass it through rather than silently drop it.
+    const ATTEMPTS = { total_count: 25, skip: 5, limit: 25, data: [], _links: { self: { href: 'x' } } };
+
+    it('should forward skip and limit through listAddressDocumentVerificationAttempts', async () => {
+        nock(BASE)
+            .get('/address-document-verifications/adv_123/attempts')
+            .query({ skip: 5, limit: 25 })
+            .reply(200, ATTEMPTS);
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.listAddressDocumentVerificationAttempts('adv_123', {
+            skip: 5,
+            limit: 25,
+        });
+        expect(result.total_count).to.equal(25);
+    });
+
+    it('should forward skip and limit through listIDDocumentVerificationAttempts', async () => {
+        nock(BASE)
+            .get('/id-document-verifications/iddv_123/attempts')
+            .query({ skip: 5, limit: 25 })
+            .reply(200, ATTEMPTS);
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.listIDDocumentVerificationAttempts('iddv_123', {
+            skip: 5,
+            limit: 25,
+        });
+        expect(result.total_count).to.equal(25);
+    });
+
+    it('should forward skip and limit through listFaceAuthenticationAttempts', async () => {
+        nock(BASE)
+            .get('/face-authentications/fav_123/attempts')
+            .query({ skip: 5, limit: 25 })
+            .reply(200, ATTEMPTS);
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.listFaceAuthenticationAttempts('fav_123', {
+            skip: 5,
+            limit: 25,
+        });
+        expect(result.total_count).to.equal(25);
+    });
+
+    it('should forward skip and limit through listIdentityVerificationAttempts', async () => {
+        nock(BASE)
+            .get('/identity-verifications/idv_123/attempts')
+            .query({ skip: 5, limit: 25 })
+            .reply(200, ATTEMPTS);
+        const cko = new Checkout(SK, { subdomain: 'test' });
+        const result = await cko.identities.listIdentityVerificationAttempts('idv_123', {
+            skip: 5,
+            limit: 25,
+        });
+        expect(result.total_count).to.equal(25);
+    });
 });

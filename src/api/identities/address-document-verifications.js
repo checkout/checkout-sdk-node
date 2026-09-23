@@ -1,9 +1,11 @@
 import { determineError } from '../../services/errors.js';
+import { buildQueryParams } from '../../services/utils.js';
 import { get, post } from '../../services/http.js';
 
 // Path segments appended to the API base (config.identityVerificationUrl).
 const ADDRESS_DOCUMENT_VERIFICATIONS_PATH = 'address-document-verifications';
 const ANONYMIZE_PATH = 'anonymize';
+const ASSETS_PATH = 'assets';
 const ATTEMPTS_PATH = 'attempts';
 const PDF_REPORT_PATH = 'pdf-report';
 
@@ -71,11 +73,17 @@ export default class AddressDocumentVerifications {
      * Get the details of all attempts for a specific address document verification.
      * @method listAttempts
      * @param {string} address_document_verification_id - The address document verification's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get address document verification attempts response
      */
-    async listAttempts(address_document_verification_id) {
+    async listAttempts(address_document_verification_id, params) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}`;
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}`,
+                params
+            );
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -171,6 +179,38 @@ export default class AddressDocumentVerifications {
     async getPDFReport(address_document_verification_id) {
         try {
             const url = `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${PDF_REPORT_PATH}`;
+            const response = await get(
+                this.config.httpClient,
+                url,
+                this.config,
+                this.config.sk
+            );
+            return await response.json;
+        } catch (error) {
+            throw await determineError(error);
+        }
+    }
+
+    /**
+     * Get address document verification attempt assets
+     * [BETA]
+     * Get the assets (the document image) uploaded for an address document verification attempt.
+     * Results are paginated.
+     * @method getAttemptAssets
+     * @param {string} address_document_verification_id - The address document verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
+     * @returns {Promise<Object>} A promise to the Get address document verification attempt assets response
+     */
+    async getAttemptAssets(address_document_verification_id, attempt_id, params) {
+        try {
+            const url = buildQueryParams(
+                `${this.config.identityVerificationUrl}/${ADDRESS_DOCUMENT_VERIFICATIONS_PATH}/${address_document_verification_id}/${ATTEMPTS_PATH}/${attempt_id}/${ASSETS_PATH}`,
+                params
+            );
+
             const response = await get(
                 this.config.httpClient,
                 url,

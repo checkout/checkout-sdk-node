@@ -341,16 +341,18 @@ describe('Unit::Identity Verifications', () => {
     it('should get identity verification PDF report', async () => {
         nock('https://identity-verification.sandbox.checkout.com')
             .get('/identity-verifications/idv_tkoi5db4hryu5cei5vwoabr7we/pdf-report')
-            .reply(200, Buffer.from('PDF content'), {
-                'content-type': 'application/pdf'
-            });
+            .reply(200, { pdf_report: 'https://www.example.com/reports/idv.pdf' });
 
         const cko = new Checkout(SK, { subdomain: 'test' });
         const result = await cko.identities.identityVerifications.getPDFReport(
             'idv_tkoi5db4hryu5cei5vwoabr7we'
         );
 
-        expect(result).to.be.an.instanceOf(Buffer);
+        // The endpoint answers application/json with IdvPdf, so the report arrives as a URL in
+        // pdf_report, not as PDF bytes. This previously asserted a Buffer, which was asserting
+        // the csv: true defect rather than the documented contract.
+        expect(result.pdf_report).to.equal('https://www.example.com/reports/idv.pdf');
+        expect(result.signed_url).to.be.undefined;
     });
 
     it('should get identity verification attempt assets', async () => {
@@ -422,5 +424,37 @@ describe('Unit::Identity Verifications', () => {
         } catch (err) {
             expect(err).to.be.instanceOf(NotFoundError);
         }
+    });
+
+    // skip and limit on list-attempts, which took no query parameters before this row.
+    describe('attempts pagination', () => {
+        const RESOURCE_ID = 'idv_tkoi5db4hryu5cei5vwoabr7we';
+        const ATTEMPTS = { total_count: 25, skip: 5, limit: 25, data: [], _links: { self: { href: 'x' } } };
+
+        it('should send skip and limit', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/identity-verifications/${RESOURCE_ID}/attempts`)
+                .query({ skip: 5, limit: 25 })
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.identityVerifications.listAttempts(RESOURCE_ID, {
+                skip: 5,
+                limit: 25
+            });
+
+            expect(result.total_count).to.equal(25);
+        });
+
+        it('should send no query string when no params are passed', async () => {
+            nock('https://identity-verification.sandbox.checkout.com')
+                .get(`/identity-verifications/${RESOURCE_ID}/attempts`)
+                .reply(200, ATTEMPTS);
+
+            const cko = new Checkout(SK, { subdomain: 'test' });
+            const result = await cko.identities.identityVerifications.listAttempts(RESOURCE_ID);
+
+            expect(result.total_count).to.equal(25);
+        });
     });
 });

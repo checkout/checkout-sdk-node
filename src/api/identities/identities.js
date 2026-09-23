@@ -59,14 +59,24 @@ export default class Identities {
         return this.faceAuthentications.getFaceAuthentication(face_authentication_id);
     }
 
-    async listFaceAuthenticationAttempts(face_authentication_id) {
-        return this.faceAuthentications.listAttempts(face_authentication_id);
+    async listFaceAuthenticationAttempts(face_authentication_id, params) {
+        return this.faceAuthentications.listAttempts(face_authentication_id, params);
     }
 
     async getFaceAuthenticationAttempt(face_authentication_id, attempt_id) {
         return this.faceAuthentications.getAttempt(face_authentication_id, attempt_id);
     }
 
+    /**
+     * Get the assets (the face image or video) uploaded for a face authentication attempt.
+     * Delegates to `faceAuthentications.getAttemptAssets`. Results are paginated.
+     * @param {string} face_authentication_id - The face authentication's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
+     * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
+     */
     async getFaceAuthenticationAttemptAssets(face_authentication_id, attempt_id, params) {
         return this.faceAuthentications.getAttemptAssets(face_authentication_id, attempt_id, params);
     }
@@ -88,8 +98,22 @@ export default class Identities {
         return this.idDocumentVerifications.getIDDocumentVerification(id_document_verification_id);
     }
 
-    async listIDDocumentVerificationAttempts(id_document_verification_id) {
-        return this.idDocumentVerifications.listAttempts(id_document_verification_id);
+    async listIDDocumentVerificationAttempts(id_document_verification_id, params) {
+        return this.idDocumentVerifications.listAttempts(id_document_verification_id, params);
+    }
+
+    /**
+     * Get the assets (the front and back images of the document) uploaded for an ID document verification attempt.
+     * Delegates to `idDocumentVerifications.getAttemptAssets`. Results are paginated.
+     * @param {string} id_document_verification_id - The ID document verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
+     * @returns {Promise<Object>} A promise to the Get ID document verification attempt assets response
+     */
+    async getIDDocumentVerificationAttemptAssets(id_document_verification_id, attempt_id, params) {
+        return this.idDocumentVerifications.getAttemptAssets(id_document_verification_id, attempt_id, params);
     }
 
     async getIDDocumentVerificationAttempt(id_document_verification_id, attempt_id) {
@@ -117,8 +141,26 @@ export default class Identities {
         return this.addressDocumentVerifications.getAddressDocumentVerification(address_document_verification_id);
     }
 
-    async listAddressDocumentVerificationAttempts(address_document_verification_id) {
-        return this.addressDocumentVerifications.listAttempts(address_document_verification_id);
+    async listAddressDocumentVerificationAttempts(address_document_verification_id, params) {
+        return this.addressDocumentVerifications.listAttempts(address_document_verification_id, params);
+    }
+
+    /**
+     * Get the assets (the document image) uploaded for a address document verification attempt.
+     * Delegates to `addressDocumentVerifications.getAttemptAssets`. Results are paginated.
+     * @param {string} address_document_verification_id - The address document verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
+     * @returns {Promise<Object>} A promise to the Get address document verification attempt assets response
+     */
+    async getAddressDocumentVerificationAttemptAssets(address_document_verification_id, attempt_id, params) {
+        return this.addressDocumentVerifications.getAttemptAssets(
+            address_document_verification_id,
+            attempt_id,
+            params
+        );
     }
 
     async getAddressDocumentVerificationAttempt(address_document_verification_id, attempt_id) {
@@ -158,14 +200,24 @@ export default class Identities {
         return this.identityVerifications.createAttempt(identity_verification_id, body);
     }
 
-    async listIdentityVerificationAttempts(identity_verification_id) {
-        return this.identityVerifications.listAttempts(identity_verification_id);
+    async listIdentityVerificationAttempts(identity_verification_id, params) {
+        return this.identityVerifications.listAttempts(identity_verification_id, params);
     }
 
     async getIdentityVerificationAttempt(identity_verification_id, attempt_id) {
         return this.identityVerifications.getAttempt(identity_verification_id, attempt_id);
     }
 
+    /**
+     * Get the assets (the captured images and videos) uploaded for a identity verification attempt.
+     * Delegates to `identityVerifications.getAttemptAssets`. Results are paginated.
+     * @param {string} identity_verification_id - The identity verification's unique identifier
+     * @param {string} attempt_id - The attempt's unique identifier
+     * @param {Object} [params] - Optional pagination query parameters
+     * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
+     * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
+     * @returns {Promise<Object>} A promise to the Get identity verification attempt assets response
+     */
     async getIdentityVerificationAttemptAssets(identity_verification_id, attempt_id, params) {
         return this.identityVerifications.getAttemptAssets(identity_verification_id, attempt_id, params);
     }

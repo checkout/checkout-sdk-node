@@ -132,4 +132,53 @@ describe.skip('Integration::Issuing::Cards - AuthenticationError: Requires CHECK
         expect(response.id).to.equal(card.id);
         expect(response.status).to.equal('revoked');
     });
+
+    // update-card-request replaced activation_date with
+    // scheduled_activation_date. IssuingScheduledActivationDate only accepts a date, or a date
+    // with a round hour, and the value has to be at least the next round hour after the request.
+    it('should update a card with a scheduled activation date', async () => {
+        const nextRoundHour = new Date(Date.now() + 2 * 60 * 60 * 1000);
+        nextRoundHour.setUTCMinutes(0, 0, 0);
+        const scheduled = `${nextRoundHour.toISOString().slice(0, 16)}Z`;
+
+        const response = await cko_issuing.issuing.updateCard(card.id, {
+            reference: 'X-123456-N11',
+            scheduled_activation_date: scheduled,
+        });
+
+        expect(response.last_modified_date).to.not.be.null;
+        expect(response._links.self.href).to.contain(card.id);
+    });
+
+    // return-encrypted-cvv plus an Encryption-Key returns the encrypted credentials. The
+    // key must be Base64 with the BEGIN and END PUBLIC KEY markers and every newline removed.
+    it('should update a card and return the encrypted cvv', async function () {
+        const publicKey = process.env.CHECKOUT_ISSUING_ENCRYPTION_PUBLIC_KEY;
+        if (!publicKey) {
+            this.skip();
+        }
+
+        const response = await cko_issuing.issuing.updateCard(
+            card.id,
+            { reference: 'X-123456-N11' },
+            { 'return-encrypted-cvv': true, 'Encryption-Key': publicKey }
+        );
+
+        expect(response.encrypted_cvv).to.be.a('string');
+    });
+
+    // The flag without the key is a documented 422 carrying encryption_key_required.
+    it('should throw ValidationError when requesting the cvv without an encryption key', async () => {
+        try {
+            await cko_issuing.issuing.updateCard(
+                card.id,
+                { reference: 'X-123456-N11' },
+                { 'return-encrypted-cvv': true }
+            );
+            expect.fail('Should have thrown ValidationError');
+        } catch (err) {
+            expect(err).to.be.instanceOf(ValidationError);
+            expect(err.body.error_codes).to.contain('encryption_key_required');
+        }
+    });
 });
