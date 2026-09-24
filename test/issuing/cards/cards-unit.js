@@ -33,6 +33,8 @@ describe('Unit::Issuing::Cards', () => {
                 scheme: "VISA",
                 reference: "X-123456-N11",
                 created_date: "2019-09-10T10:11:12Z",
+                last_activated_on: null,
+                scheduled_revocation_date: "2026-12-31",
                 _links: {
                     self: {
                         href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491"
@@ -76,11 +78,14 @@ describe('Unit::Issuing::Cards', () => {
                 },
                 additional_comment: "string"
             },
+            scheduled_revocation_date: "2026-12-31",
             activate_card: false
         })
 
         expect(cardResponse.id).to.equal("crd_fa6psq242dcd6fdn5gifcq1491")
         expect(cardResponse.display_name).to.equal("JOHN KENNEDY")
+        expect(cardResponse.last_activated_on).to.equal(null)
+        expect(cardResponse.scheduled_revocation_date).to.equal("2026-12-31")
     });
 
     it('should throw when creating a cardholder cards', async () => {
@@ -140,6 +145,8 @@ describe('Unit::Issuing::Cards', () => {
                 reference: "X-123456-N11",
                 created_date: "2021-09-09T19:41:39Z",
                 last_modified_date: "2021-09-09T19:41:39Z",
+                last_activated_on: "2021-09-09T19:41:39Z",
+                scheduled_revocation_date: "2026-12-31",
                 _links: {
                     self: {
                         href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491"
@@ -167,6 +174,8 @@ describe('Unit::Issuing::Cards', () => {
         expect(cardholderResponse.cardholder_id).to.equal("crh_d3ozhf43pcq2xbldn2g45qnb44")
         expect(cardholderResponse.type).to.equal("physical")
         expect(cardholderResponse.status).to.equal("active")
+        expect(cardholderResponse.last_activated_on).to.equal("2021-09-09T19:41:39Z")
+        expect(cardholderResponse.scheduled_revocation_date).to.equal("2026-12-31")
     });
 
     it('should throw when getting a card', async () => {
@@ -213,7 +222,24 @@ describe('Unit::Issuing::Cards', () => {
             .reply(200, {
                 id: "crd_fa6psq242dcd6fdn5gifcq1491",
                 status: "inactive",
-                reference: "X-123456-N11-UPDATED"
+                reference: "X-123456-N11-UPDATED",
+                scheduled_revocation_date: "2026-12-31",
+                last_modified_date: "2021-09-09T19:41:39Z",
+                last_activated_on: null,
+                _links: {
+                    self: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491"
+                    },
+                    credentials: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491/credentials"
+                    },
+                    revoke: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491/revoke"
+                    },
+                    controls: {
+                        href: "https://123456789.api.checkout.com/issuing/controls?target_id=crd_fa6psq42dcdd6fdn5gifcq1491"
+                    }
+                }
             });
 
         const cko = new Checkout('test_client_secret', {
@@ -226,12 +252,65 @@ describe('Unit::Issuing::Cards', () => {
 
         const cardResponse = await cko.issuing.updateCard('crd_fa6psq242dcd6fdn5gifcq1491', {
             status: "inactive",
-            reference: "X-123456-N11-UPDATED"
+            reference: "X-123456-N11-UPDATED",
+            scheduled_revocation_date: "2026-12-31"
         });
 
         expect(cardResponse.id).to.equal("crd_fa6psq242dcd6fdn5gifcq1491");
         expect(cardResponse.status).to.equal("inactive");
         expect(cardResponse.reference).to.equal("X-123456-N11-UPDATED");
+        expect(cardResponse.scheduled_revocation_date).to.equal("2026-12-31");
+        expect(cardResponse.last_modified_date).to.equal("2021-09-09T19:41:39Z");
+        expect(cardResponse.encrypted_cvv).to.equal(undefined);
+    });
+
+    it('should reactivate a suspended card via update', async () => {
+        nock('https://123456789.access.sandbox.checkout.com')
+            .post('/connect/token')
+            .reply(200, {
+                access_token: 'test_access_token',
+                expires_in: 3600,
+                token_type: 'Bearer',
+                scope: 'issuing:card-management-write issuing:card-management-read'
+            });
+
+        nock('https://123456789.api.sandbox.checkout.com')
+            .patch('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491')
+            .reply(200, {
+                id: "crd_fa6psq242dcd6fdn5gifcq1491",
+                status: "active",
+                last_modified_date: "2021-09-09T19:41:39Z",
+                last_activated_on: "2021-09-09T19:41:39Z",
+                _links: {
+                    self: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491"
+                    },
+                    credentials: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491/credentials"
+                    },
+                    revoke: {
+                        href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491/revoke"
+                    },
+                    controls: {
+                        href: "https://123456789.api.checkout.com/issuing/controls?target_id=crd_fa6psq42dcdd6fdn5gifcq1491"
+                    }
+                }
+            });
+
+        const cko = new Checkout('test_client_secret', {
+            client: 'ack_testclie123456',
+            scope: ['issuing:card-management-write', 'issuing:card-management-read'],
+            subdomain: 'test',
+            environment: 'sandbox',
+            subdomain: '123456789'
+        });
+
+        const cardResponse = await cko.issuing.updateCard('crd_fa6psq242dcd6fdn5gifcq1491', {
+            status: "active"
+        });
+
+        expect(cardResponse.status).to.equal("active");
+        expect(cardResponse.last_activated_on).to.equal("2021-09-09T19:41:39Z");
     });
 
     it('should throw when updating a card', async () => {
@@ -491,6 +570,7 @@ describe('Unit::Issuing::Cards', () => {
         nock('https://123456789.api.sandbox.checkout.com')
             .post('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491/activate')
             .reply(200, {
+                last_activated_on: "2021-09-09T19:41:39Z",
                 _links: {
                     self: {
                         href: "https://123456789.api.checkout.com/issuing/cards/crd_fa6psq42dcdd6fdn5gifcq1491"
@@ -518,6 +598,7 @@ describe('Unit::Issuing::Cards', () => {
         const activationResponse = await cko.issuing.activateCard("crd_fa6psq242dcd6fdn5gifcq1491")
 
         expect(activationResponse).to.not.be.null
+        expect(activationResponse.last_activated_on).to.equal("2021-09-09T19:41:39Z")
     });
 
     it('should throw when activating card', async () => {
@@ -780,12 +861,13 @@ describe('Unit::Issuing::Cards', () => {
         }
     });
 
-    // The return-encrypted-cvv and Encryption-Key headers
-    // on PATCH /issuing/cards/{cardId}, and the encrypted_cvv the response then carries.
+    // The return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
     //
     // These assert the headers on the outgoing request, because the spec spells them case
     // sensitively (return-encrypted-cvv lower case, Encryption-Key title case) and because they
-    // travel on a copy of the config rather than on the body.
+    // travel on a copy of the config rather than on the body. The 2026-09-17 spec (INT-1700)
+    // removed encrypted_cvv from update-card-response entirely, so the response body is
+    // asserted without it regardless of whether these headers are sent.
     describe('update headers', () => {
         const SUBDOMAIN = "123456789";
         const ACCESS_BASE = `https://${SUBDOMAIN}.access.sandbox.checkout.com`;
@@ -821,7 +903,6 @@ describe('Unit::Issuing::Cards', () => {
                     seen = this.req.headers;
                     return {
                         last_modified_date: '2026-06-01T10:00:00Z',
-                        encrypted_cvv: 'oJMoNMEEUiQKYOsQ4Zd',
                         _links: {
                             self: {
                                 href: `https://${SUBDOMAIN}.api.checkout.com/issuing/cards/${CARD_ID}`,
@@ -841,11 +922,12 @@ describe('Unit::Issuing::Cards', () => {
             // nock lowercases header names when it records them, which is what HTTP does on the wire.
             expect(seen['return-encrypted-cvv']).to.equal('true');
             expect(seen['encryption-key']).to.equal('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A');
-            expect(result.encrypted_cvv).to.equal('oJMoNMEEUiQKYOsQ4Zd');
 
-            // last_modified_date is the only required property of update-card-response; _links is
-            // a CardSelfLink, whose self carries href, actions and types.
+            // last_modified_date is required on update-card-response. The 2026-09-17 spec
+            // (INT-1700) removed encrypted_cvv entirely, so these headers no longer make the
+            // response carry it; _links is now the same CardLinks shape get-card-response uses.
             expect(result.last_modified_date).to.equal('2026-06-01T10:00:00Z');
+            expect(result.encrypted_cvv).to.be.undefined;
             expect(result._links.self.href).to.contain(`/issuing/cards/${CARD_ID}`);
             expect(result._links.self.actions).to.deep.equal(['GET']);
             expect(result._links.self.types).to.deep.equal(['application/json']);
