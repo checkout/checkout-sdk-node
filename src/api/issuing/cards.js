@@ -105,7 +105,9 @@ export default class Cards {
      *
      * The response has the same fields as the get-card response (including
      * `last_activated_on` and `scheduled_revocation_date`), plus a required
-     * `last_modified_date`. It no longer includes `encrypted_cvv`.
+     * `last_modified_date`. It no longer includes `encrypted_cvv`. For a virtual card, the
+     * response may also include `is_single_use` (boolean), specifying whether the card is set
+     * to expire after a single use; physical cards never send it.
      *
      * @memberof Cards
      * @param {string} id Card id.

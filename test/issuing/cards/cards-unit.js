@@ -933,6 +933,22 @@ describe('Unit::Issuing::Cards', () => {
             expect(result._links.self.types).to.deep.equal(['application/json']);
         });
 
+        // The 2026-09-23 spec update split update-card-response into a virtual/physical
+        // discriminator; the virtual variant adds is_single_use.
+        it('should round-trip is_single_use for a virtual card response', async () => {
+            nock(BASE)
+                .patch(`/issuing/cards/${CARD_ID}`)
+                .reply(200, {
+                    type: 'virtual',
+                    last_modified_date: '2026-06-01T10:00:00Z',
+                    is_single_use: true
+                });
+
+            const result = await client().issuing.cards.updateCard(CARD_ID, { reference: 'X-123456-N11' });
+
+            expect(result.is_single_use).to.equal(true);
+        });
+
         it('should not leak the headers into the request body', async () => {
             let body;
             nock(BASE)
