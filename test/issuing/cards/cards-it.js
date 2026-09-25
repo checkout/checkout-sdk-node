@@ -150,22 +150,9 @@ describe.skip('Integration::Issuing::Cards - AuthenticationError: Requires CHECK
         expect(response._links.self.href).to.contain(card.id);
     });
 
-    // return-encrypted-cvv plus an Encryption-Key returns the encrypted credentials. The
-    // key must be Base64 with the BEGIN and END PUBLIC KEY markers and every newline removed.
-    it('should update a card and return the encrypted cvv', async function () {
-        const publicKey = process.env.CHECKOUT_ISSUING_ENCRYPTION_PUBLIC_KEY;
-        if (!publicKey) {
-            this.skip();
-        }
-
-        const response = await cko_issuing.issuing.updateCard(
-            card.id,
-            { reference: 'X-123456-N11' },
-            { 'return-encrypted-cvv': true, 'Encryption-Key': publicKey }
-        );
-
-        expect(response.encrypted_cvv).to.be.a('string');
-    });
+    // The 2026-09-17 spec (INT-1700) removed encrypted_cvv from update-card-response entirely,
+    // so return-encrypted-cvv/Encryption-Key no longer make the update response carry it. This
+    // test previously asserted the opposite (added by INT-1695, when the field still existed).
 
     // The flag without the key is a documented 422 carrying encryption_key_required.
     it('should throw ValidationError when requesting the cvv without an encryption key', async () => {

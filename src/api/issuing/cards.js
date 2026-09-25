@@ -26,6 +26,13 @@ export default class Cards {
     /**
      * Creates a physical or virtual card and issues it to the specified cardholder.
      *
+     * `body.scheduled_revocation_date` (string, `YYYY-MM-DD`, optional) schedules
+     * the card to be revoked at midnight UTC on that date. Replaces the deprecated
+     * `revocation_date` field; if both are provided, `scheduled_revocation_date` wins.
+     *
+     * The response includes `last_activated_on` (string, date-time, nullable), the
+     * time the card was activated, or `null` if it was never activated.
+     *
      * @memberof Cards
      * @param {Object} body Card params.
      * @param {string} [idempotencyKey] Idempotency Key.
@@ -49,6 +56,11 @@ export default class Cards {
 
     /**
      * Retrieves the details for a card you issued previously.
+     *
+     * The response includes `last_activated_on` (string, date-time, nullable), the
+     * time the card was activated, or `null` if it was never activated, and
+     * `scheduled_revocation_date` (string, `YYYY-MM-DD`), the date the card is
+     * scheduled to be revoked at midnight UTC.
      *
      * @memberof Cards
      * @param {string} id Card id.
@@ -82,10 +94,26 @@ export default class Cards {
      * getRequestHeaders picks them up for every verb. Putting them on the body would also send
      * them as JSON fields.
      *
+     * `body.status` (string enum, optional, only `active` allowed) reactivates an
+     * `inactive` or `suspended` card. Mutually exclusive with
+     * `scheduled_activation_date`; the API returns
+     * `scheduled_activation_date_conflicts_with_activation` if both are set.
+     *
+     * `body.scheduled_revocation_date` (string, `YYYY-MM-DD`, optional) schedules
+     * the card to be revoked at midnight UTC on that date. Replaces the deprecated
+     * `revocation_date` field; if both are provided, `scheduled_revocation_date` wins.
+     *
+     * The response has the same fields as the get-card response (including
+     * `last_activated_on` and `scheduled_revocation_date`), plus a required
+     * `last_modified_date`. It no longer includes `encrypted_cvv`. For a virtual card, the
+     * response may also include `is_single_use` (boolean), specifying whether the card is set
+     * to expire after a single use; physical cards never send it.
+     *
      * @memberof Cards
      * @param {string} id Card id.
-     * @param {Object} body Card params to update: `reference`, `metadata`, `expiry_month`,
-     *   `expiry_year`, `revocation_date` and `scheduled_activation_date`.
+     * @param {Object} body Card params to update: `status`, `reference`, `metadata`,
+     *   `expiry_month`, `expiry_year`, `scheduled_revocation_date`, `revocation_date` and
+     *   `scheduled_activation_date`.
      * @param {Object} [headers] Optional HTTP headers.
      * @param {boolean} [headers.return-encrypted-cvv] Set to `true` to retrieve the card's
      *   encrypted credentials in the response. Requires `Encryption-Key`.
@@ -184,6 +212,9 @@ export default class Cards {
 
     /**
      * Activates an inactive or suspended card so that incoming authorizations can be approved.
+     *
+     * The response includes a required `last_activated_on` (string, date-time), the
+     * time the card was activated.
      *
      * @memberof Cards
      * @param {string} id Card id.
