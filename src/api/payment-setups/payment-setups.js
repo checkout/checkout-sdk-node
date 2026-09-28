@@ -45,7 +45,14 @@ export default class PaymentSetups {
      *    PaymentSetupAirline (all fields optional): ticket (object: number, issue_date [date],
      *    issuing_carrier_code, travel_package_indicator [free-form string], travel_agency_name, travel_agency_code),
      *    passengers (array of { first_name, last_name, date_of_birth [date], address: { country [ISO 3166-1 alpha-2] } }),
-     *    flight_leg_details (array of PaymentSetupFlightLegDetails),
+     *    flight_leg_details (array of PaymentSetupFlightLegDetails: flight_number [string,
+     *    e.g. "BA1483", not a number], carrier_code [IATA 2-letter accounting code],
+     *    class_of_travelling [one-letter travel class, e.g. "W"], departure_airport [IATA
+     *    3-letter], departure_date [date format], departure_time [e.g. "18:30"],
+     *    arrival_airport [IATA 3-letter], stop_over_code [one letter, e.g. "X"],
+     *    fare_basis_code [e.g. "WUP14B"]. Note class_of_travelling with two l's and
+     *    stop_over_code as three words: six SDKs previously shipped service_class,
+     *    class_of_traveling or stopover_code here and the values never reached the API),
      *    total_number_of_passengers (integer, added 2026-09-08), travel_type (string, added 2026-09-08; free-form,
      *    not a typed enum), trip_type (string, added 2026-09-08; free-form, not a typed enum),
      *    refundable (boolean, added 2026-09-08), delivery_recipient (string, added 2026-09-08; plain string,

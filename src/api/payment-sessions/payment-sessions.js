@@ -32,6 +32,23 @@ export default class PaymentSessions {
      *  - body.payment_plan — installment / recurring schedule. See swagger
      *    `PaymentSessionPaymentPlanRecurring` for the recurring variant
      *    (fields: amount, name, start_date — added 2026-05-08).
+     *  - body.processing.airline_data: optional array of
+     *    PaymentInterfacesProcessingAirlineData: `ticket`, `passenger` and
+     *    `flight_leg_details`. See the `cko.payments.request` JSDoc for the full nested shape.
+     *  - body.processing.accommodation_data: optional array of
+     *    PaymentInterfacesProcessingAccommodationData: the same eleven fields as
+     *    `cko.payments.request` **minus** `property_phone` and `customer_service_phone`. Those
+     *    two are declared on `AccommodationData` only, so they are read by `POST /payments` and
+     *    payment contexts and ignored here.
+     *
+     *    **`passenger` accepts either a single object or an array on this endpoint.** Verified
+     *    against the sandbox on 2026-09-28: both forms return 201. That makes payment sessions
+     *    the exception among the payment-interfaces endpoints. Hosted payments and payment links
+     *    resolve to the *same* `PaymentInterfacesProcessing` schema yet reject the array with
+     *    422 `processing_airline_data_0_passenger_invalid`, so the shared schema is not a
+     *    reliable guide to which form a surface takes and each has to be tested. A single object
+     *    is still the safer default, being the one form every surface accepts. Omit the key
+     *    entirely when there are no passengers.
      *
      * @memberof PaymentSessions
      * @param {object} body PaymentSessions Request body.
@@ -101,6 +118,13 @@ export default class PaymentSessions {
      *    values (`low_value`, `trusted_listing`, `trusted_listing_prompt`,
      *    `transaction_risk_assessment`, `data_share`) are accepted only by
      *    `cko.sessions.request` and are rejected here.
+     *  - body.processing.airline_data and body.processing.accommodation_data: accepted here too.
+     *    The request schema `CreateAndSubmitPaymentSessionsRequest` composes the same
+     *    `CreatePaymentSessionsBaseRequest` that `cko.paymentSessions.request` uses, so both
+     *    fields and the `PaymentInterfacesProcessing` shape apply unchanged. See the `request`
+     *    JSDoc above for the fields and the `passenger` cardinality, and
+     *    `cko.payments.request` for the full nested shape. As on `request`, both a single
+     *    `passenger` object and an array are accepted on this endpoint.
      *
      * @memberof PaymentSessions
      * @param {object} body PaymentSessions Request body.
