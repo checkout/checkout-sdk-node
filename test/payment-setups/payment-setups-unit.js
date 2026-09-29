@@ -464,7 +464,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -481,51 +481,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -652,7 +653,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -669,51 +670,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -856,7 +858,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -873,51 +875,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -1064,7 +1067,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -1081,51 +1084,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -1272,7 +1276,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -1289,51 +1293,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -1486,7 +1491,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -1503,51 +1508,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -1719,7 +1725,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -1736,51 +1742,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -2013,7 +2020,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -2030,51 +2037,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -2202,7 +2210,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -2219,51 +2227,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -2407,7 +2416,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -2424,51 +2433,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -2616,7 +2626,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -2633,51 +2643,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -2825,7 +2836,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -2842,51 +2853,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,
@@ -3040,7 +3052,7 @@ describe('Unit::Payment-Setups', () => {
                 ],
                 shipping: {
                   address: {
-                    address_line_1: '10 Canterbury Road',
+                    address_line1: '10 Canterbury Road',
                     city: 'London',
                     zip: 'SW1 1AA'
                   },
@@ -3057,51 +3069,52 @@ describe('Unit::Payment-Setups', () => {
                 discount_amount: 10
               },
               industry: {
-                airline_data: {
+                airline: [
+                  {
                   ticket: {
-                    number: '0742464639523',
-                    issue_date: '2025-05-01',
-                    issuing_carrier_code: '042',
-                    travel_package_indicator: 'A',
-                    travel_agency_name: 'Checkout Travel Agents',
-                    travel_agency_code: '91114362'
+                  number: '0742464639523',
+                  issue_date: '2025-05-01',
+                  issuing_carrier_code: '042',
+                  travel_package_indicator: 'A',
+                  travel_agency_name: 'Checkout Travel Agents',
+                  travel_agency_code: '91114362'
                   },
                   passengers: [
-                    {
-                      first_name: 'John',
-                      last_name: 'Smith',
-                      date_of_birth: '1990-10-31',
-                      address: {
-                        country: 'GB'
-                      }
-                    }
+                  {
+                  first_name: 'John',
+                  last_name: 'Smith',
+                  date_of_birth: '1990-10-31',
+                  address: {
+                  country: 'GB'
+                  }
+                  }
                   ],
                   flight_leg_details: [
-                    {
-                      flight_number: 'BA1483',
-                      carrier_code: 'BA',
-                      class_of_travelling: 'W',
-                      departure_airport: 'LHW',
-                      departure_date: '2025-10-13',
-                      departure_time: '18:30',
-                      arrival_airport: 'JFK',
-                      stop_over_code: 'X',
-                      fare_basis_code: 'WUP14B'
-                    }
+                  {
+                  flight_number: 'BA1483',
+                  carrier_code: 'BA',
+                  class_of_travelling: 'W',
+                  departure_airport: 'LHW',
+                  departure_date: '2025-10-13',
+                  departure_time: '18:30',
+                  arrival_airport: 'JFK',
+                  stop_over_code: 'X',
+                  fare_basis_code: 'WUP14B'
+                  }
                   ]
-                },
-                accommodation_data: [
+                  }
+                ],
+                accommodation: [
                   {
                     name: 'Checkout Lodge',
                     booking_reference: 'REF9083748',
                     check_in_date: '2025-04-11',
                     check_out_date: '2025-04-18',
                     address: {
-                      address_line_1: '123 High Street',
-                      address_line_2: 'Flat 456',
+                      address_line1: '123 High Street',
                       city: 'London',
                       state: 'Greater London',
-                      country: 'United Kingdom',
+                      country: 'GB',
                       zip: 'SW1 1AA'
                     },
                     number_of_rooms: 2,

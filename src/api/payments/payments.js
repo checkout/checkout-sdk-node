@@ -78,6 +78,52 @@ export default class Payments {
      *    fails (2026-04-23).
      *  - body.processing.affiliate_id / processing.affiliate_url — affiliate
      *    tracking, surfaced under `processing` (2026-05-07).
+     *  - body.processing.airline_data: optional array of AirlineData, each entry with
+     *    `ticket` (object: number, issue_date [date], issuing_carrier_code,
+     *    travel_package_indicator [free-form string: C = car rental, A = airline flight,
+     *    B = both included, N = unknown], travel_agency_name, travel_agency_code),
+     *    `passenger` (see the cardinality note below) and `flight_leg_details`
+     *    (array of { flight_number [**string**, e.g. "101", not a number], carrier_code,
+     *    class_of_travelling, departure_airport, departure_date [date], departure_time,
+     *    arrival_airport, stop_over_code, fare_basis_code }).
+     *
+     *    **`passenger` cardinality does not follow the specification.** The spec declares it
+     *    array-only on `AirlineData` and `oneOf[array, object]` on
+     *    `PaymentInterfacesProcessingAirlineData`, but the live API disagrees, and it disagrees
+     *    per endpoint rather than per schema. Every row below was sent to the sandbox on
+     *    2026-09-28:
+     *
+     *      | Surface                 | passenger as object | passenger as array        |
+     *      |-------------------------|---------------------|---------------------------|
+     *      | POST /payments          | 201                 | 201                       |
+     *      | POST /payment-sessions  | 201                 | 201                       |
+     *      | POST /hosted-payments   | 201                 | 422 ..._passenger_invalid |
+     *      | POST /payment-links     | 201                 | 422 ..._passenger_invalid |
+     *      | POST /payment-contexts  | 201                 | 422 passenger_required    |
+     *
+     *    Note that hosted payments, payment links and payment sessions all resolve to the *same*
+     *    `PaymentInterfacesProcessing` schema, yet the first two reject the array and the third
+     *    accepts it. The schema is not a reliable guide to which form a surface takes.
+     *
+     *    So send a single `{ first_name, last_name, date_of_birth [date],
+     *    address: { country } }` **object** for one passenger, which every surface accepts. Send
+     *    an array only for two or more, and only to this endpoint or payment sessions. Omit the
+     *    key entirely when there are no passengers: both an empty array and an explicit `null`
+     *    are rejected with `processing_airline_data_0_passenger_invalid`. Note that payment
+     *    setups is the mirror image, taking a plural `passengers` that is array-only.
+     *  - body.processing.accommodation_data: optional array of AccommodationData, each entry
+     *    with name, booking_reference, check_in_date [date], check_out_date [date],
+     *    `address` (object: address_line1, zip: only those two, not the wide address shape),
+     *    state, country, city, number_of_rooms [integer], `guests`
+     *    (array of { first_name, last_name, date_of_birth [date] }), `room`
+     *    (array of { rate [**string**, e.g. "70"], number_of_nights_at_room_rate
+     *    [**string**, e.g. "3"] }; singular key name, but an array), and the two phone arrays
+     *    `property_phone` and `customer_service_phone`
+     *    (array of { country_code, number }). `state` and `country` are plain strings, not
+     *    country codes: the specification's own examples are `"FL"` and the three-letter
+     *    `"USA"`. The two phone arrays are declared on `AccommodationData` only, so they are
+     *    read here and on payment contexts, and ignored by hosted payments, payment links and
+     *    payment sessions.
      *  - body.payment_plan, body.authorization_type — present on
      *    HostedPayments/PaymentLinks/PaymentSessions variants (2026-06-08).
      *  - body.3ds.challenge_indicator — four values only (default
@@ -119,6 +165,11 @@ export default class Payments {
     /**
      * Returns a list of your business' payments that match the specified reference.
      *
+     * Each item in the returned `data` array carries the same `processing` object as
+     * `cko.payments.get`, including `airline_data` and `accommodation_data` (swagger
+     * `PaymentPaged`). See the `get` JSDoc below for both shapes, and read `passenger`
+     * defensively there: it may be a single object or an array.
+     *
      * @memberof Payments
      * @param {Object} body /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<Object>} A promise to the get payment response.
@@ -154,6 +205,27 @@ export default class Payments {
      *  - scheme_transaction_link_id (Mastercard Transaction Link Identifier, 2026-06-08)
      *  - failure_code, partner_code, partner_response_code (2026-05-08)
      *  - fallback_source_used (2026-04-23)
+     *  - airline_data: array of AirlineData, each entry with `ticket` (object: number,
+     *    issue_date [date], issuing_carrier_code, travel_package_indicator,
+     *    travel_agency_name, travel_agency_code), `passenger` and `flight_leg_details`
+     *    (array of { flight_number [string], carrier_code, class_of_travelling,
+     *    departure_airport, departure_date [date], departure_time, arrival_airport,
+     *    stop_over_code, fare_basis_code }).
+     *
+     *    **Read `passenger` defensively: it may be a single object or an array.** The
+     *    specification declares it array-only, but a single passenger is sent and echoed back
+     *    as a bare object, which is what a typed SDK modelling it as one object or one array
+     *    gets wrong. Node passes `response.json` straight through, so whichever shape the API
+     *    returns is the shape the caller receives. Each passenger carries first_name,
+     *    last_name, date_of_birth [date] and `address` ({ country }).
+     *  - accommodation_data: array of AccommodationData, each entry with name,
+     *    booking_reference, check_in_date [date], check_out_date [date], `address`
+     *    (object: address_line1, zip), state, country, city, number_of_rooms [integer],
+     *    `guests` (array of { first_name, last_name, date_of_birth [date] }), `room`
+     *    (array of { rate [string], number_of_nights_at_room_rate [string] }),
+     *    `property_phone` and `customer_service_phone`
+     *    (arrays of { country_code, number }). `state` and `country` are plain strings, not
+     *    country codes: the specification's examples are `"FL"` and the three-letter `"USA"`.
      *
      * @memberof Payments
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
