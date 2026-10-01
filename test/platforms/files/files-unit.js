@@ -242,7 +242,7 @@ describe('Platforms - Files', () => {
         nock('https://files.sandbox.checkout.com')
             .post(/.*/)
             .times(2)
-            .reply(200, (uri, body) => {
+            .reply(201, (uri, body) => {
                 // nock hands a multipart body over hex-encoded.
                 const text = /^[0-9a-f]+$/i.test(body) ? Buffer.from(body, 'hex').toString() : String(body);
                 const match = /name="purpose"\r\n\r\n([a-z_]+)\r\n/.exec(text);

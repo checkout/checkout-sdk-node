@@ -809,6 +809,16 @@ describe('Platforms - SubEntity', () => {
             });
         });
 
+        // POST and PUT return the basic v3.0 response (EntityBasicResponseWithLinksV3).
+        const basicResponse = {
+            id: 'ent_stuoyqyx4bsnsgfgair7hjdwna',
+            reference: 'ref_sole_trader',
+            requirements_due: [],
+            _links: {
+                self: { href: 'https://123456789.api.sandbox.checkout.com/accounts/entities/ent_stuoyqyx4bsnsgfgair7hjdwna' },
+            },
+        };
+
         it('onboardSubEntity sends them unchanged', async () => {
             let sent;
             nock('https://123456789.api.sandbox.checkout.com')
@@ -816,11 +826,12 @@ describe('Platforms - SubEntity', () => {
                     sent = requestBody;
                     return true;
                 })
-                .reply(201, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna', reference: 'ref_sole_trader', status: 'draft' });
+                .reply(201, basicResponse);
 
             const response = await checkout().platforms.onboardSubEntity(body);
 
             expect(response.id).to.equal('ent_stuoyqyx4bsnsgfgair7hjdwna');
+            expect(response.requirements_due).to.deep.equal([]);
             expect(sent.company.representatives[0].documents).to.deep.equal(representativeDocuments);
             expect(Object.keys(sent.documents)).to.deep.equal(['bank_verification']);
         });
@@ -832,16 +843,29 @@ describe('Platforms - SubEntity', () => {
                     sent = requestBody;
                     return true;
                 })
-                .reply(200, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna' });
+                .reply(200, basicResponse);
 
-            await checkout().platforms.updateSubEntityDetails('ent_stuoyqyx4bsnsgfgair7hjdwna', body);
+            const response = await checkout().platforms.updateSubEntityDetails('ent_stuoyqyx4bsnsgfgair7hjdwna', body);
 
+            expect(response.id).to.equal('ent_stuoyqyx4bsnsgfgair7hjdwna');
             expect(sent.company.representatives[0].documents).to.deep.equal(representativeDocuments);
         });
 
-        it('onboardSubEntity sends a company representative certified_authorised_signatory unchanged', async () => {
+        it('getSubEntityDetails reads them back', async () => {
+            // The GET returns the variant schema (EEASoleTraderFull3-0), which carries no id.
+            nock('https://123456789.api.sandbox.checkout.com')
+                .get('/accounts/entities/ent_stuoyqyx4bsnsgfgair7hjdwna')
+                .reply(200, { ...body, status: 'draft', is_draft: true });
+
+            const entity = await checkout().platforms.getSubEntityDetails('ent_stuoyqyx4bsnsgfgair7hjdwna');
+
+            expect(entity.company.representatives[0].documents).to.deep.equal(representativeDocuments);
+            expect(entity.documents).to.deep.equal(body.documents);
+        });
+
+        it('onboardSubEntity sends an EEA Company Full (3.0) certified_authorised_signatory unchanged', async () => {
             const signatoryDocuments = {
-                certified_authorised_signatory: { type: 'power_of_attorney', front: 'file_certifiedsignatoryaaaaaaaa' },
+                certified_authorised_signatory: { type: 'power_of_attorney', front: 'file_signatoryaaaaaaaaaaaaaaaaa' },
             };
             let sent;
             nock('https://123456789.api.sandbox.checkout.com')
@@ -849,13 +873,25 @@ describe('Platforms - SubEntity', () => {
                     sent = requestBody;
                     return true;
                 })
-                .reply(201, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna' });
+                .reply(201, { ...basicResponse, reference: 'ref_company' });
 
             await checkout().platforms.onboardSubEntity({
                 reference: 'ref_company',
                 company: {
-                    business_type: 'private_corporation',
-                    representatives: [{ roles: ['authorised_signatory'], documents: signatoryDocuments }],
+                    business_type: 'limited_company',
+                    representatives: [
+                        {
+                            individual: {
+                                first_name: 'Jane',
+                                last_name: 'Doe',
+                                date_of_birth: { day: 5, month: 6, year: 1985 },
+                                place_of_birth: { country: 'FR' },
+                                address: { address_line1: '1 Rue de Rivoli', city: 'Paris', zip: '75001', country: 'FR' },
+                            },
+                            roles: ['authorised_signatory'],
+                            documents: signatoryDocuments,
+                        },
+                    ],
                 },
             });
 

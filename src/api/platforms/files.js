@@ -23,10 +23,14 @@ export default class PlatformFiles {
      * POST /files on the Files host, multipart). The returned id is what a document's front and
      * back fields take in onboardSubEntity.
      *
-     * Onboarding purposes (PlatformsFileUpload): additional_document, articles_of_association,
-     * bank_verification, certified_authorised_signatory, company_ownership, company_verification,
-     * financial_verification, identity_verification, proof_of_legality, proof_of_principal_address,
-     * shareholder_structure, tax_verification, proof_of_residential_address, proof_of_registration.
+     * This Files host endpoint is not described in the API reference (its POST /files is the
+     * disputes upload on the API host), so the purposes below are the onboarding purposes the
+     * reference lists for the sub-entity upload (uploadAFile, PlatformsFileUpload):
+     * additional_document, articles_of_association, bank_verification,
+     * certified_authorised_signatory, company_ownership, company_verification,
+     * financial_verification, identity_verification, proof_of_legality,
+     * proof_of_principal_address, shareholder_structure, tax_verification,
+     * proof_of_residential_address, proof_of_registration.
      *
      * @param {string} purpose The purpose of the file upload, one of the values above.
      * @param {Object} path The local path of the file to upload, and its type.
@@ -90,7 +94,8 @@ export default class PlatformFiles {
      * @param {string} entityId The ID of the sub-entity.
      * @param {string} fileId The ID of the file (prefix file_).
      * @returns {Promise<Object>} A promise to the file's id, status, status_reasons, size,
-     *   mime_type, uploaded_on and purpose.
+     *   mime_type, uploaded_on, purpose and _links (download, the link to fetch the content, and
+     *   self).
      */
     async retrieveAFile(entityId, fileId) {
         try {

@@ -26,27 +26,33 @@ export default class Platforms {
     }
 
     // ——— Files (backwards compatibility) ———
+    /** Upload a file for onboarding (POST /files, Files host). See PlatformFiles.uploadFile. */
     async uploadFile(purpose, path) {
         return this.files.uploadFile(purpose, path);
     }
 
+    /** Generate a sub-entity file upload link. See PlatformFiles.uploadAFile. */
     async uploadAFile(entityId, body) {
         return this.files.uploadAFile(entityId, body);
     }
 
+    /** Retrieve a sub-entity file. See PlatformFiles.retrieveAFile. */
     async retrieveAFile(entityId, fileId) {
         return this.files.retrieveAFile(entityId, fileId);
     }
 
     // ——— Sub-entity (backwards compatibility) ———
+    /** Onboard a sub-entity, including both documents objects. See Subentity.onboardSubEntity. */
     async onboardSubEntity(body, schemaVersion) {
         return this.subentity.onboardSubEntity(body, schemaVersion);
     }
 
+    /** Retrieve a sub-entity and its full details. See Subentity.getSubEntityDetails. */
     async getSubEntityDetails(id, schemaVersion) {
         return this.subentity.getSubEntityDetails(id, schemaVersion);
     }
 
+    /** Update a sub-entity. See Subentity.updateSubEntityDetails. */
     async updateSubEntityDetails(id, body, schemaVersion) {
         return this.subentity.updateSubEntityDetails(id, body, schemaVersion);
     }
