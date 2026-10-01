@@ -23,8 +23,9 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
       - id: upgrade-npm
-        # Trusted publishing needs npm >= 11.5.1; Node 22 bundles npm 10
-        run: npm install -g npm@latest && npm --version
+        # Trusted publishing needs npm >= 11.5.1; Node 22 bundles npm 10.
+        # Pinned so the release job is reproducible.
+        run: npm install -g npm@11.21.0 --ignore-scripts && npm --version
       - id: build-and-analyse
         env:
           CHECKOUT_PROCESSING_CHANNEL_ID: ${{ secrets.IT_CHECKOUT_PROCESSING_CHANNEL_ID }}
