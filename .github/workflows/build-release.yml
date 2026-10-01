@@ -10,13 +10,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Must match the environment configured on the npm trusted publisher
+    environment: production
+    permissions:
+      contents: write # create the GitHub release
+      id-token: write # npm trusted publishing (OIDC)
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: setup-node
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           registry-url: https://registry.npmjs.org/
+      - id: upgrade-npm
+        # Trusted publishing needs npm >= 11.5.1; Node 22 bundles npm 10
+        run: npm install -g npm@latest && npm --version
       - id: build-and-analyse
         env:
           CHECKOUT_PROCESSING_CHANNEL_ID: ${{ secrets.IT_CHECKOUT_PROCESSING_CHANNEL_ID }}
@@ -43,9 +51,9 @@ jobs:
       - id: print-version
         run: echo "Releasing $CURRENT_VERSION"
       - id: publish-to-npm
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-        run: npm publish
+        # No token: npm exchanges the GitHub OIDC token with the registry
+        # and publishes with provenance.
+        run: npm publish --provenance --access public
       - id: create-release
         uses: actions/create-release@v1
         env:
