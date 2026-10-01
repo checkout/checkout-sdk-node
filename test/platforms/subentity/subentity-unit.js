@@ -769,4 +769,97 @@ describe('Platforms - SubEntity', () => {
 
         expect(response).to.not.be.null;
     });
+    describe('representative documents (EEA Sole Trader 3.0)', () => {
+        // The SDK sends the body as given, so the representative documents and the top-level
+        // documents reach the API exactly as built. The representative object is strict on the API;
+        // the top-level one is not.
+        const representativeDocuments = {
+            identity_verification: { type: 'passport', front: 'file_identityverificationaaaaaa' },
+            proof_of_residential_address: { type: 'proof_of_address', front: 'file_proofofresidentialaddressa' },
+            proof_of_registration: { type: 'extract_from_trade_register', front: 'file_proofofregistrationaaaaaaa' },
+        };
+        const body = {
+            reference: 'ref_sole_trader',
+            company: {
+                business_type: 'individual_or_sole_proprietorship',
+                representatives: [
+                    {
+                        individual: { first_name: 'Jane', last_name: 'Doe' },
+                        roles: ['ubo'],
+                        documents: representativeDocuments,
+                    },
+                ],
+            },
+            documents: { bank_verification: { type: 'bank_statement', front: 'file_bankverificationaaaaaaaaaa' } },
+        };
+        const checkout = () =>
+            new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+                subdomain: '123456789',
+            });
+
+        beforeEach(() => {
+            nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
+                access_token: '1234',
+                expires_in: 3600,
+                token_type: 'Bearer',
+                scope: 'accounts',
+            });
+        });
+
+        it('onboardSubEntity sends them unchanged', async () => {
+            let sent;
+            nock('https://123456789.api.sandbox.checkout.com')
+                .post('/accounts/entities', (requestBody) => {
+                    sent = requestBody;
+                    return true;
+                })
+                .reply(201, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna', reference: 'ref_sole_trader', status: 'draft' });
+
+            const response = await checkout().platforms.onboardSubEntity(body);
+
+            expect(response.id).to.equal('ent_stuoyqyx4bsnsgfgair7hjdwna');
+            expect(sent.company.representatives[0].documents).to.deep.equal(representativeDocuments);
+            expect(Object.keys(sent.documents)).to.deep.equal(['bank_verification']);
+        });
+
+        it('updateSubEntityDetails sends them unchanged', async () => {
+            let sent;
+            nock('https://123456789.api.sandbox.checkout.com')
+                .put('/accounts/entities/ent_stuoyqyx4bsnsgfgair7hjdwna', (requestBody) => {
+                    sent = requestBody;
+                    return true;
+                })
+                .reply(200, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna' });
+
+            await checkout().platforms.updateSubEntityDetails('ent_stuoyqyx4bsnsgfgair7hjdwna', body);
+
+            expect(sent.company.representatives[0].documents).to.deep.equal(representativeDocuments);
+        });
+
+        it('onboardSubEntity sends a company representative certified_authorised_signatory unchanged', async () => {
+            const signatoryDocuments = {
+                certified_authorised_signatory: { type: 'power_of_attorney', front: 'file_certifiedsignatoryaaaaaaaa' },
+            };
+            let sent;
+            nock('https://123456789.api.sandbox.checkout.com')
+                .post('/accounts/entities', (requestBody) => {
+                    sent = requestBody;
+                    return true;
+                })
+                .reply(201, { id: 'ent_stuoyqyx4bsnsgfgair7hjdwna' });
+
+            await checkout().platforms.onboardSubEntity({
+                reference: 'ref_company',
+                company: {
+                    business_type: 'private_corporation',
+                    representatives: [{ roles: ['authorised_signatory'], documents: signatoryDocuments }],
+                },
+            });
+
+            expect(sent.company.representatives[0].documents).to.deep.equal(signatoryDocuments);
+        });
+    });
 });

@@ -37,7 +37,7 @@ describe('Platforms - Files', () => {
         });
 
         const file = await cko.platforms.uploadFile(
-            'identification',
+            'identity_verification',
             fs.createReadStream('./test/platforms/evidence.jpg')
         );
 
@@ -62,7 +62,7 @@ describe('Platforms - Files', () => {
             });
 
             const file = await cko.platforms.uploadFile(
-                'identification',
+                'identity_verification',
                 fs.createReadStream('./test/platforms/evidence.jpg')
             );
         } catch (err) {
@@ -178,7 +178,7 @@ describe('Platforms - Files', () => {
             });
 
             await cko.platforms.uploadAFile('ent_nonexistent', {
-                purpose: 'identification'
+                purpose: 'identity_verification'
             });
             expect.fail('Should have thrown NotFoundError');
         } catch (err) {
@@ -229,5 +229,37 @@ describe('Platforms - Files', () => {
 
         expect(response).to.not.be.null;
         expect(response.id).to.equal("file_123");
+    });
+    it('should send the proof purposes for representative documents in the multipart upload', async () => {
+        // One token request per upload.
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').times(2).reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'files',
+        });
+        const sentPurposes = [];
+        nock('https://files.sandbox.checkout.com')
+            .post(/.*/)
+            .times(2)
+            .reply(200, (uri, body) => {
+                // nock hands a multipart body over hex-encoded.
+                const text = /^[0-9a-f]+$/i.test(body) ? Buffer.from(body, 'hex').toString() : String(body);
+                const match = /name="purpose"\r\n\r\n([a-z_]+)\r\n/.exec(text);
+                sentPurposes.push(match && match[1]);
+                return { id: 'file_awonj5x6qhhreojffryekdy65a' };
+            });
+        const cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['files'],
+            environment: 'sandbox',
+            subdomain: '123456789',
+        });
+
+        for (const purpose of ['proof_of_residential_address', 'proof_of_registration']) {
+            const file = await cko.platforms.uploadFile(purpose, fs.createReadStream('./test/platforms/evidence.jpg'));
+            expect(file.id).to.equal('file_awonj5x6qhhreojffryekdy65a');
+        }
+        expect(sentPurposes).to.deep.equal(['proof_of_residential_address', 'proof_of_registration']);
     });
 });
