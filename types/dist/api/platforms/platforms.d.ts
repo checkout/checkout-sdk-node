@@ -1,5 +1,5 @@
 import { config } from '../../Checkout';
-import Subentity from './subentity';
+import Subentity, { OnboardSubEntityRequest } from './subentity';
 import PlatformFiles from './files';
 import PaymentInstruments from './payment-instruments';
 import PayoutSchedules from './payout-schedules';
@@ -16,13 +16,13 @@ export default class Platforms {
     reserveRules: ReserveRules;
     entityRequirements: EntityRequirements;
 
-    uploadFile: (purpose: string, path: string) => Promise<Object>;
-    onboardSubEntity: (body: Object, schemaVersion?: string) => Promise<Object>;
-    uploadAFile: (entityId: string, body: Object) => Promise<Object>;
-    retrieveAFile: (entityId: string, fileId: string) => Promise<Object>;
+    uploadFile: PlatformFiles['uploadFile'];
+    onboardSubEntity: (body: OnboardSubEntityRequest, schemaVersion?: string) => Promise<Object>;
+    uploadAFile: PlatformFiles['uploadAFile'];
+    retrieveAFile: PlatformFiles['retrieveAFile'];
     getSubEntityMembers: (entityId: string) => Promise<Object>;
     getSubEntityDetails: (id: string, schemaVersion?: string) => Promise<Object>;
-    updateSubEntityDetails: (id: string, body: Object, schemaVersion?: string) => Promise<Object>;
+    updateSubEntityDetails: (id: string, body: OnboardSubEntityRequest, schemaVersion?: string) => Promise<Object>;
     reinviteSubEntityMember: (entityId: string, userId: string, body: Object) => Promise<Object>;
     getPaymentInstrumentDetails: (entityId: string, id: string) => Promise<Object>;
     updatePaymentInstrumentDetails: (entityId: string, id: string, body: Object) => Promise<Object>;

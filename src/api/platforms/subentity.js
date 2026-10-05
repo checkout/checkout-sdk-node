@@ -29,7 +29,11 @@ export default class Subentity {
      *    { phone: { country_code, number }, email_addresses: { primary }, invitee: { email } }.
      *    On v3.0 phone.country_code is the ISO 3166-1 alpha-2 country where the number is
      *    registered (for example "FR"), not the dialling code; v2.0 takes number only. The US ISV
-     *    Seller variants take email_addresses: { primary, pci_compliance_contact } and no invitee.
+     *    Seller variants take email_addresses: { primary, pci_compliance_contact } and no invitee;
+     *    there both are [Required], email addresses, and pci_compliance_contact is the person
+     *    responsible for PCI compliance at the sub-entity. invitee.email is [Required] in the
+     *    hosted onboarding invite body ({ reference, is_draft, contact_details: { invitee } }) and
+     *    [Optional] in the full onboarding variants.
      *  - body.profile: [Required] { urls, mccs, default_holding_currency, holding_currencies }.
      *  - body.company: { legal_name, trading_name, business_registration_number, business_type,
      *    date_of_incorporation, principal_address, registered_address, representatives }, plus
@@ -41,7 +45,9 @@ export default class Subentity {
      *  - body.company.representatives[]: a person of interest { id, individual, roles,
      *    company_position, ownership_percentage, documents }, or, on EEA and GB Company Full
      *    (3.0), a controlling company { id, company: { legal_name, trading_name,
-     *    registered_address }, ownership_percentage }. Sole traders have exactly one
+     *    registered_address }, ownership_percentage }. On the US ISV Seller variants a
+     *    representative has no id: { individual, roles, company_position, ownership_percentage,
+     *    documents } (no company_position on the sole trader). Sole traders have exactly one
      *    representative, with roles ["ubo"].
      *  - body.processing_details: [Required on v3.0] { settlement_country, target_countries,
      *    annual_processing_volume, average_transaction_value, highest_transaction_value,
@@ -72,18 +78,40 @@ export default class Subentity {
      *    Each is { type, front } (identity_verification also takes back). front and back are file
      *    IDs, ^file_[a-z2-7]{26}$.
      *
-     *  - body.documents: the top-level documents. [Required] on the Company Full and Sole Trader
-     *    Full (3.0) variants of EEA, GB and US, and on EEA Company Full and EEA Sole Trader Full
-     *    (2.0); optional elsewhere. The API ignores keys it does not recognise here rather than
-     *    rejecting them, so a representative document placed here is dropped silently.
-     *    Keys: company_verification (incorporation_document; also articles_of_association on US
-     *    Company Full and Lite (2.0)), articles_of_association (memorandum_of_association,
-     *    articles_of_association), bank_verification (bank_statement), shareholder_structure
-     *    (certified_shareholder_structure), proof_of_legality (proof_of_legality),
-     *    proof_of_principal_address (proof_of_address), tax_verification (ein_letter),
-     *    financial_verification (financial_statement), financial_statements
-     *    (financial_statements), additional_document1/2/3 ({ front } only, no type), and
-     *    identity_verification on the v2.0 sole trader variants.
+     *  - body.documents: the top-level documents. The schema does not declare this object closed,
+     *    unlike the strict representative object, so a representative document placed here is
+     *    not rejected; do not rely on it being read. Keys by variant ([Required] marked, all
+     *    others optional):
+     *      - EEA Company Full (3.0): company_verification [Required], articles_of_association
+     *        [Required], shareholder_structure [Required], bank_verification [Required],
+     *        proof_of_legality, proof_of_principal_address, additional_document1/2/3.
+     *      - GB Company Full (3.0): articles_of_association [Required], shareholder_structure
+     *        [Required], company_verification, bank_verification, proof_of_legality,
+     *        proof_of_principal_address, additional_document1/2/3.
+     *      - US Company Full (3.0): tax_verification, company_verification,
+     *        articles_of_association, bank_verification, shareholder_structure,
+     *        proof_of_legality, proof_of_principal_address, additional_document1/2/3.
+     *      - EEA, GB and US Sole Trader Full (3.0): bank_verification [Required],
+     *        additional_document1/2/3.
+     *      - US ISV Seller Company (3.0): tax_verification, company_verification,
+     *        articles_of_association, shareholder_structure, proof_of_legality,
+     *        proof_of_principal_address, financial_statements. US ISV Seller Sole Trader (3.0):
+     *        the same without shareholder_structure.
+     *      - EEA Company Full and Lite (2.0): company_verification ([Required] on Full),
+     *        bank_verification, financial_verification. GB Company Full and Lite (2.0):
+     *        company_verification ([Required] on Full). US Company Full and Lite (2.0):
+     *        company_verification, tax_verification.
+     *      - The six v2.0 sole trader variants: identity_verification [Required].
+     *    Type values: company_verification incorporation_document (also articles_of_association
+     *    on US Company Full and Lite (2.0)), articles_of_association memorandum_of_association or
+     *    articles_of_association, bank_verification bank_statement, shareholder_structure
+     *    certified_shareholder_structure, proof_of_legality proof_of_legality,
+     *    proof_of_principal_address proof_of_address, tax_verification ein_letter,
+     *    financial_verification financial_statement, financial_statements financial_statements,
+     *    identity_verification as on the representative. Each is { type, front };
+     *    additional_document1/2/3 take { front } only, no type. body.documents itself is
+     *    [Required] on the Company Full and Sole Trader Full (3.0) variants of EEA, GB and US,
+     *    and on EEA Company Full and EEA Sole Trader Full (2.0).
      *
      * Upload each file first (see PlatformFiles.uploadFile) and use the returned ID as front.
      *
