@@ -118,6 +118,33 @@ describe('Platforms - Payment Instruments', () => {
         expect(instrument.id).to.equal('ppi_qn4nis4k3ykpzzu7cvtuvhqqga');
     });
 
+    it('should send the ETag as the If-Match header when updating a payment instrument', async () => {
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        nock('https://123456789.api.sandbox.checkout.com', { reqheaders: { 'if-match': '"Y3Y9MCZydj0w"' } })
+            .patch('/accounts/entities/ent_wxglze3wwywujg4nna5fb7ldli/payment-instruments/ppi_qn4nis4k3ykpzzu7cvtuvhqqga')
+            .reply(200, { id: 'ppi_qn4nis4k3ykpzzu7cvtuvhqqga' });
+
+        const cko = new Checkout(platforms_secret, {
+            client: platforms_ack,
+            scope: ['accounts'],
+            environment: 'sandbox',
+            subdomain: '123456789',
+        });
+
+        const instrument = await cko.platforms.updatePaymentInstrumentDetails(
+            'ent_wxglze3wwywujg4nna5fb7ldli',
+            'ppi_qn4nis4k3ykpzzu7cvtuvhqqga',
+            { label: 'Renamed account', headers: { 'if-match': '"Y3Y9MCZydj0w"' } }
+        );
+
+        expect(instrument.id).to.equal('ppi_qn4nis4k3ykpzzu7cvtuvhqqga');
+    });
+
     it('should throw AuthenticationError when updating a payment instrument details', async () => {
         nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
             access_token: '1234',
@@ -465,7 +492,7 @@ describe('Platforms - Payment Instruments', () => {
         });
         
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_nonexistent/payment-instruments')
+            .get('/accounts/entities/ent_ucyst27iadksa5ofou47yztzu5/payment-instruments')
             .reply(404, {
                 request_id: 'req_123',
                 error_type: 'resource_not_found'
@@ -479,7 +506,7 @@ describe('Platforms - Payment Instruments', () => {
             subdomain: '123456789',
             });
 
-            await cko.platforms.queryPaymentInstruments('ent_nonexistent');
+            await cko.platforms.queryPaymentInstruments('ent_ucyst27iadksa5ofou47yztzu5');
             expect.fail('Should have thrown NotFoundError');
         } catch (err) {
             expect(err).to.be.instanceOf(NotFoundError);

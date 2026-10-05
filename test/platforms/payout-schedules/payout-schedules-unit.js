@@ -154,14 +154,14 @@ describe('Platforms - Payout Schedules', () => {
 
     it('should get payout schedule', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_123/payout-schedules')
+            .get('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/payout-schedules')
             .reply(200, {
-                entity_id: "ent_123",
+                entity_id: "ent_6besloljz4vdvhtykaqvjzphfl",
                 frequency: "daily"
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const response = await cko.platforms.retrieveSubEntityPayoutSchedule("ent_123");
+        const response = await cko.platforms.retrieveSubEntityPayoutSchedule("ent_6besloljz4vdvhtykaqvjzphfl");
 
         expect(response).to.not.be.null;
         expect(response.frequency).to.equal("daily");
@@ -169,14 +169,14 @@ describe('Platforms - Payout Schedules', () => {
 
     it('should update payout schedule', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .put('/accounts/entities/ent_123/payout-schedules')
+            .put('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/payout-schedules')
             .reply(200, {
-                entity_id: "ent_123",
+                entity_id: "ent_6besloljz4vdvhtykaqvjzphfl",
                 frequency: "weekly"
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const response = await cko.platforms.updateSubEntityPayoutSchedule("ent_123", {
+        const response = await cko.platforms.updateSubEntityPayoutSchedule("ent_6besloljz4vdvhtykaqvjzphfl", {
             frequency: "weekly"
         });
 
@@ -187,20 +187,20 @@ describe('Platforms - Payout Schedules', () => {
     it('should pass through ISV fields when updating a payout schedule', async () => {
         let capturedBody;
         nock('https://123456789.api.sandbox.checkout.com')
-            .put('/accounts/entities/ent_123/payout-schedules', (body) => {
+            .put('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/payout-schedules', (body) => {
                 capturedBody = body;
                 return true;
             })
             .reply(200, {
                 _links: {
                     self: {
-                        href: 'https://123456789.api.checkout.com/accounts/entities/ent_123',
+                        href: 'https://123456789.api.checkout.com/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl',
                     },
                 },
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        await cko.platforms.updateSubEntityPayoutSchedule('ent_123', {
+        await cko.platforms.updateSubEntityPayoutSchedule('ent_6besloljz4vdvhtykaqvjzphfl', {
             GBP: {
                 enabled: true,
                 threshold: 100,
@@ -223,7 +223,7 @@ describe('Platforms - Payout Schedules', () => {
 
     it('should surface ISV fields when retrieving a payout schedule', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_123/payout-schedules')
+            .get('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/payout-schedules')
             .reply(200, {
                 GBP: {
                     enabled: true,
@@ -237,14 +237,14 @@ describe('Platforms - Payout Schedules', () => {
                     },
                     _links: {
                         self: {
-                            href: 'https://123456789.api.checkout.com/accounts/entities/ent_123',
+                            href: 'https://123456789.api.checkout.com/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl',
                         },
                     },
                 },
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const response = await cko.platforms.retrieveSubEntityPayoutSchedule('ent_123');
+        const response = await cko.platforms.retrieveSubEntityPayoutSchedule('ent_6besloljz4vdvhtykaqvjzphfl');
 
         expect(response.GBP.payment_instrument_id).to.equal(
             'ppi_w4jelhppmfiufdnatam37wrfc4'

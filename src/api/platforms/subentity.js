@@ -33,7 +33,7 @@ export default class Subentity {
      *    there both are [Required], email addresses, and pci_compliance_contact is the person
      *    responsible for PCI compliance at the sub-entity. invitee.email is [Required] in the
      *    hosted onboarding invite body ({ reference, is_draft, contact_details: { invitee } }) and
-     *    [Optional] in the full onboarding variants.
+     *    [Optional] in the Full and Lite onboarding variants.
      *  - body.profile: [Required] { urls, mccs, default_holding_currency, holding_currencies }.
      *  - body.company: { legal_name, trading_name, business_registration_number, business_type,
      *    date_of_incorporation, principal_address, registered_address, representatives }, plus
@@ -78,9 +78,10 @@ export default class Subentity {
      *    Each is { type, front } (identity_verification also takes back). front and back are file
      *    IDs, ^file_[a-z2-7]{26}$.
      *
-     *  - body.documents: the top-level documents. The schema does not declare this object closed,
-     *    unlike the strict representative object, so a representative document placed here is
-     *    not rejected; do not rely on it being read. Keys by variant ([Required] marked, all
+     *  - body.documents: the top-level documents. Unlike the strict representative object, the
+     *    API ignores keys it does not recognise here rather than rejecting them: the request
+     *    succeeds and a misplaced document (for example a representative document) is dropped
+     *    silently. Keys by variant ([Required] marked, all
      *    others optional):
      *      - EEA Company Full (3.0): company_verification [Required], articles_of_association
      *        [Required], shareholder_structure [Required], bank_verification [Required],

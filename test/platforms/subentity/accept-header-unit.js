@@ -19,35 +19,35 @@ describe('Platforms — Accounts schema_version Accept header', () => {
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=3.0')
             .post('/accounts/entities')
-            .reply(201, { id: 'ent_1' });
+            .reply(201, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
         const res = await cko().onboardSubEntity({ reference: 'r' });
-        expect(res.id).to.equal('ent_1');
+        expect(res.id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
     });
 
     it('getSubEntityDetails sends schema_version=3.0 by default', async () => {
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=3.0')
-            .get('/accounts/entities/ent_1')
-            .reply(200, { id: 'ent_1' });
-        const res = await cko().getSubEntityDetails('ent_1');
-        expect(res.id).to.equal('ent_1');
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb')
+            .reply(200, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
+        const res = await cko().getSubEntityDetails('ent_se7b7fgom3ulhnjv3k3q43zzbb');
+        expect(res.id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
     });
 
     it('updateSubEntityDetails sends schema_version=3.0 by default', async () => {
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=3.0')
-            .put('/accounts/entities/ent_1')
-            .reply(200, { id: 'ent_1' });
-        const res = await cko().updateSubEntityDetails('ent_1', { reference: 'r' });
-        expect(res.id).to.equal('ent_1');
+            .put('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb')
+            .reply(200, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
+        const res = await cko().updateSubEntityDetails('ent_se7b7fgom3ulhnjv3k3q43zzbb', { reference: 'r' });
+        expect(res.id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
     });
 
     it('getEntityRequirements sends schema_version=3.0 by default', async () => {
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=3.0')
-            .get('/accounts/entities/ent_1/requirements')
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb/requirements')
             .reply(200, { data: [] });
-        const res = await cko().getEntityRequirements('ent_1');
+        const res = await cko().getEntityRequirements('ent_se7b7fgom3ulhnjv3k3q43zzbb');
         expect(res.data).to.deep.equal([]);
     });
 
@@ -55,25 +55,25 @@ describe('Platforms — Accounts schema_version Accept header', () => {
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=2.0')
             .post('/accounts/entities')
-            .reply(201, { id: 'ent_1' });
+            .reply(201, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=2.0')
-            .get('/accounts/entities/ent_1')
-            .reply(200, { id: 'ent_1' });
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb')
+            .reply(200, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=2.0')
-            .put('/accounts/entities/ent_1')
-            .reply(200, { id: 'ent_1' });
+            .put('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb')
+            .reply(200, { id: 'ent_se7b7fgom3ulhnjv3k3q43zzbb' });
         nock(host)
             .matchHeader('accept', 'application/json;schema_version=2.0')
-            .get('/accounts/entities/ent_1/requirements')
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb/requirements')
             .reply(200, { data: [] });
 
         const client = cko();
-        expect((await client.onboardSubEntity({ reference: 'r' }, '2.0')).id).to.equal('ent_1');
-        expect((await client.getSubEntityDetails('ent_1', '2.0')).id).to.equal('ent_1');
-        expect((await client.updateSubEntityDetails('ent_1', { reference: 'r' }, '2.0')).id).to.equal('ent_1');
-        expect((await client.getEntityRequirements('ent_1', '2.0')).data).to.deep.equal([]);
+        expect((await client.onboardSubEntity({ reference: 'r' }, '2.0')).id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
+        expect((await client.getSubEntityDetails('ent_se7b7fgom3ulhnjv3k3q43zzbb', '2.0')).id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
+        expect((await client.updateSubEntityDetails('ent_se7b7fgom3ulhnjv3k3q43zzbb', { reference: 'r' }, '2.0')).id).to.equal('ent_se7b7fgom3ulhnjv3k3q43zzbb');
+        expect((await client.getEntityRequirements('ent_se7b7fgom3ulhnjv3k3q43zzbb', '2.0')).data).to.deep.equal([]);
     });
 
     it('rejects an unsupported schema version', async () => {

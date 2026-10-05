@@ -40,12 +40,23 @@ export default class PaymentInstruments {
     }
 
     /**
-     * Update a payment instrument's details.
+     * Update a payment instrument's details
+     * (PATCH /accounts/entities/{entityId}/payment-instruments/{id}).
+     *
+     * The API reads the ETag only from the If-Match HTTP header: without it the update fails with
+     * 428 Precondition Required, and with a stale one with 412 Precondition Failed. Pass the ETag
+     * from the ETag header of the GET in body.headers['if-match']; every key of body.headers is
+     * sent as an HTTP header.
+     *  - body.label: [Optional] string, 1 to 50 characters.
+     *  - body.default: [Optional] boolean. Deprecated by the API: for scheduled payouts the first
+     *    payment instrument created for a currency is used; to change it, update the payout
+     *    schedule.
+     *  - body.headers: { 'if-match': etag }, [Required] by the API.
      *
      * @param {string} entityId Sub-entity id.
      * @param {string} id Payment instrument's id.
-     * @param {Object} body Platforms request body.
-     * @return {Promise<Object>} A promise to the Platforms response.
+     * @param {Object} body The update, as described above.
+     * @return {Promise<Object>} A promise to the Platforms response: the instrument id and _links.
      */
     async updatePaymentInstrumentDetails(entityId, id, body) {
         try {
