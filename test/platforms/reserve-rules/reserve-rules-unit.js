@@ -222,7 +222,7 @@ describe('Platforms - Reserve Rules', () => {
         });
         
         nock('https://123456789.api.sandbox.checkout.com')
-            .post('/accounts/entities/ent_test123/reserve-rules')
+            .post('/accounts/entities/ent_je5umzzhglwwcqlo3ihx6stv53/reserve-rules')
             .reply(422, {
                 request_id: 'req_123',
                 error_type: 'request_invalid',
@@ -237,7 +237,7 @@ describe('Platforms - Reserve Rules', () => {
             subdomain: '123456789',
             });
 
-            await cko.platforms.addReserveRule('ent_test123', {
+            await cko.platforms.addReserveRule('ent_je5umzzhglwwcqlo3ihx6stv53', {
                 type: 'rolling',
                 percentage: -10  // Invalid negative percentage
             });
@@ -249,15 +249,15 @@ describe('Platforms - Reserve Rules', () => {
 
     it('should get a reserve rule', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_123/reserve-rules/rsr_123')
+            .get('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/reserve-rules/rsr_123')
             .reply(200, {
                 id: "rsr_123",
-                entity_id: "ent_123",
+                entity_id: "ent_6besloljz4vdvhtykaqvjzphfl",
                 reserve_amount: 1000
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const response = await cko.platforms.getReserveRuleDetails("ent_123", "rsr_123");
+        const response = await cko.platforms.getReserveRuleDetails("ent_6besloljz4vdvhtykaqvjzphfl", "rsr_123");
 
         expect(response).to.not.be.null;
         expect(response.id).to.equal("rsr_123");
@@ -265,14 +265,14 @@ describe('Platforms - Reserve Rules', () => {
 
     it('should update a reserve rule', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .put('/accounts/entities/ent_123/reserve-rules/rsr_123')
+            .put('/accounts/entities/ent_6besloljz4vdvhtykaqvjzphfl/reserve-rules/rsr_123')
             .reply(200, {
                 id: "rsr_123",
                 reserve_amount: 2000
             });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const response = await cko.platforms.updateReserveRule("ent_123", "rsr_123", {
+        const response = await cko.platforms.updateReserveRule("ent_6besloljz4vdvhtykaqvjzphfl", "rsr_123", {
             reserve_amount: 2000
         });
 

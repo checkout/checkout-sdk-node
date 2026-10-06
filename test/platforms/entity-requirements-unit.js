@@ -9,32 +9,32 @@ describe('Platforms — entity-requirements endpoints', () => {
 
     it('getEntityRequirements GETs /accounts/entities/{id}/requirements', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_1/requirements')
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb/requirements')
             .reply(200, { data: [] });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const res = await cko.platforms.getEntityRequirements('ent_1');
+        const res = await cko.platforms.getEntityRequirements('ent_se7b7fgom3ulhnjv3k3q43zzbb');
         expect(res.data).to.deep.equal([]);
     });
 
     it('getEntityRequirementDetails GETs /accounts/entities/{id}/requirements/{reqId}', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .get('/accounts/entities/ent_1/requirements/req_1')
+            .get('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb/requirements/req_1')
             .reply(200, { id: 'req_1', priority: 'urgent' });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const res = await cko.platforms.getEntityRequirementDetails('ent_1', 'req_1');
+        const res = await cko.platforms.getEntityRequirementDetails('ent_se7b7fgom3ulhnjv3k3q43zzbb', 'req_1');
         expect(res.id).to.equal('req_1');
     });
 
     it('updateEntityRequirement PUTs /accounts/entities/{id}/requirements/{reqId}', async () => {
         nock('https://123456789.api.sandbox.checkout.com')
-            .put('/accounts/entities/ent_1/requirements/req_1')
+            .put('/accounts/entities/ent_se7b7fgom3ulhnjv3k3q43zzbb/requirements/req_1')
             .reply(200, { status: 'pending_review' });
 
         const cko = new Checkout(SK, { subdomain: '123456789' });
-        const res = await cko.platforms.updateEntityRequirement('ent_1', 'req_1', {
-            value: { file_id: 'file_abc' },
+        const res = await cko.platforms.updateEntityRequirement('ent_se7b7fgom3ulhnjv3k3q43zzbb', 'req_1', {
+            value: { file_id: 'file_zp3actu55nhhmpwnaf5qbonqav' },
         });
         expect(res.status).to.equal('pending_review');
     });
