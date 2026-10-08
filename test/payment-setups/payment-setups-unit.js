@@ -3522,7 +3522,24 @@ describe('Unit::Payment-Setups', () => {
                 name: 'John Smith',
                 tax_number: 'GB123456789',
                 phone: { country_code: '+44', number: '207 946 0000' },
-                device: { locale: 'en_GB' }
+                device: {
+                    locale: 'en_GB',
+                    fingerprint: 'fp_abc123xyz',
+                    ipv4: '203.0.113.0',
+                    ipv6: '2001:db8:85a3::8a2e:370:7334',
+                    client: 'web',
+                    os: 'android'
+                },
+                merchant_account: {
+                    id: '1234',
+                    registration_date: '2023-05-01',
+                    last_modified: '2023-05-01',
+                    returning_customer: true,
+                    first_transaction_date: '2023-09-15',
+                    last_transaction_date: '2025-03-28',
+                    total_order_count: 6,
+                    last_payment_amount: 55.99
+                }
             };
             const request = {
                 processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -3549,6 +3566,10 @@ describe('Unit::Payment-Setups', () => {
             expect(result.customer.id).to.equal('cus_123456789');
             expect(result.customer.country).to.equal('GB');
             expect(result.customer.tax_number).to.equal('GB123456789');
+            expect(received.customer.merchant_account).to.deep.equal(customer.merchant_account);
+            expect(result.customer.merchant_account.registration_date).to.equal('2023-05-01');
+            expect(result.customer.merchant_account.total_order_count).to.equal(6);
+            expect(result.customer.merchant_account.last_payment_amount).to.equal(55.99);
         });
     });
 });

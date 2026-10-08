@@ -105,9 +105,20 @@ export default class PaymentSetups {
      *        Required when using Cash App Pay. Enum: "web" "mobile_web" "app".
      *      - os: The operating system of the customer's device. [Optional]. Enum: "android" "ios".
      *    - merchant_account: Details of the account the customer holds with the merchant. [Optional].
-     *      PaymentSetupMerchantAccount: id, registration_date (date format), last_modified (date format),
-     *      returning_customer (boolean), first_transaction_date (date format), last_transaction_date
-     *      (date format), total_order_count (integer), last_payment_amount (number).
+     *      PaymentSetupMerchantAccount, every field optional:
+     *      - id: The merchant's unique identifier for the customer's account. [Optional].
+     *      - registration_date: The date the customer registered their account with the merchant.
+     *        [Optional]. Format: date.
+     *      - last_modified: The date the customer's account with the merchant was last modified.
+     *        [Optional]. Format: date.
+     *      - returning_customer: Specifies if the customer is a returning customer. [Optional]. boolean.
+     *      - first_transaction_date: The date of the customer's first transaction. [Optional].
+     *        Format: date.
+     *      - last_transaction_date: The date of the customer's most recent transaction. [Optional].
+     *        Format: date.
+     *      - total_order_count: The total number of orders made by the customer. [Optional]. integer.
+     *      - last_payment_amount: The payment amount of the customer's most recent transaction.
+     *        [Optional]. number.
      *
      * @memberof PaymentSetups
      * @param {Object} body - Request body
@@ -320,6 +331,10 @@ export default class PaymentSetups {
      *    response when you get the Payment Setup after the customer authorizes the payment, and every
      *    subsequent response omits it. See `getAPaymentSetup` for its 13 fields and the 8 address fields.
      *  - status, flags, initialization and customer_profile_sharing, as described on `getAPaymentSetup`.
+     *
+     * The response's customer carries id, country (min 2 characters, max 2 characters), email, name,
+     * tax_number, phone, device (locale, fingerprint, ipv4, ipv6, client, os) and merchant_account,
+     * as described on `createAPaymentSetup`.
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
