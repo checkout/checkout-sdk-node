@@ -1,6 +1,6 @@
 {
   "name": "checkout-sdk-node",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Official Node.js SDK for Checkout.com payment gateway - SDK with full API coverage with TypeScript support",
   "type": "module",
   "engines": {
