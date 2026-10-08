@@ -26,13 +26,13 @@ export default class PaymentSetups {
      * as possible in the customer's journey. For example, the first time they land on the basket page.
      *
      * Request/response (swagger `PaymentSetup`, 2026-05-26) may also include:
-     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *  - billing_descriptor: optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
      *    city (string, max 13 characters), reference (string, max 50 characters).
-     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *  - presentment_details: optional PaymentSetupPresentmentDetails: amount (integer, int64),
      *    currency (string).
-     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *  - terminal: optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
-     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *  - industry: optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
      *    airline (array of PaymentSetupAirline).
      *    PaymentSetupAccommodation (all fields optional): name (string), booking_reference (string),
      *    check_in_date (string, date format), check_out_date (string, date format),
@@ -59,6 +59,55 @@ export default class PaymentSetups {
      *    not a validated email format), ancillaries (string, added 2026-09-08; singular string per swagger,
      *    not an array despite the plural name), insurance (object, added 2026-09-08: type [string], company [string],
      *    price [{ amount: number, currency: string (3-letter ISO) }]).
+     *
+     * Cash App Pay and customer (swagger `PaymentSetup`, 2026-10-06):
+     *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
+     *    The key is `cashapp`, one lowercase word (not `cash_app`, not `cashApp`). Fields you send:
+     *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
+     *      this defaults to disabled. [Optional]. Enum: "disabled" "enabled". Default "disabled".
+     *    - customer_profile_sharing: Indicates whether the customer consents to share their Cash App customer
+     *      profile with Checkout.com. [Optional]. boolean.
+     *    Fields the response returns (readOnly, do not send them):
+     *    - status: The payment method status. [Optional]. readOnly.
+     *      Enum: "unavailable" "action_required" "ready" "initialization_required" "invalid".
+     *    - flags: The list of error codes or indicators that highlight missing or invalid information.
+     *      [Optional]. readOnly. Array of string.
+     *    - reference: A reference for the Cash App Pay transaction, returned by the provider. [Optional].
+     *      readOnly. max 80 characters.
+     *    - action: The next available action for the payment method. [Optional]. readOnly. Object:
+     *      - type: The type of action. [Optional]. Enum: "redirect".
+     *      - redirect_url: The URL to redirect the customer to so they can authorize the payment with
+     *        Cash App. [Optional]. Format: uri.
+     *    - customer_profile: The customer's Cash App profile that they consented to share. Included in the
+     *      response when customer_profile_sharing is enabled. Cash App releases this profile only once. It's
+     *      present in the first successful response when you get the Payment Setup after the customer
+     *      authorizes the payment. Every subsequent response omits it, so store it when you first read it.
+     *      [Optional]. readOnly. See `getAPaymentSetup` for its 13 fields and the 8 address fields.
+     *  - customer: optional, the customer's details. Every field is optional:
+     *    - id: The unique identifier of the customer. [Optional].
+     *    - country: The two-letter ISO country code of the customer for this payment. [Optional].
+     *      min 2 characters, max 2 characters.
+     *    - email: Details of the customer's email. [Optional]. Object: address (string, the customer's
+     *      email address), verified (boolean, specifies whether the customer's email address is verified).
+     *    - name: The customer's full name. [Optional]. max 100 characters.
+     *    - tax_number: The customer's tax identification number. [Optional].
+     *    - phone: The customer's phone number. [Optional]. PaymentSetupPhone: country_code (string, the
+     *      international country calling code, min 1 character, max 7 characters), number (string,
+     *      the phone number, min 6 characters, max 25 characters).
+     *    - device: Details of the customer's device. [Optional]. Object:
+     *      - locale: The locale of the device. [Optional].
+     *      - fingerprint: A unique identifier for the customer's device. [Optional].
+     *      - ipv4: The customer's device IPv4 address, used by some payment methods for risk and
+     *        eligibility checks. [Optional].
+     *      - ipv6: The customer's device IPv6 address, used by some payment methods for risk and
+     *        eligibility checks. [Optional].
+     *      - client: The type of client the customer uses to initiate the payment. [Optional].
+     *        Required when using Cash App Pay. Enum: "web" "mobile_web" "app".
+     *      - os: The operating system of the customer's device. [Optional]. Enum: "android" "ios".
+     *    - merchant_account: Details of the account the customer holds with the merchant. [Optional].
+     *      PaymentSetupMerchantAccount: id, registration_date (date format), last_modified (date format),
+     *      returning_customer (boolean), first_transaction_date (date format), last_transaction_date
+     *      (date format), total_order_count (integer), last_payment_amount (number).
      *
      * @memberof PaymentSetups
      * @param {Object} body - Request body
@@ -89,17 +138,49 @@ export default class PaymentSetups {
      * transaction. For example, when the customer makes a change that impacts the total payment amount.
      *
      * Request/response (swagger `PaymentSetup`, 2026-05-26) may also include:
-     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *  - billing_descriptor: optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
      *    city (string, max 13 characters), reference (string, max 50 characters).
-     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *  - presentment_details: optional PaymentSetupPresentmentDetails: amount (integer, int64),
      *    currency (string).
-     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *  - terminal: optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
-     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *  - industry: optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
      *    airline (array of PaymentSetupAirline). See `createAPaymentSetup` JSDoc for the full field list,
      *    including the fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests,
      *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
      *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
+     *
+     * Cash App Pay and customer (swagger `PaymentSetup`, 2026-10-06):
+     *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
+     *    The key is `cashapp`, one lowercase word (not `cash_app`, not `cashApp`). Fields you send:
+     *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
+     *      this defaults to disabled. [Optional]. Enum: "disabled" "enabled". Default "disabled".
+     *    - customer_profile_sharing: Indicates whether the customer consents to share their Cash App customer
+     *      profile with Checkout.com. [Optional]. boolean.
+     *    The response also returns the readOnly status, flags, reference (max 80 characters),
+     *    action (type "redirect", redirect_url in uri format) and the once-only customer_profile. See
+     *    `createAPaymentSetup` and `getAPaymentSetup` for their full description.
+     *  - customer: optional, the customer's details. Every field is optional:
+     *    - id: The unique identifier of the customer. [Optional].
+     *    - country: The two-letter ISO country code of the customer for this payment. [Optional].
+     *      min 2 characters, max 2 characters.
+     *    - email: Details of the customer's email. [Optional]. Object: address (string), verified (boolean).
+     *    - name: The customer's full name. [Optional]. max 100 characters.
+     *    - tax_number: The customer's tax identification number. [Optional].
+     *    - phone: The customer's phone number. [Optional]. PaymentSetupPhone: country_code (string,
+     *      min 1 character, max 7 characters), number (string, min 6 characters, max 25 characters).
+     *    - device: Details of the customer's device. [Optional]. Object:
+     *      - locale: The locale of the device. [Optional].
+     *      - fingerprint: A unique identifier for the customer's device. [Optional].
+     *      - ipv4: The customer's device IPv4 address, used by some payment methods for risk and
+     *        eligibility checks. [Optional].
+     *      - ipv6: The customer's device IPv6 address, used by some payment methods for risk and
+     *        eligibility checks. [Optional].
+     *      - client: The type of client the customer uses to initiate the payment. [Optional].
+     *        Required when using Cash App Pay. Enum: "web" "mobile_web" "app".
+     *      - os: The operating system of the customer's device. [Optional]. Enum: "android" "ios".
+     *    - merchant_account: Details of the account the customer holds with the merchant. [Optional].
+     *      PaymentSetupMerchantAccount, see `createAPaymentSetup` for its fields.
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to update.
@@ -129,21 +210,72 @@ export default class PaymentSetups {
      * Retrieves a Payment Setup.
      *
      * Response (swagger `PaymentSetup`, 2026-05-26) may include:
-     *  - account_funding_transaction — Account Funding Transaction (AFT) details
+     *  - account_funding_transaction: Account Funding Transaction (AFT) details
      *    when the setup was created with one. See
      *    `PaymentSetupAccountFundingTransaction` in swagger for sender /
      *    recipient / identification shapes.
-     *  - billing_descriptor — optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
+     *  - billing_descriptor: optional PaymentSetupBillingDescriptor: name (string, max 25 characters),
      *    city (string, max 13 characters), reference (string, max 50 characters).
-     *  - presentment_details — optional PaymentSetupPresentmentDetails: amount (integer, int64),
+     *  - presentment_details: optional PaymentSetupPresentmentDetails: amount (integer, int64),
      *    currency (string).
-     *  - terminal — optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
+     *  - terminal: optional PaymentSetupTerminal: id (string, min 8 / max 8 characters),
      *    local_date_time (string, date-time format).
-     *  - industry — optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
+     *  - industry: optional PaymentSetupIndustry: accommodation (array of PaymentSetupAccommodation) and
      *    airline (array of PaymentSetupAirline). See `createAPaymentSetup` JSDoc for the full field list,
      *    including the fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests,
      *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
      *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
+     *
+     * Cash App Pay (swagger `PaymentSetup`, 2026-10-06), under payment_methods.cashapp (key `cashapp`):
+     *  - status: The payment method status. [Optional]. readOnly.
+     *    Enum: "unavailable" "action_required" "ready" "initialization_required" "invalid".
+     *  - flags: The list of error codes or indicators that highlight missing or invalid information.
+     *    [Optional]. readOnly. Array of string.
+     *  - initialization: The initialization state of the payment method. [Optional].
+     *    Enum: "disabled" "enabled". Default "disabled".
+     *  - customer_profile_sharing: Indicates whether the customer consents to share their Cash App customer
+     *    profile with Checkout.com. [Optional]. boolean.
+     *  - reference: A reference for the Cash App Pay transaction, returned by the provider. [Optional].
+     *    readOnly. max 80 characters.
+     *  - action: The next available action for the payment method. [Optional]. readOnly. Object:
+     *    - type: The type of action. [Optional]. Enum: "redirect".
+     *    - redirect_url: The URL to redirect the customer to so they can authorize the payment with
+     *      Cash App. [Optional]. Format: uri.
+     *  - customer_profile: The customer's Cash App profile that they consented to share. Included in the
+     *    response when customer_profile_sharing is enabled. Cash App releases this profile only once. It's
+     *    present in the first successful response when you get the Payment Setup after the customer
+     *    authorizes the payment. Every subsequent response omits it, so store it when you first read it.
+     *    [Optional]. readOnly. Object:
+     *    - customer_id: Cash App's identifier for the customer. This is not a Checkout.com customer
+     *      identifier. [Optional].
+     *    - cashtag: The customer's $Cashtag. [Optional].
+     *    - reference_id: Cash App's reference for the customer profile. [Optional].
+     *    - full_name: The customer's full name. [Optional].
+     *    - given_name: The customer's given name. [Optional].
+     *    - middle_name: The customer's middle name. [Optional].
+     *    - family_name: The customer's family name. [Optional].
+     *    - suffix: The suffix of the customer's name. [Optional].
+     *    - birth_date: The customer's date of birth. [Optional]. Format: date. Returned as a string; the
+     *      provider's format varies (the spec example is a date-time, 1990-01-01T00:00:00.0000000).
+     *    - address: The customer's address. [Optional]. Cash App's key names, not the Checkout.com
+     *      address (address_line_1 has an underscore before the digit). Object:
+     *      - address_line_1: The first line of the address. [Optional].
+     *      - address_line_2: The second line of the address. [Optional].
+     *      - address_line_3: The third line of the address. [Optional].
+     *      - locality: The address locality, such as the city or town. [Optional].
+     *      - sublocality: The address sublocality, such as the district or neighborhood. [Optional].
+     *      - administrative_district_level_1: The address's top-level administrative district, such as
+     *        the state or province. [Optional].
+     *      - postal_code: The postal or zip code. [Optional].
+     *      - country: The address country, in ISO 3166-1 alpha-2 format. [Optional]. max 2 characters.
+     *    - phone_number: The customer's phone number. [Optional].
+     *    - email_address: The customer's email address. [Optional].
+     *    - customer_since: The date and time the customer's Cash App account was created. [Optional].
+     *      Format: date-time. Returned as a string; the provider's format varies.
+     *
+     * The response's customer carries id, country (min 2 characters, max 2 characters), email, name,
+     * tax_number, phone, device (locale, fingerprint, ipv4, ipv6, client, os) and merchant_account,
+     * as described on `createAPaymentSetup`.
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
@@ -171,14 +303,27 @@ export default class PaymentSetups {
      *
      * Response (swagger `PaymentSetup`, 2026-05-26) may include the same `industry` shape as
      * `createAPaymentSetup` (accommodation array of PaymentSetupAccommodation, airline array of
-     * PaymentSetupAirline) — see `createAPaymentSetup` JSDoc for the full field list, including the
+     * PaymentSetupAirline). See `createAPaymentSetup` JSDoc for the full field list, including the
      * fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests, refundable,
      * delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient, insurance,
      * refundable, total_number_of_passengers, travel_type, trip_type.
      *
+     * Cash App Pay (swagger `PaymentSetup`, 2026-10-06): confirm with payment_method_name "cashapp".
+     * The response's payment_methods.cashapp may carry:
+     *  - action: The next available action for the payment method. [Optional]. readOnly. Object:
+     *    type (Enum: "redirect") and redirect_url (The URL to redirect the customer to so they can
+     *    authorize the payment with Cash App. Format: uri).
+     *  - reference: A reference for the Cash App Pay transaction, returned by the provider. [Optional].
+     *    readOnly. max 80 characters.
+     *  - customer_profile: The customer's Cash App profile that they consented to share. [Optional].
+     *    readOnly. Cash App releases this profile only once: it is present in the first successful
+     *    response when you get the Payment Setup after the customer authorizes the payment, and every
+     *    subsequent response omits it. See `getAPaymentSetup` for its 13 fields and the 8 address fields.
+     *  - status, flags, initialization and customer_profile_sharing, as described on `getAPaymentSetup`.
+     *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
-     * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card").
+     * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp").
      * @returns {Promise&lt;Object&gt;} A promise to the Confirm a Payment Setup response
      */
     async confirmAPaymentSetup(id, payment_method_name) {

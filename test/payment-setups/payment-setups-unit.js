@@ -3244,4 +3244,311 @@ describe('Unit::Payment-Setups', () => {
             expect(result.terminal).to.deep.equal(request.terminal);
         });
     });
+
+    describe('Cash App Pay, customer device and customer identifiers', () => {
+        const host = 'https://123456789.api.sandbox.checkout.com';
+
+        const cashAppRequest = {
+            processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+            amount: 1000,
+            currency: 'USD',
+            payment_methods: {
+                cashapp: {
+                    initialization: 'enabled',
+                    customer_profile_sharing: true
+                }
+            },
+            customer: {
+                id: 'cus_123456789',
+                country: 'GB',
+                tax_number: 'GB123456789',
+                device: {
+                    locale: 'en_US',
+                    fingerprint: 'fp_abc123xyz',
+                    ipv4: '203.0.113.0',
+                    ipv6: '2001:db8:85a3::8a2e:370:7334',
+                    client: 'web',
+                    os: 'android'
+                }
+            }
+        };
+
+        const cashAppResponse = {
+            status: 'action_required',
+            flags: [],
+            initialization: 'enabled',
+            customer_profile_sharing: true,
+            reference: 'ORDER-99',
+            action: {
+                type: 'redirect',
+                redirect_url: 'https://sandbox.api.cash.app/customer-request/v1/requests/GRR_f5xg6wrxhtv3p4w24g0wrexa/interstitial?validity_token=bap03y'
+            },
+            customer_profile: {
+                customer_id: 'CST_AYVkuLzfsRqEhf4OyQFxQNv22m7IjNFjO6f2J5CDE2nxAC4-21wJ2H8_2kvsdIsDZMN4',
+                cashtag: '$CASHTAG_C_TOKEN',
+                reference_id: 'value',
+                full_name: 'John Middle Doe',
+                given_name: 'John',
+                middle_name: 'Middle',
+                family_name: 'Doe',
+                suffix: 'Jr.',
+                birth_date: '1990-01-01T00:00:00.0000000',
+                address: {
+                    address_line_1: '123 Main St',
+                    address_line_2: 'Apt 2',
+                    address_line_3: 'Floor 3',
+                    locality: 'Springfield',
+                    sublocality: 'Downtown',
+                    administrative_district_level_1: 'IL',
+                    postal_code: '62701',
+                    country: 'US'
+                },
+                phone_number: '5555555555',
+                email_address: 'cash@cash.com',
+                customer_since: '1970-01-18T12:46:04.8000000+00:00'
+            }
+        };
+
+        const setupResponse = {
+            id: 'psu_wmakpe4nrza3rv2vhtwzoszja',
+            processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+            amount: 1000,
+            currency: 'USD',
+            customer: cashAppRequest.customer,
+            payment_methods: {
+                cashapp: cashAppResponse
+            }
+        };
+
+        it('should send payment_methods.cashapp, the device fields and the customer identifiers unchanged on create', async () => {
+            // Arrange
+            let received;
+            const scope = nock(host)
+                .post('/payments/setups', (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.createAPaymentSetup(cashAppRequest);
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(received).to.deep.equal(cashAppRequest);
+            const wire = JSON.stringify(received);
+            expect(wire).to.include('"cashapp":{');
+            expect(wire).to.not.include('cash_app');
+            expect(wire).to.not.include('cashApp');
+            expect(wire).to.include('"customer_profile_sharing":true');
+            expect(wire).to.not.include('customerProfileSharing');
+            expect(received.payment_methods.cashapp).to.deep.equal({
+                initialization: 'enabled',
+                customer_profile_sharing: true
+            });
+            expect(received.customer.device).to.deep.equal({
+                locale: 'en_US',
+                fingerprint: 'fp_abc123xyz',
+                ipv4: '203.0.113.0',
+                ipv6: '2001:db8:85a3::8a2e:370:7334',
+                client: 'web',
+                os: 'android'
+            });
+            expect(received.customer.id).to.equal('cus_123456789');
+            expect(received.customer.country).to.equal('GB');
+            expect(received.customer.tax_number).to.equal('GB123456789');
+            expect(wire).to.not.include('taxNumber');
+            expect(result).to.deep.equal(setupResponse);
+        });
+
+        it('should send the same cashapp, device and customer body unchanged on update', async () => {
+            // Arrange
+            let received;
+            const scope = nock(host)
+                .put('/payments/setups/psu_wmakpe4nrza3rv2vhtwzoszja', (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.updateAPaymentSetup('psu_wmakpe4nrza3rv2vhtwzoszja', cashAppRequest);
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(received).to.deep.equal(cashAppRequest);
+            expect(JSON.stringify(received)).to.include('"cashapp":{');
+            expect(result).to.deep.equal(setupResponse);
+        });
+
+        it('should send every customer.device client and os value as given', async () => {
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+            const devices = [
+                { client: 'web', os: 'android' },
+                { client: 'mobile_web', os: 'ios' },
+                { client: 'app', os: 'android' }
+            ];
+
+            for (const device of devices) {
+                // Arrange
+                let received;
+                const scope = nock(host)
+                    .post('/payments/setups', (body) => {
+                        received = body;
+                        return true;
+                    })
+                    .reply(200, { id: 'psu_wmakpe4nrza3rv2vhtwzoszja' });
+
+                // Act
+                await cko.paymentSetups.createAPaymentSetup({
+                    processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+                    amount: 1000,
+                    currency: 'USD',
+                    customer: { device }
+                });
+
+                // Assert
+                expect(scope.isDone()).to.be.true;
+                expect(received.customer.device).to.deep.equal(device);
+            }
+        });
+
+        it('should send exactly the locale when the device has only a locale', async () => {
+            // Arrange
+            let received;
+            nock(host)
+                .post('/payments/setups', (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, { id: 'psu_wmakpe4nrza3rv2vhtwzoszja' });
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            await cko.paymentSetups.createAPaymentSetup({
+                processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+                amount: 1000,
+                currency: 'USD',
+                customer: { device: { locale: 'en_US' } }
+            });
+
+            // Assert
+            expect(JSON.stringify(received.customer.device)).to.equal('{"locale":"en_US"}');
+        });
+
+        it('should read the cashapp action, reference, customer_profile and customer fields from get', async () => {
+            // Arrange
+            nock(host)
+                .get('/payments/setups/psu_wmakpe4nrza3rv2vhtwzoszja')
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.getAPaymentSetup('psu_wmakpe4nrza3rv2vhtwzoszja');
+
+            // Assert
+            expect(result).to.deep.equal(setupResponse);
+            const cashapp = result.payment_methods.cashapp;
+            expect(cashapp.status).to.equal('action_required');
+            expect(cashapp.flags).to.deep.equal([]);
+            expect(cashapp.initialization).to.equal('enabled');
+            expect(cashapp.customer_profile_sharing).to.be.true;
+            expect(cashapp.reference).to.equal('ORDER-99');
+            expect(cashapp.action.type).to.equal('redirect');
+            expect(cashapp.action.redirect_url).to.equal(
+                'https://sandbox.api.cash.app/customer-request/v1/requests/GRR_f5xg6wrxhtv3p4w24g0wrexa/interstitial?validity_token=bap03y'
+            );
+
+            const profile = cashapp.customer_profile;
+            expect(Object.keys(profile)).to.have.lengthOf(13);
+            expect(profile.customer_id).to.equal('CST_AYVkuLzfsRqEhf4OyQFxQNv22m7IjNFjO6f2J5CDE2nxAC4-21wJ2H8_2kvsdIsDZMN4');
+            expect(profile.cashtag).to.equal('$CASHTAG_C_TOKEN');
+            expect(profile.reference_id).to.equal('value');
+            expect(profile.full_name).to.equal('John Middle Doe');
+            expect(profile.given_name).to.equal('John');
+            expect(profile.middle_name).to.equal('Middle');
+            expect(profile.family_name).to.equal('Doe');
+            expect(profile.suffix).to.equal('Jr.');
+            expect(profile.birth_date).to.equal('1990-01-01T00:00:00.0000000');
+            expect(profile.phone_number).to.equal('5555555555');
+            expect(profile.email_address).to.equal('cash@cash.com');
+            expect(profile.customer_since).to.equal('1970-01-18T12:46:04.8000000+00:00');
+
+            expect(Object.keys(profile.address)).to.have.lengthOf(8);
+            expect(profile.address.address_line_1).to.equal('123 Main St');
+            expect(profile.address.address_line_2).to.equal('Apt 2');
+            expect(profile.address.address_line_3).to.equal('Floor 3');
+            expect(profile.address.locality).to.equal('Springfield');
+            expect(profile.address.sublocality).to.equal('Downtown');
+            expect(profile.address.administrative_district_level_1).to.equal('IL');
+            expect(profile.address.postal_code).to.equal('62701');
+            expect(profile.address.country).to.equal('US');
+
+            expect(result.customer.device).to.deep.equal(cashAppRequest.customer.device);
+            expect(result.customer.id).to.equal('cus_123456789');
+            expect(result.customer.country).to.equal('GB');
+            expect(result.customer.tax_number).to.equal('GB123456789');
+        });
+
+        it('should confirm with "cashapp" on payments/setups/{id}/confirm/cashapp and read the cashapp response', async () => {
+            // Arrange
+            const scope = nock(host)
+                .post('/payments/setups/psu_wmakpe4nrza3rv2vhtwzoszja/confirm/cashapp')
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.confirmAPaymentSetup('psu_wmakpe4nrza3rv2vhtwzoszja', 'cashapp');
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(result.payment_methods.cashapp).to.deep.equal(cashAppResponse);
+            expect(result.payment_methods.cashapp.action.redirect_url).to.equal(cashAppResponse.action.redirect_url);
+        });
+
+        it('should send and read the customer spec example with id, country and tax_number', async () => {
+            // Arrange
+            const customer = {
+                id: 'cus_123456789',
+                country: 'GB',
+                email: { address: 'johnsmith@example.com', verified: true },
+                name: 'John Smith',
+                tax_number: 'GB123456789',
+                phone: { country_code: '+44', number: '207 946 0000' },
+                device: { locale: 'en_GB' }
+            };
+            const request = {
+                processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+                amount: 1000,
+                currency: 'GBP',
+                customer
+            };
+            let received;
+            nock(host)
+                .post('/payments/setups', (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, { id: 'psu_wmakpe4nrza3rv2vhtwzoszja', ...request });
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.createAPaymentSetup(request);
+
+            // Assert
+            expect(received.customer).to.deep.equal(customer);
+            expect(result.customer).to.deep.equal(customer);
+            expect(result.customer.id).to.equal('cus_123456789');
+            expect(result.customer.country).to.equal('GB');
+            expect(result.customer.tax_number).to.equal('GB123456789');
+        });
+    });
 });
