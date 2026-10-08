@@ -161,6 +161,78 @@ describe('Integration::Payment-Setups', () => {
     });
   });
 
+  describe('Cash App Pay, customer device and customer identifiers', () => {
+    const device = {
+      locale: "en_US",
+      fingerprint: "fp_abc123xyz",
+      ipv4: "203.0.113.0",
+      ipv6: "2001:db8:85a3::8a2e:370:7334",
+      client: "web",
+      os: "android"
+    };
+
+    it('should create a payment setup with the customer device fields and echo them', async () => {
+      const response = await cko.paymentSetups.createAPaymentSetup({
+        processing_channel_id: processingChannelId,
+        amount: 1000,
+        currency: "USD",
+        reference: `TEST-REF-DEVICE-${Date.now()}`,
+        customer: { device }
+      });
+
+      expect(response.id).not.to.be.null;
+      expect(response.customer.device).to.deep.include(device);
+    });
+
+    it('should create a payment setup with customer id, country and tax_number and echo them', async () => {
+      const response = await cko.paymentSetups.createAPaymentSetup({
+        processing_channel_id: processingChannelId,
+        amount: 1000,
+        currency: "GBP",
+        reference: `TEST-REF-CUSTOMER-${Date.now()}`,
+        customer: {
+          id: "cus_123456789",
+          country: "GB",
+          tax_number: "GB123456789",
+          name: "John Smith"
+        }
+      });
+
+      expect(response.id).not.to.be.null;
+      expect(response.customer.id).to.equal("cus_123456789");
+      expect(response.customer.country).to.equal("GB");
+      expect(response.customer.tax_number).to.equal("GB123456789");
+    });
+
+    it('should create a Cash App Pay payment setup and read the cashapp payment method', async function () {
+      const response = await cko.paymentSetups.createAPaymentSetup({
+        processing_channel_id: processingChannelId,
+        amount: 1000,
+        currency: "USD",
+        reference: `TEST-REF-CASHAPP-${Date.now()}`,
+        payment_methods: {
+          cashapp: {
+            initialization: "enabled",
+            customer_profile_sharing: true
+          }
+        },
+        customer: { device }
+      });
+
+      if (!(response.available_payment_methods || []).includes("cashapp")) {
+        this.test.title += ' (skipped: Cash App Pay is not enabled on the sandbox processing channel)';
+        this.skip();
+      }
+
+      const fetched = await cko.paymentSetups.getAPaymentSetup(response.id);
+      const cashapp = fetched.payment_methods.cashapp;
+      expect(cashapp).to.be.an('object');
+      expect(cashapp.initialization).to.equal("enabled");
+      expect(cashapp.customer_profile_sharing).to.equal(true);
+      expect(cashapp.status).to.be.oneOf(["unavailable", "action_required", "ready", "initialization_required", "invalid"]);
+    });
+  });
+
   describe('Error handling', () => {
     it('should throw NotFoundError when getting non-existent payment setup', async () => {
       try {
