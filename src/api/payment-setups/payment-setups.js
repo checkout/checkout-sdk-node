@@ -60,7 +60,7 @@ export default class PaymentSetups {
      *    not an array despite the plural name), insurance (object, added 2026-09-08: type [string], company [string],
      *    price [{ amount: number, currency: string (3-letter ISO) }]).
      *
-     * Cash App Pay and customer (swagger `PaymentSetup`, 2026-10-06):
+     * Cash App Pay and customer (per the `PaymentSetup` specs):
      *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
      *    The key is `cashapp`, one lowercase word (not `cash_app`, not `cashApp`). Fields you send:
      *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
@@ -111,7 +111,7 @@ export default class PaymentSetups {
      *
      * @memberof PaymentSetups
      * @param {Object} body - Request body
-     * @returns {Promise&lt;Object&gt;} A promise to the Create a Payment Setup response
+     * @returns {Promise<Object>} A promise to the Create a Payment Setup response
      */
     async createAPaymentSetup(body) {
         try {
@@ -150,7 +150,7 @@ export default class PaymentSetups {
      *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
      *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
      *
-     * Cash App Pay and customer (swagger `PaymentSetup`, 2026-10-06):
+     * Cash App Pay and customer (per the `PaymentSetup` specs):
      *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
      *    The key is `cashapp`, one lowercase word (not `cash_app`, not `cashApp`). Fields you send:
      *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
@@ -185,7 +185,7 @@ export default class PaymentSetups {
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to update.
      * @param {Object} body - Request body
-     * @returns {Promise&lt;Object&gt;} A promise to the Update a Payment Setup response
+     * @returns {Promise<Object>} A promise to the Update a Payment Setup response
      */
     async updateAPaymentSetup(id, body) {
         try {
@@ -226,7 +226,7 @@ export default class PaymentSetups {
      *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
      *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
      *
-     * Cash App Pay (swagger `PaymentSetup`, 2026-10-06), under payment_methods.cashapp (key `cashapp`):
+     * Cash App Pay (per the `PaymentSetup` specs), under payment_methods.cashapp (key `cashapp`):
      *  - status: The payment method status. [Optional]. readOnly.
      *    Enum: "unavailable" "action_required" "ready" "initialization_required" "invalid".
      *  - flags: The list of error codes or indicators that highlight missing or invalid information.
@@ -308,7 +308,7 @@ export default class PaymentSetups {
      * delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient, insurance,
      * refundable, total_number_of_passengers, travel_type, trip_type.
      *
-     * Cash App Pay (swagger `PaymentSetup`, 2026-10-06): confirm with payment_method_name "cashapp".
+     * Cash App Pay (per the `PaymentSetup` specs): confirm with payment_method_name "cashapp".
      * The response's payment_methods.cashapp may carry:
      *  - action: The next available action for the payment method. [Optional]. readOnly. Object:
      *    type (Enum: "redirect") and redirect_url (The URL to redirect the customer to so they can
@@ -324,7 +324,7 @@ export default class PaymentSetups {
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
      * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp").
-     * @returns {Promise&lt;Object&gt;} A promise to the Confirm a Payment Setup response
+     * @returns {Promise<Object>} A promise to the Confirm a Payment Setup response
      */
     async confirmAPaymentSetup(id, payment_method_name) {
         try {

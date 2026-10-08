@@ -224,7 +224,8 @@ describe('Integration::Payment-Setups', () => {
         this.skip();
       }
 
-      const cashapp = response.payment_methods.cashapp;
+      const fetched = await cko.paymentSetups.getAPaymentSetup(response.id);
+      const cashapp = fetched.payment_methods.cashapp;
       expect(cashapp).to.be.an('object');
       expect(cashapp.initialization).to.equal("enabled");
       expect(cashapp.customer_profile_sharing).to.equal(true);
