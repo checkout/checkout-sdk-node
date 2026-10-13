@@ -315,6 +315,88 @@ describe('Unit::Issuing::Controls', () => {
         expect(controlsResponse.control_type).to.equal("velocity_limit")
     });
 
+    const updateControlResponses = {
+        velocity_limit: {
+            id: "ctr_gp7vkmxayztufjz6top5bjcdra",
+            description: "Maximum spend of 500€ per week for restaurants",
+            control_type: "velocity_limit",
+            target_id: "crd_fa6psq42dcdd6fdn5gifcq1491",
+            is_editable: true,
+            created_date: "2021-09-09T19:41:39Z",
+            last_modified_date: "2021-09-09T19:41:39Z",
+            velocity_limit: {
+                amount_remaining: 45000,
+                amount_limit: 50000,
+                velocity_window: { type: "weekly" },
+                mcc_list: ["4121", "4582"]
+            }
+        },
+        mcc_limit: {
+            id: "ctr_gp7vkmxayztufjz6top5bjcdra",
+            description: "Allow the card to be used only in restaurants and supermarkets",
+            control_type: "mcc_limit",
+            target_id: "crd_fa6psq42dcdd6fdn5gifcq1491",
+            is_editable: true,
+            created_date: "2021-09-09T19:41:39Z",
+            last_modified_date: "2021-09-09T19:41:39Z",
+            mcc_limit: { type: "allow", mcc_list: ["5932", "5411"] }
+        },
+        mid_limit: {
+            id: "ctr_gp7vkmxayztufjz6top5bjcdra",
+            description: "Allow the card to be used only in AZ Pizza",
+            control_type: "mid_limit",
+            target_id: "crd_fa6psq42dcdd6fdn5gifcq1491",
+            is_editable: true,
+            created_date: "2021-09-09T19:41:39Z",
+            last_modified_date: "2021-09-09T19:41:39Z",
+            mid_limit: { type: "allow", mid_list: ["593278", "541114"] }
+        }
+    };
+
+    Object.entries(updateControlResponses).forEach(([controlType, body]) => {
+        it(`should return every field of the ${controlType} update control response`, async () => {
+            nock('https://123456789.access.sandbox.checkout.com')
+                .post('/connect/token')
+                .reply(200, {
+                    access_token: 'test_access_token',
+                    expires_in: 3600,
+                    token_type: 'Bearer',
+                    scope: 'issuing:controls-write issuing:controls-read'
+                });
+
+            nock('https://123456789.api.sandbox.checkout.com')
+                .put('/issuing/controls/ctr_gp7vkmxayztufjz6top5bjcdra')
+                .reply(200, body);
+
+            const cko = new Checkout('test_client_secret', {
+                client: 'ack_testclie123456',
+                scope: ['issuing:controls-write', 'issuing:controls-read'],
+                environment: 'sandbox',
+                subdomain: '123456789'
+            });
+
+            const response = await cko.issuing.updateCardControl("ctr_gp7vkmxayztufjz6top5bjcdra", {
+                description: body.description
+            });
+
+            expect(response).to.deep.equal(body);
+            expect(response.id).to.equal(body.id);
+            expect(response.description).to.equal(body.description);
+            expect(response.control_type).to.equal(controlType);
+            expect(response.target_id).to.equal(body.target_id);
+            expect(response.is_editable).to.equal(true);
+            expect(response.created_date).to.equal(body.created_date);
+            expect(response.last_modified_date).to.equal(body.last_modified_date);
+            expect(response[controlType]).to.deep.equal(body[controlType]);
+            if (controlType === 'velocity_limit') {
+                expect(response.velocity_limit.amount_remaining).to.equal(45000);
+                expect(response.velocity_limit.amount_limit).to.equal(50000);
+                expect(response.velocity_limit.velocity_window.type).to.equal("weekly");
+                expect(response.velocity_limit.mcc_list).to.deep.equal(["4121", "4582"]);
+            }
+        });
+    });
+
     it('should throw when updating a card`s controls', async () => {
         nock('https://123456789.access.sandbox.checkout.com')
             .post('/connect/token')
