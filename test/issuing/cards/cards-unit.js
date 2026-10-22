@@ -865,8 +865,8 @@ describe('Unit::Issuing::Cards', () => {
     //
     // These assert the headers on the outgoing request, because the spec spells them case
     // sensitively (return-encrypted-cvv lower case, Encryption-Key title case) and because they
-    // travel on a copy of the config rather than on the body. The 2026-09-17 spec (INT-1700)
-    // removed encrypted_cvv from update-card-response entirely, so the response body is
+    // travel on a copy of the config rather than on the body. The headers are deprecated
+    // and update-card-response does not include encrypted_cvv, so the response body is
     // asserted without it regardless of whether these headers are sent.
     describe('update headers', () => {
         const SUBDOMAIN = "123456789";
@@ -923,9 +923,8 @@ describe('Unit::Issuing::Cards', () => {
             expect(seen['return-encrypted-cvv']).to.equal('true');
             expect(seen['encryption-key']).to.equal('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A');
 
-            // last_modified_date is required on update-card-response. The 2026-09-17 spec
-            // (INT-1700) removed encrypted_cvv entirely, so these headers no longer make the
-            // response carry it; _links is now the same CardLinks shape get-card-response uses.
+            // last_modified_date is required on update-card-response, which does not include
+            // encrypted_cvv; _links uses the same CardLinks shape get-card-response uses.
             expect(result.last_modified_date).to.equal('2026-06-01T10:00:00Z');
             expect(result.encrypted_cvv).to.be.undefined;
             expect(result._links.self.href).to.contain(`/issuing/cards/${CARD_ID}`);
@@ -933,8 +932,8 @@ describe('Unit::Issuing::Cards', () => {
             expect(result._links.self.types).to.deep.equal(['application/json']);
         });
 
-        // The 2026-09-23 spec update split update-card-response into a virtual/physical
-        // discriminator; the virtual variant adds is_single_use.
+        // update-card-response has a virtual/physical discriminator; the virtual variant
+        // adds is_single_use.
         it('should round-trip is_single_use for a virtual card response', async () => {
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
@@ -1054,6 +1053,36 @@ describe('Unit::Issuing::Cards', () => {
             expect(body.scheduled_activation_date).to.equal('2026-06-01T10:00Z');
             expect(body.revocation_date).to.equal('2027-03-12');
             expect(body.activation_date).to.be.undefined;
+        });
+        it('should revoke a card without a body', async () => {
+            let body = 'unset';
+            nock(BASE)
+                .post(`/issuing/cards/${CARD_ID}/revoke`, (received) => {
+                    body = received;
+                    return true;
+                })
+                .reply(200, { _links: { self: { href: `https://${SUBDOMAIN}.api.checkout.com/issuing/cards/${CARD_ID}` } } });
+
+            const result = await client().issuing.cards.revokeCard(CARD_ID);
+
+            // No body is sent on the wire when the request is omitted.
+            expect(body).to.equal('');
+            expect(result._links.self.href).to.contain(CARD_ID);
+        });
+
+        it('should suspend a card without a body', async () => {
+            let body = 'unset';
+            nock(BASE)
+                .post(`/issuing/cards/${CARD_ID}/suspend`, (received) => {
+                    body = received;
+                    return true;
+                })
+                .reply(200, { _links: { self: { href: `https://${SUBDOMAIN}.api.checkout.com/issuing/cards/${CARD_ID}` } } });
+
+            const result = await client().issuing.suspendCard(CARD_ID);
+
+            expect(body).to.equal('');
+            expect(result._links.self.href).to.contain(CARD_ID);
         });
     });
 });

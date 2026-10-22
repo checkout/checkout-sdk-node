@@ -58,6 +58,15 @@ export default class Issuing {
         return this.cards.getCardDetails(id);
     }
 
+    /**
+     * Updates a card. See {@link Cards#updateCard}.
+     *
+     * @param {string} id Card id.
+     * @param {Object} body Card params to update.
+     * @param {Object} [headers] Deprecated. The API no longer supports these headers; use the
+     *   method without headers. Will be removed in the next major version.
+     * @return {Promise<Object>} A promise to the card update response.
+     */
     async updateCard(id, body, headers) {
         return this.cards.updateCard(id, body, headers);
     }

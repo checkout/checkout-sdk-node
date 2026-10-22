@@ -150,9 +150,8 @@ describe.skip('Integration::Issuing::Cards - AuthenticationError: Requires CHECK
         expect(response._links.self.href).to.contain(card.id);
     });
 
-    // The 2026-09-17 spec (INT-1700) removed encrypted_cvv from update-card-response entirely,
-    // so return-encrypted-cvv/Encryption-Key no longer make the update response carry it. This
-    // test previously asserted the opposite (added by INT-1695, when the field still existed).
+    // update-card-response does not include encrypted_cvv, and the update-card headers are
+    // deprecated, so they no longer make the update response carry it.
 
     // The flag without the key is a documented 422 carrying encryption_key_required.
     it('should throw ValidationError when requesting the cvv without an encryption key', async () => {
