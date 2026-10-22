@@ -86,13 +86,11 @@ export default class Cards {
      * Only the fields you provide values for are updated. Passing `null` for a field **removes**
      * its existing value, so omit a field to leave it untouched rather than sending null.
      *
-     * Pass headers to request the card's encrypted credentials in the response. Set
-     * `return-encrypted-cvv` to `true` together with an `Encryption-Key`; supplying the flag
-     * without the key returns a 422 with error code `encryption_key_required`.
-     *
-     * The headers travel on a copy of the config rather than on the body, which is how
-     * getRequestHeaders picks them up for every verb. Putting them on the body would also send
-     * them as JSON fields.
+     * The `headers` parameter (`return-encrypted-cvv`, `Encryption-Key`) is deprecated: the API
+     * no longer supports these headers and ignores them, and the response never carries
+     * encrypted credentials. When set, they are still sent unchanged, on a copy of the config
+     * rather than on the body. Use the method without headers; the parameter will be removed in
+     * the next major version.
      *
      * `body.status` (string enum, optional, only `active` allowed) reactivates an
      * `inactive` or `suspended` card. Mutually exclusive with
@@ -105,7 +103,7 @@ export default class Cards {
      *
      * The response has the same fields as the get-card response (including
      * `last_activated_on` and `scheduled_revocation_date`), plus a required
-     * `last_modified_date`. It no longer includes `encrypted_cvv`. For a virtual card, the
+     * `last_modified_date`. It does not include `encrypted_cvv`. For a virtual card, the
      * response may also include `is_single_use` (boolean), specifying whether the card is set
      * to expire after a single use; physical cards never send it.
      *

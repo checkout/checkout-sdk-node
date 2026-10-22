@@ -150,21 +150,15 @@ describe.skip('Integration::Issuing::Cards - AuthenticationError: Requires CHECK
         expect(response._links.self.href).to.contain(card.id);
     });
 
-    // update-card-response does not include encrypted_cvv, and the update-card headers are
-    // deprecated, so they no longer make the update response carry it.
+    // The API ignores the deprecated update-card headers; the SDK still sends them when set.
+    it('should update a card when the deprecated headers are set', async () => {
+        const response = await cko_issuing.issuing.updateCard(
+            card.id,
+            { reference: 'X-123456-N11' },
+            { 'return-encrypted-cvv': true }
+        );
 
-    // The flag without the key is a documented 422 carrying encryption_key_required.
-    it('should throw ValidationError when requesting the cvv without an encryption key', async () => {
-        try {
-            await cko_issuing.issuing.updateCard(
-                card.id,
-                { reference: 'X-123456-N11' },
-                { 'return-encrypted-cvv': true }
-            );
-            expect.fail('Should have thrown ValidationError');
-        } catch (err) {
-            expect(err).to.be.instanceOf(ValidationError);
-            expect(err.body.error_codes).to.contain('encryption_key_required');
-        }
+        expect(response.last_modified_date).to.not.be.null;
+        expect(response._links.self.href).to.contain(card.id);
     });
 });

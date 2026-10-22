@@ -861,14 +861,13 @@ describe('Unit::Issuing::Cards', () => {
         }
     });
 
-    // The return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
+    // The deprecated return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
     //
-    // These assert the headers on the outgoing request, because the spec spells them case
-    // sensitively (return-encrypted-cvv lower case, Encryption-Key title case) and because they
-    // travel on a copy of the config rather than on the body. The headers are deprecated
-    // and update-card-response does not include encrypted_cvv, so the response body is
-    // asserted without it regardless of whether these headers are sent.
-    describe('update headers', () => {
+    // The API no longer supports these headers and ignores them. The SDK still sends them
+    // unchanged when the caller sets them, on a copy of the config rather than on the body, so
+    // these tests assert the outgoing request. The response is the plain update-card-response,
+    // whether or not the headers are sent.
+    describe('deprecated update headers', () => {
         const SUBDOMAIN = "123456789";
         const ACCESS_BASE = `https://${SUBDOMAIN}.access.sandbox.checkout.com`;
         const BASE = `https://${SUBDOMAIN}.api.sandbox.checkout.com`;
@@ -895,7 +894,7 @@ describe('Unit::Issuing::Cards', () => {
             nock.cleanAll();
         });
 
-        it('should send both headers with their exact swagger spelling', async () => {
+        it('should still send both deprecated headers when set', async () => {
             let seen;
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
@@ -1013,25 +1012,17 @@ describe('Unit::Issuing::Cards', () => {
             expect(seen['return-encrypted-cvv']).to.equal('true');
         });
 
-        // The API answers 422 with error code encryption_key_required when the flag is set without
-        // a key. The SDK must surface the error body rather than swallowing it.
-        it('should surface the 422 encryption_key_required error', async () => {
+        // The API ignores the deprecated headers, so a call that sets them gets the normal
+        // update-card-response back.
+        it('should return the update card response when the deprecated headers are set', async () => {
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
-                .reply(422, {
-                    request_id: '0HLHPN8802NUF:00000003',
-                    error_type: 'request_invalid',
-                    error_codes: ['encryption_key_required']
-                });
+                .reply(200, { id: CARD_ID, last_modified_date: '2026-06-01T10:00:00Z' });
 
-            try {
-                await client().issuing.cards.updateCard(CARD_ID, {}, { 'return-encrypted-cvv': true });
-                throw new Error('expected the update to reject');
-            } catch (error) {
-                expect(error).to.be.instanceOf(ValidationError);
-                expect(error.http_code).to.equal(422);
-                expect(error.body.error_codes).to.contain('encryption_key_required');
-            }
+            const result = await client().issuing.cards.updateCard(CARD_ID, {}, { 'return-encrypted-cvv': true });
+
+            expect(result.id).to.equal(CARD_ID);
+            expect(result.last_modified_date).to.equal('2026-06-01T10:00:00Z');
         });
 
         // The renamed field is a plain passthrough here, since node models no card fields,
