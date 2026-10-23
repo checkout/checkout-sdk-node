@@ -1,7 +1,7 @@
 import nock from "nock";
 import { expect } from "chai";
 import Checkout from "../../../src/Checkout.js";
-import { AuthenticationError, NotFoundError, ValidationError } from "../../../src/services/errors.js";
+import { AuthenticationError, NotFoundError } from "../../../src/services/errors.js";
 
 describe('Unit::Issuing::Cards', () => {
     it('should create card', async () => {
@@ -221,7 +221,7 @@ describe('Unit::Issuing::Cards', () => {
             .patch('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491')
             .reply(200, {
                 id: "crd_fa6psq242dcd6fdn5gifcq1491",
-                status: "inactive",
+                status: "active",
                 reference: "X-123456-N11-UPDATED",
                 scheduled_revocation_date: "2026-12-31",
                 last_modified_date: "2021-09-09T19:41:39Z",
@@ -251,13 +251,13 @@ describe('Unit::Issuing::Cards', () => {
         });
 
         const cardResponse = await cko.issuing.updateCard('crd_fa6psq242dcd6fdn5gifcq1491', {
-            status: "inactive",
+            status: "active",
             reference: "X-123456-N11-UPDATED",
             scheduled_revocation_date: "2026-12-31"
         });
 
         expect(cardResponse.id).to.equal("crd_fa6psq242dcd6fdn5gifcq1491");
-        expect(cardResponse.status).to.equal("inactive");
+        expect(cardResponse.status).to.equal("active");
         expect(cardResponse.reference).to.equal("X-123456-N11-UPDATED");
         expect(cardResponse.scheduled_revocation_date).to.equal("2026-12-31");
         expect(cardResponse.last_modified_date).to.equal("2021-09-09T19:41:39Z");
@@ -336,7 +336,7 @@ describe('Unit::Issuing::Cards', () => {
         });
 
         try {
-            await cko.issuing.updateCard('not_found', { status: "inactive" });
+            await cko.issuing.updateCard('not_found', { status: "active" });
         } catch (err) {
             expect(err).to.be.instanceOf(NotFoundError);
         }
@@ -861,14 +861,13 @@ describe('Unit::Issuing::Cards', () => {
         }
     });
 
-    // The return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
+    // The deprecated return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
     //
-    // These assert the headers on the outgoing request, because the spec spells them case
-    // sensitively (return-encrypted-cvv lower case, Encryption-Key title case) and because they
-    // travel on a copy of the config rather than on the body. The 2026-09-17 spec (INT-1700)
-    // removed encrypted_cvv from update-card-response entirely, so the response body is
-    // asserted without it regardless of whether these headers are sent.
-    describe('update headers', () => {
+    // The API no longer documents these headers. The SDK still sends them
+    // unchanged when the caller sets them, on a copy of the config rather than on the body, so
+    // these tests assert the outgoing request. The response is the plain update-card-response,
+    // whether or not the headers are sent.
+    describe('deprecated update headers', () => {
         const SUBDOMAIN = "123456789";
         const ACCESS_BASE = `https://${SUBDOMAIN}.access.sandbox.checkout.com`;
         const BASE = `https://${SUBDOMAIN}.api.sandbox.checkout.com`;
@@ -895,7 +894,7 @@ describe('Unit::Issuing::Cards', () => {
             nock.cleanAll();
         });
 
-        it('should send both headers with their exact swagger spelling', async () => {
+        it('should still send both deprecated headers when set', async () => {
             let seen;
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
@@ -923,9 +922,8 @@ describe('Unit::Issuing::Cards', () => {
             expect(seen['return-encrypted-cvv']).to.equal('true');
             expect(seen['encryption-key']).to.equal('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A');
 
-            // last_modified_date is required on update-card-response. The 2026-09-17 spec
-            // (INT-1700) removed encrypted_cvv entirely, so these headers no longer make the
-            // response carry it; _links is now the same CardLinks shape get-card-response uses.
+            // last_modified_date is required on update-card-response, which does not include
+            // encrypted_cvv; _links uses the same CardLinks shape get-card-response uses.
             expect(result.last_modified_date).to.equal('2026-06-01T10:00:00Z');
             expect(result.encrypted_cvv).to.be.undefined;
             expect(result._links.self.href).to.contain(`/issuing/cards/${CARD_ID}`);
@@ -933,8 +931,8 @@ describe('Unit::Issuing::Cards', () => {
             expect(result._links.self.types).to.deep.equal(['application/json']);
         });
 
-        // The 2026-09-23 spec update split update-card-response into a virtual/physical
-        // discriminator; the virtual variant adds is_single_use.
+        // update-card-response has a virtual/physical discriminator; the virtual variant
+        // adds is_single_use.
         it('should round-trip is_single_use for a virtual card response', async () => {
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
@@ -1014,25 +1012,17 @@ describe('Unit::Issuing::Cards', () => {
             expect(seen['return-encrypted-cvv']).to.equal('true');
         });
 
-        // The API answers 422 with error code encryption_key_required when the flag is set without
-        // a key. The SDK must surface the error body rather than swallowing it.
-        it('should surface the 422 encryption_key_required error', async () => {
+        // The API no longer documents these headers; when they are still sent, the call gets
+        // the normal update-card-response back.
+        it('should return the update card response when the deprecated headers are set', async () => {
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
-                .reply(422, {
-                    request_id: '0HLHPN8802NUF:00000003',
-                    error_type: 'request_invalid',
-                    error_codes: ['encryption_key_required']
-                });
+                .reply(200, { id: CARD_ID, last_modified_date: '2026-06-01T10:00:00Z' });
 
-            try {
-                await client().issuing.cards.updateCard(CARD_ID, {}, { 'return-encrypted-cvv': true });
-                throw new Error('expected the update to reject');
-            } catch (error) {
-                expect(error).to.be.instanceOf(ValidationError);
-                expect(error.http_code).to.equal(422);
-                expect(error.body.error_codes).to.contain('encryption_key_required');
-            }
+            const result = await client().issuing.cards.updateCard(CARD_ID, {}, { 'return-encrypted-cvv': true });
+
+            expect(result.id).to.equal(CARD_ID);
+            expect(result.last_modified_date).to.equal('2026-06-01T10:00:00Z');
         });
 
         // The renamed field is a plain passthrough here, since node models no card fields,
@@ -1054,6 +1044,36 @@ describe('Unit::Issuing::Cards', () => {
             expect(body.scheduled_activation_date).to.equal('2026-06-01T10:00Z');
             expect(body.revocation_date).to.equal('2027-03-12');
             expect(body.activation_date).to.be.undefined;
+        });
+        it('should revoke a card without a body', async () => {
+            let body = 'unset';
+            nock(BASE)
+                .post(`/issuing/cards/${CARD_ID}/revoke`, (received) => {
+                    body = received;
+                    return true;
+                })
+                .reply(200, { _links: { self: { href: `https://${SUBDOMAIN}.api.checkout.com/issuing/cards/${CARD_ID}` } } });
+
+            const result = await client().issuing.cards.revokeCard(CARD_ID);
+
+            // No body is sent on the wire when the request is omitted.
+            expect(body).to.equal('');
+            expect(result._links.self.href).to.contain(CARD_ID);
+        });
+
+        it('should suspend a card without a body', async () => {
+            let body = 'unset';
+            nock(BASE)
+                .post(`/issuing/cards/${CARD_ID}/suspend`, (received) => {
+                    body = received;
+                    return true;
+                })
+                .reply(200, { _links: { self: { href: `https://${SUBDOMAIN}.api.checkout.com/issuing/cards/${CARD_ID}` } } });
+
+            const result = await client().issuing.suspendCard(CARD_ID);
+
+            expect(body).to.equal('');
+            expect(result._links.self.href).to.contain(CARD_ID);
         });
     });
 });

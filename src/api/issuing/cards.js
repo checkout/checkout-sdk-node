@@ -86,13 +86,11 @@ export default class Cards {
      * Only the fields you provide values for are updated. Passing `null` for a field **removes**
      * its existing value, so omit a field to leave it untouched rather than sending null.
      *
-     * Pass headers to request the card's encrypted credentials in the response. Set
-     * `return-encrypted-cvv` to `true` together with an `Encryption-Key`; supplying the flag
-     * without the key returns a 422 with error code `encryption_key_required`.
-     *
-     * The headers travel on a copy of the config rather than on the body, which is how
-     * getRequestHeaders picks them up for every verb. Putting them on the body would also send
-     * them as JSON fields.
+     * The `headers` parameter (`return-encrypted-cvv`, `Encryption-Key`) is deprecated: the API
+     * no longer documents these headers, and the response does not carry encrypted
+     * credentials. When set, they are still sent unchanged, on a copy of the config
+     * rather than on the body. Use the method without headers; the parameter will be removed in
+     * the next major version.
      *
      * `body.status` (string enum, optional, only `active` allowed) reactivates an
      * `inactive` or `suspended` card. Mutually exclusive with
@@ -105,24 +103,28 @@ export default class Cards {
      *
      * The response has the same fields as the get-card response (including
      * `last_activated_on` and `scheduled_revocation_date`), plus a required
-     * `last_modified_date`. It no longer includes `encrypted_cvv`. For a virtual card, the
+     * `last_modified_date`. It does not include `encrypted_cvv`. For a virtual card, the
      * response may also include `is_single_use` (boolean), specifying whether the card is set
      * to expire after a single use; physical cards never send it.
      *
      * @memberof Cards
-     * @param {string} id Card id.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
      * @param {Object} body Card params to update: `status`, `reference`, `metadata`,
-     *   `expiry_month`, `expiry_year`, `scheduled_revocation_date`, `revocation_date` and
-     *   `scheduled_activation_date`.
-     * @param {Object} [headers] Optional HTTP headers.
-     * @param {boolean} [headers.return-encrypted-cvv] Set to `true` to retrieve the card's
-     *   encrypted credentials in the response. Requires `Encryption-Key`.
-     * @param {string} [headers.Encryption-Key] The RSA public key used to encrypt the returned
-     *   credentials. Required when `return-encrypted-cvv` is `true`. Provide the key with the
-     *   `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----` markers and every newline
-     *   removed, encoded as Base64.
-     * @return {Promise<Object>} A promise to the card update response, carrying
-     *   `last_modified_date`, `_links` and, when the headers requested it, `encrypted_cvv`.
+     *   `expiry_month`, `expiry_year`, `scheduled_revocation_date`, `revocation_date`
+     *   (deprecated, use `scheduled_revocation_date`) and `scheduled_activation_date`.
+     * @param {Object} [headers] Deprecated. The API no longer documents these headers; use the
+     *   method without headers. Will be removed in the next major version. When set, they are
+     *   still sent unchanged.
+     * @param {boolean} [headers.return-encrypted-cvv] Deprecated, see `headers`.
+     * @param {string} [headers.Encryption-Key] Deprecated, see `headers`.
+     * @return {Promise<Object>} A promise to the card update response (update-card-response):
+     *   `id`, `client_id`, `entity_id`, `cardholder_id`, `card_product_id`, `user_id`,
+     *   `last_four`, `expiry_month`, `expiry_year`, `status`, `display_name`, `type`,
+     *   `billing_currency`, `issuing_country`, `reference`, `metadata`,
+     *   `scheduled_revocation_date`, `revocation_date` (deprecated, use
+     *   `scheduled_revocation_date`), `scheduled_activation_date`, `last_activated_on`,
+     *   `root_card_id`, `parent_card_id`, `scheme`, `created_date`, `last_modified_date`, `_links`
+     *   and, for virtual cards only (`type` is `virtual`), `is_single_use`.
      */
     async updateCard(id, body, headers) {
         try {
@@ -283,9 +285,11 @@ export default class Cards {
      * Revokes an inactive, active, or suspended card to permanently decline all incoming authorizations.
      *
      * @memberof Cards
-     * @param {string} id Card id.
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
+     * @param {Object} [body] Optional revoke-card request. When omitted, the request is sent
+     *   without a body.
+     * @param {string} [body.reason] Optional reason: `expired`, `reported_lost` or `reported_stolen`.
+     * @return {Promise<Object>} A promise to the revoke-card response, carrying `_links`.
      */
     async revokeCard(id, body) {
         try {
@@ -306,9 +310,11 @@ export default class Cards {
      * Suspends an active or inactive card to temporarily decline all incoming authorizations.
      *
      * @memberof Cards
-     * @param {string} id Card id.
-     * @param {Object} body Card params.
-     * @return {Promise<Object>} A promise to the card response.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
+     * @param {Object} [body] Optional suspend-card request. When omitted, the request is sent
+     *   without a body.
+     * @param {string} [body.reason] Optional reason: `suspected_lost` or `suspected_stolen`.
+     * @return {Promise<Object>} A promise to the suspend-card response, carrying `_links`.
      */
     async suspendCard(id, body) {
         try {
