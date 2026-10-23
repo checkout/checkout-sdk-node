@@ -210,7 +210,7 @@ export const createAccessToken = async (config, httpClient, body) => {
             access = await fetch(
                 accessUrl,
                 {
-                    method: 'post',
+                    method: 'POST',
                     timeout: config.timeout,
                     agent: config.agent,
                     body: new URLSearchParams(requestBody),
@@ -236,7 +236,10 @@ export const createAccessToken = async (config, httpClient, body) => {
 };
 
  
-const httpRequest = async (httpClient, method, path, config, auth, request, idempotencyKey) => {
+const httpRequest = async (httpClient, verb, path, config, auth, request, idempotencyKey) => {
+    // fetch only normalises the case of DELETE, GET, HEAD, OPTIONS, POST and PUT, so a
+    // lowercase "patch" goes out as-is and the API answers 400. Send every verb uppercase.
+    const method = String(verb).toUpperCase();
     let authHeader = null;
 
     if (auth) {
