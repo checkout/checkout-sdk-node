@@ -16,7 +16,7 @@ export default class Cards {
      */
     updateCard(id: string, body: object): Promise<object>;
     /**
-     * @deprecated The API no longer supports these headers (`return-encrypted-cvv`,
+     * @deprecated The API no longer documents these headers (`return-encrypted-cvv`,
      * `Encryption-Key`); use the method without headers. Will be removed in the next major
      * version. When set, the headers are still sent unchanged.
      */

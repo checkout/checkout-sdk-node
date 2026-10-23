@@ -150,7 +150,7 @@ describe.skip('Integration::Issuing::Cards - AuthenticationError: Requires CHECK
         expect(response._links.self.href).to.contain(card.id);
     });
 
-    // The API ignores the deprecated update-card headers; the SDK still sends them when set.
+    // The API no longer documents the update-card headers; the SDK still sends them when set.
     it('should update a card when the deprecated headers are set', async () => {
         const response = await cko_issuing.issuing.updateCard(
             card.id,

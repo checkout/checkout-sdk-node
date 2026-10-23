@@ -87,8 +87,8 @@ export default class Cards {
      * its existing value, so omit a field to leave it untouched rather than sending null.
      *
      * The `headers` parameter (`return-encrypted-cvv`, `Encryption-Key`) is deprecated: the API
-     * no longer supports these headers and ignores them, and the response never carries
-     * encrypted credentials. When set, they are still sent unchanged, on a copy of the config
+     * no longer documents these headers, and the response does not carry encrypted
+     * credentials. When set, they are still sent unchanged, on a copy of the config
      * rather than on the body. Use the method without headers; the parameter will be removed in
      * the next major version.
      *
@@ -108,11 +108,11 @@ export default class Cards {
      * to expire after a single use; physical cards never send it.
      *
      * @memberof Cards
-     * @param {string} id Card id.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
      * @param {Object} body Card params to update: `status`, `reference`, `metadata`,
      *   `expiry_month`, `expiry_year`, `scheduled_revocation_date`, `revocation_date`
      *   (deprecated, use `scheduled_revocation_date`) and `scheduled_activation_date`.
-     * @param {Object} [headers] Deprecated. The API no longer supports these headers; use the
+     * @param {Object} [headers] Deprecated. The API no longer documents these headers; use the
      *   method without headers. Will be removed in the next major version. When set, they are
      *   still sent unchanged.
      * @param {boolean} [headers.return-encrypted-cvv] Deprecated, see `headers`.
@@ -285,7 +285,7 @@ export default class Cards {
      * Revokes an inactive, active, or suspended card to permanently decline all incoming authorizations.
      *
      * @memberof Cards
-     * @param {string} id Card id.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
      * @param {Object} [body] Optional revoke-card request. When omitted, the request is sent
      *   without a body.
      * @param {string} [body.reason] Optional reason: `expired`, `reported_lost` or `reported_stolen`.
@@ -310,7 +310,7 @@ export default class Cards {
      * Suspends an active or inactive card to temporarily decline all incoming authorizations.
      *
      * @memberof Cards
-     * @param {string} id Card id.
+     * @param {string} id Card id. Pattern `^crd_[a-z0-9]{26}$`, exactly 30 characters.
      * @param {Object} [body] Optional suspend-card request. When omitted, the request is sent
      *   without a body.
      * @param {string} [body.reason] Optional reason: `suspected_lost` or `suspected_stolen`.

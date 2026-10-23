@@ -1,7 +1,7 @@
 import nock from "nock";
 import { expect } from "chai";
 import Checkout from "../../../src/Checkout.js";
-import { AuthenticationError, NotFoundError, ValidationError } from "../../../src/services/errors.js";
+import { AuthenticationError, NotFoundError } from "../../../src/services/errors.js";
 
 describe('Unit::Issuing::Cards', () => {
     it('should create card', async () => {
@@ -221,7 +221,7 @@ describe('Unit::Issuing::Cards', () => {
             .patch('/issuing/cards/crd_fa6psq242dcd6fdn5gifcq1491')
             .reply(200, {
                 id: "crd_fa6psq242dcd6fdn5gifcq1491",
-                status: "inactive",
+                status: "active",
                 reference: "X-123456-N11-UPDATED",
                 scheduled_revocation_date: "2026-12-31",
                 last_modified_date: "2021-09-09T19:41:39Z",
@@ -251,13 +251,13 @@ describe('Unit::Issuing::Cards', () => {
         });
 
         const cardResponse = await cko.issuing.updateCard('crd_fa6psq242dcd6fdn5gifcq1491', {
-            status: "inactive",
+            status: "active",
             reference: "X-123456-N11-UPDATED",
             scheduled_revocation_date: "2026-12-31"
         });
 
         expect(cardResponse.id).to.equal("crd_fa6psq242dcd6fdn5gifcq1491");
-        expect(cardResponse.status).to.equal("inactive");
+        expect(cardResponse.status).to.equal("active");
         expect(cardResponse.reference).to.equal("X-123456-N11-UPDATED");
         expect(cardResponse.scheduled_revocation_date).to.equal("2026-12-31");
         expect(cardResponse.last_modified_date).to.equal("2021-09-09T19:41:39Z");
@@ -336,7 +336,7 @@ describe('Unit::Issuing::Cards', () => {
         });
 
         try {
-            await cko.issuing.updateCard('not_found', { status: "inactive" });
+            await cko.issuing.updateCard('not_found', { status: "active" });
         } catch (err) {
             expect(err).to.be.instanceOf(NotFoundError);
         }
@@ -863,7 +863,7 @@ describe('Unit::Issuing::Cards', () => {
 
     // The deprecated return-encrypted-cvv and Encryption-Key headers on PATCH /issuing/cards/{cardId}.
     //
-    // The API no longer supports these headers and ignores them. The SDK still sends them
+    // The API no longer documents these headers. The SDK still sends them
     // unchanged when the caller sets them, on a copy of the config rather than on the body, so
     // these tests assert the outgoing request. The response is the plain update-card-response,
     // whether or not the headers are sent.
@@ -1012,8 +1012,8 @@ describe('Unit::Issuing::Cards', () => {
             expect(seen['return-encrypted-cvv']).to.equal('true');
         });
 
-        // The API ignores the deprecated headers, so a call that sets them gets the normal
-        // update-card-response back.
+        // The API no longer documents these headers; when they are still sent, the call gets
+        // the normal update-card-response back.
         it('should return the update card response when the deprecated headers are set', async () => {
             nock(BASE)
                 .patch(`/issuing/cards/${CARD_ID}`)
