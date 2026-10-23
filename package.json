@@ -42,7 +42,7 @@
     "postbuild": "node --input-type=module --eval \"import('./dist/index.js').catch(()=>{process.stderr.write('ESM smoke test failed\\n');process.exit(1)})\""
   },
   "dependencies": {
-    "axios": "^1.18.0",
+    "axios": "^1.20.0",
     "form-data": "^4.0.6"
   },
   "devDependencies": {
@@ -63,10 +63,10 @@
   },
   "overrides": {
     "serialize-javascript": "^7.0.5",
-    "follow-redirects": "^1.16.0",
+    "follow-redirects": "^1.16.1",
     "picomatch": "^2.3.2",
     "flatted": "^3.4.2",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^4.3.2",
     "@babel/plugin-transform-modules-systemjs": "^7.29.4"
   },
   "babel": {
