@@ -60,6 +60,24 @@ export default class PaymentSetups {
      *    not an array despite the plural name), insurance (object, added 2026-09-08: type [string], company [string],
      *    price [{ amount: number, currency: string (3-letter ISO) }]).
      *
+     * Tamara (per the `Tamara` spec):
+     *  - payment_methods.tamara: optional Tamara, the Tamara payment method's details and configuration.
+     *    The key is `tamara`. Fields you send:
+     *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
+     *      this defaults to disabled. [Optional]. Enum: "disabled" "enabled". Default "disabled".
+     *    - risk_assessment: Risk signals about the customer, forwarded to Tamara with the payment.
+     *      [Optional]. Object:
+     *      - premium_customer: Specifies whether the customer is a premium customer. [Optional]. boolean.
+     *      - risk_score: The customer's risk score. [Optional]. integer.
+     *      - order_count_last24h: The number of orders the customer has made in the last 24 hours.
+     *        [Optional]. integer.
+     *      - linked_device_count: The number of devices linked to the customer. [Optional]. integer.
+     *    Fields the response returns (readOnly, do not send them):
+     *    - status: The payment method status. [Optional]. readOnly.
+     *      Enum: "unavailable" "action_required" "ready" "initialization_required" "invalid".
+     *    - flags: The list of error codes or indicators that highlight missing or invalid information.
+     *      [Optional]. readOnly. Array of string.
+     *
      * Cash App Pay and customer (per the `PaymentSetup` specs):
      *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
      *    The key is `cashapp`, one lowercase word (not `cash_app`, not `cashApp`). Fields you send:
@@ -160,6 +178,21 @@ export default class PaymentSetups {
      *    including the fields added 2026-09-08: PaymentSetupAccommodation.total_number_of_guests,
      *    refundable, delivery_recipient, host; PaymentSetupAirline.ancillaries, delivery_recipient,
      *    insurance, refundable, total_number_of_passengers, travel_type, trip_type.
+     *
+     * Tamara (per the `Tamara` spec):
+     *  - payment_methods.tamara: optional Tamara, the Tamara payment method's details and configuration.
+     *    The key is `tamara`. Fields you send:
+     *    - initialization: The initialization state of the payment method. When you create a Payment Setup,
+     *      this defaults to disabled. [Optional]. Enum: "disabled" "enabled". Default "disabled".
+     *    - risk_assessment: Risk signals about the customer, forwarded to Tamara with the payment.
+     *      [Optional]. Object:
+     *      - premium_customer: Specifies whether the customer is a premium customer. [Optional]. boolean.
+     *      - risk_score: The customer's risk score. [Optional]. integer.
+     *      - order_count_last24h: The number of orders the customer has made in the last 24 hours.
+     *        [Optional]. integer.
+     *      - linked_device_count: The number of devices linked to the customer. [Optional]. integer.
+     *    The response also returns the readOnly status and flags. See `createAPaymentSetup` for their
+     *    full description.
      *
      * Cash App Pay and customer (per the `PaymentSetup` specs):
      *  - payment_methods.cashapp: optional CashApp, the Cash App payment method's details and configuration.
