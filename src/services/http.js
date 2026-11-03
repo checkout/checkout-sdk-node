@@ -255,7 +255,7 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
                 token: access.json.access_token,
                 type: access.json.token_type,
                 scope: access.json.scope,
-                expires: new Date(new Date().getTime() + access.json.expires_in * 1000),
+                expires: new Date(Date.now() + access.json.expires_in * 1000),
             };
         }
     }
