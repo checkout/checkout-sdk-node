@@ -64,12 +64,14 @@ export default class Sessions {
      */
     async get(id, channel) {
         try {
-            this.config.headers = { ...this.config.headers, channel };
+            const config = channel !== undefined
+                ? { ...this.config, headers: { ...(this.config.headers || {}), channel } }
+                : this.config;
 
             const response = await get(
                 this.config.httpClient,
                 `${this.config.host}/${SESSIONS_PATH}/${id}`,
-                this.config,
+                config,
                 this.config.sk
             );
             return await response.json;

@@ -182,23 +182,18 @@ export const createAccessToken = async (config, httpClient, body) => {
                 timeout: config.timeout,
                 httpsAgent: config.agent,
             })
-                .catch((error) => {
+                .catch(async (error) => {
+                    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                        const { ApiTimeout } = await import('./errors.js');
+                        throw new ApiTimeout();
+                    }
                     if (error.response) {
                         throw {
                             status: error.response.status,
-                            json: error.toJSON(),
-                        };
-                    } else if (error.request) {
-                        throw {
-                            request: error.request,
-                            json: error.toJSON(),
-                        };
-                    } else {
-                        throw {
-                            message: error.message,
-                            json: error.toJSON(),
+                            json: error.response.data,
                         };
                     }
+                    throw new Error(`request to ${accessUrl} failed, reason: ${error.message}`);
                 })
                 .then((response) => ({
                     status: response.status,
@@ -260,7 +255,7 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
                 token: access.json.access_token,
                 type: access.json.token_type,
                 scope: access.json.scope,
-                expires: new Date(new Date().getTime() + access.json.expires_in),
+                expires: new Date(new Date().getTime() + access.json.expires_in * 1000),
             };
         }
     }

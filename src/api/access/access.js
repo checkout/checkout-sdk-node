@@ -40,7 +40,7 @@ export default class Access {
             token: body.access_token,
             type: body.token_type,
             scope: body.scope,
-            expires: new Date(new Date().getTime() + body.expires_in),
+            expires: new Date(new Date().getTime() + body.expires_in * 1000),
         };
     }
 }

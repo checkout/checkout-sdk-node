@@ -31,7 +31,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/${SIMULATE_PATH}/${REQUIREMENTS_DUE_PATH}`,
                 this.config,
-                this.config.access
+                this.config.sk
             );
             return await response.json;
         } catch (err) {
@@ -51,7 +51,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/${SIMULATE_PATH}/${SCENARIOS_PATH}`,
                 this.config,
-                this.config.access
+                this.config.sk
             );
             return await response.json;
         } catch (err) {
@@ -73,7 +73,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_DUE_PATH}`,
                 this.config,
-                this.config.access,
+                this.config.sk,
                 body
             );
             return await response.json;
@@ -96,7 +96,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${SCENARIOS_PATH}/${scenarioId}`,
                 this.config,
-                this.config.access
+                this.config.sk
             );
             return await response.json;
         } catch (err) {
@@ -118,7 +118,7 @@ export default class OnboardingSimulator {
                 this.config.httpClient,
                 `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${STATUS_PATH}`,
                 this.config,
-                this.config.access,
+                this.config.sk,
                 body
             );
             return await response.json;
