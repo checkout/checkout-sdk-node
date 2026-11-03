@@ -271,7 +271,7 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
 
         // For NAS
         // If an access tokens exists, and it's not expired re-use it
-        if (config.access && config.access.token && !isTokenExpired(config.access.expires, Date.now())) {
+        if (config.access?.token && !isTokenExpired(config.access.expires, Date.now())) {
             authHeader = `${config.access.type} ${config.access.token}`;
         } else {
             const access = await createAccessToken(config, httpClient);
