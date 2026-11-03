@@ -155,6 +155,85 @@ describe('HTTP token handling', () => {
             expect(expires).to.be.at.least(before + 3600 * 1000);
             expect(expires).to.be.at.most(after + 3600 * 1000);
         });
+
+        it('access.updateAccessToken updates the shared access object in place', () => {
+            const cko = buildOAuthClient();
+            const shared = cko.config.access;
+            cko.access.updateAccessToken({
+                access_token: 'token_abc',
+                token_type: 'Bearer',
+                scope: 'gateway',
+                expires_in: 3600,
+            });
+
+            expect(cko.config.access).to.equal(shared);
+            expect(shared.token).to.equal('token_abc');
+        });
+
+        it('sessions.get with channel reuses the token across calls', async () => {
+            let tokenRequests = 0;
+            nock(ACCESS)
+                .post('/connect/token')
+                .times(3)
+                .reply(() => {
+                    tokenRequests += 1;
+                    return [200, { access_token: 'token_abc', expires_in: 3600, token_type: 'Bearer' }];
+                });
+            nock(API).get('/sessions/sid_1').times(3).reply(200, { id: 'sid_1' });
+
+            const cko = buildOAuthClient();
+            await cko.sessions.get('sid_1', 'browser');
+            await cko.sessions.get('sid_1', 'browser');
+            await cko.sessions.get('sid_1', 'browser');
+
+            expect(tokenRequests).to.equal(1);
+            expect(cko.config.access.token).to.equal('token_abc');
+        });
+
+        it('requests a new token when the token response has no expires_in', async () => {
+            let tokenRequests = 0;
+            nock(ACCESS)
+                .post('/connect/token')
+                .twice()
+                .reply(() => {
+                    tokenRequests += 1;
+                    return [200, { access_token: 'token_abc', token_type: 'Bearer' }];
+                });
+            nock(API).get('/googlepay/enrollments/ent_1/state').twice().reply(200, { state: 'active' });
+
+            const cko = buildOAuthClient();
+            await cko.googlePay.getEnrollmentState('ent_1');
+            await cko.googlePay.getEnrollmentState('ent_1');
+
+            expect(tokenRequests).to.equal(2);
+        });
+
+        it('refreshes the token shortly before it expires', async () => {
+            let tokenRequests = 0;
+            nock(ACCESS)
+                .post('/connect/token')
+                .twice()
+                .reply(() => {
+                    tokenRequests += 1;
+                    return [200, { access_token: `token_${tokenRequests}`, expires_in: 3600, token_type: 'Bearer' }];
+                });
+            const authHeaders = [];
+            nock(API)
+                .get('/googlepay/enrollments/ent_1/state')
+                .twice()
+                .reply(function () {
+                    authHeaders.push(this.req.headers.authorization);
+                    return [200, { state: 'active' }];
+                });
+
+            const cko = buildOAuthClient();
+            await cko.googlePay.getEnrollmentState('ent_1');
+            cko.config.access.expires = new Date(Date.now() + 30 * 1000);
+            await cko.googlePay.getEnrollmentState('ent_1');
+
+            expect(tokenRequests).to.equal(2);
+            expect(authHeaders).to.deep.equal(['Bearer token_1', 'Bearer token_2']);
+        });
     });
 
     describe('Authorization header after the first token request', () => {
@@ -268,6 +347,21 @@ describe('HTTP token handling', () => {
 
             expect(headers).to.not.have.property('channel');
             expect(cko.config.headers).to.not.have.property('channel');
+        });
+
+        it('sessions.get with a null channel sends no channel header', async () => {
+            let headers;
+            nock(API)
+                .get('/sessions/sid_1')
+                .reply(function () {
+                    headers = this.req.headers;
+                    return [200, { id: 'sid_1' }];
+                });
+
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.sessions.get('sid_1', null);
+
+            expect(headers).to.not.have.property('channel');
         });
     });
 });

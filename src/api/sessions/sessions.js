@@ -64,7 +64,7 @@ export default class Sessions {
      */
     async get(id, channel) {
         try {
-            const config = channel !== undefined
+            const config = channel !== undefined && channel !== null
                 ? { ...this.config, headers: { ...this.config.headers, channel } }
                 : this.config;
 
