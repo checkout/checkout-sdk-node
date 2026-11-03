@@ -231,6 +231,39 @@ describe('Integration::Payment-Setups', () => {
       expect(cashapp.customer_profile_sharing).to.equal(true);
       expect(cashapp.status).to.be.oneOf(["unavailable", "action_required", "ready", "initialization_required", "invalid"]);
     });
+
+    it('should create a Tamara payment setup with risk_assessment and read the tamara payment method', async function () {
+      const riskAssessment = {
+        premium_customer: false,
+        risk_score: 42,
+        order_count_last24h: 0,
+        linked_device_count: 2
+      };
+      const response = await cko.paymentSetups.createAPaymentSetup({
+        processing_channel_id: processingChannelId,
+        amount: 1000,
+        currency: "SAR",
+        reference: `TEST-REF-TAMARA-${Date.now()}`,
+        payment_methods: {
+          tamara: {
+            initialization: "enabled",
+            risk_assessment: riskAssessment
+          }
+        }
+      });
+
+      if (!(response.available_payment_methods || []).includes("tamara")) {
+        this.test.title += ' (skipped: Tamara is not enabled on the sandbox processing channel)';
+        this.skip();
+      }
+
+      const fetched = await cko.paymentSetups.getAPaymentSetup(response.id);
+      const tamara = fetched.payment_methods.tamara;
+      expect(tamara).to.be.an('object');
+      expect(tamara.initialization).to.equal("enabled");
+      expect(tamara.risk_assessment).to.deep.equal(riskAssessment);
+      expect(tamara.status).to.be.oneOf(["unavailable", "action_required", "ready", "initialization_required", "invalid"]);
+    });
   });
 
   describe('Error handling', () => {
