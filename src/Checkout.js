@@ -34,7 +34,7 @@ export default class Checkout {
             timeout: options?.timeout ?? CONFIG.DEFAULT_TIMEOUT,
             agent: options?.agent,
             headers: options?.headers ?? {},
-            access: undefined,
+            access: {},
             httpClient: options?.httpClient,
             subdomain: options?.subdomain,
         };

@@ -149,7 +149,34 @@ const bodyParser = (rsp) => rsp.text().then((text) => {
     }
 });
 
-const isTokenExpired = (tokenExpiry, currentTimestamp) => tokenExpiry < currentTimestamp;
+// Refresh the access token this long before it expires
+const TOKEN_REFRESH_MARGIN_MS = 60 * 1000;
+
+const isTokenExpired = (tokenExpiry, currentTimestamp) =>
+    !(tokenExpiry instanceof Date) ||
+    Number.isNaN(tokenExpiry.getTime()) ||
+    tokenExpiry.getTime() - TOKEN_REFRESH_MARGIN_MS < currentTimestamp;
+
+/**
+ * Store an access token response in the config. The access object is updated in place, so
+ * every copy of the config made for a single request shares the same token.
+ *
+ * @param {Object} config SDK configuration.
+ * @param {Object} body Access token response: access_token, token_type, scope and
+ *   expires_in (lifetime in seconds).
+ * @return {void}
+ */
+export const storeAccessToken = (config, body) => {
+    if (!config.access) {
+        config.access = {};
+    }
+    Object.assign(config.access, {
+        token: body.access_token,
+        type: body.token_type,
+        scope: body.scope,
+        expires: new Date(Date.now() + body.expires_in * 1000),
+    });
+};
 
 export const createAccessToken = async (config, httpClient, body) => {
     const requestBody = body || {
@@ -182,23 +209,18 @@ export const createAccessToken = async (config, httpClient, body) => {
                 timeout: config.timeout,
                 httpsAgent: config.agent,
             })
-                .catch((error) => {
+                .catch(async (error) => {
+                    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                        const { ApiTimeout } = await import('./errors.js');
+                        throw new ApiTimeout();
+                    }
                     if (error.response) {
                         throw {
                             status: error.response.status,
-                            json: error.toJSON(),
-                        };
-                    } else if (error.request) {
-                        throw {
-                            request: error.request,
-                            json: error.toJSON(),
-                        };
-                    } else {
-                        throw {
-                            message: error.message,
-                            json: error.toJSON(),
+                            json: error.response.data,
                         };
                     }
+                    throw new Error(`request to ${accessUrl} failed, reason: ${error.message}`);
                 })
                 .then((response) => ({
                     status: response.status,
@@ -249,19 +271,13 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
 
         // For NAS
         // If an access tokens exists, and it's not expired re-use it
-        if (config.access && !isTokenExpired(config.access.expires, new Date())) {
+        if (config.access?.token && !isTokenExpired(config.access.expires, Date.now())) {
             authHeader = `${config.access.type} ${config.access.token}`;
         } else {
             const access = await createAccessToken(config, httpClient);
             authHeader = `${access.json.token_type} ${access.json.access_token}`;
 
-             
-            config.access = {
-                token: access.json.access_token,
-                type: access.json.token_type,
-                scope: access.json.scope,
-                expires: new Date(new Date().getTime() + access.json.expires_in),
-            };
+            storeAccessToken(config, access.json);
         }
     }
 

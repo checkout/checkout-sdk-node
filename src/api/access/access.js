@@ -1,5 +1,5 @@
 import { determineError } from '../../services/errors.js';
-import { createAccessToken } from '../../services/http.js';
+import { createAccessToken, storeAccessToken } from '../../services/http.js';
 
 /**
  * Class dealing with the access api
@@ -32,15 +32,11 @@ export default class Access {
      * Update the access details in the config.
      *
      * @memberof Access
-     * @param {Object} body Access response body.
+     * @param {Object} body Access response body: access_token, token_type, scope and
+     *   expires_in (lifetime in seconds).
      * @return {void}
      */
     updateAccessToken(body) {
-        this.config.access = {
-            token: body.access_token,
-            type: body.token_type,
-            scope: body.scope,
-            expires: new Date(new Date().getTime() + body.expires_in),
-        };
+        storeAccessToken(this.config, body);
     }
 }

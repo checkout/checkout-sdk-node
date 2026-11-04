@@ -50,12 +50,11 @@ export default class Tokens {
      */
     async getTokenMetadata(tokenId) {
         try {
-            const access = this.config.access ? this.config.access : this.config.sk;
             const response = await get(
                 this.config.httpClient,
                 `${this.config.host}/${TOKENS_PATH}/${tokenId}/${METADATA_PATH}`,
                 this.config,
-                access
+                this.config.sk
             );
             return await response.json;
         } catch (err) {
