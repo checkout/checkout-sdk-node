@@ -317,6 +317,17 @@ export default class PaymentSetups {
      *    - customer_since: The date and time the customer's Cash App account was created. [Optional].
      *      Format: date-time. Returned as a string; the provider's format varies.
      *
+     * Tamara (per the `Tamara` spec), under payment_methods.tamara (key `tamara`):
+     *  - status: The payment method status. [Optional]. readOnly.
+     *    Enum: "unavailable" "action_required" "ready" "initialization_required" "invalid".
+     *  - flags: The list of error codes or indicators that highlight missing or invalid information.
+     *    [Optional]. readOnly. Array of string.
+     *  - initialization: The initialization state of the payment method. [Optional].
+     *    Enum: "disabled" "enabled". Default "disabled".
+     *  - risk_assessment: Risk signals about the customer, forwarded to Tamara with the payment.
+     *    [Optional]. Part of the `Tamara` schema, but the sandbox does not return it on get. Its four
+     *    fields are described on `createAPaymentSetup`.
+     *
      * The response's customer carries id, country (min 2 characters, max 2 characters), email, name,
      * tax_number, phone, device (locale, fingerprint, ipv4, ipv6, client, os) and merchant_account,
      * as described on `createAPaymentSetup`.
@@ -364,6 +375,9 @@ export default class PaymentSetups {
      *    response when you get the Payment Setup after the customer authorizes the payment, and every
      *    subsequent response omits it. See `getAPaymentSetup` for its 13 fields and the 8 address fields.
      *  - status, flags, initialization and customer_profile_sharing, as described on `getAPaymentSetup`.
+     *
+     * Tamara (per the `Tamara` spec): the response's payment_methods.tamara carries status, flags,
+     * initialization and risk_assessment, as described on `getAPaymentSetup`.
      *
      * The response's customer carries id, country (min 2 characters, max 2 characters), email, name,
      * tax_number, phone, device (locale, fingerprint, ipv4, ipv6, client, os) and merchant_account,
