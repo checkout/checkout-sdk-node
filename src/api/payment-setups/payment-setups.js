@@ -385,7 +385,7 @@ export default class PaymentSetups {
      *
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup.
-     * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp").
+     * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp", "tamara").
      * @returns {Promise<Object>} A promise to the Confirm a Payment Setup response
      */
     async confirmAPaymentSetup(id, payment_method_name) {
