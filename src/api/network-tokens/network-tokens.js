@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, patch, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CRYPTOGRAMS_PATH = 'cryptograms';
@@ -48,10 +49,11 @@ export default class NetworkTokens {
      * @memberof NetworkTokens
      * @param {string} network_token_id - The network token ID
      * @returns {Promise<Object>} A promise to the Get Network Token response
+     * @throws {ValueError} If network_token_id is undefined, empty, "." or "..".
      */
     async getNetworkToken(network_token_id) {
         try {
-            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${encodePathSegment(network_token_id, 'network_token_id')}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -72,10 +74,11 @@ export default class NetworkTokens {
      * @param {string} network_token_id - The network token ID
      * @param {Object} body - Request body containing transaction_type
      * @returns {Promise<Object>} A promise to the Request a cryptogram response
+     * @throws {ValueError} If network_token_id is undefined, empty, "." or "..".
      */
     async provisionCryptogram(network_token_id, body) {
         try {
-            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}/${CRYPTOGRAMS_PATH}`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${encodePathSegment(network_token_id, 'network_token_id')}/${CRYPTOGRAMS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -97,10 +100,11 @@ export default class NetworkTokens {
      * @memberof NetworkTokens
      * @param {string} network_token_id - Unique token ID assigned by Checkout.com for each token
      * @returns {Promise<Object>} A promise to the Delete Network Token response
+     * @throws {ValueError} If network_token_id is undefined, empty, "." or "..".
      */
     async deleteNetworkToken(network_token_id) {
         try {
-            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${network_token_id}/${DELETE_PATH}`;
+            const url = `${this.config.host}/${NETWORK_TOKENS_PATH}/${encodePathSegment(network_token_id, 'network_token_id')}/${DELETE_PATH}`;
             const response = await patch(
                 this.config.httpClient,
                 url,

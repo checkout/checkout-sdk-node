@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const EVENTS_PATH = 'events';
@@ -32,10 +33,10 @@ export default class Events {
      */
     async retrieveEventTypes(version) {
         try {
-            let url = `${this.config.host}/${EVENT_TYPES_PATH}`;
-            if (version) {
-                url += `?version=${version}`;
-            }
+            const url = buildQueryParams(
+                `${this.config.host}/${EVENT_TYPES_PATH}`,
+                version ? { version } : undefined
+            );
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -54,14 +55,7 @@ export default class Events {
      */
     async retrieveEvents(body) {
         try {
-            let url = `${this.config.host}/${EVENTS_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${EVENTS_PATH}`, body);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -78,12 +72,13 @@ export default class Events {
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the request event response.
+     * @throws {ValueError} If eventId is undefined, empty, "." or "..".
      */
     async retrieveEvent(eventId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${EVENTS_PATH}/${eventId}`,
+                `${this.config.host}/${EVENTS_PATH}/${encodePathSegment(eventId, 'eventId')}`,
                 this.config,
                 this.config.sk
             );
@@ -100,12 +95,13 @@ export default class Events {
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the request event notifications response.
+     * @throws {ValueError} If body.eventId or body.notificationId is undefined, empty, "." or "..".
      */
     async retrieveEventNotification(body) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${EVENTS_PATH}/${body.eventId}/${NOTIFICATIONS_PATH}/${body.notificationId}`,
+                `${this.config.host}/${EVENTS_PATH}/${encodePathSegment(body.eventId, 'eventId')}/${NOTIFICATIONS_PATH}/${encodePathSegment(body.notificationId, 'notificationId')}`,
                 this.config,
                 this.config.sk
             );
@@ -122,12 +118,13 @@ export default class Events {
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the retry event response.
+     * @throws {ValueError} If body.eventId or body.webhookId is undefined, empty, "." or "..".
      */
     async retry(body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${EVENTS_PATH}/${body.eventId}/${WEBHOOKS_PATH}/${body.webhookId}/${RETRY_PATH}`,
+                `${this.config.host}/${EVENTS_PATH}/${encodePathSegment(body.eventId, 'eventId')}/${WEBHOOKS_PATH}/${encodePathSegment(body.webhookId, 'webhookId')}/${RETRY_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -144,12 +141,13 @@ export default class Events {
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the retry events response.
+     * @throws {ValueError} If eventId is undefined, empty, "." or "..".
      */
     async retryAll(eventId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${EVENTS_PATH}/${eventId}/${WEBHOOKS_PATH}/${RETRY_PATH}`,
+                `${this.config.host}/${EVENTS_PATH}/${encodePathSegment(eventId, 'eventId')}/${WEBHOOKS_PATH}/${RETRY_PATH}`,
                 this.config,
                 this.config.sk
             );

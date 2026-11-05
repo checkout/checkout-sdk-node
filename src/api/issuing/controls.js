@@ -1,6 +1,6 @@
 import { _delete, get, post, put } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CONTROLS_PATH = 'controls';
@@ -138,12 +138,13 @@ export default class Controls {
      * @memberof Controls
      * @param {string} id Card control id.
      * @return {Promise<CardControlResponse>} A promise to the control details.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getCardControlDetails(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -160,12 +161,13 @@ export default class Controls {
      * @param {string} id Card control id.
      * @param {Object} body Card control params.
      * @return {Promise<CardControlResponse>} A promise to the updated control.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async updateCardControl(id, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -182,12 +184,13 @@ export default class Controls {
      * @memberof Controls
      * @param {string} id Card control id.
      * @return {Promise<RemoveCardControlResponse>} A promise to the removed control id.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async deleteCardControl(id) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );

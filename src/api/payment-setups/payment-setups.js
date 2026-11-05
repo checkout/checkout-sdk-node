@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CONFIRM_PATH = 'confirm';
@@ -197,11 +198,12 @@ export default class PaymentSetups {
      * @param {string} id - The unique identifier of the Payment Setup to update.
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Update a Payment Setup response
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async updateAPaymentSetup(id, body) {
         try {
             validatePayment(body);
-            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${encodePathSegment(id, 'id')}`;
             const response = await put(
                 this.config.httpClient,
                 url,
@@ -291,10 +293,11 @@ export default class PaymentSetups {
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
      * @returns {Promise<Object>} A promise to the Get a Payment Setup response
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getAPaymentSetup(id) {
         try {
-            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${encodePathSegment(id, 'id')}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -340,10 +343,11 @@ export default class PaymentSetups {
      * @param {string} id - The unique identifier of the Payment Setup.
      * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp").
      * @returns {Promise<Object>} A promise to the Confirm a Payment Setup response
+     * @throws {ValueError} If id or payment_method_name is undefined, empty, "." or "..".
      */
     async confirmAPaymentSetup(id, payment_method_name) {
         try {
-            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${id}/${CONFIRM_PATH}/${payment_method_name}`;
+            const url = `${this.config.host}/${PAYMENTS_PATH}/${SETUPS_PATH}/${encodePathSegment(id, 'id')}/${CONFIRM_PATH}/${encodePathSegment(payment_method_name, 'payment_method_name')}`;
             const response = await post(
                 this.config.httpClient,
                 url,

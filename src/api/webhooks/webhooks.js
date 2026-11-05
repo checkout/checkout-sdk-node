@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post, put } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const WEBHOOKS_PATH = 'webhooks';
@@ -64,12 +65,13 @@ export default class Webhooks {
      * @memberof Webhooks
      * @param {string} id The webhook identifier.
      * @return {Promise<Object>} A promise to the retrieve webhook response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async retrieveWebhook(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -86,12 +88,13 @@ export default class Webhooks {
      * @param {string} id The webhook identifier.
      * @param {Object} body Webhook update body.
      * @return {Promise<Object>} A promise to the update webhook response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async updateWebhook(id, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -109,12 +112,13 @@ export default class Webhooks {
      * @param {string} id The webhook identifier.
      * @param {Object} body Webhook partial-update body.
      * @return {Promise<Object>} A promise to the update webhook response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async partiallyUpdateWebhook(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -131,12 +135,13 @@ export default class Webhooks {
      * @memberof Webhooks
      * @param {string} id The webhook identifier.
      * @return {Promise<Object>} A promise to the remove webhook response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async removeWebhook(id) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${WEBHOOKS_PATH}/${id}`,
+                `${this.config.host}/${WEBHOOKS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );

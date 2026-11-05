@@ -24,7 +24,8 @@ describe('Balances.retrieve — balancesAt query support', () => {
 
         // Swagger declares the query param name as `balancesAt` (camelCase).
         expect(capturedUrl).to.include('balancesAt=2026-01-01T00%3A00%3A00Z');
-        expect(capturedUrl).to.include('query=currency:EUR');
+        // The colon is percent-encoded like any other query value; Balances reads both forms the same.
+        expect(capturedUrl).to.include('query=currency%3AEUR');
     });
 
     it('omits balancesAt when not provided', async () => {

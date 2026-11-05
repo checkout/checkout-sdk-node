@@ -1,5 +1,6 @@
 import { get, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const AMEND_PATH = 'amend';
@@ -55,12 +56,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
      * @return {Promise<Object>} A promise to the dispute details.
+     * @throws {ValueError} If disputeId is undefined, empty, "." or "..".
      */
     async getDispute(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}`,
                 this.config,
                 this.config.sk
             );
@@ -78,12 +80,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
      * @return {Promise<Object>} A promise to the cancellation response.
+     * @throws {ValueError} If disputeId is undefined, empty, "." or "..".
      */
     async cancelDispute(disputeId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${CANCEL_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${CANCEL_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -102,12 +105,13 @@ export default class Disputes {
      * @param {Object} [body] Escalation request params. Provide `fraud_details`
      *   when the dispute reason code is fraud-related.
      * @return {Promise<Object>} A promise to the escalation response.
+     * @throws {ValueError} If disputeId is undefined, empty, "." or "..".
      */
     async escalateDispute(disputeId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${ESCALATE_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${ESCALATE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -130,12 +134,13 @@ export default class Disputes {
      *   `evidence`, `fraud_details`, `reason_change_justification`,
      *   `action_response`).
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, empty, "." or "..".
      */
     async amendDispute(disputeId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${AMEND_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${AMEND_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -157,12 +162,13 @@ export default class Disputes {
      * @param {string} disputeId The dispute ID.
      * @param {Object} [body] Submission request params.
      * @return {Promise<Object>} A promise to the submission response.
+     * @throws {ValueError} If disputeId is undefined, empty, "." or "..".
      */
     async submitDispute(disputeId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${disputeId}/${SUBMIT_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${SUBMIT_PATH}`,
                 this.config,
                 this.config.sk,
                 body

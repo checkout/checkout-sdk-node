@@ -2,6 +2,7 @@ import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 
 import FormData from 'form-data';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const FILES_PATH = 'files';
@@ -63,12 +64,13 @@ export default class Files {
      * @memberof Files
      * @param {string} fileId Files id.
      * @return {Promise<Object>} A promise to the files response.
+     * @throws {ValueError} If fileId is undefined, empty, "." or "..".
      */
     async getFile(fileId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${FILES_PATH}/${fileId}`,
+                `${this.config.host}/${FILES_PATH}/${encodePathSegment(fileId, 'fileId')}`,
                 this.config,
                 this.config.sk
             );

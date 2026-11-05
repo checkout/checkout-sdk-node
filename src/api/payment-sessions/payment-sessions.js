@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const COMPLETE_PATH = 'complete';
@@ -91,12 +92,13 @@ export default class PaymentSessions {
      * @param {string} id The payment session ID.
      * @param {object} body PaymentSessions Request body.
      * @return {Promise<object>} A promise to payment context response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async submit(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${id}/${SUBMIT_PATH}`,
+                `${this.config.host}/${PAYMENT_SESSIONS_PATH}/${encodePathSegment(id, 'id')}/${SUBMIT_PATH}`,
                 this.config,
                 this.config.sk,
                 body

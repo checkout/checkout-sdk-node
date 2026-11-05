@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const COMPLIANCE_REQUESTS_PATH = 'compliance-requests';
@@ -21,12 +22,13 @@ export default class ComplianceRequests {
      * @memberof ComplianceRequests
      * @param {string} paymentId The payment id whose compliance request to fetch.
      * @return {Promise<Object>} A promise to the compliance request response.
+     * @throws {ValueError} If paymentId is undefined, empty, "." or "..".
      */
     async getComplianceRequest(paymentId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${paymentId}`,
+                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}`,
                 this.config,
                 this.config.sk
             );
@@ -47,12 +49,13 @@ export default class ComplianceRequests {
      * @param {string} paymentId The payment id whose compliance request to respond to.
      * @param {Object} body Compliance response body.
      * @return {Promise<Object>} A promise to the response.
+     * @throws {ValueError} If paymentId is undefined, empty, "." or "..".
      */
     async respondToComplianceRequest(paymentId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${paymentId}`,
+                `${this.config.host}/${COMPLIANCE_REQUESTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}`,
                 this.config,
                 this.config.sk,
                 body

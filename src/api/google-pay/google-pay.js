@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const DOMAINS_PATH = 'domains';
@@ -53,12 +54,13 @@ export default class GooglePay {
      * @param {string} entityId The enrolled entity id.
      * @param {Object} body { web_domain: string } per swagger `GooglePayRegisterDomainRequest`.
      * @return {Promise<Object>} A promise that resolves on success.
+     * @throws {ValueError} If entityId is undefined, empty, "." or "..".
      */
     async registerDomain(entityId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${DOMAIN_PATH}`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${encodePathSegment(entityId, 'entityId')}/${DOMAIN_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -75,12 +77,13 @@ export default class GooglePay {
      * @memberof GooglePay
      * @param {string} entityId The enrolled entity id.
      * @return {Promise<Object>} A promise to the registered-domains response.
+     * @throws {ValueError} If entityId is undefined, empty, "." or "..".
      */
     async getRegisteredDomains(entityId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${DOMAINS_PATH}`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${encodePathSegment(entityId, 'entityId')}/${DOMAINS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -96,12 +99,13 @@ export default class GooglePay {
      * @memberof GooglePay
      * @param {string} entityId The enrolled entity id.
      * @return {Promise<Object>} A promise to the enrollment-state response.
+     * @throws {ValueError} If entityId is undefined, empty, "." or "..".
      */
     async getEnrollmentState(entityId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${entityId}/${STATE_PATH}`,
+                `${this.config.host}/${GOOGLEPAY_PATH}/${ENROLLMENTS_PATH}/${encodePathSegment(entityId, 'entityId')}/${STATE_PATH}`,
                 this.config,
                 this.config.sk
             );

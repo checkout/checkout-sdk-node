@@ -1,6 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.identityVerificationUrl).
 const ANONYMIZE_PATH = 'anonymize';
@@ -50,10 +50,11 @@ export default class FaceAuthentications {
      * @method getFaceAuthentication
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @returns {Promise<Object>} A promise to the Get a face authentication response
+     * @throws {ValueError} If face_authentication_id is undefined, empty, "." or "..".
      */
     async getFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -76,11 +77,12 @@ export default class FaceAuthentications {
      * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempts response
+     * @throws {ValueError} If face_authentication_id is undefined, empty, "." or "..".
      */
     async listAttempts(face_authentication_id, params) {
         try {
             const url = buildQueryParams(
-                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`,
+                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}/${ATTEMPTS_PATH}`,
                 params
             );
             const response = await get(
@@ -103,10 +105,11 @@ export default class FaceAuthentications {
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
      * @returns {Promise<Object>} A promise to the Get a face authentication attempt response
+     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, empty, "." or "..".
      */
     async getAttempt(face_authentication_id, attempt_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}/${attempt_id}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}/${ATTEMPTS_PATH}/${encodePathSegment(attempt_id, 'attempt_id')}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -130,11 +133,12 @@ export default class FaceAuthentications {
      * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
+     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, empty, "." or "..".
      */
     async getAttemptAssets(face_authentication_id, attempt_id, params) {
         try {
             const url = buildQueryParams(
-                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}/${attempt_id}/${ASSETS_PATH}`,
+                `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}/${ATTEMPTS_PATH}/${encodePathSegment(attempt_id, 'attempt_id')}/${ASSETS_PATH}`,
                 params
             );
 
@@ -158,10 +162,11 @@ export default class FaceAuthentications {
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Create a face authentication attempt response
+     * @throws {ValueError} If face_authentication_id is undefined, empty, "." or "..".
      */
     async createAttempt(face_authentication_id, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ATTEMPTS_PATH}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}/${ATTEMPTS_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,
@@ -182,10 +187,11 @@ export default class FaceAuthentications {
      * @method anonymizeFaceAuthentication
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize a face authentication response
+     * @throws {ValueError} If face_authentication_id is undefined, empty, "." or "..".
      */
     async anonymizeFaceAuthentication(face_authentication_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${face_authentication_id}/${ANONYMIZE_PATH}`;
+            const url = `${this.config.identityVerificationUrl}/${FACE_AUTHENTICATIONS_PATH}/${encodePathSegment(face_authentication_id, 'face_authentication_id')}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,

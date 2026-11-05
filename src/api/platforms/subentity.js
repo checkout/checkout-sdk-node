@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
 import { getConfigWithAcceptHeader } from './accept-header.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACCOUNTS_PATH = 'accounts';
@@ -145,12 +146,13 @@ export default class Subentity {
      * @param {string} id Sub-entity id.
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getSubEntityDetails(id, schemaVersion) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(id, 'id')}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk
             );
@@ -171,12 +173,13 @@ export default class Subentity {
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response, the same shape as the
      *   onboardSubEntity response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async updateSubEntityDetails(id, body, schemaVersion) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(id, 'id')}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk,
                 body
@@ -192,12 +195,13 @@ export default class Subentity {
      *
      * @param {string} entityId Sub-entity id.
      * @return {Promise<Object>} A promise to the Platforms response.
+     * @throws {ValueError} If entityId is undefined, empty, "." or "..".
      */
     async getSubEntityMembers(entityId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${MEMBERS_PATH}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${MEMBERS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -214,12 +218,13 @@ export default class Subentity {
      * @param {string} userId The ID of the invited user.
      * @param {Object} body The body (Reinvite sub-entity member).
      * @return {Promise<Object>} A promise to the Platforms response.
+     * @throws {ValueError} If entityId or userId is undefined, empty, "." or "..".
      */
     async reinviteSubEntityMember(entityId, userId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${MEMBERS_PATH}/${userId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${MEMBERS_PATH}/${encodePathSegment(userId, 'userId')}`,
                 this.config,
                 this.config.sk,
                 body

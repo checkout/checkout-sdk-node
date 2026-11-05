@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
 import { setInstrumentType } from '../../services/validation.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const BANK_ACCOUNTS_PATH = 'bank-accounts';
@@ -128,12 +129,13 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id.
      * @return {Promise<Object>} A promise to the instrument response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -177,12 +179,13 @@ export default class Instruments {
      * @param {string} id Instrument id.
      * @param {Object} body Instruments request body.
      * @return {Promise<Object>} A promise to the instrument response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async update(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -199,12 +202,13 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id.
      * @return {Promise<Object>} A promise to the instrument response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async delete(id) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${INSTRUMENTS_PATH}/${id}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -226,12 +230,13 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id (pattern: ^(src_)[a-z0-9]{26}$).
      * @return {Promise<Object>} A promise to the revoke response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async revoke(id) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${INSTRUMENTS_PATH}/${id}/${REVOKE_PATH}`,
+                `${this.config.host}/${INSTRUMENTS_PATH}/${encodePathSegment(id, 'id')}/${REVOKE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -263,6 +268,7 @@ export default class Instruments {
      * @param {string} [query.accountHolderType] individual | corporate | government.
      * @param {string} [query.paymentNetwork] local | sepa | fps | ach | fedwire | swift.
      * @return {Promise<Object>} A promise to the bank account field response.
+     * @throws {ValueError} If country or currency is undefined, empty, "." or "..".
      */
     async getBankAccountFieldFormatting(country, currency, query) {
         try {
@@ -287,7 +293,7 @@ export default class Instruments {
 
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${VALIDATION_PATH}/${BANK_ACCOUNTS_PATH}/${country}/${currency}${queryString}`,
+                `${this.config.host}/${VALIDATION_PATH}/${BANK_ACCOUNTS_PATH}/${encodePathSegment(country, 'country')}/${encodePathSegment(currency, 'currency')}${queryString}`,
                 this.config,
                 this.config.sk
             );

@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { setTokenType } from '../../services/validation.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const METADATA_PATH = 'metadata';
@@ -47,12 +48,13 @@ export default class Tokens {
      * @memberof Tokens
      * @param {string} tokenId The token id (e.g., "tok_...").
      * @return {Promise<Object>} A promise to the token metadata response.
+     * @throws {ValueError} If tokenId is undefined, empty, "." or "..".
      */
     async getTokenMetadata(tokenId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${TOKENS_PATH}/${tokenId}/${METADATA_PATH}`,
+                `${this.config.host}/${TOKENS_PATH}/${encodePathSegment(tokenId, 'tokenId')}/${METADATA_PATH}`,
                 this.config,
                 this.config.sk
             );

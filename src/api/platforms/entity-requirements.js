@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, put } from '../../services/http.js';
 import { getConfigWithAcceptHeader } from './accept-header.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACCOUNTS_PATH = 'accounts';
@@ -25,12 +26,13 @@ export default class EntityRequirements {
      * @param {string} entityId The sub-entity id.
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the requirements list response.
+     * @throws {ValueError} If entityId is undefined, empty, "." or "..".
      */
     async getEntityRequirements(entityId, schemaVersion) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${REQUIREMENTS_PATH}`,
                 getConfigWithAcceptHeader(this.config, schemaVersion),
                 this.config.sk
             );
@@ -47,12 +49,13 @@ export default class EntityRequirements {
      * @param {string} entityId The sub-entity id.
      * @param {string} requirementId The requirement id.
      * @return {Promise<Object>} A promise to the requirement details response.
+     * @throws {ValueError} If entityId or requirementId is undefined, empty, "." or "..".
      */
     async getEntityRequirementDetails(entityId, requirementId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}/${requirementId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${REQUIREMENTS_PATH}/${encodePathSegment(requirementId, 'requirementId')}`,
                 this.config,
                 this.config.sk
             );
@@ -71,12 +74,13 @@ export default class EntityRequirements {
      * @param {Object} body { value: ... } — concrete shape defined by the
      *   requirement's `_schema` returned from {@link getEntityRequirementDetails}.
      * @return {Promise<Object>} A promise to the update response.
+     * @throws {ValueError} If entityId or requirementId is undefined, empty, "." or "..".
      */
     async updateEntityRequirement(entityId, requirementId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_PATH}/${requirementId}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${REQUIREMENTS_PATH}/${encodePathSegment(requirementId, 'requirementId')}`,
                 this.config,
                 this.config.sk,
                 body

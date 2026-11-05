@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CANCEL_PATH = 'cancel';
@@ -24,11 +25,12 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}`
-            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${id}`;
+            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}`
+            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -42,11 +44,12 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async cancelMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`
-            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`;
+            ? `${this.config.host}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}/${CANCEL_PATH}`
+            : `${this.config.host}/${SEPA_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}/${CANCEL_PATH}`;
 
         try {
             const response = await post(this.config.httpClient, url, this.config, this.config.sk);
@@ -61,11 +64,12 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getPPROMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}`
-            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${id}`;
+            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}`
+            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -79,11 +83,12 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async cancelPPROMandate(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`
-            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${id}/${CANCEL_PATH}`;
+            ? `${this.config.host}/${PPRO_PATH}/${SEPA_EXTERNAL_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}/${CANCEL_PATH}`
+            : `${this.config.host}/${PPRO_PATH}/${SEPA_PATH}/${MANDATES_PATH}/${encodePathSegment(id, 'id')}/${CANCEL_PATH}`;
 
         try {
             const response = await post(this.config.httpClient, url, this.config, this.config.sk);

@@ -1,5 +1,6 @@
 import { get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CARDHOLDERS_PATH = 'cardholders';
@@ -45,12 +46,13 @@ export default class Cardholders {
      * @memberof Cardholders
      * @param {string} id Cardholder id.
      * @return {Promise<Object>} A promise to the cardholder details response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getCardholder(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -67,12 +69,13 @@ export default class Cardholders {
      * @param {string} id Cardholder id.
      * @param {Object} body Cardholder params to update.
      * @return {Promise<Object>} A promise to the cardholder update response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async updateCardholder(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -89,12 +92,13 @@ export default class Cardholders {
      * @memberof Cardholders
      * @param {string} id Cardholder id.
      * @return {Promise<Object>} A promise to the cardholder details response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getCardholderCards(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${id}/${CARDS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDHOLDERS_PATH}/${encodePathSegment(id, 'id')}/${CARDS_PATH}`,
                 this.config,
                 this.config.sk
             );

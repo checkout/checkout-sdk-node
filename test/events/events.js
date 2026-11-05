@@ -475,3 +475,44 @@ describe('Events', () => {
         }
     });
 });
+
+// Query values are percent-encoded by the SDK.
+describe('Events - query values', () => {
+    let capturedUrl;
+
+    beforeEach(() => {
+        capturedUrl = undefined;
+        nock('https://123456789.api.sandbox.checkout.com')
+            .get(/.*/)
+            .reply(function (uri) {
+                capturedUrl = uri;
+                return [200, {}];
+            });
+    });
+
+    afterEach(() => nock.cleanAll());
+
+    [
+        ['sends a plain value unchanged', 'ORD-123', 'ORD-123'],
+        ['encodes & and =', 'a&b=c', 'a%26b%3Dc'],
+        ['encodes #', 'INV#42', 'INV%2342'],
+    ].forEach(([title, value, encoded]) => {
+        it(`retrieveEventTypes ${title}`, async () => {
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.events.retrieveEventTypes(value);
+            expect(capturedUrl).to.equal(`/event-types?version=${encoded}`);
+        });
+    });
+
+    [
+        ['sends a plain value unchanged', 'ORD-123', 'ORD-123'],
+        ['encodes & and =', 'a&b=c', 'a%26b%3Dc'],
+        ['encodes #', 'INV#42', 'INV%2342'],
+    ].forEach(([title, value, encoded]) => {
+        it(`retrieveEvents ${title}`, async () => {
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.events.retrieveEvents({ payment_id: value, limit: 10 });
+            expect(capturedUrl).to.equal(`/events?payment_id=${encoded}&limit=10`);
+        });
+    });
+});

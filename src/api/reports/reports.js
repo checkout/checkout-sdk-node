@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const FILES_PATH = 'files';
@@ -25,14 +26,7 @@ export default class Reports {
      */
     async getAllReports(parameters) {
         try {
-            let url = `${this.config.host}/${REPORTS_PATH}`;
-
-            if (parameters) {
-                const queryString = Object.keys(parameters)
-                    .map((key) => `${key}=${parameters[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTS_PATH}`, parameters);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -47,12 +41,13 @@ export default class Reports {
      * @memberof Reports
      * @param {string} id The ID of the report to retrieve.
      * @return {Promise<Object>} A promise to the Reports response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async getReportDetails(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTS_PATH}/${id}`,
+                `${this.config.host}/${REPORTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -69,12 +64,13 @@ export default class Reports {
      * @param {string} id The ID of the report that the file belongs to.
      * @param {Object} fileId The ID of the file to retrieve.
      * @return {Promise<Object>} A promise to the Reports response.
+     * @throws {ValueError} If id or fileId is undefined, empty, "." or "..".
      */
     async getReportFile(id, fileId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTS_PATH}/${id}/${FILES_PATH}/${fileId}`,
+                `${this.config.host}/${REPORTS_PATH}/${encodePathSegment(id, 'id')}/${FILES_PATH}/${encodePathSegment(fileId, 'fileId')}`,
                 { ...this.config, csv: true },
                 this.config.sk
             );

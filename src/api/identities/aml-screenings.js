@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.identityVerificationUrl).
 const AML_VERIFICATIONS_PATH = 'aml-verifications';
@@ -45,10 +46,11 @@ export default class AMLScreenings {
      * @method getAMLScreening
      * @param {string} aml_screening_id - The AML screening's unique identifier
      * @returns {Promise<Object>} A promise to the Get an AML screening response
+     * @throws {ValueError} If aml_screening_id is undefined, empty, "." or "..".
      */
     async getAMLScreening(aml_screening_id) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${AML_VERIFICATIONS_PATH}/${aml_screening_id}`;
+            const url = `${this.config.identityVerificationUrl}/${AML_VERIFICATIONS_PATH}/${encodePathSegment(aml_screening_id, 'aml_screening_id')}`;
             const response = await get(
                 this.config.httpClient,
                 url,

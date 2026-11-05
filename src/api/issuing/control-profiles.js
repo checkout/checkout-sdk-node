@@ -1,6 +1,6 @@
 import { _delete, get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ADD_PATH = 'add';
@@ -68,12 +68,13 @@ export default class ControlProfiles {
      * @memberof ControlProfiles
      * @param {string} controlProfileId The control profile ID.
      * @return {Promise<Object>} A promise to the control profile details.
+     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
      */
     async getControlProfile(controlProfileId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${encodePathSegment(controlProfileId, 'controlProfileId')}`,
                 this.config,
                 this.config.sk
             );
@@ -91,12 +92,13 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {Object} body Control profile update params.
      * @return {Promise<Object>} A promise to the control profile response.
+     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
      */
     async updateControlProfile(controlProfileId, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${encodePathSegment(controlProfileId, 'controlProfileId')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -114,12 +116,13 @@ export default class ControlProfiles {
      * @memberof ControlProfiles
      * @param {string} controlProfileId The control profile ID.
      * @return {Promise<Object>} A promise to the deletion response.
+     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
      */
     async deleteControlProfile(controlProfileId) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${encodePathSegment(controlProfileId, 'controlProfileId')}`,
                 this.config,
                 this.config.sk
             );
@@ -137,12 +140,13 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {string} targetId The target ID to add to control profile.
      * @return {Promise<Object>} A promise to the response.
+     * @throws {ValueError} If controlProfileId or targetId is undefined, empty, "." or "..".
      */
     async addTargetToControlProfile(controlProfileId, targetId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}/${ADD_PATH}/${targetId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${encodePathSegment(controlProfileId, 'controlProfileId')}/${ADD_PATH}/${encodePathSegment(targetId, 'targetId')}`,
                 this.config,
                 this.config.sk
             );
@@ -160,12 +164,13 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {string} targetId The target ID to remove from control profile.
      * @return {Promise<Object>} A promise to the response.
+     * @throws {ValueError} If controlProfileId or targetId is undefined, empty, "." or "..".
      */
     async removeTargetFromControlProfile(controlProfileId, targetId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${controlProfileId}/${REMOVE_PATH}/${targetId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_PROFILES_PATH}/${encodePathSegment(controlProfileId, 'controlProfileId')}/${REMOVE_PATH}/${encodePathSegment(targetId, 'targetId')}`,
                 this.config,
                 this.config.sk
             );

@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 /**
  * Class dealing with the /transfers endpoint
@@ -44,10 +45,11 @@ export default class Transfers {
      * @memberof Transfers
      * @param {string} id tra_XXX The transfer identifier.
      * @return {Promise<Object>} A promise to the transfer response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async retrieve(id) {
         try {
-            const url = `${this.config.transfersUrl}/${id}`;
+            const url = `${this.config.transfersUrl}/${encodePathSegment(id, 'id')}`;
 
             const response = await get(
                 this.config.httpClient,

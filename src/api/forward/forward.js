@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the forward host root (config.forwardUrl).
 const FORWARD_PATH = 'forward';
@@ -47,12 +48,13 @@ export default class Forward {
      * @memberof Forward
      * @param {string} id The unique identifier of the forward request
      * @return {Promise<Object>} A promise to the forward request details
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/${FORWARD_PATH}/${id}`,
+                `${this.config.forwardUrl}/${FORWARD_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -120,12 +122,13 @@ export default class Forward {
      * @param {string} name The secret name
      * @param {Object} body Update body with value and/or entity_id
      * @return {Promise<Object>} A promise to the updated secret metadata with incremented version
+     * @throws {ValueError} If name is undefined, empty, "." or "..".
      */
     async updateSecret(name, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/${SECRETS_PATH}/${name}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}/${encodePathSegment(name, 'name')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -142,12 +145,13 @@ export default class Forward {
      * @memberof Forward
      * @param {string} name The secret name to delete
      * @return {Promise<Object>} A promise to the deletion response
+     * @throws {ValueError} If name is undefined, empty, "." or "..".
      */
     async deleteSecret(name) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.forwardUrl}/${SECRETS_PATH}/${name}`,
+                `${this.config.forwardUrl}/${SECRETS_PATH}/${encodePathSegment(name, 'name')}`,
                 this.config,
                 this.config.sk
             );

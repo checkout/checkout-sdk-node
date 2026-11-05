@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CUSTOMERS_PATH = 'customers';
@@ -43,12 +44,13 @@ export default class Customers {
      * @memberof Customers
      * @param {string} id Customer id.
      * @return {Promise<Object>} A promise to the customer details response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -65,12 +67,13 @@ export default class Customers {
      * @param {string} id Customer id.
      * @param {Object} body Customer object body.
      * @return {Promise<Object>} A promise to the request customer response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async update(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -91,12 +94,13 @@ export default class Customers {
      * @memberof Customers
      * @param {string} id Customer id.
      * @return {Promise<Object>} A promise to the customer response.
+     * @throws {ValueError} If id is undefined, empty, "." or "..".
      */
     async delete(id) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${CUSTOMERS_PATH}/${id}`,
+                `${this.config.host}/${CUSTOMERS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
