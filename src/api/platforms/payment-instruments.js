@@ -25,7 +25,7 @@ export default class PaymentInstruments {
      * @param {string} entityId The sub-entity's ID.
      * @param {string} id The payment instrument's ID.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If entityId or id is undefined, empty, "." or "..".
+     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..".
      */
     async getPaymentInstrumentDetails(entityId, id) {
         try {
@@ -59,7 +59,7 @@ export default class PaymentInstruments {
      * @param {string} id Payment instrument's id.
      * @param {Object} body The update, as described above.
      * @return {Promise<Object>} A promise to the Platforms response: the instrument id and _links.
-     * @throws {ValueError} If entityId or id is undefined, empty, "." or "..".
+     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..".
      */
     async updatePaymentInstrumentDetails(entityId, id, body) {
         try {
@@ -83,7 +83,7 @@ export default class PaymentInstruments {
      * @param {string} id Sub-entity id.
      * @param {Object} body Platforms request body.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async createPaymentInstrument(id, body) {
         try {
@@ -116,7 +116,7 @@ export default class PaymentInstruments {
      * @param {string} id Sub-entity id.
      * @param {Object} body Platforms request body.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async addPaymentInstrument(id, body) {
         try {
@@ -139,7 +139,7 @@ export default class PaymentInstruments {
      * @param {string} id The sub-entity's ID.
      * @param {string} [status] The status of your sub-entity's payment instrument.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async queryPaymentInstruments(id, status) {
         try {

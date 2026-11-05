@@ -51,7 +51,7 @@ export default class IDDocumentVerifications {
      * @method getIDDocumentVerification
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get an ID document verification response
-     * @throws {ValueError} If id_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id is undefined, null, empty, "." or "..".
      */
     async getIDDocumentVerification(id_document_verification_id) {
         try {
@@ -78,7 +78,7 @@ export default class IDDocumentVerifications {
      * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get ID document verification attempts response
-     * @throws {ValueError} If id_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id is undefined, null, empty, "." or "..".
      */
     async listAttempts(id_document_verification_id, params) {
         try {
@@ -106,7 +106,7 @@ export default class IDDocumentVerifications {
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
      * @returns {Promise<Object>} A promise to the Get an ID document verification attempt response
-     * @throws {ValueError} If id_document_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttempt(id_document_verification_id, attempt_id) {
         try {
@@ -130,7 +130,7 @@ export default class IDDocumentVerifications {
      * @method anonymizeIDDocumentVerification
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize an ID document verification response
-     * @throws {ValueError} If id_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id is undefined, null, empty, "." or "..".
      */
     async anonymizeIDDocumentVerification(id_document_verification_id) {
         try {
@@ -156,7 +156,7 @@ export default class IDDocumentVerifications {
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Create an ID document verification attempt response
-     * @throws {ValueError} If id_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id is undefined, null, empty, "." or "..".
      */
     async createAttempt(id_document_verification_id, body) {
         try {
@@ -182,7 +182,7 @@ export default class IDDocumentVerifications {
      * @method getPDFReport
      * @param {string} id_document_verification_id - The ID document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get ID document verification report response
-     * @throws {ValueError} If id_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id is undefined, null, empty, "." or "..".
      */
     async getPDFReport(id_document_verification_id) {
         try {
@@ -211,7 +211,7 @@ export default class IDDocumentVerifications {
      * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get ID document verification attempt assets response
-     * @throws {ValueError} If id_document_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id_document_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttemptAssets(id_document_verification_id, attempt_id, params) {
         try {

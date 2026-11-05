@@ -87,7 +87,7 @@ export default class PaymentContexts {
      * @memberof PaymentContexts
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<object>} A promise to the get payment context response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {

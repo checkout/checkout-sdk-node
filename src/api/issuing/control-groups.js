@@ -66,7 +66,7 @@ export default class ControlGroups {
      * @memberof ControlGroups
      * @param {string} controlGroupId The control group ID.
      * @return {Promise<Object>} A promise to the control group details.
-     * @throws {ValueError} If controlGroupId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlGroupId is undefined, null, empty, "." or "..".
      */
     async getControlGroup(controlGroupId) {
         try {
@@ -90,7 +90,7 @@ export default class ControlGroups {
      * @memberof ControlGroups
      * @param {string} controlGroupId The control group ID.
      * @return {Promise<Object>} A promise to the deletion response.
-     * @throws {ValueError} If controlGroupId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlGroupId is undefined, null, empty, "." or "..".
      */
     async deleteControlGroup(controlGroupId) {
         try {

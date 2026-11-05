@@ -68,7 +68,7 @@ export default class ControlProfiles {
      * @memberof ControlProfiles
      * @param {string} controlProfileId The control profile ID.
      * @return {Promise<Object>} A promise to the control profile details.
-     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlProfileId is undefined, null, empty, "." or "..".
      */
     async getControlProfile(controlProfileId) {
         try {
@@ -92,7 +92,7 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {Object} body Control profile update params.
      * @return {Promise<Object>} A promise to the control profile response.
-     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlProfileId is undefined, null, empty, "." or "..".
      */
     async updateControlProfile(controlProfileId, body) {
         try {
@@ -116,7 +116,7 @@ export default class ControlProfiles {
      * @memberof ControlProfiles
      * @param {string} controlProfileId The control profile ID.
      * @return {Promise<Object>} A promise to the deletion response.
-     * @throws {ValueError} If controlProfileId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlProfileId is undefined, null, empty, "." or "..".
      */
     async deleteControlProfile(controlProfileId) {
         try {
@@ -140,7 +140,7 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {string} targetId The target ID to add to control profile.
      * @return {Promise<Object>} A promise to the response.
-     * @throws {ValueError} If controlProfileId or targetId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlProfileId or targetId is undefined, null, empty, "." or "..".
      */
     async addTargetToControlProfile(controlProfileId, targetId) {
         try {
@@ -164,7 +164,7 @@ export default class ControlProfiles {
      * @param {string} controlProfileId The control profile ID.
      * @param {string} targetId The target ID to remove from control profile.
      * @return {Promise<Object>} A promise to the response.
-     * @throws {ValueError} If controlProfileId or targetId is undefined, empty, "." or "..".
+     * @throws {ValueError} If controlProfileId or targetId is undefined, null, empty, "." or "..".
      */
     async removeTargetFromControlProfile(controlProfileId, targetId) {
         try {

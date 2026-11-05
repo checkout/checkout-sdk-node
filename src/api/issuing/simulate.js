@@ -52,7 +52,7 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateIncrement(id, body) {
         try {
@@ -76,7 +76,7 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateClearing(id, body) {
         try {
@@ -100,7 +100,7 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Refund amount and params.
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateRefund(id, body) {
         try {
@@ -124,7 +124,7 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateReversal(id, body) {
         try {

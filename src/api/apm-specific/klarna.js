@@ -50,7 +50,7 @@ export default class Klarna {
      *
      * @param {string} id Session id.
      * @return {Promise<Object>} A promise to the Klarna response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getSession(id) {
         const url = this.config.host.includes('sandbox')
@@ -70,7 +70,7 @@ export default class Klarna {
      * @param {string} id Payment id.
      * @param {Object} body Capture details.
      * @return {Promise<Object>} A promise to the Klarna response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async capture(id, body) {
         const url = this.config.host.includes('sandbox')
@@ -96,7 +96,7 @@ export default class Klarna {
      * @param {string} id Payment id.
      * @param {Object} [body] Void details.
      * @return {Promise<Object>} A promise to the Klarna response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async void(id, body) {
         const url = this.config.host.includes('sandbox')

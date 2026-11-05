@@ -25,7 +25,7 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getMandate(id) {
         const url = this.config.host.includes('sandbox')
@@ -44,7 +44,7 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async cancelMandate(id) {
         const url = this.config.host.includes('sandbox')
@@ -64,7 +64,7 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getPPROMandate(id) {
         const url = this.config.host.includes('sandbox')
@@ -83,7 +83,7 @@ export default class Sepa {
      *
      * @param {string} id Source id
      * @return {Promise<Object>} A promise to the Sepa response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async cancelPPROMandate(id) {
         const url = this.config.host.includes('sandbox')

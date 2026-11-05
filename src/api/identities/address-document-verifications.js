@@ -51,7 +51,7 @@ export default class AddressDocumentVerifications {
      * @method getAddressDocumentVerification
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get an address document verification response
-     * @throws {ValueError} If address_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id is undefined, null, empty, "." or "..".
      */
     async getAddressDocumentVerification(address_document_verification_id) {
         try {
@@ -78,7 +78,7 @@ export default class AddressDocumentVerifications {
      * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get address document verification attempts response
-     * @throws {ValueError} If address_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id is undefined, null, empty, "." or "..".
      */
     async listAttempts(address_document_verification_id, params) {
         try {
@@ -106,7 +106,7 @@ export default class AddressDocumentVerifications {
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
      * @returns {Promise<Object>} A promise to the Get an address document verification attempt response
-     * @throws {ValueError} If address_document_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttempt(address_document_verification_id, attempt_id) {
         try {
@@ -130,7 +130,7 @@ export default class AddressDocumentVerifications {
      * @method anonymizeAddressDocumentVerification
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize an address document verification response
-     * @throws {ValueError} If address_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id is undefined, null, empty, "." or "..".
      */
     async anonymizeAddressDocumentVerification(address_document_verification_id) {
         try {
@@ -155,7 +155,7 @@ export default class AddressDocumentVerifications {
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Create an address document verification attempt response
-     * @throws {ValueError} If address_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id is undefined, null, empty, "." or "..".
      */
     async createAttempt(address_document_verification_id, body) {
         try {
@@ -180,7 +180,7 @@ export default class AddressDocumentVerifications {
      * @method getPDFReport
      * @param {string} address_document_verification_id - The address document verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get address document verification report response
-     * @throws {ValueError} If address_document_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id is undefined, null, empty, "." or "..".
      */
     async getPDFReport(address_document_verification_id) {
         try {
@@ -209,7 +209,7 @@ export default class AddressDocumentVerifications {
      * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get address document verification attempt assets response
-     * @throws {ValueError} If address_document_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If address_document_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttemptAssets(address_document_verification_id, attempt_id, params) {
         try {

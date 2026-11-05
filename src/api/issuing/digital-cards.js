@@ -24,7 +24,7 @@ export default class DigitalCards {
      * @memberof DigitalCards
      * @param {string} digitalCardId The digital card ID.
      * @return {Promise<Object>} A promise to the digital card details.
-     * @throws {ValueError} If digitalCardId is undefined, empty, "." or "..".
+     * @throws {ValueError} If digitalCardId is undefined, null, empty, "." or "..".
      */
     async getDigitalCard(digitalCardId) {
         try {

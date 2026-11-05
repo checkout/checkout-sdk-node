@@ -76,7 +76,7 @@ export default class IdentityVerifications {
      * @method getIdentityVerification
      * @param {string} identity_verification_id - The identity verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get an identity verification response
-     * @throws {ValueError} If identity_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id is undefined, null, empty, "." or "..".
      */
     async getIdentityVerification(identity_verification_id) {
         try {
@@ -100,7 +100,7 @@ export default class IdentityVerifications {
      * @method anonymizeIdentityVerification
      * @param {string} identity_verification_id - The identity verification's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize an identity verification response
-     * @throws {ValueError} If identity_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id is undefined, null, empty, "." or "..".
      */
     async anonymizeIdentityVerification(identity_verification_id) {
         try {
@@ -125,7 +125,7 @@ export default class IdentityVerifications {
      * @param {string} identity_verification_id - The identity verification's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Create an identity verification attempt response
-     * @throws {ValueError} If identity_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id is undefined, null, empty, "." or "..".
      */
     async createAttempt(identity_verification_id, body) {
         try {
@@ -153,7 +153,7 @@ export default class IdentityVerifications {
      * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get identity verification attempts response
-     * @throws {ValueError} If identity_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id is undefined, null, empty, "." or "..".
      */
     async listAttempts(identity_verification_id, params) {
         try {
@@ -181,7 +181,7 @@ export default class IdentityVerifications {
      * @param {string} identity_verification_id - The identity verification's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
      * @returns {Promise<Object>} A promise to the Get an identity verification attempt response
-     * @throws {ValueError} If identity_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttempt(identity_verification_id, attempt_id) {
         try {
@@ -210,7 +210,7 @@ export default class IdentityVerifications {
      * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get identity verification attempt assets response
-     * @throws {ValueError} If identity_verification_id or attempt_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id or attempt_id is undefined, null, empty, "." or "..".
      */
     async getAttemptAssets(identity_verification_id, attempt_id, params) {
         try {
@@ -240,7 +240,7 @@ export default class IdentityVerifications {
      * @param {string} identity_verification_id - The identity verification's unique identifier
      * @returns {Promise<Object>} A promise to the Get identity verification report response,
      *   carrying `pdf_report`, the pre-signed URL to the PDF
-     * @throws {ValueError} If identity_verification_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If identity_verification_id is undefined, null, empty, "." or "..".
      */
     async getPDFReport(identity_verification_id) {
         try {

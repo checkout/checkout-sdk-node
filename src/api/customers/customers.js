@@ -44,7 +44,7 @@ export default class Customers {
      * @memberof Customers
      * @param {string} id Customer id.
      * @return {Promise<Object>} A promise to the customer details response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
@@ -67,7 +67,7 @@ export default class Customers {
      * @param {string} id Customer id.
      * @param {Object} body Customer object body.
      * @return {Promise<Object>} A promise to the request customer response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async update(id, body) {
         try {
@@ -94,7 +94,7 @@ export default class Customers {
      * @memberof Customers
      * @param {string} id Customer id.
      * @return {Promise<Object>} A promise to the customer response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async delete(id) {
         try {

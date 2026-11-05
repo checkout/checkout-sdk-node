@@ -22,7 +22,7 @@ export default class ComplianceRequests {
      * @memberof ComplianceRequests
      * @param {string} paymentId The payment id whose compliance request to fetch.
      * @return {Promise<Object>} A promise to the compliance request response.
-     * @throws {ValueError} If paymentId is undefined, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async getComplianceRequest(paymentId) {
         try {
@@ -49,7 +49,7 @@ export default class ComplianceRequests {
      * @param {string} paymentId The payment id whose compliance request to respond to.
      * @param {Object} body Compliance response body.
      * @return {Promise<Object>} A promise to the response.
-     * @throws {ValueError} If paymentId is undefined, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async respondToComplianceRequest(paymentId, body) {
         try {

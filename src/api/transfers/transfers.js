@@ -45,7 +45,7 @@ export default class Transfers {
      * @memberof Transfers
      * @param {string} id tra_XXX The transfer identifier.
      * @return {Promise<Object>} A promise to the transfer response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async retrieve(id) {
         try {

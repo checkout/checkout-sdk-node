@@ -78,7 +78,7 @@ export default class PaymentLinks {
      * @memberof PaymentLinks
      * @param {string} id
      * @return {Promise<Object>} A promise to the Payment Link response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {

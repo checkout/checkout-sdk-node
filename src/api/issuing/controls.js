@@ -138,7 +138,7 @@ export default class Controls {
      * @memberof Controls
      * @param {string} id Card control id.
      * @return {Promise<CardControlResponse>} A promise to the control details.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getCardControlDetails(id) {
         try {
@@ -161,7 +161,7 @@ export default class Controls {
      * @param {string} id Card control id.
      * @param {Object} body Card control params.
      * @return {Promise<CardControlResponse>} A promise to the updated control.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async updateCardControl(id, body) {
         try {
@@ -184,7 +184,7 @@ export default class Controls {
      * @memberof Controls
      * @param {string} id Card control id.
      * @return {Promise<RemoveCardControlResponse>} A promise to the removed control id.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async deleteCardControl(id) {
         try {

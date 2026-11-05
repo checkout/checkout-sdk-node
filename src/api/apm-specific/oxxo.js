@@ -28,7 +28,7 @@ export default class Oxxo {
      * @param {string} id Payment id.
      * @memberof Oxxo
      * @return {Promise<Object>} A promise to the Oxxo response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async succeed(id) {
         try {
@@ -51,7 +51,7 @@ export default class Oxxo {
      * @param {string} id Payment id.
      * @memberof Oxxo
      * @return {Promise<Object>} A promise to the Oxxo response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async expire(id) {
         try {

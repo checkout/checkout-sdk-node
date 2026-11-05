@@ -28,7 +28,7 @@ export default class Fawry {
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.
-     * @throws {ValueError} If reference is undefined, empty, "." or "..".
+     * @throws {ValueError} If reference is undefined, null, empty, "." or "..".
      */
     async approve(reference) {
         try {
@@ -51,7 +51,7 @@ export default class Fawry {
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.
-     * @throws {ValueError} If reference is undefined, empty, "." or "..".
+     * @throws {ValueError} If reference is undefined, null, empty, "." or "..".
      */
     async cancel(reference) {
         try {

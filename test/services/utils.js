@@ -51,11 +51,11 @@ describe('Service Utils - encodePathSegment', () => {
     });
 
     // encodeURIComponent leaves "." and ".." unchanged, so they are rejected.
-    [undefined, '', '.', '..'].forEach((value) => {
+    [undefined, null, '', '.', '..'].forEach((value) => {
         it(`rejects ${JSON.stringify(value) ?? 'undefined'}`, () => {
             expect(() => encodePathSegment(value, 'id')).to.throw(
                 ValueError,
-                'Invalid id: must not be undefined, empty, "." or "..".'
+                'Invalid id: must not be undefined, null, empty, "." or "..".'
             );
         });
     });

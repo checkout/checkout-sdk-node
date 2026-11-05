@@ -77,7 +77,7 @@ export default class HostedPayments {
      * @memberof HostedPayments
      * @param {string} id - Hosted payment id
      * @return {Promise<Object>} A promise to the Hosted Payment response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {

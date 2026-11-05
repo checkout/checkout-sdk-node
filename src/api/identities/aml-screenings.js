@@ -46,7 +46,7 @@ export default class AMLScreenings {
      * @method getAMLScreening
      * @param {string} aml_screening_id - The AML screening's unique identifier
      * @returns {Promise<Object>} A promise to the Get an AML screening response
-     * @throws {ValueError} If aml_screening_id is undefined, empty, "." or "..".
+     * @throws {ValueError} If aml_screening_id is undefined, null, empty, "." or "..".
      */
     async getAMLScreening(aml_screening_id) {
         try {

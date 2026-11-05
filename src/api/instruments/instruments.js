@@ -129,7 +129,7 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id.
      * @return {Promise<Object>} A promise to the instrument response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
@@ -179,7 +179,7 @@ export default class Instruments {
      * @param {string} id Instrument id.
      * @param {Object} body Instruments request body.
      * @return {Promise<Object>} A promise to the instrument response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async update(id, body) {
         try {
@@ -202,7 +202,7 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id.
      * @return {Promise<Object>} A promise to the instrument response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async delete(id) {
         try {
@@ -230,7 +230,7 @@ export default class Instruments {
      * @memberof Instruments
      * @param {string} id Instrument id (pattern: ^(src_)[a-z0-9]{26}$).
      * @return {Promise<Object>} A promise to the revoke response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async revoke(id) {
         try {
@@ -268,7 +268,7 @@ export default class Instruments {
      * @param {string} [query.accountHolderType] individual | corporate | government.
      * @param {string} [query.paymentNetwork] local | sepa | fps | ach | fedwire | swift.
      * @return {Promise<Object>} A promise to the bank account field response.
-     * @throws {ValueError} If country or currency is undefined, empty, "." or "..".
+     * @throws {ValueError} If country or currency is undefined, null, empty, "." or "..".
      */
     async getBankAccountFieldFormatting(country, currency, query) {
         try {

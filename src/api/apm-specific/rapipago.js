@@ -28,7 +28,7 @@ export default class Rapipago {
      * @param {string} id Payment id.
      * @memberof Rapipago
      * @return {Promise<Object>} A promise to the Rapipago response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async succeed(id) {
         try {
@@ -51,7 +51,7 @@ export default class Rapipago {
      * @param {string} id Payment id.
      * @memberof Rapipago
      * @return {Promise<Object>} A promise to the Rapipago response.
-     * @throws {ValueError} If id is undefined, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async expire(id) {
         try {
