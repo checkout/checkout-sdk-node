@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put, _delete } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const INVENTORY_PATH = 'inventory';
@@ -133,12 +134,13 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getInventoryReservation(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${id}`,
+                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -155,12 +157,13 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async commitInventoryReservation(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${id}/${COMMIT_PATH}`,
+                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${encodePathSegment(id, 'id')}/${COMMIT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -177,12 +180,13 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async releaseInventoryReservation(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${id}/${RELEASE_PATH}`,
+                `${this.config.host}/${INVENTORY_PATH}/${RESERVATIONS_PATH}/${encodePathSegment(id, 'id')}/${RELEASE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -209,6 +213,7 @@ export default class Inventory {
      * @param {string} [options.expand] Set to `'product'` to embed the variant's
      *   product knowledge in the response.
      * @return {Promise<Object>} A promise to the InventoryLevels response.
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
      */
     async getInventoryLevels(variantId, options) {
         try {
@@ -220,7 +225,7 @@ export default class Inventory {
 
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${variantId}${query}`,
+                `${this.config.host}/${INVENTORY_PATH}/${encodePathSegment(variantId, 'variantId')}${query}`,
                 this.config,
                 this.config.sk
             );
@@ -246,12 +251,13 @@ export default class Inventory {
      * @param {number} [body.safety_stock] Buffer withheld from sale.
      * @param {string} [body.reason] Free-text reason for the ledger.
      * @return {Promise<Object>} A promise to the InventoryLevels response.
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
      */
     async setInventoryLevels(variantId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${variantId}`,
+                `${this.config.host}/${INVENTORY_PATH}/${encodePathSegment(variantId, 'variantId')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -285,12 +291,13 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} variantId Variant id (max 128 chars).
      * @return {Promise<Object>} A promise to the InventoryProductKnowledge response.
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
      */
     async getInventoryProduct(variantId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${variantId}/${PRODUCT_PATH}`,
+                `${this.config.host}/${INVENTORY_PATH}/${encodePathSegment(variantId, 'variantId')}/${PRODUCT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -320,12 +327,13 @@ export default class Inventory {
      * @param {string} body.product_url Product page URL. [Required] max 2048 chars.
      * @param {string} body.image_url Product image URL. [Required] max 2048 chars.
      * @return {Promise<Object>} A promise to the InventoryProductKnowledge response.
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
      */
     async setInventoryProduct(variantId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${variantId}/${PRODUCT_PATH}`,
+                `${this.config.host}/${INVENTORY_PATH}/${encodePathSegment(variantId, 'variantId')}/${PRODUCT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -343,12 +351,13 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} variantId Variant id (max 128 chars).
      * @return {Promise<Object>} A promise that resolves to an empty object on success.
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
      */
     async deleteInventoryProduct(variantId) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${INVENTORY_PATH}/${variantId}/${PRODUCT_PATH}`,
+                `${this.config.host}/${INVENTORY_PATH}/${encodePathSegment(variantId, 'variantId')}/${PRODUCT_PATH}`,
                 this.config,
                 this.config.sk
             );

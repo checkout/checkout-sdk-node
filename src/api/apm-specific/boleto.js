@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const APMS_PATH = 'apms';
@@ -27,12 +28,13 @@ export default class Boleto {
      * @param {string} id Payment id.
      * @memberof Boleto
      * @return {Promise<Object>} A promise to the Boleto response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async succeed(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${APMS_PATH}/${BOLETO_PATH}/${PAYMENTS_PATH}/${id}/${SUCCEED_PATH}`,
+                `${this.config.host}/${APMS_PATH}/${BOLETO_PATH}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}/${SUCCEED_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -49,12 +51,13 @@ export default class Boleto {
      * @param {string} id Payment id.
      * @memberof Boleto
      * @return {Promise<Object>} A promise to the Boleto response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async expire(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${APMS_PATH}/${BOLETO_PATH}/${PAYMENTS_PATH}/${id}/${EXPIRE_PATH}`,
+                `${this.config.host}/${APMS_PATH}/${BOLETO_PATH}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}/${EXPIRE_PATH}`,
                 this.config,
                 this.config.sk
             );

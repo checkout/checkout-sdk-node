@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
+import { buildQueryParams } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const FINANCIAL_ACTIONS_PATH = 'financial-actions';
@@ -24,14 +25,7 @@ export default class Financial {
      */
     async query(parameters) {
         try {
-            let url = `${this.config.host}/${FINANCIAL_ACTIONS_PATH}`;
-
-            if (parameters) {
-                const queryString = Object.keys(parameters)
-                    .map((key) => `${key}=${parameters[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${FINANCIAL_ACTIONS_PATH}`, parameters);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;

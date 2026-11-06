@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, patch } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.identityVerificationUrl).
 const ANONYMIZE_PATH = 'anonymize';
@@ -45,10 +46,11 @@ export default class Applicants {
      * @method getApplicant
      * @param {string} applicantId - The applicant profile's unique identifier
      * @returns {Promise<Object>} A promise to the Get an applicant response
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
      */
     async getApplicant(applicantId) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${encodePathSegment(applicantId, 'applicantId')}`;
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -68,10 +70,11 @@ export default class Applicants {
      * @param {string} applicantId - The applicant profile's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Update an applicant response
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
      */
     async updateApplicant(applicantId, body) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${encodePathSegment(applicantId, 'applicantId')}`;
             const response = await patch(
                 this.config.httpClient,
                 url,
@@ -91,10 +94,11 @@ export default class Applicants {
      * @method anonymizeApplicant
      * @param {string} applicantId - The applicant profile's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize an applicant response
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
      */
     async anonymizeApplicant(applicantId) {
         try {
-            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${applicantId}/${ANONYMIZE_PATH}`;
+            const url = `${this.config.identityVerificationUrl}/${APPLICANTS_PATH}/${encodePathSegment(applicantId, 'applicantId')}/${ANONYMIZE_PATH}`;
             const response = await post(
                 this.config.httpClient,
                 url,

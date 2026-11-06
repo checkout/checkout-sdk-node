@@ -2,6 +2,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { setSourceOrDestinationType, validatePayment } from '../../services/validation.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACTIONS_PATH = 'actions';
@@ -175,14 +176,7 @@ export default class Payments {
      * @return {Promise<Object>} A promise to the get payment response.
      */
     async getPaymentList(body) {
-        let url = `${this.config.host}/${PAYMENTS_PATH}`;
-
-        if (body) {
-            const queryString = Object.keys(body)
-                .map((key) => `${key}=${body[key]}`)
-                .join('&');
-            url += `?${queryString}`;
-        }
+        const url = buildQueryParams(`${this.config.host}/${PAYMENTS_PATH}`, body);
 
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
@@ -230,12 +224,13 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<Object>} A promise to the get payment response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${id}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -252,12 +247,13 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay)_(\w{26})$/ The payment identifier.
      * @return {Promise<Object>} A promise to the getActions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getActions(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${id}/${ACTIONS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}/${ACTIONS_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -276,12 +272,13 @@ export default class Payments {
      * @param {Object} body Payment Request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the getActions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async increment(id, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${id}/${AUTHORIZATIONS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}/${AUTHORIZATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -302,12 +299,13 @@ export default class Payments {
      * @param {Object} body Payment Request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the getActions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async cancelScheduledRetry(id, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${id}/${CANCELLATIONS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(id, 'id')}/${CANCELLATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -327,12 +325,13 @@ export default class Payments {
      * @param {Object} [body] Capture request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the capture response.
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async capture(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${CAPTURES_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}/${CAPTURES_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -352,12 +351,13 @@ export default class Payments {
      * @param {Object} [body] Refund request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the refund response.
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async refund(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${REFUNDS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}/${REFUNDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -380,12 +380,13 @@ export default class Payments {
      * @param {Object} [body] Reverse request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the reverse response.
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async reverse(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${REVERSALS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}/${REVERSALS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,
@@ -406,12 +407,13 @@ export default class Payments {
      * @param {number} [body.amount] The amount to void, in the minor currency unit (min 0, max 9999999999). If not specified, the full payment amount is voided.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the void response.
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async void(paymentId, body, idempotencyKey) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENTS_PATH}/${paymentId}/${VOIDS_PATH}`,
+                `${this.config.host}/${PAYMENTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}/${VOIDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body,

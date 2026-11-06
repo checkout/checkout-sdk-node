@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import { validatePayment } from '../../services/validation.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const PAYMENT_CONTEXTS_PATH = 'payment-contexts';
@@ -86,12 +87,13 @@ export default class PaymentContexts {
      * @memberof PaymentContexts
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<object>} A promise to the get payment context response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENT_CONTEXTS_PATH}/${id}`,
+                `${this.config.host}/${PAYMENT_CONTEXTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );

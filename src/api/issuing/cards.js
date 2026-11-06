@@ -1,6 +1,6 @@
 import { get, patch, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACTIVATE_PATH = 'activate';
@@ -65,12 +65,13 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card details response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getCardDetails(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -125,6 +126,7 @@ export default class Cards {
      *   `scheduled_revocation_date`), `scheduled_activation_date`, `last_activated_on`,
      *   `root_card_id`, `parent_card_id`, `scheme`, `created_date`, `last_modified_date`, `_links`
      *   and, for virtual cards only (`type` is `virtual`), `is_single_use`.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async updateCard(id, body, headers) {
         try {
@@ -134,7 +136,7 @@ export default class Cards {
 
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}`,
                 config,
                 this.config.sk,
                 body
@@ -152,12 +154,13 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body 3DS enrollment params.
      * @return {Promise<Object>} A promise to the card response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async enrollThreeDS(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -175,12 +178,13 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body 3DS enrollment params.
      * @return {Promise<Object>} A promise to the card response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async updateThreeDS(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -197,12 +201,13 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getThreeDSDetails(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${THREE_DS_ENROLLMENT_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${THREE_DS_ENROLLMENT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -221,12 +226,13 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async activateCard(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${ACTIVATE_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${ACTIVATE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -243,11 +249,12 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body Card params.
      * @return {Promise<Object>} A promise to the card response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getCardCredentials(id, body) {
         try {
             const url = buildQueryParams(
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${CREDENTIALS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${CREDENTIALS_PATH}`,
                 body
             );
 
@@ -265,12 +272,13 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body Card renewal params.
      * @return {Promise<Object>} A promise to the card renewal response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async renewCard(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${RENEW_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${RENEW_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -290,12 +298,13 @@ export default class Cards {
      *   without a body.
      * @param {string} [body.reason] Optional reason: `expired`, `reported_lost` or `reported_stolen`.
      * @return {Promise<Object>} A promise to the revoke-card response, carrying `_links`.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async revokeCard(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${REVOKE_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${REVOKE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -315,12 +324,13 @@ export default class Cards {
      *   without a body.
      * @param {string} [body.reason] Optional reason: `suspected_lost` or `suspected_stolen`.
      * @return {Promise<Object>} A promise to the suspend-card response, carrying `_links`.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async suspendCard(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${id}/${SUSPEND_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${CARDS_PATH}/${encodePathSegment(id, 'id')}/${SUSPEND_PATH}`,
                 this.config,
                 this.config.sk,
                 body

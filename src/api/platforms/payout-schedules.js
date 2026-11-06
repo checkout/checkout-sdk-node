@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, put } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACCOUNTS_PATH = 'accounts';
@@ -33,12 +34,13 @@ export default class PayoutSchedules {
      *
      * @param {string} id The sub-entity's ID.
      * @return {Promise<Object>} A promise to the Platforms response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async retrieveSubEntityPayoutSchedule(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYOUT_SCHEDULES_PATH}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(id, 'id')}/${PAYOUT_SCHEDULES_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -67,12 +69,13 @@ export default class PayoutSchedules {
      * @param {string} id The sub-entity's ID.
      * @param {Object} body Platforms request body.
      * @return {Promise<Object>} A promise to the Platforms response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async updateSubEntityPayoutSchedule(id, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${id}/${PAYOUT_SCHEDULES_PATH}`,
+                `${this.config.host}/${ACCOUNTS_PATH}/${ENTITIES_PATH}/${encodePathSegment(id, 'id')}/${PAYOUT_SCHEDULES_PATH}`,
                 this.config,
                 this.config.sk,
                 body

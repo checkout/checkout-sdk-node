@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { put } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const APPROVAL_PATH = 'approval';
@@ -27,12 +28,13 @@ export default class Fawry {
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.
+     * @throws {ValueError} If reference is undefined, null, empty, "." or "..".
      */
     async approve(reference) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${reference}/${APPROVAL_PATH}`,
+                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${encodePathSegment(reference, 'reference')}/${APPROVAL_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -49,12 +51,13 @@ export default class Fawry {
      * @param {string} reference Reference.
      * @memberof Fawry
      * @return {Promise<Object>} A promise to the Fawry response.
+     * @throws {ValueError} If reference is undefined, null, empty, "." or "..".
      */
     async cancel(reference) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${reference}/${CANCELLATION_PATH}`,
+                `${this.config.host}/${FAWRY_PATH}/${PAYMENTS_PATH}/${encodePathSegment(reference, 'reference')}/${CANCELLATION_PATH}`,
                 this.config,
                 this.config.sk
             );

@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the balances host root (config.balancesUrl).
 const BALANCES_PATH = 'balances';
@@ -37,31 +38,34 @@ export default class Balances {
      *       that point in time. Forwarded verbatim as the `balancesAt` (camelCase)
      *       query parameter, as defined in swagger.
      * @return {Promise<Object>} A promise to the balances response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async retrieve(id, options) {
         try {
-            const queryParams = [];
+            const queryParams = {};
 
             // Backward compatibility: if options is a string, treat it as currency
             if (typeof options === 'string') {
-                queryParams.push(`query=currency:${options}`);
+                queryParams.query = `currency:${options}`;
             } else if (typeof options === 'object' && options !== null) {
                 // New object-based API
                 if (options.query) {
-                    queryParams.push(`query=${options.query}`);
+                    queryParams.query = options.query;
                 }
                 if (options.withCurrencyAccountId !== undefined) {
-                    queryParams.push(`withCurrencyAccountId=${options.withCurrencyAccountId}`);
+                    queryParams.withCurrencyAccountId = options.withCurrencyAccountId;
                 }
                 if (options.balancesAt) {
                     // Swagger defines the query parameter as `balancesAt` (camelCase),
                     // not snake_case. Keep this exact name or the API silently ignores it.
-                    queryParams.push(`balancesAt=${encodeURIComponent(options.balancesAt)}`);
+                    queryParams.balancesAt = options.balancesAt;
                 }
             }
 
-            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
-            const url = `${this.config.balancesUrl}/${BALANCES_PATH}/${id}${queryString}`;
+            const url = buildQueryParams(
+                `${this.config.balancesUrl}/${BALANCES_PATH}/${encodePathSegment(id, 'id')}`,
+                queryParams
+            );
             
             const response = await get(
                 this.config.httpClient,
@@ -109,12 +113,13 @@ export default class Balances {
      * @param {string} currencyAccountId The ID of the sub-account to retrieve top-up
      *   instructions for.
      * @return {Promise<Object>} A promise to the top-up instructions response.
+     * @throws {ValueError} If entityId or currencyAccountId is undefined, null, empty, "." or "..".
      */
     async retrieveTopUpInstructions(entityId, currencyAccountId) {
         try {
             const url =
-                `${this.config.balancesUrl}/${ENTITIES_PATH}/${entityId}` +
-                `/${CURRENCY_ACCOUNTS_PATH}/${currencyAccountId}/${TOP_UP_INSTRUCTIONS_PATH}`;
+                `${this.config.balancesUrl}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}` +
+                `/${CURRENCY_ACCOUNTS_PATH}/${encodePathSegment(currencyAccountId, 'currencyAccountId')}/${TOP_UP_INSTRUCTIONS_PATH}`;
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;

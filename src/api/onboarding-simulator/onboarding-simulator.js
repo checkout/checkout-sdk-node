@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ENTITIES_PATH = 'entities';
@@ -66,12 +67,13 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {Object} body { field_names: string[] }
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
      */
     async setRequirementsDue(entityId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${REQUIREMENTS_DUE_PATH}`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${REQUIREMENTS_DUE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -89,12 +91,13 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {string} scenarioId The scenario id to execute.
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If entityId or scenarioId is undefined, null, empty, "." or "..".
      */
     async runScenario(entityId, scenarioId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${SCENARIOS_PATH}/${scenarioId}`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${SCENARIOS_PATH}/${encodePathSegment(scenarioId, 'scenarioId')}`,
                 this.config,
                 this.config.sk
             );
@@ -111,12 +114,13 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {Object} body { status: string, ... } (see swagger SimulatorSetStatusRequest).
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
      */
     async setEntityStatus(entityId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${entityId}/${STATUS_PATH}`,
+                `${this.config.host}/${SIMULATE_PATH}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${STATUS_PATH}`,
                 this.config,
                 this.config.sk,
                 body

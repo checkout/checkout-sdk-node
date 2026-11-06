@@ -1,6 +1,7 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
 import FormData from 'form-data';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ENTITIES_PATH = 'entities';
@@ -71,12 +72,13 @@ export default class PlatformFiles {
      * @param {Object} body The body; body.purpose is the purpose of the file upload, one of the
      *   values above.
      * @returns {Promise<Object>} A promise to the file id and upload link.
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
      */
     async uploadAFile(entityId, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ENTITIES_PATH}/${entityId}/${FILES_PATH}`,
+                `${this.config.host}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${FILES_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -96,12 +98,13 @@ export default class PlatformFiles {
      * @returns {Promise<Object>} A promise to the file's id, status, status_reasons, size,
      *   mime_type, uploaded_on, purpose and _links (download, the link to fetch the content, and
      *   self).
+     * @throws {ValueError} If entityId or fileId is undefined, null, empty, "." or "..".
      */
     async retrieveAFile(entityId, fileId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ENTITIES_PATH}/${entityId}/${FILES_PATH}/${fileId}`,
+                `${this.config.host}/${ENTITIES_PATH}/${encodePathSegment(entityId, 'entityId')}/${FILES_PATH}/${encodePathSegment(fileId, 'fileId')}`,
                 this.config,
                 this.config.sk
             );

@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CAPTURES_PATH = 'captures';
@@ -49,11 +50,12 @@ export default class Klarna {
      *
      * @param {string} id Session id.
      * @return {Promise<Object>} A promise to the Klarna response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getSession(id) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${CREDIT_SESSIONS_PATH}/${id}`
-            : `${this.config.host}/${KLARNA_PATH}/${CREDIT_SESSIONS_PATH}/${id}`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${CREDIT_SESSIONS_PATH}/${encodePathSegment(id, 'id')}`
+            : `${this.config.host}/${KLARNA_PATH}/${CREDIT_SESSIONS_PATH}/${encodePathSegment(id, 'id')}`;
         try {
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -68,11 +70,12 @@ export default class Klarna {
      * @param {string} id Payment id.
      * @param {Object} body Capture details.
      * @return {Promise<Object>} A promise to the Klarna response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async capture(id, body) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${id}/${CAPTURES_PATH}`
-            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${id}/${CAPTURES_PATH}`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${encodePathSegment(id, 'id')}/${CAPTURES_PATH}`
+            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${encodePathSegment(id, 'id')}/${CAPTURES_PATH}`;
         try {
             const response = await post(
                 this.config.httpClient,
@@ -93,11 +96,12 @@ export default class Klarna {
      * @param {string} id Payment id.
      * @param {Object} [body] Void details.
      * @return {Promise<Object>} A promise to the Klarna response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async void(id, body) {
         const url = this.config.host.includes('sandbox')
-            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${id}/${VOIDS_PATH}`
-            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${id}/${VOIDS_PATH}`;
+            ? `${this.config.host}/${KLARNA_EXTERNAL_PATH}/${ORDERS_PATH}/${encodePathSegment(id, 'id')}/${VOIDS_PATH}`
+            : `${this.config.host}/${KLARNA_PATH}/${ORDERS_PATH}/${encodePathSegment(id, 'id')}/${VOIDS_PATH}`;
         try {
             const response = await post(
                 this.config.httpClient,

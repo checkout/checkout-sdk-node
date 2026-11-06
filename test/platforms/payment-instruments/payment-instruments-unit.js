@@ -513,3 +513,43 @@ describe('Platforms - Payment Instruments', () => {
         }
     });
 });
+
+// Query values are percent-encoded by the SDK.
+describe('Platforms - Payment Instruments - query values', () => {
+    let capturedUrl;
+
+    beforeEach(() => {
+        capturedUrl = undefined;
+        nock('https://123456789.access.sandbox.checkout.com').post('/connect/token').reply(201, {
+            access_token: '1234',
+            expires_in: 3600,
+            token_type: 'Bearer',
+            scope: 'accounts',
+        });
+        nock('https://123456789.api.sandbox.checkout.com')
+            .get(/.*/)
+            .reply(function (uri) {
+                capturedUrl = uri;
+                return [200, {}];
+            });
+    });
+
+    afterEach(() => nock.cleanAll());
+
+    [
+        ['sends a plain value unchanged', 'ORD-123', 'ORD-123'],
+        ['encodes & and =', 'a&b=c', 'a%26b%3Dc'],
+        ['encodes #', 'INV#42', 'INV%2342'],
+    ].forEach(([title, value, encoded]) => {
+        it(`queryPaymentInstruments ${title}`, async () => {
+            const cko = new Checkout(platforms_secret, {
+                client: platforms_ack,
+                scope: ['accounts'],
+                environment: 'sandbox',
+                subdomain: '123456789',
+            });
+            await cko.platforms.queryPaymentInstruments('ent_1', value);
+            expect(capturedUrl).to.equal(`/accounts/entities/ent_1/payment-instruments?status=${encoded}`);
+        });
+    });
+});

@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { buildQueryParams } from '../../src/services/utils.js';
+import { ValueError } from '../../src/services/errors.js';
+import { buildQueryParams, encodePathSegment } from '../../src/services/utils.js';
 
 describe('Service Utils - buildQueryParams', () => {
     it('appends the params as a query string', () => {
@@ -24,5 +25,38 @@ describe('Service Utils - buildQueryParams', () => {
 
     it('encodes keys and values', () => {
         expect(buildQueryParams('u', { 'a b': 'c&d' })).to.equal('u?a%20b=c%26d');
+    });
+});
+
+describe('Service Utils - encodePathSegment', () => {
+    it('keeps a valid id unchanged', () => {
+        expect(encodePathSegment('pay_abc123', 'id')).to.equal('pay_abc123');
+    });
+
+    it('turns a number into its string form', () => {
+        expect(encodePathSegment(123, 'id')).to.equal('123');
+    });
+
+    // Values with reserved characters, which the SDK percent-encodes.
+    [
+        ['../x', '..%2Fx'],
+        ['%2e%2e/x', '%252e%252e%2Fx'],
+        ['..\\x', '..%5Cx'],
+        ['a?b', 'a%3Fb'],
+        ['a#b', 'a%23b'],
+    ].forEach(([value, expected]) => {
+        it(`encodes ${value}`, () => {
+            expect(encodePathSegment(value, 'id')).to.equal(expected);
+        });
+    });
+
+    // encodeURIComponent leaves "." and ".." unchanged, so they are rejected.
+    [undefined, null, '', '.', '..'].forEach((value) => {
+        it(`rejects ${JSON.stringify(value) ?? 'undefined'}`, () => {
+            expect(() => encodePathSegment(value, 'id')).to.throw(
+                ValueError,
+                'Invalid id: must not be undefined, null, empty, "." or "..".'
+            );
+        });
     });
 });

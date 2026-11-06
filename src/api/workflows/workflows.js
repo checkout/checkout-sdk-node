@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { _delete, get, patch, post, put } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACTIONS_PATH = 'actions';
@@ -71,12 +72,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id Workflow id.
      * @return {Promise<Object>} A promise to the workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -93,12 +95,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id Workflow id.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async remove(id) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -115,12 +118,13 @@ export default class Workflows {
      * @param {string} id Workflow id.
      * @param {Object} body Workflows request body.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async patch(id, body) {
         try {
             const response = await patch(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -143,12 +147,13 @@ export default class Workflows {
      * @param {string} id Workflow Id.
      * @param {Object} body Workflows action request body.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async addAction(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${ACTIONS_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}/${ACTIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -167,12 +172,13 @@ export default class Workflows {
      * @param {string} workflowActionId Workflow action ID.
      * @param {Object} body Workflows request body.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If workflowId or workflowActionId is undefined, null, empty, "." or "..".
      */
     async updateAction(workflowId, workflowActionId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${ACTIONS_PATH}/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${ACTIONS_PATH}/${encodePathSegment(workflowActionId, 'workflowActionId')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -190,12 +196,13 @@ export default class Workflows {
      * @param {string} workflowId Workflow id.
      * @param {string} workflowActionId Workflow action Id.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If workflowId or workflowActionId is undefined, null, empty, "." or "..".
      */
     async removeAction(workflowId, workflowActionId) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${ACTIONS_PATH}/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${ACTIONS_PATH}/${encodePathSegment(workflowActionId, 'workflowActionId')}`,
                 this.config,
                 this.config.sk
             );
@@ -212,12 +219,13 @@ export default class Workflows {
      * @param {string} id Workflow Id.
      * @param {Object} body Workflows request body.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async addCondition(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${CONDITIONS_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}/${CONDITIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -236,12 +244,13 @@ export default class Workflows {
      * @param {string} workflowConditionId Workflow condition ID.
      * @param {Object} body Workflows request body.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If workflowId or workflowConditionId is undefined, null, empty, "." or "..".
      */
     async updateCondition(workflowId, workflowConditionId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${CONDITIONS_PATH}/${workflowConditionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${CONDITIONS_PATH}/${encodePathSegment(workflowConditionId, 'workflowConditionId')}`,
                 this.config,
                 this.config.sk,
                 body
@@ -259,12 +268,13 @@ export default class Workflows {
      * @param {string} workflowId Workflow id.
      * @param {string} workflowConditionId Workflow condition Id.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If workflowId or workflowConditionId is undefined, null, empty, "." or "..".
      */
     async removeCondition(workflowId, workflowConditionId) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${workflowId}/${CONDITIONS_PATH}/${workflowConditionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${CONDITIONS_PATH}/${encodePathSegment(workflowConditionId, 'workflowConditionId')}`,
                 this.config,
                 this.config.sk
             );
@@ -281,12 +291,13 @@ export default class Workflows {
      * @param {string} id Workflow id.
      * @param {Object} body Event types for which the workflow will execute.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async test(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${id}/${TEST_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${encodePathSegment(id, 'id')}/${TEST_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -323,12 +334,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id Event ID.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getEvent(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -345,12 +357,13 @@ export default class Workflows {
      * @param {string} eventId Event ID.
      * @param {string} workflowActionId Workflow Action ID.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If eventId or workflowActionId is undefined, null, empty, "." or "..".
      */
     async getActionInvocations(eventId, workflowActionId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${eventId}/${ACTIONS_PATH}/${workflowActionId}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${encodePathSegment(eventId, 'eventId')}/${ACTIONS_PATH}/${encodePathSegment(workflowActionId, 'workflowActionId')}`,
                 this.config,
                 this.config.sk
             );
@@ -366,12 +379,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id Event ID.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async reflowByEvent(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${id}/${REFLOW_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${encodePathSegment(id, 'id')}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -390,12 +404,13 @@ export default class Workflows {
      * @param {string} eventId Event ID.
      * @param {string} workflowId Workflow ID.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If eventId or workflowId is undefined, null, empty, "." or "..".
      */
     async reflowByEventAndWorkflow(eventId, workflowId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${eventId}/${WORKFLOW_PATH}/${workflowId}/${REFLOW_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${encodePathSegment(eventId, 'eventId')}/${WORKFLOW_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -463,12 +478,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id The event identifier.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async getSubjectEvents(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${id}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );
@@ -484,12 +500,13 @@ export default class Workflows {
      * @memberof Workflows
      * @param {string} id The subject identifier (for example, a payment ID or a dispute ID).
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async reflowBySubject(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${id}/${REFLOW_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${encodePathSegment(id, 'id')}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -506,12 +523,13 @@ export default class Workflows {
      * @param {string} subjectId Subject ID.
      * @param {string} workflowId Workflow ID.
      * @return {Promise<Object>} A promise to the Workflows response.
+     * @throws {ValueError} If subjectId or workflowId is undefined, null, empty, "." or "..".
      */
     async reflowBySubjectAndWorkflow(subjectId, workflowId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${subjectId}/${WORKFLOW_PATH}/${workflowId}/${REFLOW_PATH}`,
+                `${this.config.host}/${WORKFLOWS_PATH}/${EVENTS_PATH}/${SUBJECT_PATH}/${encodePathSegment(subjectId, 'subjectId')}/${WORKFLOW_PATH}/${encodePathSegment(workflowId, 'workflowId')}/${REFLOW_PATH}`,
                 this.config,
                 this.config.sk
             );

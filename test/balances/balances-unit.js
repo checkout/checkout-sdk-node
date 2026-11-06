@@ -230,3 +230,56 @@ describe('Balances', () => {
         expect(balance.data[0]).to.have.property('balances');
     });
 });
+
+// Query values are percent-encoded by the SDK.
+describe('Balances - query values', () => {
+    let capturedUrl;
+
+    beforeEach(() => {
+        capturedUrl = undefined;
+        nock('https://balances.sandbox.checkout.com')
+            .get(/.*/)
+            .reply(function (uri) {
+                capturedUrl = uri;
+                return [200, {}];
+            });
+    });
+
+    afterEach(() => nock.cleanAll());
+
+    [
+        ['sends a plain value unchanged', 'USD', 'USD'],
+        ['encodes & and =', 'USD&b=c', 'USD%26b%3Dc'],
+        ['encodes #', 'USD#x', 'USD%23x'],
+    ].forEach(([title, value, encoded]) => {
+        it(`retrieve with a currency ${title}`, async () => {
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.balances.retrieve('ent_1', value);
+            expect(capturedUrl).to.equal(`/balances/ent_1?query=currency%3A${encoded}`);
+        });
+    });
+
+    [
+        ['sends a plain value unchanged', 'ORD-123', 'ORD-123'],
+        ['encodes & and =', 'a&b=c', 'a%26b%3Dc'],
+        ['encodes #', 'INV#42', 'INV%2342'],
+    ].forEach(([title, value, encoded]) => {
+        it(`retrieve with a query ${title}`, async () => {
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.balances.retrieve('ent_1', { query: value });
+            expect(capturedUrl).to.equal(`/balances/ent_1?query=${encoded}`);
+        });
+    });
+
+    [
+        ['sends a plain value unchanged', 'ORD-123', 'ORD-123'],
+        ['encodes & and =', 'a&b=c', 'a%26b%3Dc'],
+        ['encodes #', 'INV#42', 'INV%2342'],
+    ].forEach(([title, value, encoded]) => {
+        it(`retrieve with withCurrencyAccountId ${title}`, async () => {
+            const cko = new Checkout(SK, { subdomain: '123456789' });
+            await cko.balances.retrieve('ent_1', { withCurrencyAccountId: value });
+            expect(capturedUrl).to.equal(`/balances/ent_1?withCurrencyAccountId=${encoded}`);
+        });
+    });
+});

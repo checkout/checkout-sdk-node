@@ -1,6 +1,6 @@
 import { _delete, get, post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const CONTROLS_PATH = 'controls';
@@ -66,12 +66,13 @@ export default class ControlGroups {
      * @memberof ControlGroups
      * @param {string} controlGroupId The control group ID.
      * @return {Promise<Object>} A promise to the control group details.
+     * @throws {ValueError} If controlGroupId is undefined, null, empty, "." or "..".
      */
     async getControlGroup(controlGroupId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${controlGroupId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${encodePathSegment(controlGroupId, 'controlGroupId')}`,
                 this.config,
                 this.config.sk
             );
@@ -89,12 +90,13 @@ export default class ControlGroups {
      * @memberof ControlGroups
      * @param {string} controlGroupId The control group ID.
      * @return {Promise<Object>} A promise to the deletion response.
+     * @throws {ValueError} If controlGroupId is undefined, null, empty, "." or "..".
      */
     async deleteControlGroup(controlGroupId) {
         try {
             const response = await _delete(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${controlGroupId}`,
+                `${this.config.host}/${ISSUING_PATH}/${CONTROLS_PATH}/${CONTROL_GROUPS_PATH}/${encodePathSegment(controlGroupId, 'controlGroupId')}`,
                 this.config,
                 this.config.sk
             );

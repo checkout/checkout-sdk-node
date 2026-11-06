@@ -1,6 +1,6 @@
 import { get } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
-import { buildQueryParams } from '../../services/utils.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ISSUING_PATH = 'issuing';
@@ -43,12 +43,13 @@ export default class Transactions {
      * @memberof Transactions
      * @param {string} transactionId The transaction ID.
      * @return {Promise<Object>} A promise to the transaction details.
+     * @throws {ValueError} If transactionId is undefined, null, empty, "." or "..".
      */
     async getTransactionById(transactionId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${TRANSACTIONS_PATH}/${transactionId}`,
+                `${this.config.host}/${ISSUING_PATH}/${TRANSACTIONS_PATH}/${encodePathSegment(transactionId, 'transactionId')}`,
                 this.config,
                 this.config.sk
             );

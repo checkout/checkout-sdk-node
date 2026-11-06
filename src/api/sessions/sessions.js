@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const COLLECT_DATA_PATH = 'collect-data';
@@ -61,6 +62,7 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {string} channel Type of channnel.
      * @return {Promise<Object>} A promise to the sessions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id, channel) {
         try {
@@ -70,7 +72,7 @@ export default class Sessions {
 
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${SESSIONS_PATH}/${id}`,
+                `${this.config.host}/${SESSIONS_PATH}/${encodePathSegment(id, 'id')}`,
                 config,
                 this.config.sk
             );
@@ -87,12 +89,13 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {Object} body Sessions request body.
      * @return {Promise<Object>} A promise to the sessions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async update(id, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${SESSIONS_PATH}/${id}/${COLLECT_DATA_PATH}`,
+                `${this.config.host}/${SESSIONS_PATH}/${encodePathSegment(id, 'id')}/${COLLECT_DATA_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -110,12 +113,13 @@ export default class Sessions {
      * @memberof Sessions
      * @param {string} id Sessions id.
      * @return {Promise<Object>} A promise to the sessions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async complete(id) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${SESSIONS_PATH}/${id}/${COMPLETE_PATH}`,
+                `${this.config.host}/${SESSIONS_PATH}/${encodePathSegment(id, 'id')}/${COMPLETE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -133,6 +137,7 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {string} threeDsMethodCompletion 3DS Method completion indicator
      * @return {Promise<Object>} A promise to the sessions response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async update3DSMethodCompletionIndicator(id, threeDsMethodCompletion) {
         try {
@@ -142,7 +147,7 @@ export default class Sessions {
 
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${SESSIONS_PATH}/${id}/${ISSUER_FINGERPRINT_PATH}`,
+                `${this.config.host}/${SESSIONS_PATH}/${encodePathSegment(id, 'id')}/${ISSUER_FINGERPRINT_PATH}`,
                 this.config,
                 this.config.sk,
                 body

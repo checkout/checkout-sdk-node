@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const PAYMENT_LINKS_PATH = 'payment-links';
@@ -77,12 +78,13 @@ export default class PaymentLinks {
      * @memberof PaymentLinks
      * @param {string} id
      * @return {Promise<Object>} A promise to the Payment Link response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${PAYMENT_LINKS_PATH}/${id}`,
+                `${this.config.host}/${PAYMENT_LINKS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );

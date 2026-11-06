@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get } from '../../services/http.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACTIONS_PATH = 'actions';
@@ -29,14 +30,7 @@ export default class Reconciliation {
      */
     async getPayments(body) {
         try {
-            let url = `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}`, body);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             const res = await response.json;
@@ -59,12 +53,13 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} paymentId Payment id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
      */
     async getPayment(paymentId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${paymentId}`,
+                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${encodePathSegment(paymentId, 'paymentId')}`,
                 this.config,
                 this.config.sk
             );
@@ -83,14 +78,7 @@ export default class Reconciliation {
      */
     async getPaymentsCsv(body) {
         try {
-            let url = `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`, body);
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -113,14 +101,7 @@ export default class Reconciliation {
      */
     async getStatements(body) {
         try {
-            let url = `${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}`, body);
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -135,12 +116,13 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} statementId Statement id.
      * @return {Promise<Buffer>} A promise to the request reconciliation response.
+     * @throws {ValueError} If statementId is undefined, null, empty, "." or "..".
      */
     async getStatementCsv(statementId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}/${statementId}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`,
+                `${this.config.host}/${REPORTING_PATH}/${STATEMENTS_PATH}/${encodePathSegment(statementId, 'statementId')}/${PAYMENTS_PATH}/${DOWNLOAD_PATH}`,
                 { ...this.config, csv: true },
                 this.config.sk
             );
@@ -159,14 +141,7 @@ export default class Reconciliation {
      */
     async getPaymentsActions(body) {
         try {
-            let url = `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}`, body);
 
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
@@ -181,12 +156,13 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} actionsId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
+     * @throws {ValueError} If actionsId is undefined, null, empty, "." or "..".
      */
     async getPaymentsAction(actionsId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${ACTIONS_PATH}/${actionsId}`,
+                `${this.config.host}/${REPORTING_PATH}/${PAYMENTS_PATH}/${ACTIONS_PATH}/${encodePathSegment(actionsId, 'actionsId')}`,
                 this.config,
                 this.config.sk
             );
@@ -205,14 +181,7 @@ export default class Reconciliation {
      */
     async getPaymentsActionsCsv(body) {
         try {
-            let url = `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${DOWNLOAD_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${DOWNLOAD_PATH}`, body);
             const response = await get(
                 this.config.httpClient,
                 url,
@@ -231,12 +200,13 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} actionId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
+     * @throws {ValueError} If actionId is undefined, null, empty, "." or "..".
      */
     async getAction(actionId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${actionId}`,
+                `${this.config.host}/${REPORTING_PATH}/${ACTIONS_PATH}/${encodePathSegment(actionId, 'actionId')}`,
                 this.config,
                 this.config.sk
             );

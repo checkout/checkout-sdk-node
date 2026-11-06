@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post, put } from '../../services/http.js';
+import { buildQueryParams, encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const ACCEPT_PATH = 'accept';
@@ -32,14 +33,7 @@ export default class Disputes {
      */
     async get(body) {
         try {
-            let url = `${this.config.host}/${DISPUTES_PATH}`;
-
-            if (body) {
-                const queryString = Object.keys(body)
-                    .map((key) => `${key}=${body[key]}`)
-                    .join('&');
-                url += `?${queryString}`;
-            }
+            const url = buildQueryParams(`${this.config.host}/${DISPUTES_PATH}`, body);
             const response = await get(this.config.httpClient, url, this.config, this.config.sk);
             return await response.json;
         } catch (err) {
@@ -53,12 +47,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async getDetails(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}`,
                 this.config,
                 this.config.sk
             );
@@ -74,12 +69,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async accept(disputeId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${ACCEPT_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${ACCEPT_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -102,12 +98,13 @@ export default class Disputes {
      * @param {string} disputeId Dispute id.
      * @param {Object} body Evidence
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async provideEvidence(disputeId, body) {
         try {
             const response = await put(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -124,12 +121,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async getEvidence(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -147,12 +145,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async submit(disputeId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -170,12 +169,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the compiled submitted evidence response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async getCompiledSubmittedEvidence(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${SUBMITTED_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}/${SUBMITTED_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -192,12 +192,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute scheme files response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async getDisputeSchemeFiles(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${SCHEMEFILES_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${SCHEMEFILES_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -215,12 +216,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<void>} A promise that resolves when evidence is submitted successfully (204 No Content).
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async submitArbitrationEvidence(disputeId) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${ARBITRATION_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}/${ARBITRATION_PATH}`,
                 this.config,
                 this.config.sk
             );
@@ -242,12 +244,13 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the compiled submitted arbitration evidence response.
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
      */
     async getCompiledSubmittedArbitrationEvidence(disputeId) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${DISPUTES_PATH}/${disputeId}/${EVIDENCE_PATH}/${ARBITRATION_PATH}/${SUBMITTED_PATH}`,
+                `${this.config.host}/${DISPUTES_PATH}/${encodePathSegment(disputeId, 'disputeId')}/${EVIDENCE_PATH}/${ARBITRATION_PATH}/${SUBMITTED_PATH}`,
                 this.config,
                 this.config.sk
             );

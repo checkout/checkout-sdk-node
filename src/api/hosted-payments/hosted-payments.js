@@ -1,5 +1,6 @@
 import { determineError } from '../../services/errors.js';
 import { get, post } from '../../services/http.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const HOSTED_PAYMENTS_PATH = 'hosted-payments';
@@ -76,12 +77,13 @@ export default class HostedPayments {
      * @memberof HostedPayments
      * @param {string} id - Hosted payment id
      * @return {Promise<Object>} A promise to the Hosted Payment response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async get(id) {
         try {
             const response = await get(
                 this.config.httpClient,
-                `${this.config.host}/${HOSTED_PAYMENTS_PATH}/${id}`,
+                `${this.config.host}/${HOSTED_PAYMENTS_PATH}/${encodePathSegment(id, 'id')}`,
                 this.config,
                 this.config.sk
             );

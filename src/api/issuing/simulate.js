@@ -1,5 +1,6 @@
 import { post } from '../../services/http.js';
 import { determineError } from '../../services/errors.js';
+import { encodePathSegment } from '../../services/utils.js';
 
 // Path segments appended to the API base (config.host).
 const AUTHENTICATION_PATH = 'authentication';
@@ -51,12 +52,13 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateIncrement(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${AUTHORIZATIONS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${encodePathSegment(id, 'id')}/${AUTHORIZATIONS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -74,12 +76,13 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateClearing(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${PRESENTMENTS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${encodePathSegment(id, 'id')}/${PRESENTMENTS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -97,12 +100,13 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Refund amount and params.
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateRefund(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${REFUNDS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${encodePathSegment(id, 'id')}/${REFUNDS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
@@ -120,12 +124,13 @@ export default class Simulate {
      * @param {String} id transaction ID.
      * @param {Object} body Amount.
      * @return {Promise<Object>} A promise to the simulation response.
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
      */
     async simulateReversal(id, body) {
         try {
             const response = await post(
                 this.config.httpClient,
-                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${id}/${REVERSALS_PATH}`,
+                `${this.config.host}/${ISSUING_PATH}/${SIMULATE_PATH}/${AUTHORIZATIONS_PATH}/${encodePathSegment(id, 'id')}/${REVERSALS_PATH}`,
                 this.config,
                 this.config.sk,
                 body
