@@ -158,9 +158,34 @@ export type CashApp = {
     action?: CashAppAction;
 };
 
-/** The payment methods of a Payment Setup. Only cashapp is typed here; other methods pass through. */
+/** Risk signals about the customer, forwarded to Tamara with the payment (Tamara.risk_assessment). */
+export type TamaraRiskAssessment = {
+    /** Specifies whether the customer is a premium customer. */
+    premium_customer?: boolean;
+    /** The customer's risk score. Integer. */
+    risk_score?: number;
+    /** The number of orders the customer has made in the last 24 hours. Integer. */
+    order_count_last24h?: number;
+    /** The number of devices linked to the customer. Integer. */
+    linked_device_count?: number;
+};
+
+/** The Tamara payment method's details and configuration (Tamara). Sent under payment_methods.tamara. */
+export type Tamara = {
+    /** The payment method status. Response only. */
+    status?: PaymentSetupPaymentMethodStatus;
+    /** The list of error codes or indicators that highlight missing or invalid information. Response only. */
+    flags?: string[];
+    /** The initialization state of the payment method. Default "disabled". */
+    initialization?: PaymentSetupPaymentMethodInitialization;
+    /** Risk signals about the customer, forwarded to Tamara with the payment. */
+    risk_assessment?: TamaraRiskAssessment;
+};
+
+/** The payment methods of a Payment Setup. Only cashapp and tamara are typed here; other methods pass through. */
 export type PaymentSetupPaymentMethods = {
     cashapp?: CashApp;
+    tamara?: Tamara;
     [paymentMethod: string]: unknown;
 };
 

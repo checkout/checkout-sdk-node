@@ -3572,4 +3572,143 @@ describe('Unit::Payment-Setups', () => {
             expect(result.customer.merchant_account.last_payment_amount).to.equal(55.99);
         });
     });
+
+    describe('Tamara initialization and risk_assessment', () => {
+        const host = 'https://123456789.api.sandbox.checkout.com';
+        const setupId = 'psu_wmakpe4nrza3rv2vhtwzoszja';
+
+        const tamaraRequest = {
+            processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+            amount: 1000,
+            currency: 'SAR',
+            payment_methods: {
+                tamara: {
+                    initialization: 'enabled',
+                    risk_assessment: {
+                        premium_customer: false,
+                        risk_score: 42,
+                        order_count_last24h: 0,
+                        linked_device_count: 2
+                    }
+                }
+            }
+        };
+
+        const setupResponse = {
+            id: setupId,
+            processing_channel_id: 'pc_aaaaaaaaaaaaaaaaaaaaaaaaaa',
+            amount: 1000,
+            currency: 'SAR',
+            payment_methods: {
+                tamara: {
+                    status: 'ready',
+                    flags: [],
+                    ...tamaraRequest.payment_methods.tamara
+                }
+            }
+        };
+
+        const expectTamaraWireKeys = (received) => {
+            const wire = JSON.stringify(received);
+            expect(wire).to.include('"tamara":{"initialization":"enabled","risk_assessment":{');
+            expect(wire).to.include('"premium_customer":false');
+            expect(wire).to.include('"risk_score":42');
+            expect(wire).to.include('"order_count_last24h":0');
+            expect(wire).to.include('"linked_device_count":2');
+            expect(wire).to.not.include('riskAssessment');
+            expect(wire).to.not.include('orderCountLast24h');
+        };
+
+        it('should send payment_methods.tamara with initialization and risk_assessment unchanged on create', async () => {
+            // Arrange
+            let received;
+            const scope = nock(host)
+                .post('/payments/setups', (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.createAPaymentSetup(tamaraRequest);
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(received).to.deep.equal(tamaraRequest);
+            expectTamaraWireKeys(received);
+            expect(result).to.deep.equal(setupResponse);
+        });
+
+        it('should send payment_methods.tamara with initialization and risk_assessment unchanged on update', async () => {
+            // Arrange
+            let received;
+            const scope = nock(host)
+                .put(`/payments/setups/${setupId}`, (body) => {
+                    received = body;
+                    return true;
+                })
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.updateAPaymentSetup(setupId, tamaraRequest);
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(received).to.deep.equal(tamaraRequest);
+            expectTamaraWireKeys(received);
+            expect(result).to.deep.equal(setupResponse);
+        });
+
+        it('should read tamara status, flags, initialization and risk_assessment from get', async () => {
+            // Arrange
+            const getResponse = {
+                ...setupResponse,
+                payment_methods: {
+                    tamara: { ...setupResponse.payment_methods.tamara, status: 'action_required', flags: ['example_flag'] }
+                }
+            };
+            const scope = nock(host)
+                .get(`/payments/setups/${setupId}`)
+                .reply(200, getResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.getAPaymentSetup(setupId);
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(result).to.deep.equal(getResponse);
+            const tamara = result.payment_methods.tamara;
+            expect(Object.keys(tamara)).to.have.lengthOf(4);
+            expect(tamara.status).to.equal('action_required');
+            expect(tamara.flags).to.deep.equal(['example_flag']);
+            expect(tamara.initialization).to.equal('enabled');
+            expect(Object.keys(tamara.risk_assessment)).to.have.lengthOf(4);
+            expect(tamara.risk_assessment.premium_customer).to.equal(false);
+            expect(tamara.risk_assessment.risk_score).to.equal(42);
+            expect(tamara.risk_assessment.order_count_last24h).to.equal(0);
+            expect(tamara.risk_assessment.linked_device_count).to.equal(2);
+        });
+
+        it('should confirm with "tamara" on payments/setups/{id}/confirm/tamara and read the tamara response', async () => {
+            // Arrange
+            const scope = nock(host)
+                .post(`/payments/setups/${setupId}/confirm/tamara`)
+                .reply(200, setupResponse);
+
+            const cko = new Checkout('sk_test_xxx', { subdomain: '123456789' });
+
+            // Act
+            const result = await cko.paymentSetups.confirmAPaymentSetup(setupId, 'tamara');
+
+            // Assert
+            expect(scope.isDone()).to.be.true;
+            expect(result.payment_methods.tamara).to.deep.equal(setupResponse.payment_methods.tamara);
+        });
+    });
 });
