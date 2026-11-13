@@ -39,14 +39,23 @@ describe('Service Utils - encodePathSegment', () => {
 
     // Values with reserved characters, which the SDK percent-encodes.
     [
-        ['../x', '..%2Fx'],
-        ['%2e%2e/x', '%252e%252e%2Fx'],
-        ['..\\x', '..%5Cx'],
+        ['%2e%2e', '%252e%252e'],
         ['a?b', 'a%3Fb'],
         ['a#b', 'a%23b'],
     ].forEach(([value, expected]) => {
         it(`encodes ${value}`, () => {
             expect(encodePathSegment(value, 'id')).to.equal(expected);
+        });
+    });
+
+    // The API decodes %2F and %5C back into separators, so "/", "\\" and ASCII control
+    // characters are refused instead of encoded.
+    ['../x', '%2e%2e/x', 'x/y', '..\\x', 'a\\b', 'a\u0000b', 'a\nb', 'a\u001fb', 'a\u007fb'].forEach((value) => {
+        it(`rejects ${JSON.stringify(value)}`, () => {
+            expect(() => encodePathSegment(value, 'id')).to.throw(
+                ValueError,
+                'Invalid id: must not contain "/", "\\" or ASCII control characters.'
+            );
         });
     });
 
