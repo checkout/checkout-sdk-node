@@ -72,7 +72,8 @@ export default class PlatformFiles {
      * @param {Object} body The body; body.purpose is the purpose of the file upload, one of the
      *   values above.
      * @returns {Promise<Object>} A promise to the file id and upload link.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async uploadAFile(entityId, body) {
         try {
@@ -98,7 +99,8 @@ export default class PlatformFiles {
      * @returns {Promise<Object>} A promise to the file's id, status, status_reasons, size,
      *   mime_type, uploaded_on, purpose and _links (download, the link to fetch the content, and
      *   self).
-     * @throws {ValueError} If entityId or fileId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or fileId is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async retrieveAFile(entityId, fileId) {
         try {

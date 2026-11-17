@@ -50,7 +50,8 @@ export default class FaceAuthentications {
      * @method getFaceAuthentication
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @returns {Promise<Object>} A promise to the Get a face authentication response
-     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getFaceAuthentication(face_authentication_id) {
         try {
@@ -77,7 +78,8 @@ export default class FaceAuthentications {
      * @param {number} [params.skip] - The number of attempts to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of attempts to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempts response
-     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async listAttempts(face_authentication_id, params) {
         try {
@@ -105,7 +107,8 @@ export default class FaceAuthentications {
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @param {string} attempt_id - The attempt's unique identifier
      * @returns {Promise<Object>} A promise to the Get a face authentication attempt response
-     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, null, empty, "."
+     * or "..", or contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getAttempt(face_authentication_id, attempt_id) {
         try {
@@ -133,7 +136,8 @@ export default class FaceAuthentications {
      * @param {number} [params.skip] - The number of assets to skip. Defaults to 0
      * @param {number} [params.limit] - The maximum number of assets to return. Defaults to 10
      * @returns {Promise<Object>} A promise to the Get face authentication attempt assets response
-     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id or attempt_id is undefined, null, empty, "."
+     * or "..", or contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getAttemptAssets(face_authentication_id, attempt_id, params) {
         try {
@@ -162,7 +166,8 @@ export default class FaceAuthentications {
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Create a face authentication attempt response
-     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async createAttempt(face_authentication_id, body) {
         try {
@@ -187,7 +192,8 @@ export default class FaceAuthentications {
      * @method anonymizeFaceAuthentication
      * @param {string} face_authentication_id - The face authentication's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize a face authentication response
-     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If face_authentication_id is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async anonymizeFaceAuthentication(face_authentication_id) {
         try {

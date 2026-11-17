@@ -46,7 +46,8 @@ export default class Applicants {
      * @method getApplicant
      * @param {string} applicantId - The applicant profile's unique identifier
      * @returns {Promise<Object>} A promise to the Get an applicant response
-     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getApplicant(applicantId) {
         try {
@@ -70,7 +71,8 @@ export default class Applicants {
      * @param {string} applicantId - The applicant profile's unique identifier
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Update an applicant response
-     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async updateApplicant(applicantId, body) {
         try {
@@ -94,7 +96,8 @@ export default class Applicants {
      * @method anonymizeApplicant
      * @param {string} applicantId - The applicant profile's unique identifier
      * @returns {Promise<Object>} A promise to the Anonymize an applicant response
-     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If applicantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async anonymizeApplicant(applicantId) {
         try {

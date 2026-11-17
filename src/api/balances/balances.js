@@ -38,7 +38,8 @@ export default class Balances {
      *       that point in time. Forwarded verbatim as the `balancesAt` (camelCase)
      *       query parameter, as defined in swagger.
      * @return {Promise<Object>} A promise to the balances response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async retrieve(id, options) {
         try {
@@ -113,7 +114,8 @@ export default class Balances {
      * @param {string} currencyAccountId The ID of the sub-account to retrieve top-up
      *   instructions for.
      * @return {Promise<Object>} A promise to the top-up instructions response.
-     * @throws {ValueError} If entityId or currencyAccountId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or currencyAccountId is undefined, null, empty, "." or "..",
+     * or contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async retrieveTopUpInstructions(entityId, currencyAccountId) {
         try {

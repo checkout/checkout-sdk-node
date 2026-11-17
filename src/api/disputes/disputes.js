@@ -47,7 +47,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getDetails(disputeId) {
         try {
@@ -69,7 +70,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async accept(disputeId) {
         try {
@@ -98,7 +100,8 @@ export default class Disputes {
      * @param {string} disputeId Dispute id.
      * @param {Object} body Evidence
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async provideEvidence(disputeId, body) {
         try {
@@ -121,7 +124,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getEvidence(disputeId) {
         try {
@@ -145,7 +149,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async submit(disputeId) {
         try {
@@ -169,7 +174,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the compiled submitted evidence response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getCompiledSubmittedEvidence(disputeId) {
         try {
@@ -192,7 +198,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the dispute scheme files response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getDisputeSchemeFiles(disputeId) {
         try {
@@ -216,7 +223,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<void>} A promise that resolves when evidence is submitted successfully (204 No Content).
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async submitArbitrationEvidence(disputeId) {
         try {
@@ -244,7 +252,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId Dispute id.
      * @return {Promise<Object>} A promise to the compiled submitted arbitration evidence response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getCompiledSubmittedArbitrationEvidence(disputeId) {
         try {

@@ -56,7 +56,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
      * @return {Promise<Object>} A promise to the dispute details.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getDispute(disputeId) {
         try {
@@ -80,7 +81,8 @@ export default class Disputes {
      * @memberof Disputes
      * @param {string} disputeId The dispute ID.
      * @return {Promise<Object>} A promise to the cancellation response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async cancelDispute(disputeId) {
         try {
@@ -105,7 +107,8 @@ export default class Disputes {
      * @param {Object} [body] Escalation request params. Provide `fraud_details`
      *   when the dispute reason code is fraud-related.
      * @return {Promise<Object>} A promise to the escalation response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async escalateDispute(disputeId, body) {
         try {
@@ -134,7 +137,8 @@ export default class Disputes {
      *   `evidence`, `fraud_details`, `reason_change_justification`,
      *   `action_response`).
      * @return {Promise<Object>} A promise to the dispute response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async amendDispute(disputeId, body) {
         try {
@@ -162,7 +166,8 @@ export default class Disputes {
      * @param {string} disputeId The dispute ID.
      * @param {Object} [body] Submission request params.
      * @return {Promise<Object>} A promise to the submission response.
-     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If disputeId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async submitDispute(disputeId, body) {
         try {

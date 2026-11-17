@@ -146,7 +146,8 @@ export default class Subentity {
      * @param {string} id Sub-entity id.
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getSubEntityDetails(id, schemaVersion) {
         try {
@@ -173,7 +174,8 @@ export default class Subentity {
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the Platforms response, the same shape as the
      *   onboardSubEntity response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateSubEntityDetails(id, body, schemaVersion) {
         try {
@@ -195,7 +197,8 @@ export default class Subentity {
      *
      * @param {string} entityId Sub-entity id.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getSubEntityMembers(entityId) {
         try {
@@ -218,7 +221,8 @@ export default class Subentity {
      * @param {string} userId The ID of the invited user.
      * @param {Object} body The body (Reinvite sub-entity member).
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If entityId or userId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or userId is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async reinviteSubEntityMember(entityId, userId, body) {
         try {

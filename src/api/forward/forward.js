@@ -48,7 +48,8 @@ export default class Forward {
      * @memberof Forward
      * @param {string} id The unique identifier of the forward request
      * @return {Promise<Object>} A promise to the forward request details
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async get(id) {
         try {
@@ -122,7 +123,8 @@ export default class Forward {
      * @param {string} name The secret name
      * @param {Object} body Update body with value and/or entity_id
      * @return {Promise<Object>} A promise to the updated secret metadata with incremented version
-     * @throws {ValueError} If name is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If name is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateSecret(name, body) {
         try {
@@ -145,7 +147,8 @@ export default class Forward {
      * @memberof Forward
      * @param {string} name The secret name to delete
      * @return {Promise<Object>} A promise to the deletion response
-     * @throws {ValueError} If name is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If name is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async deleteSecret(name) {
         try {

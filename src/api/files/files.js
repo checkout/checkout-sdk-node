@@ -64,7 +64,8 @@ export default class Files {
      * @memberof Files
      * @param {string} fileId Files id.
      * @return {Promise<Object>} A promise to the files response.
-     * @throws {ValueError} If fileId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If fileId is undefined, null, empty, "." or "..", or contains "/", "\",
+     * an ASCII control character or an unpaired surrogate.
      */
     async getFile(fileId) {
         try {

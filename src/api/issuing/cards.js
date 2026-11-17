@@ -65,7 +65,8 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card details response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getCardDetails(id) {
         try {
@@ -126,7 +127,8 @@ export default class Cards {
      *   `scheduled_revocation_date`), `scheduled_activation_date`, `last_activated_on`,
      *   `root_card_id`, `parent_card_id`, `scheme`, `created_date`, `last_modified_date`, `_links`
      *   and, for virtual cards only (`type` is `virtual`), `is_single_use`.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateCard(id, body, headers) {
         try {
@@ -154,7 +156,8 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body 3DS enrollment params.
      * @return {Promise<Object>} A promise to the card response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async enrollThreeDS(id, body) {
         try {
@@ -178,7 +181,8 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body 3DS enrollment params.
      * @return {Promise<Object>} A promise to the card response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateThreeDS(id, body) {
         try {
@@ -201,7 +205,8 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getThreeDSDetails(id) {
         try {
@@ -226,7 +231,8 @@ export default class Cards {
      * @memberof Cards
      * @param {string} id Card id.
      * @return {Promise<Object>} A promise to the card response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async activateCard(id) {
         try {
@@ -249,7 +255,8 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body Card params.
      * @return {Promise<Object>} A promise to the card response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getCardCredentials(id, body) {
         try {
@@ -272,7 +279,8 @@ export default class Cards {
      * @param {string} id Card id.
      * @param {Object} body Card renewal params.
      * @return {Promise<Object>} A promise to the card renewal response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async renewCard(id, body) {
         try {
@@ -298,7 +306,8 @@ export default class Cards {
      *   without a body.
      * @param {string} [body.reason] Optional reason: `expired`, `reported_lost` or `reported_stolen`.
      * @return {Promise<Object>} A promise to the revoke-card response, carrying `_links`.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async revokeCard(id, body) {
         try {
@@ -324,7 +333,8 @@ export default class Cards {
      *   without a body.
      * @param {string} [body.reason] Optional reason: `suspected_lost` or `suspected_stolen`.
      * @return {Promise<Object>} A promise to the suspend-card response, carrying `_links`.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async suspendCard(id, body) {
         try {

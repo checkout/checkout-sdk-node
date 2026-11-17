@@ -62,7 +62,8 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {string} channel Type of channnel.
      * @return {Promise<Object>} A promise to the sessions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async get(id, channel) {
         try {
@@ -89,7 +90,8 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {Object} body Sessions request body.
      * @return {Promise<Object>} A promise to the sessions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async update(id, body) {
         try {
@@ -113,7 +115,8 @@ export default class Sessions {
      * @memberof Sessions
      * @param {string} id Sessions id.
      * @return {Promise<Object>} A promise to the sessions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async complete(id) {
         try {
@@ -137,7 +140,8 @@ export default class Sessions {
      * @param {string} id Sessions id.
      * @param {string} threeDsMethodCompletion 3DS Method completion indicator
      * @return {Promise<Object>} A promise to the sessions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async update3DSMethodCompletionIndicator(id, threeDsMethodCompletion) {
         try {

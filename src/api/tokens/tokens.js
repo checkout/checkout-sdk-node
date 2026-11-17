@@ -48,7 +48,8 @@ export default class Tokens {
      * @memberof Tokens
      * @param {string} tokenId The token id (e.g., "tok_...").
      * @return {Promise<Object>} A promise to the token metadata response.
-     * @throws {ValueError} If tokenId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If tokenId is undefined, null, empty, "." or "..", or contains "/", "\",
+     * an ASCII control character or an unpaired surrogate.
      */
     async getTokenMetadata(tokenId) {
         try {

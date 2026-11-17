@@ -63,9 +63,23 @@ const VALID = 'abc_123';
 // Values with reserved characters, which the SDK percent-encodes.
 const RESERVED = ['%2e%2e', 'a?b', 'a#b', 'a b'];
 
-// "." and ".." (left unchanged by encodeURIComponent), empty values, and "/", "\\" and ASCII control
-// characters (the API decodes %2F and %5C back into separators) are rejected before any request is sent.
-const REJECTED = ['..', '.', '', undefined, null, '../x', '%2e%2e/x', '..\\x', 'a\u0000b', 'a\u007fb'];
+// "." and ".." (left unchanged by encodeURIComponent), empty values, "/", "\\", ASCII control
+// characters and text with an unpaired surrogate are rejected before any request is sent.
+const REJECTED = [
+    '..',
+    '.',
+    '',
+    undefined,
+    null,
+    '../x',
+    '%2e%2e/x',
+    '..\\x',
+    'a\u0000b',
+    'a\nb',
+    'a\tb',
+    'a\u007fb',
+    'a\uD800b',
+];
 
 // One row per SDK method that puts a caller value in the request path: the endpoint class, the
 // method, the arguments with every path value set to v, and the path sent for a valid id.
@@ -323,7 +337,7 @@ describe('Path segments - caller values are encoded', () => {
             }
         });
 
-        it(`${label} rejects ., .., empty, undefined, null, separators and control characters without sending a request`, async () => {
+        it(`${label} rejects invalid values without sending a request`, async () => {
             for (const value of REJECTED) {
                 let error;
                 try {

@@ -34,7 +34,8 @@ export default class PayoutSchedules {
      *
      * @param {string} id The sub-entity's ID.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async retrieveSubEntityPayoutSchedule(id) {
         try {
@@ -69,7 +70,8 @@ export default class PayoutSchedules {
      * @param {string} id The sub-entity's ID.
      * @param {Object} body Platforms request body.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateSubEntityPayoutSchedule(id, body) {
         try {

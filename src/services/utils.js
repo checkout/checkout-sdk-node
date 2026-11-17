@@ -28,20 +28,27 @@ export const buildQueryParams = (path, params) => {
     return queryString ? `${path}?${queryString}` : path;
 };
 
+// "/", "\" and the ASCII control characters (U+0000 to U+001F, U+007F).
+const FORBIDDEN_IN_SEGMENT = /[/\\\u0000-\u001f\u007f]/;
+
+// A surrogate code unit that is not part of a pair. With the u flag a valid pair is read as one
+// code point, so only unpaired surrogates match.
+const UNPAIRED_SURROGATE = /[\uD800-\uDFFF]/u;
+
 /**
  * Encode a caller-supplied value as a single path segment.
  *
  * The value is converted to a string and encoded with encodeURIComponent, so characters such as
- * "?", "#" and "%" are percent-encoded. "/", "\" and ASCII control characters are rejected rather
- * than encoded, because the API decodes "%2F" and "%5C" back into separators. Values that encoding
- * leaves unchanged and that are not valid segments ("." and "..") are rejected, as are undefined,
- * null and empty values.
+ * "?", "#" and "%" are percent-encoded. Values that contain "/", "\", an ASCII control character
+ * or an unpaired surrogate are rejected rather than encoded, so every value stays one path
+ * segment. Values that encoding leaves unchanged and that are not valid segments ("." and "..")
+ * are rejected, as are undefined, null and empty values.
  *
  * @param {*} value The value to place in the path, such as an id.
  * @param {string} name The parameter name, used in the error message.
  * @return {string} The encoded segment.
- * @throws {ValueError} If the value is undefined, null, empty, "." or "..", or contains "/", "\"
- * or an ASCII control character.
+ * @throws {ValueError} If the value is undefined, null, empty, "." or "..", or contains "/", "\",
+ * an ASCII control character or an unpaired surrogate.
  */
 export const encodePathSegment = (value, name) => {
     const segment = value === undefined || value === null ? '' : String(value);
@@ -50,8 +57,14 @@ export const encodePathSegment = (value, name) => {
         throw new ValueError(`Invalid ${name}: must not be undefined, null, empty, "." or "..".`);
     }
 
-    if (/[/\\\u0000-\u001f\u007f]/.test(segment)) {
-        throw new ValueError(`Invalid ${name}: must not contain "/", "\\" or ASCII control characters.`);
+    if (FORBIDDEN_IN_SEGMENT.test(segment)) {
+        throw new ValueError(
+            String.raw`Invalid ${name}: must not contain "/", "\" or ASCII control characters.`
+        );
+    }
+
+    if (UNPAIRED_SURROGATE.test(segment)) {
+        throw new ValueError(`Invalid ${name}: must be valid text (no unpaired surrogates).`);
     }
 
     return encodeURIComponent(segment);

@@ -28,7 +28,8 @@ export default class Baloto {
      * @param {string} id Payment id.
      * @memberof Baloto
      * @return {Promise<Object>} A promise to the Baloto response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async succeed(id) {
         try {
@@ -51,7 +52,8 @@ export default class Baloto {
      * @param {string} id Payment id.
      * @memberof Baloto
      * @return {Promise<Object>} A promise to the Baloto response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async expire(id) {
         try {

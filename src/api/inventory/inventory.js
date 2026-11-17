@@ -134,7 +134,8 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getInventoryReservation(id) {
         try {
@@ -157,7 +158,8 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async commitInventoryReservation(id) {
         try {
@@ -180,7 +182,8 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} id Reservation id.
      * @return {Promise<Object>} A promise to the InventoryReservation response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async releaseInventoryReservation(id) {
         try {
@@ -213,7 +216,8 @@ export default class Inventory {
      * @param {string} [options.expand] Set to `'product'` to embed the variant's
      *   product knowledge in the response.
      * @return {Promise<Object>} A promise to the InventoryLevels response.
-     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getInventoryLevels(variantId, options) {
         try {
@@ -251,7 +255,8 @@ export default class Inventory {
      * @param {number} [body.safety_stock] Buffer withheld from sale.
      * @param {string} [body.reason] Free-text reason for the ledger.
      * @return {Promise<Object>} A promise to the InventoryLevels response.
-     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async setInventoryLevels(variantId, body) {
         try {
@@ -291,7 +296,8 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} variantId Variant id (max 128 chars).
      * @return {Promise<Object>} A promise to the InventoryProductKnowledge response.
-     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getInventoryProduct(variantId) {
         try {
@@ -327,7 +333,8 @@ export default class Inventory {
      * @param {string} body.product_url Product page URL. [Required] max 2048 chars.
      * @param {string} body.image_url Product image URL. [Required] max 2048 chars.
      * @return {Promise<Object>} A promise to the InventoryProductKnowledge response.
-     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async setInventoryProduct(variantId, body) {
         try {
@@ -351,7 +358,8 @@ export default class Inventory {
      * @memberof Inventory
      * @param {string} variantId Variant id (max 128 chars).
      * @return {Promise<Object>} A promise that resolves to an empty object on success.
-     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If variantId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async deleteInventoryProduct(variantId) {
         try {
