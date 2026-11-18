@@ -67,7 +67,8 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {Object} body { field_names: string[] }
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async setRequirementsDue(entityId, body) {
         try {
@@ -91,7 +92,8 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {string} scenarioId The scenario id to execute.
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If entityId or scenarioId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or scenarioId is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async runScenario(entityId, scenarioId) {
         try {
@@ -114,7 +116,8 @@ export default class OnboardingSimulator {
      * @param {string} entityId The sub-entity id.
      * @param {Object} body { status: string, ... } (see swagger SimulatorSetStatusRequest).
      * @return {Promise<Object>} A promise to the simulation response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async setEntityStatus(entityId, body) {
         try {

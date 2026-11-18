@@ -49,7 +49,8 @@ export default class NetworkTokens {
      * @memberof NetworkTokens
      * @param {string} network_token_id - The network token ID
      * @returns {Promise<Object>} A promise to the Get Network Token response
-     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getNetworkToken(network_token_id) {
         try {
@@ -74,7 +75,8 @@ export default class NetworkTokens {
      * @param {string} network_token_id - The network token ID
      * @param {Object} body - Request body containing transaction_type
      * @returns {Promise<Object>} A promise to the Request a cryptogram response
-     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async provisionCryptogram(network_token_id, body) {
         try {
@@ -100,7 +102,8 @@ export default class NetworkTokens {
      * @memberof NetworkTokens
      * @param {string} network_token_id - Unique token ID assigned by Checkout.com for each token
      * @returns {Promise<Object>} A promise to the Delete Network Token response
-     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If network_token_id is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async deleteNetworkToken(network_token_id) {
         try {

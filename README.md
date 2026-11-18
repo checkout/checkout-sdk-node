@@ -498,7 +498,13 @@ Here you have all the possible SDK specific errors:
 | BadGateway           | 502             | undefined               |
 | ValidationError      | 422             | object                  |
 | TooManyRequestsError | 429             | object/undefined        |
-| ValueError           | 429             | string describing error |
+| ValueError           | -               | string describing error |
+
+Identifiers passed to client methods (for example a payment id) are sent as single, percent-encoded path
+segments: pass them unencoded. A `ValueError` is thrown before any request is sent when an identifier is
+`undefined`, `null`, empty, `.` or `..`, contains text that is not valid (an unpaired surrogate), or contains
+`/`, `\` or an ASCII control character (U+0000 to U+001F, U+007F). To retrieve a customer whose email contains
+`/` or `\`, use the customer's ID.
 
 
 # :white_check_mark: Testing

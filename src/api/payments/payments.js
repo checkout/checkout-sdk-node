@@ -224,7 +224,8 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay|sid)_(\w{26})$/ The payment or payment session identifier.
      * @return {Promise<Object>} A promise to the get payment response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async get(id) {
         try {
@@ -247,7 +248,8 @@ export default class Payments {
      * @memberof Payments
      * @param {string} id /^(pay)_(\w{26})$/ The payment identifier.
      * @return {Promise<Object>} A promise to the getActions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getActions(id) {
         try {
@@ -272,7 +274,8 @@ export default class Payments {
      * @param {Object} body Payment Request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the getActions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async increment(id, body, idempotencyKey) {
         try {
@@ -299,7 +302,8 @@ export default class Payments {
      * @param {Object} body Payment Request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the getActions response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async cancelScheduledRetry(id, body, idempotencyKey) {
         try {
@@ -325,7 +329,8 @@ export default class Payments {
      * @param {Object} [body] Capture request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the capture response.
-     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async capture(paymentId, body, idempotencyKey) {
         try {
@@ -351,7 +356,8 @@ export default class Payments {
      * @param {Object} [body] Refund request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the refund response.
-     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async refund(paymentId, body, idempotencyKey) {
         try {
@@ -380,7 +386,8 @@ export default class Payments {
      * @param {Object} [body] Reverse request body.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the reverse response.
-     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async reverse(paymentId, body, idempotencyKey) {
         try {
@@ -407,7 +414,8 @@ export default class Payments {
      * @param {number} [body.amount] The amount to void, in the minor currency unit (min 0, max 9999999999). If not specified, the full payment amount is voided.
      * @param {string} [idempotencyKey] Idempotency Key.
      * @return {Promise<Object>} A promise to the void response.
-     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async void(paymentId, body, idempotencyKey) {
         try {

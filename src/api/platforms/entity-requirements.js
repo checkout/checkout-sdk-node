@@ -26,7 +26,8 @@ export default class EntityRequirements {
      * @param {string} entityId The sub-entity id.
      * @param {string} [schemaVersion='3.0'] Schema version to use (1.0, 2.0, or 3.0).
      * @return {Promise<Object>} A promise to the requirements list response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getEntityRequirements(entityId, schemaVersion) {
         try {
@@ -49,7 +50,8 @@ export default class EntityRequirements {
      * @param {string} entityId The sub-entity id.
      * @param {string} requirementId The requirement id.
      * @return {Promise<Object>} A promise to the requirement details response.
-     * @throws {ValueError} If entityId or requirementId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or requirementId is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getEntityRequirementDetails(entityId, requirementId) {
         try {
@@ -74,7 +76,8 @@ export default class EntityRequirements {
      * @param {Object} body { value: ... } — concrete shape defined by the
      *   requirement's `_schema` returned from {@link getEntityRequirementDetails}.
      * @return {Promise<Object>} A promise to the update response.
-     * @throws {ValueError} If entityId or requirementId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or requirementId is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async updateEntityRequirement(entityId, requirementId, body) {
         try {

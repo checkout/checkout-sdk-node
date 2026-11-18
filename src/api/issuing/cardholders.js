@@ -46,7 +46,8 @@ export default class Cardholders {
      * @memberof Cardholders
      * @param {string} id Cardholder id.
      * @return {Promise<Object>} A promise to the cardholder details response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getCardholder(id) {
         try {
@@ -69,7 +70,8 @@ export default class Cardholders {
      * @param {string} id Cardholder id.
      * @param {Object} body Cardholder params to update.
      * @return {Promise<Object>} A promise to the cardholder update response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateCardholder(id, body) {
         try {
@@ -92,7 +94,8 @@ export default class Cardholders {
      * @memberof Cardholders
      * @param {string} id Cardholder id.
      * @return {Promise<Object>} A promise to the cardholder details response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getCardholderCards(id) {
         try {

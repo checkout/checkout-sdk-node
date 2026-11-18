@@ -24,7 +24,8 @@ export default class ReserveRules {
      * @param {string} entityId The sub-entity's ID.
      * @param {string} id The reserve rule ID.
      * @return {Promise<Object>} A promise to the Platforms response (includes headers for ETag).
-     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getReserveRuleDetails(entityId, id) {
         try {
@@ -52,7 +53,8 @@ export default class ReserveRules {
      * @param {Object} body The body to be sent.
      * @param {string} ifMatch Identifies a specific version of a reserve rule to update (e.g. Y3Y9MCZydj0w).
      * @return {Promise<Object>} A promise to the Platforms response (includes headers for ETag).
-     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId or id is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async updateReserveRule(entityId, id, body, ifMatch) {
         try {
@@ -87,7 +89,8 @@ export default class ReserveRules {
      * @param {string} id The sub-entity's ID.
      * @param {Object} body The body of the reserve rule to be added.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async addReserveRule(id, body) {
         try {
@@ -109,7 +112,8 @@ export default class ReserveRules {
      *
      * @param {string} id The sub-entity's ID.
      * @return {Promise<Object>} A promise to the Platforms response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async queryReserveRules(id) {
         try {

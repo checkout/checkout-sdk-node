@@ -53,7 +53,8 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} paymentId Payment id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
-     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If paymentId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getPayment(paymentId) {
         try {
@@ -116,7 +117,8 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} statementId Statement id.
      * @return {Promise<Buffer>} A promise to the request reconciliation response.
-     * @throws {ValueError} If statementId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If statementId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getStatementCsv(statementId) {
         try {
@@ -156,7 +158,8 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} actionsId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
-     * @throws {ValueError} If actionsId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If actionsId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getPaymentsAction(actionsId) {
         try {
@@ -200,7 +203,8 @@ export default class Reconciliation {
      * @memberof Reconciliation
      * @param {string} actionId Action id.
      * @return {Promise<Object>} A promise to the request reconciliation response.
-     * @throws {ValueError} If actionId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If actionId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getAction(actionId) {
         try {

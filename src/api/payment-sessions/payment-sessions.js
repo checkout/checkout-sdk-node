@@ -92,7 +92,8 @@ export default class PaymentSessions {
      * @param {string} id The payment session ID.
      * @param {object} body PaymentSessions Request body.
      * @return {Promise<object>} A promise to payment context response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async submit(id, body) {
         try {

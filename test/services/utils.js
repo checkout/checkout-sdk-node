@@ -39,14 +39,47 @@ describe('Service Utils - encodePathSegment', () => {
 
     // Values with reserved characters, which the SDK percent-encodes.
     [
-        ['../x', '..%2Fx'],
-        ['%2e%2e/x', '%252e%252e%2Fx'],
-        ['..\\x', '..%5Cx'],
+        ['%2e%2e', '%252e%252e'],
         ['a?b', 'a%3Fb'],
         ['a#b', 'a%23b'],
+        ['a\u{1F600}b', 'a%F0%9F%98%80b'],
     ].forEach(([value, expected]) => {
         it(`encodes ${value}`, () => {
             expect(encodePathSegment(value, 'id')).to.equal(expected);
+        });
+    });
+
+    // "/", "\\" and ASCII control characters are rejected rather than encoded.
+    ['../x', '%2e%2e/x', 'x/y', '..\\x', 'a\\b', 'a\u0000b', 'a\nb', 'a\rb', 'a\tb', 'a\u001fb', 'a\u007fb'].forEach((value) => {
+        it(`rejects ${JSON.stringify(value)}`, () => {
+            expect(() => encodePathSegment(value, 'id')).to.throw(
+                ValueError,
+                'Invalid id: must not contain "/", "\\" or ASCII control characters.'
+            );
+        });
+    });
+
+    // Text with an unpaired surrogate is rejected with the same error type.
+    ['a\uD800b', 'a\uDC00b', '\uDC00\uD800', 'a\uD83D'].forEach((value) => {
+        it(`rejects ${JSON.stringify(value)}`, () => {
+            expect(() => encodePathSegment(value, 'id')).to.throw(
+                ValueError,
+                'Invalid id: must be valid text (no unpaired surrogates).'
+            );
+        });
+    });
+
+    it('names the parameter but not the value in the error message', () => {
+        ['sk_secret/x', 'sk_secret\u0000', 'sk_secret\uD800'].forEach((value) => {
+            let error;
+            try {
+                encodePathSegment(value, 'id');
+            } catch (err) {
+                error = err;
+            }
+            expect(error).to.be.instanceOf(ValueError);
+            expect(error.message).to.include('id');
+            expect(error.message).to.not.include('sk_secret');
         });
     });
 

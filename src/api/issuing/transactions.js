@@ -43,7 +43,8 @@ export default class Transactions {
      * @memberof Transactions
      * @param {string} transactionId The transaction ID.
      * @return {Promise<Object>} A promise to the transaction details.
-     * @throws {ValueError} If transactionId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If transactionId is undefined, null, empty, "." or "..", or contains
+     * "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async getTransactionById(transactionId) {
         try {

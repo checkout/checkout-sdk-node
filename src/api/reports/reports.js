@@ -41,7 +41,8 @@ export default class Reports {
      * @memberof Reports
      * @param {string} id The ID of the report to retrieve.
      * @return {Promise<Object>} A promise to the Reports response.
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getReportDetails(id) {
         try {
@@ -64,7 +65,8 @@ export default class Reports {
      * @param {string} id The ID of the report that the file belongs to.
      * @param {Object} fileId The ID of the file to retrieve.
      * @return {Promise<Object>} A promise to the Reports response.
-     * @throws {ValueError} If id or fileId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id or fileId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getReportFile(id, fileId) {
         try {

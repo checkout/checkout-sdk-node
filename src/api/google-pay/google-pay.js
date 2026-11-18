@@ -54,7 +54,8 @@ export default class GooglePay {
      * @param {string} entityId The enrolled entity id.
      * @param {Object} body { web_domain: string } per swagger `GooglePayRegisterDomainRequest`.
      * @return {Promise<Object>} A promise that resolves on success.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async registerDomain(entityId, body) {
         try {
@@ -77,7 +78,8 @@ export default class GooglePay {
      * @memberof GooglePay
      * @param {string} entityId The enrolled entity id.
      * @return {Promise<Object>} A promise to the registered-domains response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getRegisteredDomains(entityId) {
         try {
@@ -99,7 +101,8 @@ export default class GooglePay {
      * @memberof GooglePay
      * @param {string} entityId The enrolled entity id.
      * @return {Promise<Object>} A promise to the enrollment-state response.
-     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If entityId is undefined, null, empty, "." or "..", or contains "/",
+     * "\", an ASCII control character or an unpaired surrogate.
      */
     async getEnrollmentState(entityId) {
         try {

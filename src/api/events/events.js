@@ -72,7 +72,8 @@ export default class Events {
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the request event response.
-     * @throws {ValueError} If eventId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If eventId is undefined, null, empty, "." or "..", or contains "/", "\",
+     * an ASCII control character or an unpaired surrogate.
      */
     async retrieveEvent(eventId) {
         try {
@@ -95,7 +96,8 @@ export default class Events {
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the request event notifications response.
-     * @throws {ValueError} If body.eventId or body.notificationId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If body.eventId or body.notificationId is undefined, null, empty, "." or
+     * "..", or contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async retrieveEventNotification(body) {
         try {
@@ -118,7 +120,8 @@ export default class Events {
      * @memberof Events
      * @param {Object} body Event request body.
      * @return {Promise<Object>} A promise to the retry event response.
-     * @throws {ValueError} If body.eventId or body.webhookId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If body.eventId or body.webhookId is undefined, null, empty, "." or
+     * "..", or contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async retry(body) {
         try {
@@ -141,7 +144,8 @@ export default class Events {
      * @memberof Events
      * @param {string} eventId Event id.
      * @return {Promise<Object>} A promise to the retry events response.
-     * @throws {ValueError} If eventId is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If eventId is undefined, null, empty, "." or "..", or contains "/", "\",
+     * an ASCII control character or an unpaired surrogate.
      */
     async retryAll(eventId) {
         try {

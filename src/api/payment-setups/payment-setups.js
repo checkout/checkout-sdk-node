@@ -231,7 +231,8 @@ export default class PaymentSetups {
      * @param {string} id - The unique identifier of the Payment Setup to update.
      * @param {Object} body - Request body
      * @returns {Promise<Object>} A promise to the Update a Payment Setup response
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async updateAPaymentSetup(id, body) {
         try {
@@ -337,7 +338,8 @@ export default class PaymentSetups {
      * @memberof PaymentSetups
      * @param {string} id - The unique identifier of the Payment Setup to retrieve.
      * @returns {Promise<Object>} A promise to the Get a Payment Setup response
-     * @throws {ValueError} If id is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id is undefined, null, empty, "." or "..", or contains "/", "\", an
+     * ASCII control character or an unpaired surrogate.
      */
     async getAPaymentSetup(id) {
         try {
@@ -390,7 +392,8 @@ export default class PaymentSetups {
      * @param {string} id - The unique identifier of the Payment Setup.
      * @param {string} payment_method_name - The name of the payment method to process the payment with (e.g. "tabby", "klarna", "card", "cashapp", "tamara").
      * @returns {Promise<Object>} A promise to the Confirm a Payment Setup response
-     * @throws {ValueError} If id or payment_method_name is undefined, null, empty, "." or "..".
+     * @throws {ValueError} If id or payment_method_name is undefined, null, empty, "." or "..", or
+     * contains "/", "\", an ASCII control character or an unpaired surrogate.
      */
     async confirmAPaymentSetup(id, payment_method_name) {
         try {
