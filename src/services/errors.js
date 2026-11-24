@@ -174,7 +174,19 @@ export class ValueError extends Error {
     }
 }
 
+/**
+ * Map an error thrown by the HTTP layer to the SDK error the caller receives.
+ *
+ * @param {*} err An SDK error (returned unchanged), a `{ status, json }` error response or a
+ *   client error.
+ * @return {Promise<Error>} The SDK error.
+ * @throws {ValueError} When err is a ValueError.
+ */
 export const determineError = async (err) => {
+    // Already an SDK error thrown by the HTTP layer (every one sets http_code): keep its type and body
+    if (err instanceof Error && Object.hasOwn(err, 'http_code')) {
+        return err;
+    }
 
     if (
         err instanceof ApiTimeout ||

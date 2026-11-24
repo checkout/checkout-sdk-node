@@ -63,8 +63,8 @@ export default class Reports {
      *
      * @memberof Reports
      * @param {string} id The ID of the report that the file belongs to.
-     * @param {Object} fileId The ID of the file to retrieve.
-     * @return {Promise<Object>} A promise to the Reports response.
+     * @param {string} fileId The ID of the file to retrieve.
+     * @return {Promise<Buffer>} A promise to the content of the file.
      * @throws {ValueError} If id or fileId is undefined, null, empty, "." or "..", or contains "/",
      * "\", an ASCII control character or an unpaired surrogate.
      */
@@ -73,7 +73,8 @@ export default class Reports {
             const response = await get(
                 this.config.httpClient,
                 `${this.config.host}/${REPORTS_PATH}/${encodePathSegment(id, 'id')}/${FILES_PATH}/${encodePathSegment(fileId, 'fileId')}`,
-                { ...this.config, csv: true },
+                // The file is served from another location: one 302 to it is followed (see http.js downloadFile).
+                { ...this.config, csv: true, fileDownload: true },
                 this.config.sk
             );
             return await response.csv;
