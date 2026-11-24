@@ -5,5 +5,5 @@ export default class Reports {
 
     getAllReports: (parameters: Object) => Promise<Object>;
     getReportDetails: (id: string) => Promise<Object>;
-    getReportFile: (id: string, fileId: string) => Promise<Object>;
+    getReportFile: (id: string, fileId: string) => Promise<Buffer>;
 }

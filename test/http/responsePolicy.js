@@ -151,7 +151,41 @@ const REQUESTS = [
             cko.webhooks.registerWebhook({ url: 'https://example.com/hook', headers: { authorization: 'hook_value_123' } }),
         secret: 'hook_value_123',
     },
+    {
+        name: 'webhooks.updateWebhook (PUT)',
+        path: '/webhooks/wh_1',
+        call: (cko) =>
+            cko.webhooks.updateWebhook('wh_1', { url: 'https://example.com/hook', headers: { authorization: 'hook_value_put' } }),
+        secret: 'hook_value_put',
+    },
+    {
+        name: 'webhooks.partiallyUpdateWebhook (PATCH)',
+        path: '/webhooks/wh_1',
+        call: (cko) => cko.webhooks.partiallyUpdateWebhook('wh_1', { headers: { authorization: 'hook_value_patch' } }),
+        secret: 'hook_value_patch',
+    },
+    {
+        name: 'forward.updateSecret (PATCH)',
+        path: '/secrets/n',
+        call: (cko) => cko.forward.updateSecret('n', { value: 'secret_value_patch' }),
+        secret: 'secret_value_patch',
+    },
+    { name: 'webhooks.removeWebhook (DELETE)', path: '/webhooks/wh_1', call: (cko) => cko.webhooks.removeWebhook('wh_1') },
+    { name: 'forward.deleteSecret (DELETE)', path: '/secrets/n', call: (cko) => cko.forward.deleteSecret('n') },
 ];
+
+// Values a header must never repeat in an error, each appended to a value the test looks for.
+const HOSTILE_VALUES = {
+    'a tab': '\t',
+    DEL: '\u007f',
+    NEL: '\u0085',
+    'a line separator': '\u2028',
+    'a right-to-left override': '\u202e',
+    'full-width characters': '\uff53\uff4b',
+    'non-ASCII characters': '\u00e9',
+    'Bearer and CR/LF': 'Bearer \r\n',
+    'a value over the header size limit': 'x'.repeat(20000),
+};
 
 describe('HTTP response policy', () => {
     let api;
@@ -445,6 +479,68 @@ describe('HTTP response policy', () => {
                 expectNoCredentials(err, 'X-Signature', 'abc');
             });
 
+            [
+                (port) => `http://127.0.0.1:${port}/file.csv`,
+                (port) => `http://127.1:${port}/file.csv`,
+                (port) => `http://localhost:${port}/file.csv`,
+                (port) => `HTTP://127.0.0.1:${port}/file.csv`,
+                (port) => `http://[::1]:${port}/file.csv`,
+            ].forEach((locationOf) => {
+                it(`${httpClient}: an http file location (${locationOf('<port>')}) is not followed when the API is not on a loopback host`, async () => {
+                    const location = locationOf(other.http.address().port);
+                    api.handler = respond(302, { Location: location });
+                    const cko = skClient(httpClient, api);
+                    cko.config.host = api.origin.replace('127.0.0.1', '0.0.0.0');
+
+                    const err = await catchError(getFile(cko));
+
+                    expect(err).to.be.instanceOf(ApiError);
+                    expect(err.http_code).to.equal(302);
+                    expect(err.body).to.deep.equal({ status: 302 });
+                    expect(api.requests).to.have.length(1);
+                    expect(other.requests).to.deep.equal([]);
+                });
+            });
+
+            ['http://127.0.0.1%E2%80%AE.example/file.csv', 'http://ex\u00e4mple.invalid/file.csv'].forEach((location) => {
+                it(`${httpClient}: a 302 to ${JSON.stringify(location)} is not followed`, async () => {
+                    api.handler = respond(302, { Location: location });
+
+                    const err = await catchError(getFile(skClient(httpClient, api)));
+
+                    expect(err).to.be.instanceOf(ApiError);
+                    expect(err.body).to.deep.equal({ status: 302 });
+                    expect(other.requests).to.deep.equal([]);
+                });
+            });
+
+            it(`${httpClient}: a connection error of the file location names the API request, not the file location`, async () => {
+                const closed = await startServer();
+                await stopServer(closed);
+                api.handler = respond(302, { Location: `${closed.origin}/file.csv?X-Signature=signature_value_123` });
+
+                const err = await catchError(getFile(skClient(httpClient, api)));
+
+                expect(err).to.be.instanceOf(ApiError);
+                expect(err.http_code).to.equal(undefined);
+                expect(err.body).to.equal(`request to ${api.origin}${FILE_PATH} failed, reason: ${err.cause.message}`);
+                expectNoCredentials(err, 'file.csv', 'X-Signature', 'signature_value_123');
+            });
+
+            it(`${httpClient}: a truncated file response is an error without the file location`, async () => {
+                api.handler = respond(302, { Location: `${other.origin}/file.csv?X-Signature=signature_value_123` });
+                other.handler = (req, res) => {
+                    res.writeHead(200, { 'Content-Type': 'text/csv', 'Content-Length': '100' });
+                    res.write('a,b');
+                    res.destroy();
+                };
+
+                const err = await catchError(getFile(skClient(httpClient, api)));
+
+                expect(err).to.be.instanceOf(Error);
+                expectNoCredentials(err, 'file.csv', 'X-Signature', 'signature_value_123');
+            });
+
             it(`${httpClient}: other CSV downloads do not follow a 302`, async () => {
                 api.handler = respond(302, { Location: `${other.origin}/file.csv` });
 
@@ -726,6 +822,32 @@ describe('HTTP response policy', () => {
 
                 expect(err).to.be.instanceOf(ApiError);
                 expectNoCredentials(err, 'merchant_value_123');
+            });
+
+            Object.entries(HOSTILE_VALUES).forEach(([name, chars]) => {
+                it(`${httpClient}: input validation: a configured header value with ${name}`, async () => {
+                    const cko = new Checkout(SK, {
+                        subdomain: '123456789',
+                        headers: { 'X-Merchant-Key': `merchant_value_123${chars}` },
+                        ...withClient(httpClient),
+                    });
+                    cko.config.host = closedOrigin;
+
+                    const err = await catchError(cko.payments.get('pay_123'));
+
+                    expect(err).to.be.instanceOf(Error);
+                    expectNoCredentials(err, 'merchant_value_123');
+                });
+
+                it(`${httpClient}: input validation: a secret key with ${name}`, async () => {
+                    const cko = new Checkout(`${SK}${chars}`, { subdomain: '123456789', ...withClient(httpClient) });
+                    cko.config.host = closedOrigin;
+
+                    const err = await catchError(cko.payments.get('pay_123'));
+
+                    expect(err).to.be.instanceOf(Error);
+                    expectNoCredentials(err);
+                });
             });
 
             it(`${httpClient}: input validation: a host with user information`, async () => {

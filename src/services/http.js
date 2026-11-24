@@ -207,11 +207,8 @@ const AXIOS_SUCCESS_ONLY_POLICY = {
 // Body of the errors of the response policy: the status, and the request id when the API sent one.
 const statusOnlyBody = (status, requestId) => (requestId ? { status, request_id: requestId } : { status });
 
-const requestIdOf = (headers) => {
-    const get = (name) => (typeof headers?.get === 'function' ? headers.get(name) : headers?.[name]);
-    const value = get(REQUEST_ID_HEADER) || get('request-id');
-    return Array.isArray(value) ? value[0] : value || undefined;
-};
+// The request id of a 3xx response: both clients give its headers with get().
+const requestIdOf = (headers) => headers?.get?.(REQUEST_ID_HEADER) || headers?.get?.('request-id') || undefined;
 
 // A 3xx response: an ApiError with the status only.
 const redirectStatusError = (status, requestId) => new ApiError(status, statusOnlyBody(status, requestId));
@@ -293,18 +290,61 @@ const fetchFailure = (error) =>
 const isTimeout = (error) =>
     error.code === 'ECONNABORTED' || error.name === 'AbortError' || error.message?.includes('timeout');
 
+// A request without a response: ApiTimeout, or a connection error whose body is `reason(error)`.
+const noResponseError = (error, reason) => (isTimeout(error) ? new ApiTimeout() : connectionError(reason(error), error));
+
+// One axios request. A response the request options refuse goes to `onRefused`, which returns the
+// result or throws; `onSuccess` runs in the same try, so an error reading the response is a
+// connection error, as for any error without a response.
+const axiosRequest = async (options, reason, onRefused, onSuccess = (response) => response) => {
+    try {
+        return onSuccess(await axios(options));
+    } catch (error) {
+        if (error.response) {
+            return onRefused(error.response);
+        }
+        throw noResponseError(error, reason);
+    }
+};
+
+// One fetch request; without a response, ApiTimeout or a connection error (see fetchFailure).
+const fetchRequest = async (url, options, reason) => {
+    try {
+        return await fetch(url, options);
+    } catch (error) {
+        throw noResponseError(fetchFailure(error), reason);
+    }
+};
+
+// A fetch response that is not used: its body is discarded and `error` is thrown.
+const refuseResponse = async (response, error) => {
+    await discardBody(response);
+    throw await error;
+};
+
+const withAgent = (options, agent) => (agent === undefined ? options : { ...options, agent });
+
 const isLoopbackHost = (hostname) =>
     hostname === 'localhost' || hostname === '[::1]' || /^127(\.\d{1,3}){3}$/.test(hostname);
 
-// The file location of a report download: https, or http for a loopback host (local tests).
-const fileDownloadUrl = (location, base) => {
-    let url;
+const parseUrl = (value, base) => {
     try {
-        url = new URL(location, base);
+        return new URL(value, base);
     } catch {
         return undefined;
     }
-    if (url.protocol !== 'https:' && !(url.protocol === 'http:' && isLoopbackHost(url.hostname))) {
+};
+
+// http is accepted for a loopback file location only when the API base is loopback too (local
+// tests).
+const isDownloadScheme = (url, base) =>
+    url.protocol === 'https:' ||
+    (url.protocol === 'http:' && isLoopbackHost(url.hostname) && isLoopbackHost(parseUrl(base)?.hostname));
+
+// The file location of a report download, without user information (see isDownloadScheme).
+const fileDownloadUrl = (location, base) => {
+    const url = parseUrl(location, base);
+    if (!url || !isDownloadScheme(url, base)) {
         return undefined;
     }
     url.username = '';
@@ -314,13 +354,13 @@ const fileDownloadUrl = (location, base) => {
 
 // Headers never sent to the file location (the HTTP clients also drop the first three when they
 // follow a response to another host).
-const FILE_DOWNLOAD_DROPPED_HEADERS = ['authorization', 'proxy-authorization', 'cookie', 'referer'];
+const FILE_DOWNLOAD_DROPPED_HEADERS = new Set(['authorization', 'proxy-authorization', 'cookie', 'referer']);
 
 // Headers of the file request: the API request headers without the ones above and the SDK's Cko-
 // headers.
 const isDroppedFileHeader = (name) => {
     const lower = name.toLowerCase();
-    return FILE_DOWNLOAD_DROPPED_HEADERS.includes(lower) || lower.startsWith('cko-');
+    return FILE_DOWNLOAD_DROPPED_HEADERS.has(lower) || lower.startsWith('cko-');
 };
 
 const fileDownloadHeaders = (headers) =>
@@ -337,65 +377,92 @@ const followsFileDownload = (config, method, status) => config.fileDownload === 
 
 // The only redirect followed: one 302 of a report file download, as a GET without a body (see
 // fileDownloadUrl and fileDownloadHeaders). Its own 3xx is not followed; an error status keeps
-// the SDK error type with the status only. Errors name the API request, not the file location.
-const downloadFile = async (httpClient, config, path, location, headers, requestId) => {
-    const url = location ? fileDownloadUrl(location, path) : undefined;
+// the SDK error type with the status only. Errors name the API request (`api`: method, path and
+// headers), not the file location.
+const downloadFile = async (httpClient, config, api, location, requestId) => {
+    const url = location ? fileDownloadUrl(location, api.path) : undefined;
     if (!url) {
         throw redirectStatusError(302, requestId);
     }
-    const fileHeaders = fileDownloadHeaders(headers);
+    const headers = fileDownloadHeaders(api.headers);
+    const reason = (error) => connectionReason(api.path, error);
+    const statusFailure = (status) =>
+        isRedirect(status) ? redirectStatusError(status, requestId) : statusError(status, statusOnlyBody(status, requestId));
 
     if (httpClient === 'axios') {
-        let response;
-        try {
-            response = await axios({
-                url,
-                method: 'GET',
-                headers: fileHeaders,
-                auth: null,
-                transformRequest: [dropFileHeaderDefaults],
-                timeout: config.timeout,
-                httpsAgent: config.agent,
-                ...AXIOS_SUCCESS_ONLY_POLICY,
-            });
-        } catch (error) {
-            if (isTimeout(error)) {
-                throw new ApiTimeout();
-            }
-            if (error.response) {
-                const { status } = error.response;
-                throw isRedirect(status)
-                    ? redirectStatusError(status, requestId)
-                    : await statusError(status, statusOnlyBody(status, requestId));
-            }
-            throw connectionError(connectionReason(path, error), error);
-        }
+        const options = {
+            url,
+            method: 'GET',
+            headers,
+            auth: null,
+            transformRequest: [dropFileHeaderDefaults],
+            timeout: config.timeout,
+            httpsAgent: config.agent,
+            ...AXIOS_SUCCESS_ONLY_POLICY,
+        };
+        const response = await axiosRequest(options, reason, async ({ status }) => {
+            throw await statusFailure(status);
+        });
         return buildAxiosResponse(config, response);
     }
 
-    const fetchOptions = { method: 'GET', headers: fileHeaders, redirect: 'manual' };
-    if (typeof config.agent !== 'undefined') {
-        fetchOptions.agent = config.agent;
-    }
-    let response;
-    try {
-        response = await fetch(url, fetchOptions);
-    } catch (error) {
-        if (isTimeout(error)) {
-            throw new ApiTimeout();
-        }
-        const failure = fetchFailure(error);
-        throw connectionError(connectionReason(path, failure), failure);
-    }
-    if (isRedirect(response.status)) {
-        await discardBody(response);
-        throw redirectStatusError(response.status, requestId);
-    }
+    const response = await fetchRequest(url, withAgent({ method: 'GET', headers, redirect: 'manual' }, config.agent), reason);
     if (!response.ok) {
-        await discardBody(response);
-        throw await statusError(response.status, statusOnlyBody(response.status, requestId));
+        await refuseResponse(response, statusFailure(response.status));
     }
     return buildResponse(config, response);
+};
+
+const TOKEN_REQUEST_HEADERS = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Accept: 'application/json',
+};
+
+const axiosAccessToken = async (config, accessUrl, requestBody) => {
+    const options = {
+        url: accessUrl,
+        method: 'post',
+        headers: TOKEN_REQUEST_HEADERS,
+        data: new URLSearchParams(requestBody),
+        timeout: config.timeout,
+        httpsAgent: config.agent,
+        ...AXIOS_SUCCESS_ONLY_POLICY,
+    };
+    const access = await axiosRequest(
+        options,
+        (error) => connectionReason(accessUrl, error),
+        async ({ status, data }) => {
+            throw isRedirect(status) ? tokenRedirectError(status) : await statusError(status, data);
+        }
+    );
+    return {
+        status: access.status,
+        json: access.data,
+    };
+};
+
+const fetchAccessToken = async (config, accessUrl, requestBody) => {
+    const options = {
+        method: 'POST',
+        timeout: config.timeout,
+        agent: config.agent,
+        redirect: 'manual',
+        body: new URLSearchParams(requestBody),
+        headers: TOKEN_REQUEST_HEADERS,
+    };
+    // Same body as before for this client: the client's message.
+    const access = await fetchRequest(accessUrl, options, (error) => error.message);
+    if (isRedirect(access.status)) {
+        await refuseResponse(access, tokenRedirectError(access.status));
+    }
+    if (!access.ok) {
+        throw await statusError(access.status, await bodyParser(access));
+    }
+    const text = await access.text();
+    return {
+        status: access.status,
+        json: text ? JSON.parse(text) : {},
+    };
 };
 
 /**
@@ -420,89 +487,21 @@ export const createAccessToken = async (config, httpClient, body) => {
     };
 
     // Use environmentSubdomain if exists, otherwise use environment
-    let accessUrl;
-    if (config.environmentSubdomain) {
-        accessUrl = config.environmentSubdomain.getOAuthAuthorizationApi();
-    } else {
-        accessUrl = config.environment.getOAuthAuthorizationApi();
-    }
+    const accessUrl = (config.environmentSubdomain || config.environment).getOAuthAuthorizationApi();
 
-    let access;
-
-    switch (httpClient) {
-        case 'axios':
-            try {
-                access = await axios({
-                    url: accessUrl,
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        Accept: 'application/json',
-                    },
-                    data: new URLSearchParams(requestBody),
-                    timeout: config.timeout,
-                    httpsAgent: config.agent,
-                    ...AXIOS_SUCCESS_ONLY_POLICY,
-                });
-            } catch (error) {
-                if (isTimeout(error)) {
-                    throw new ApiTimeout();
-                }
-                if (error.response) {
-                    const { status, data } = error.response;
-                    throw isRedirect(status) ? tokenRedirectError(status) : await statusError(status, data);
-                }
-                throw connectionError(connectionReason(accessUrl, error), error);
-            }
-            return {
-                status: access.status,
-                json: access.data,
-            };
-
-        default:
-            try {
-                access = await fetch(
-                    accessUrl,
-                    {
-                        method: 'POST',
-                        timeout: config.timeout,
-                        agent: config.agent,
-                        redirect: 'manual',
-                        body: new URLSearchParams(requestBody),
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            Accept: 'application/json',
-                        },
-                    }
-                );
-            } catch (error) {
-                if (isTimeout(error)) {
-                    throw new ApiTimeout();
-                }
-                // Same body as before for this client: the client's message.
-                const failure = fetchFailure(error);
-                throw connectionError(failure.message, failure);
-            }
-            if (isRedirect(access.status)) {
-                await discardBody(access);
-                throw tokenRedirectError(access.status);
-            }
-            if (!access.ok) {
-                const json = await bodyParser(access);
-                throw await statusError(access.status, json);
-            }
-
-            return access.text().then((text) => {
-                const data = text ? JSON.parse(text) : {};
-                return {
-                    status: access.status,
-                    json: data,
-                };
-            });
-    }
+    return httpClient === 'axios'
+        ? axiosAccessToken(config, accessUrl, requestBody)
+        : fetchAccessToken(config, accessUrl, requestBody);
 };
 
- 
+// A 3xx answer to an API request: the report file download, or an error with the status only.
+const redirected = (httpClient, config, api, status, location, requestId) => {
+    if (followsFileDownload(config, api.method, status)) {
+        return downloadFile(httpClient, config, api, location, requestId);
+    }
+    throw redirectStatusError(status, requestId);
+};
+
 const httpRequest = async (httpClient, verb, path, config, auth, request, idempotencyKey) => {
     // fetch only normalises the case of DELETE, GET, HEAD, OPTIONS, POST and PUT, so a
     // lowercase "patch" goes out as-is and the API answers 400. Send every verb uppercase.
@@ -527,85 +526,52 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
     }
 
     const headers = getRequestHeaders(config, request, authHeader, idempotencyKey);
+    const api = { method, path, headers };
+    const reason = (error) => connectionReason(path, error);
 
-    let response;
-
-    switch (httpClient) {
-        case 'axios':
-            try {
-                response = await axios({
-                    url: path,
-                    method,
-                    headers,
-                    data: config.formData ? request : JSON.stringify(request),
-                    timeout: config.timeout,
-                    httpsAgent: config.agent,
-                    ...AXIOS_RESPONSE_POLICY,
-                });
-                return buildAxiosResponse(config, response);
-            } catch (error) {
-                if (isTimeout(error)) {
-                    throw new ApiTimeout();
+    if (httpClient === 'axios') {
+        const options = {
+            url: path,
+            method,
+            headers,
+            data: config.formData ? request : JSON.stringify(request),
+            timeout: config.timeout,
+            httpsAgent: config.agent,
+            ...AXIOS_RESPONSE_POLICY,
+        };
+        return axiosRequest(
+            options,
+            reason,
+            ({ status, headers: responseHeaders, data }) => {
+                if (isRedirect(status)) {
+                    return redirected(httpClient, config, api, status, responseHeaders?.location, requestIdOf(responseHeaders));
                 }
-                if (error.response) {
-                    const { status, headers: responseHeaders } = error.response;
-                    if (isRedirect(status)) {
-                        const requestId = requestIdOf(responseHeaders);
-                        if (followsFileDownload(config, method, status)) {
-                            return downloadFile(httpClient, config, path, responseHeaders?.location, headers, requestId);
-                        }
-                        throw redirectStatusError(status, requestId);
-                    }
-                    throw {
-                        status,
-                        json: error.response.data,
-                    };
-                }
-                throw connectionError(connectionReason(path, error), error);
-            }
-
-        default:
-            let body;
-            if (config.formData && request && typeof request.getHeaders === 'function') {
-                body = await formDataToBuffer(request);
-            } else {
-                body = config.formData ? request : JSON.stringify(request);
-            }
-            const fetchOptions = {
-                method,
-                body,
-                headers,
-                redirect: 'manual',
-            };
-            if (typeof config.agent !== 'undefined') {
-                fetchOptions.agent = config.agent;
-            }
-            try {
-                response = await fetch(path, fetchOptions);
-            } catch (error) {
-                if (isTimeout(error)) {
-                    throw new ApiTimeout();
-                }
-                const failure = fetchFailure(error);
-                throw connectionError(connectionReason(path, failure), failure);
-            }
-
-            if (isRedirect(response.status)) {
-                const requestId = requestIdOf(response.headers);
-                const location = response.headers.get('location');
-                await discardBody(response);
-                if (followsFileDownload(config, method, response.status)) {
-                    return downloadFile(httpClient, config, path, location, headers, requestId);
-                }
-                throw redirectStatusError(response.status, requestId);
-            }
-            if (!response.ok) {
-                const json = await bodyParser(response);
-                throw { status: response.status, json };
-            }
-
-            return buildResponse(config, response);
+                throw { status, json: data };
+            },
+            (response) => buildAxiosResponse(config, response)
+        );
     }
+
+    let body;
+    if (config.formData && request && typeof request.getHeaders === 'function') {
+        body = await formDataToBuffer(request);
+    } else {
+        body = config.formData ? request : JSON.stringify(request);
+    }
+    const response = await fetchRequest(path, withAgent({ method, body, headers, redirect: 'manual' }, config.agent), reason);
+
+    if (isRedirect(response.status)) {
+        const requestId = requestIdOf(response.headers);
+        const location = response.headers.get('location');
+        await discardBody(response);
+        return redirected(httpClient, config, api, response.status, location, requestId);
+    }
+    if (!response.ok) {
+        const json = await bodyParser(response);
+        throw { status: response.status, json };
+    }
+
+    return buildResponse(config, response);
 };
 
 export const get = async (httpClient, path, config, auth) =>
