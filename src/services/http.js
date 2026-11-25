@@ -191,9 +191,11 @@ const acceptStatus = (status) => {
     return typeof validateStatus === 'function' ? validateStatus(status) : true;
 };
 
-// axios options of every SDK request: redirects are not followed (see acceptStatus).
+// axios options of every SDK request: redirects are not followed (see acceptStatus), and axios's
+// built-in http/https transport is used whatever the application's transport default.
 const AXIOS_RESPONSE_POLICY = {
     maxRedirects: 0,
+    transport: null,
     validateStatus: acceptStatus,
 };
 
@@ -215,6 +217,16 @@ const redirectStatusError = (status, requestId) => new ApiError(status, statusOn
 
 // A 3xx response to the token request: an AuthenticationError with the status only.
 const tokenRedirectError = (status) => new AuthenticationError({ status }, 'Unexpected token response status');
+
+// A token response the SDK cannot use: an AuthenticationError with the status only.
+const tokenResponseError = (status) => new AuthenticationError({ status }, 'Invalid access token response');
+
+// A token the SDK can send: a non-empty string access_token and token_type (RFC 6749, 5.1).
+const isUsableToken = (body) =>
+    typeof body?.access_token === 'string' &&
+    body.access_token !== '' &&
+    typeof body.token_type === 'string' &&
+    body.token_type !== '';
 
 // The body of a response that is not used is discarded, so fetch releases the connection.
 const discardBody = async (response) => {
@@ -352,24 +364,20 @@ const fileDownloadUrl = (location, base) => {
     return url.href;
 };
 
-// Headers never sent to the file location (the HTTP clients also drop the first three when they
-// follow a response to another host).
-const FILE_DOWNLOAD_DROPPED_HEADERS = new Set(['authorization', 'proxy-authorization', 'cookie', 'referer']);
+// The only API request headers sent to the file location.
+const FILE_DOWNLOAD_HEADERS = new Set(['user-agent', 'accept']);
 
-// Headers of the file request: the API request headers without the ones above and the SDK's Cko-
-// headers.
-const isDroppedFileHeader = (name) => {
-    const lower = name.toLowerCase();
-    return FILE_DOWNLOAD_DROPPED_HEADERS.has(lower) || lower.startsWith('cko-');
-};
+const isFileHeader = (name) => FILE_DOWNLOAD_HEADERS.has(name.toLowerCase());
 
 const fileDownloadHeaders = (headers) =>
-    Object.fromEntries(Object.entries(headers).filter(([name, value]) => value != null && !isDroppedFileHeader(name)));
+    Object.fromEntries(Object.entries(headers).filter(([name, value]) => value != null && isFileHeader(name)));
 
 // axios adds the application's default headers and auth after the request headers are set: the
-// same headers are removed from the merged headers of the file request, and auth is not used.
+// merged headers of the file request keep only the ones above too, and auth is not used.
 const dropFileHeaderDefaults = (data, headers) => {
-    Object.keys(headers.toJSON()).filter(isDroppedFileHeader).forEach((name) => headers.delete(name));
+    Object.keys(headers.toJSON())
+        .filter((name) => !isFileHeader(name))
+        .forEach((name) => headers.delete(name));
     return data;
 };
 
@@ -377,8 +385,9 @@ const followsFileDownload = (config, method, status) => config.fileDownload === 
 
 // The only redirect followed: one 302 of a report file download, as a GET without a body (see
 // fileDownloadUrl and fileDownloadHeaders). Its own 3xx is not followed; an error status keeps
-// the SDK error type with the status only. Errors name the API request (`api`: method, path and
-// headers), not the file location.
+// the SDK error type with the status only. The SDK's error text names the API request path, never
+// the file path or query; a connection error keeps the client's reason, which can name the file
+// host.
 const downloadFile = async (httpClient, config, api, location, requestId) => {
     const url = location ? fileDownloadUrl(location, api.path) : undefined;
     if (!url) {
@@ -395,6 +404,7 @@ const downloadFile = async (httpClient, config, api, location, requestId) => {
             method: 'GET',
             headers,
             auth: null,
+            params: null,
             transformRequest: [dropFileHeaderDefaults],
             timeout: config.timeout,
             httpsAgent: config.agent,
@@ -432,7 +442,11 @@ const axiosAccessToken = async (config, accessUrl, requestBody) => {
         options,
         (error) => connectionReason(accessUrl, error),
         async ({ status, data }) => {
-            throw isRedirect(status) ? tokenRedirectError(status) : await statusError(status, data);
+            if (isRedirect(status)) {
+                throw tokenRedirectError(status);
+            }
+            // A 2xx axios refuses (a body its parsing options reject) is not a usable token response.
+            throw status >= 200 && status < 300 ? tokenResponseError(status) : await statusError(status, data);
         }
     );
     return {
@@ -459,9 +473,16 @@ const fetchAccessToken = async (config, accessUrl, requestBody) => {
         throw await statusError(access.status, await bodyParser(access));
     }
     const text = await access.text();
+    let body = {};
+    try {
+        // An empty body is an empty object, as before for this client.
+        body = text ? JSON.parse(text) : body;
+    } catch {
+        throw tokenResponseError(access.status);
+    }
     return {
         status: access.status,
-        json: text ? JSON.parse(text) : {},
+        json: body,
     };
 };
 
@@ -472,8 +493,8 @@ const fetchAccessToken = async (config, accessUrl, requestBody) => {
  * @param {string} httpClient 'axios', or anything else for fetch.
  * @param {Object} [body] Token request body; client credentials from the config by default.
  * @return {Promise<Object>} status and json of the token response.
- * @throws {AuthenticationError} On an unexpected response status (body `{ status }`), a 401 or a
- *   400 OAuth error.
+ * @throws {AuthenticationError} On an unexpected response status or a 2xx body the client cannot
+ *   parse (body `{ status }`), a 401 or a 400 OAuth error.
  * @throws {ApiTimeout} When the axios client times out.
  * @throws {Error} On any other error status, the SDK error of that status (as determineError);
  *   without a response, an ApiError without http_code and with the client's error as cause.
@@ -519,6 +540,9 @@ const httpRequest = async (httpClient, verb, path, config, auth, request, idempo
             authHeader = `${config.access.type} ${config.access.token}`;
         } else {
             const access = await createAccessToken(config, httpClient);
+            if (!isUsableToken(access.json)) {
+                throw tokenResponseError(access.status);
+            }
             authHeader = `${access.json.token_type} ${access.json.access_token}`;
 
             storeAccessToken(config, access.json);

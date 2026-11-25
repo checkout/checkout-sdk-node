@@ -306,6 +306,79 @@ describe('HTTP response policy', () => {
                 expect(other.requests).to.deep.equal([]);
                 expectNoCredentials(err);
             });
+
+            [
+                ['a body that is not JSON', { 'Content-Type': 'text/html' }, '<html>token_body_value</html>'],
+                ['a JSON null body', { 'Content-Type': 'application/json' }, 'null'],
+                ['an empty JSON object', { 'Content-Type': 'application/json' }, '{}'],
+                ['a JSON array', { 'Content-Type': 'application/json' }, '["token_body_value"]'],
+                ['a JSON string', { 'Content-Type': 'application/json' }, '"token_body_value"'],
+                ['an empty body', { 'Content-Type': 'application/json' }, ''],
+                ['a truncated JSON body', { 'Content-Type': 'application/json' }, '{"access_token":"token_body_value"'],
+                ['no token_type', { 'Content-Type': 'application/json' }, '{"access_token":"token_body_value"}'],
+                ['an access_token that is not a string', { 'Content-Type': 'application/json' }, '{"access_token":12345,"token_type":"Bearer","refresh":"token_body_value"}'],
+                ['an empty access_token', { 'Content-Type': 'application/json' }, '{"access_token":"","token_type":"Bearer","refresh":"token_body_value"}'],
+                ['an empty token_type', { 'Content-Type': 'application/json' }, '{"access_token":"token_body_value","token_type":""}'],
+            ].forEach(([name, headers, body]) => {
+                it(`${httpClient}: a 200 with ${name} gives AuthenticationError with the status only, no API request is sent`, async () => {
+                    api.handler = respond(200, headers, body);
+                    const cko = oauthClient(httpClient, api);
+
+                    const err = await catchError(cko.payments.get('pay_123'));
+
+                    expect(err).to.be.instanceOf(AuthenticationError);
+                    expect(err.body).to.deep.equal({ status: 200 });
+                    expect(api.requests.map((r) => r.url)).to.deep.equal(['/connect/token']);
+                    expect(cko.config.access.token).to.equal(undefined);
+                    expectNoCredentials(err, 'token_body_value', '12345');
+                });
+            });
+
+            const accessRequest = (cko) =>
+                cko.access.request({
+                    grant_type: 'client_credentials',
+                    client_id: CLIENT,
+                    client_secret: CLIENT_CREDENTIAL,
+                    scope: 'gateway',
+                });
+
+            it(`${httpClient}: access.request with a 200 JSON object without a token returns it, as before`, async () => {
+                api.handler = json(200, { token_type: 'Bearer' });
+
+                const body = await accessRequest(oauthClient(httpClient, api));
+
+                expect(body).to.deep.equal({ token_type: 'Bearer' });
+            });
+
+            [
+                ['a JSON null', 'null', null],
+                ['a JSON array', '[1]', [1]],
+                ['a JSON string', '"s"', 's'],
+            ].forEach(([name, body, expected]) => {
+                it(`${httpClient}: access.request with a 200 with ${name} returns it, as before`, async () => {
+                    api.handler = respond(200, { 'Content-Type': 'application/json' }, body);
+
+                    expect(await accessRequest(oauthClient(httpClient, api))).to.deep.equal(expected);
+                });
+            });
+
+            if (httpClient === 'fetch') {
+                it('fetch: access.request with a 200 that is not JSON gives AuthenticationError with the status only', async () => {
+                    api.handler = respond(200, { 'Content-Type': 'text/html' }, '<html>token_body_value</html>');
+
+                    const err = await catchError(accessRequest(oauthClient(httpClient, api)));
+
+                    expect(err).to.be.instanceOf(AuthenticationError);
+                    expect(err.body).to.deep.equal({ status: 200 });
+                    expectNoCredentials(err, 'token_body_value');
+                });
+            } else {
+                it('axios: access.request with a 200 that is not JSON returns the text, as before', async () => {
+                    api.handler = respond(200, { 'Content-Type': 'text/html' }, '<html>a</html>');
+
+                    expect(await accessRequest(oauthClient(httpClient, api))).to.equal('<html>a</html>');
+                });
+            }
         });
     });
 
@@ -332,12 +405,18 @@ describe('HTTP response policy', () => {
                 expect(api.requests[0].headers.authorization).to.equal(SK);
             });
 
-            it(`${httpClient}: the file request has no Cookie or Proxy-Authorization, other configured headers are kept`, async () => {
+            it(`${httpClient}: the file request sends no configured header other than User-Agent and Accept`, async () => {
                 api.handler = respond(302, { Location: `${other.origin}/file.csv` });
                 other.handler = respond(200, { 'Content-Type': 'text/csv' }, 'a\n');
                 const cko = new Checkout(SK, {
                     subdomain: '123456789',
-                    headers: { Cookie: 'session=1', 'Proxy-Authorization': 'Basic abc', 'X-Merchant': 'kept' },
+                    headers: {
+                        Cookie: 'session=1',
+                        'Proxy-Authorization': 'Basic abc',
+                        'X-Api-Key': 'merchant_key_value',
+                        'X-Merchant': 'merchant_value',
+                        Accept: 'text/csv',
+                    },
                     ...withClient(httpClient),
                 });
                 cko.config.host = api.origin;
@@ -345,9 +424,12 @@ describe('HTTP response policy', () => {
                 await getFile(cko);
 
                 const [download] = other.requests;
-                expect(download.headers).to.not.have.property('cookie');
-                expect(download.headers).to.not.have.property('proxy-authorization');
-                expect(download.headers['x-merchant']).to.equal('kept');
+                ['cookie', 'proxy-authorization', 'x-api-key', 'x-merchant', 'cache-control', 'pragma', 'content-type'].forEach(
+                    (name) => expect(download.headers).to.not.have.property(name)
+                );
+                expect(download.headers['user-agent']).to.match(/^checkout-sdk-node\//);
+                expect(download.headers.accept).to.equal('text/csv');
+                expect(api.requests[0].headers['x-api-key']).to.equal('merchant_key_value');
                 expect(api.requests[0].headers.cookie).to.equal('session=1');
             });
 
@@ -643,7 +725,7 @@ describe('HTTP response policy', () => {
             axios.defaults.headers.common['Proxy-Authorization'] = 'Basic application';
             axios.defaults.headers.common['Cko-Application'] = 'application';
             axios.defaults.headers.get.Referer = 'https://application.example/';
-            axios.defaults.headers.common['X-Application'] = 'kept';
+            axios.defaults.headers.common['X-Application'] = 'application';
             axios.defaults.auth = { username: 'application', password: 'application' };
         });
 
@@ -665,7 +747,7 @@ describe('HTTP response policy', () => {
             expect(download.headers).to.not.have.property('proxy-authorization');
             expect(download.headers).to.not.have.property('cko-application');
             expect(download.headers).to.not.have.property('referer');
-            expect(download.headers['x-application']).to.equal('kept');
+            expect(download.headers).to.not.have.property('x-application');
         });
     });
 
@@ -673,12 +755,101 @@ describe('HTTP response policy', () => {
         let saved;
 
         beforeEach(() => {
-            saved = { maxRedirects: axios.defaults.maxRedirects, adapter: axios.defaults.adapter };
+            saved = {
+                maxRedirects: axios.defaults.maxRedirects,
+                adapter: axios.defaults.adapter,
+                transport: axios.defaults.transport,
+                params: axios.defaults.params,
+                transitional: axios.defaults.transitional,
+                responseType: axios.defaults.responseType,
+            };
         });
 
         afterEach(() => {
-            axios.defaults.maxRedirects = saved.maxRedirects;
-            axios.defaults.adapter = saved.adapter;
+            Object.assign(axios.defaults, saved);
+        });
+
+        // An application transport that records its use.
+        const recordingTransport = () => {
+            const transport = {
+                calls: 0,
+                request: (options, callback) => {
+                    transport.calls += 1;
+                    return http.request(options, callback);
+                },
+            };
+            return transport;
+        };
+
+        it('an application transport default is not used for an API request', async () => {
+            const transport = recordingTransport();
+            axios.defaults.transport = transport;
+            api.handler = respond(307, { Location: `${other.origin}/moved` });
+
+            const err = await catchError(REQUESTS[0].call(skClient('axios', api)));
+
+            expect(err).to.be.instanceOf(ApiError);
+            expect(err.http_code).to.equal(307);
+            expect(other.requests).to.deep.equal([]);
+            expect(transport.calls).to.equal(0);
+        });
+
+        it('an application transport default is not used for the OAuth token request', async () => {
+            const transport = recordingTransport();
+            axios.defaults.transport = transport;
+            api.handler = respond(307, { Location: `${other.origin}/moved` });
+            other.handler = json(200, TOKEN);
+            const cko = oauthClient('axios', api);
+
+            const err = await catchError(cko.payments.get('pay_123'));
+
+            expect(err).to.be.instanceOf(AuthenticationError);
+            expect(err.body).to.deep.equal({ status: 307 });
+            expect(other.requests).to.deep.equal([]);
+            expect(cko.config.access.token).to.equal(undefined);
+            expect(transport.calls).to.equal(0);
+        });
+
+        it('an application transport default is not used for the file request', async () => {
+            const transport = recordingTransport();
+            axios.defaults.transport = transport;
+            api.handler = (req, res) =>
+                req.url === '/reports/rpt_1/files/file_1'
+                    ? respond(302, { Location: `${other.origin}/file.csv` })(req, res)
+                    : respond(200, {}, 'again')(req, res);
+            other.handler = respond(302, { Location: `${api.origin}/again` });
+
+            const err = await catchError(skClient('axios', api).reports.getReportFile('rpt_1', 'file_1'));
+
+            expect(err).to.be.instanceOf(ApiError);
+            expect(err.http_code).to.equal(302);
+            expect(api.requests.map((r) => r.url)).to.deep.equal(['/reports/rpt_1/files/file_1']);
+            expect(other.requests).to.have.length(1);
+            expect(transport.calls).to.equal(0);
+        });
+
+        it('strict JSON parsing defaults: a token 200 that is not JSON gives AuthenticationError with the status only', async () => {
+            axios.defaults.transitional = { ...axios.defaults.transitional, silentJSONParsing: false };
+            axios.defaults.responseType = 'json';
+            api.handler = respond(200, { 'Content-Type': 'text/html' }, '<html>token_body_value</html>');
+            const cko = oauthClient('axios', api);
+
+            const err = await catchError(cko.payments.get('pay_123'));
+
+            expect(err).to.be.instanceOf(AuthenticationError);
+            expect(err.body).to.deep.equal({ status: 200 });
+            expect(api.requests.map((r) => r.url)).to.deep.equal(['/connect/token']);
+            expectNoCredentials(err, 'token_body_value');
+        });
+
+        it('a params default is not added to the file location', async () => {
+            axios.defaults.params = { application: 'application_param' };
+            api.handler = respond(302, { Location: `${other.origin}/file.csv?X-Signature=abc` });
+            other.handler = respond(200, { 'Content-Type': 'text/csv' }, 'a\n');
+
+            await skClient('axios', api).reports.getReportFile('rpt_1', 'file_1');
+
+            expect(other.requests.map((r) => r.url)).to.deep.equal(['/file.csv?X-Signature=abc']);
         });
 
         it('a maxRedirects default does not make a 307 followed', async () => {
