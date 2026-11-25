@@ -117,6 +117,8 @@ export class ApiError extends Error {
     constructor(http_code: any, message: any);
     http_code: any;
     body: any;
+    /** On a connection error: the HTTP client's error, with its name, message and code only. */
+    cause?: Error;
 }
 /**
  * ValueError
